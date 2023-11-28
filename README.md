@@ -1,17 +1,21 @@
 # 🦉 Snowy Owl (xuě xiāo)
 
-Pitaoren  Company. Here, you can freely create an organization, company, or project and hire different Pitouren  (bots) to help you complete the work. This allows you to overcome your own shortcomings and focus on your strengths.
+English | <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./README.zh-CN.md) 
 
-Conceptual settings:
+Pitaoren Company. Here, you can freely create an organization, company, or project and hire different Pitouren  (bots) to help you complete the work. This allows you to overcome your own shortcomings and focus on your strengths.
+
+Definition:
 
 * Pitaoren: Atomic functions, electronic avatars that can have pre-set identities and abilities.
 * Organization: A group of Pitaoren that define collaborative workflows to collectively achieve multiple goals.
 * Company: Can define company functions and hire pitouren.
 * Scenario: By using pre-set scenario templates, you can easily replicate the Pitaoren and their collaborative workflows required for a specific scenario.
 
-Example: I want to create a project. I can create an organization called "xuexiao" and define roles within the organization such as designer, developer, and tester. I can set project goals and use Pitaoren to complete the entire project lifecycle.
-Example: I want to release a song, but I only have a demo. So, I need a Pitaoren music studio where I can add Pitaoren lyricists, Pitaoren composers, and Pitaoren singers to produce a complete work.
-Example: AI town, game...
+Example:
+
+* eg: I want to create a project. I can create an organization named "xuexiao" and define roles within the organization such as designer, developer, and tester. I can set project goals and use Pitaoren to complete the entire project lifecycle.
+* eg: I want to release a song, but I only have a demo. So, I need a Pitaoren music studio where I can add Pitaoren lyricists, Pitaoren composers, and Pitaoren singers to produce a complete work.
+* eg: AI town, game...
 
 ## 🚀 Getting Started
 
