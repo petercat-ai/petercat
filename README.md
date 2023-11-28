@@ -1,22 +1,17 @@
-# 🦜️🔗 LangChain + Next.js Starter Template
+# 🦉 Snowy Owl (xuě xiāo)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/langchain-ai/langchain-nextjs-template)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Flangchain-nextjs-template)
+Pitaoren  Company. Here, you can freely create an organization, company, or project and hire different Pitouren  (bots) to help you complete the work. This allows you to overcome your own shortcomings and focus on your strengths.
 
-This template scaffolds a LangChain.js + Next.js starter app. It showcases how to use and combine LangChain modules for several
-use cases. Specifically:
+Conceptual settings:
 
-- [Simple chat](/app/api/chat/route.ts)
-- [Returning structured output from an LLM call](/app/api/chat/structured_output/route.ts)
-- [Answering complex, multi-step questions with agents](/app/api/chat/agents/route.ts)
-- [Retrieval augmented generation (RAG) with a chain and a vector store](/app/api/chat/retrieval/route.ts)
-- [Retrieval augmented generation (RAG) with an agent and a vector store](/app/api/chat/retrieval_agents/route.ts)
+* Pitaoren: Atomic functions, electronic avatars that can have pre-set identities and abilities.
+* Organization: A group of Pitaoren that define collaborative workflows to collectively achieve multiple goals.
+* Company: Can define company functions and hire pitouren.
+* Scenario: By using pre-set scenario templates, you can easily replicate the Pitaoren and their collaborative workflows required for a specific scenario.
 
-Most of them use Vercel's [AI SDK](https://github.com/vercel-labs/ai) to stream tokens to the client and display the incoming messages.
-
-![Demo GIF](/public/images/agent-convo.gif)
-
-You can check out a hosted version of this repo here: https://langchain-nextjs-template.vercel.app/
+Example: I want to create a project. I can create an organization called "xuexiao" and define roles within the organization such as designer, developer, and tester. I can set project goals and use Pitaoren to complete the entire project lifecycle.
+Example: I want to release a song, but I only have a demo. So, I need a Pitaoren music studio where I can add Pitaoren lyricists, Pitaoren composers, and Pitaoren singers to produce a complete work.
+Example: AI town, game...
 
 ## 🚀 Getting Started
 
@@ -29,7 +24,7 @@ Next, install the required packages using your preferred package manager (e.g. `
 
 Now you're ready to run the development server:
 
-```bash
+```bash                                                                                                                                                                        
 yarn dev
 ```
 
@@ -93,24 +88,4 @@ via header in addition to the streaming response.
 
 For more info on retrieval agents, [see this page](https://js.langchain.com/docs/use_cases/question_answering/conversational_retrieval_agents).
 
-## 📚 Learn More
 
-The example chains in the `app/api/chat/route.ts` and `app/api/chat/retrieval/route.ts` files use
-[LangChain Expression Language](https://js.langchain.com/docs/guides/expression_language/interface) to
-compose different LangChain modules together. You can integrate other retrievers, agents, preconfigured chains, and more too, though keep in mind
-`BytesOutputParser` is meant to be used directly with model output.
-
-To learn more about what you can do with LangChain.js, check out the docs here:
-
-- https://js.langchain.com/docs/
-
-## ▲ Deploy on Vercel
-
-When ready, you can deploy your app on the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Thank You!
-
-Thanks for reading! If you have any questions or comments, reach out to us on Twitter
-[@LangChainAI](https://twitter.com/langchainai), or [click here to join our Discord server](https://discord.gg/langchain).
