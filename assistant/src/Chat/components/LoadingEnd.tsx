@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import React, { useState } from 'react';
 
-const LoadingAnimationEnd = require('../../assets/bubble-end.json');
+import LoadingAnimationEnd from '../../assets/bubble-end.json';
 
 interface LoadingEndProps {
   children?: React.ReactNode;
