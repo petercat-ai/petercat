@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Public_Sans } from "next/font/google";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 import { Navbar } from "@/components/Navbar";
 
@@ -21,12 +22,14 @@ export default function RootLayout({
         />
         <meta property="og:title" content="xuexiao" />
       </head>
-      <body className={publicSans.className}>
-        <div className="flex flex-col p-4 md:p-12 h-[100vh]">
-          <Navbar></Navbar>
-          {children}
-        </div>
-      </body>
+      <UserProvider>
+        <body className={publicSans.className}>
+          <div className="flex flex-col p-4 md:p-12 h-[100vh]">
+            <Navbar></Navbar>
+            {children}
+          </div>
+        </body>
+      </UserProvider>
     </html>
   );
 }
