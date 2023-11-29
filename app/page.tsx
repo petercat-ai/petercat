@@ -1,11 +1,14 @@
 import { ChatWindow } from "@/components/ChatWindow";
+import ProfileServer from "@/components/User";
 
 export default function Home() {
+
   const InfoCard = (
     <div className="p-4 md:p-8 rounded bg-[#25252d] w-full max-h-[85%] overflow-hidden">
       <h1 className="text-3xl md:text-4xl mb-4">
       🦉 xuexiao
       </h1>
+      <ProfileServer />
       <ul>
         <li className="text-l">
           🤝
