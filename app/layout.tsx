@@ -14,13 +14,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>xuexiao</title>
+        <title>Bot Combo</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <meta
           name="description"
           content="Pitaoren Company. Here, you can freely create an organization, company, or project and hire different Pitouren  (bots) to help you complete the work. This allows you to overcome your own shortcomings and focus on your strengths."
         />
         <meta property="og:title" content="xuexiao" />
+         <meta property="og:image" content="/images/favicon.ico" />
       </head>
       <UserProvider>
         <body className={publicSans.className}>
