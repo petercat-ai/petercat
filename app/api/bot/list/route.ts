@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database, Tables } from '@/types/database.types';
 import { NextResponse } from 'next/server';
@@ -10,13 +9,9 @@ const supabase: SupabaseClient = createClient<Database>(
   supabaseAnonKey,
 );
 
-export async function GET(
-  req: NextApiRequest,
-  res: NextApiResponse<Tables<'bots'>[] | { error: string }>,
-) {
+export const GET = async () => {
   try {
     const res = await supabase.from('bots').select('*');
-    console.log(res);
     if (res?.error) {
       return NextResponse.json({ error: res?.error?.message }, { status: 400 });
     }
@@ -25,4 +20,4 @@ export async function GET(
   } catch (err) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
-}
+};
