@@ -1,3 +1,4 @@
+'use client';
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
@@ -9,7 +10,10 @@ const Card = (props: { bot: Bot }) => {
   const { bot } = props;
 
   return (
-    <div className="mx-auto bg-white rounded-lg border border-gray-200  shadow-md flex items-center overflow-hidden w-full hover:bg-gray-100 cursor-pointer">
+    <a
+      className="mx-auto bg-white rounded-lg border border-gray-200  shadow-md flex items-center overflow-hidden w-full hover:bg-gray-100 cursor-pointer"
+      href={`/chat/${bot.id}`}
+    >
       <img
         className="h-24 w-24 rounded-full m-4"
         src={bot.avatar || ''}
@@ -28,7 +32,7 @@ const Card = (props: { bot: Bot }) => {
           </span>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

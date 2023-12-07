@@ -1,4 +1,3 @@
-'use client';
 import BotsList from '@/components/BotsList';
 
 export default function Home() {

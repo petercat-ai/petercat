@@ -1,5 +1,5 @@
 {
-  "name": "langchain-nextjs-template",
+  "name": "bot-combo",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.3.0",
     "@next/bundle-analyzer": "^13.4.19",
+    "@nextui-org/react": "^2.2.9",
     "@supabase/supabase-js": "^2.32.0",
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
@@ -23,6 +24,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "framer-motion": "^10.16.15",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
     "next": "14.0.1",
