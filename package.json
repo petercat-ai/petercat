@@ -24,6 +24,7 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "langchain": "^0.0.187",
+    "lodash": "^4.17.21",
     "next": "14.0.1",
     "postcss": "8.4.27",
     "react": "18.2.0",
@@ -35,6 +36,7 @@
     "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "prettier": "3.0.0"
   },
   "repository": "https://github.com/ant-xuexiao/bot-combo.git"

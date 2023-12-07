@@ -1,7 +1,10 @@
-import { BotCard } from "@/components/BotCard";
-
+'use client';
+import BotsList from '@/components/BotsList';
 
 export default function Home() {
-
-  return <BotCard></BotCard>;
+  return (
+    <div className="container mx-auto">
+      <BotsList />
+    </div>
+  );
 }
