@@ -25,6 +25,7 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.15",
+    "https-proxy-agent": "^7.0.2",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
     "next": "14.0.1",
