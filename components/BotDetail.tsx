@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { ChatWindow } from '@/components/ChatWindow';
 import { Skeleton } from '@nextui-org/react';
 
-declare type Bots = Tables<'bots'>[];
 declare type Bot = Tables<'bots'>;
 
 const BotDetail = (props: { id: string }) => {
@@ -52,12 +51,13 @@ const BotDetail = (props: { id: string }) => {
   return (
     <>
       <ChatWindow
-        endpoint="api/chat"
+        endpoint="/api/chat"
         emoji="🏴‍☠️"
-        titleText="Patchy the Chatty Pirate"
-        placeholder="I'm an LLM pretending to be a pirate! Ask me about the pirate life!"
+        titleText={detail?.name || 'Bot'}
+        placeholder={detail?.description || 'Ask me anything!'}
         emptyStateComponent={BotDetailCard}
-      ></ChatWindow>
+        prompt={detail?.prompt || ''}
+      />
     </>
   );
 };
