@@ -11,7 +11,7 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = `
+const TEMPLATE = `{prompt}
 
 Current conversation:
 {chat_history}
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       'You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.';
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
-    const prompt = PromptTemplate.fromTemplate(`${promptString}${TEMPLATE}`);
+    const prompt = PromptTemplate.fromTemplate(TEMPLATE);
     /**
      * You can also try e.g.:
      *
@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
     const chain = prompt.pipe(model).pipe(outputParser);
 
     const stream = await chain.stream({
+      prompt: promptString,
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
     });
