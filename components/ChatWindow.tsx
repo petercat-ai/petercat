@@ -35,7 +35,7 @@ export function ChatWindow(props: {
     prompt,
   } = props;
 
-  const [showIntermediateSteps, setShowIntermediateSteps] = useState(false);
+  const [showIntermediateSteps, setShowIntermediateSteps] = useState(true);
   const [intermediateStepsLoading, setIntermediateStepsLoading] =
     useState(false);
   const ingestForm = showIngestForm && (
@@ -97,7 +97,10 @@ export function ChatWindow(props: {
     if (chatEndpointIsLoading ?? intermediateStepsLoading) {
       return;
     }
-    if (input) {
+    if (!showIntermediateSteps) {
+      handleSubmit(e);
+      // Some extra work to show intermediate steps properly
+    } else {
       setIntermediateStepsLoading(true);
       setInput('');
       const messagesWithUserReply = messages.concat({
