@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BytesOutputParser } from 'langchain/schema/output_parser';
 import { PromptTemplate } from 'langchain/prompts';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
@@ -46,6 +47,9 @@ export async function POST(req: NextRequest) {
      */
     const model = new ChatOpenAI({
       temperature: 0.8,
+      configuration: {
+        httpAgent: new HttpsProxyAgent(process.env.PROXY_URL!),
+      }
     });
     /**
      * Chat models stream message chunks rather than bytes, so this
@@ -65,6 +69,7 @@ export async function POST(req: NextRequest) {
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
     });
+
     return new StreamingTextResponse(stream);
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
