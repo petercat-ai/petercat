@@ -52,7 +52,7 @@ const BotDetail = (props: { id: string }) => {
     <>
       <ChatWindow
         endpoint="/api/chat"
-        emoji="🏴‍☠️"
+        avatar={detail?.avatar || ''}
         titleText={detail?.name || 'Bot'}
         placeholder={detail?.description || 'Ask me anything!'}
         emptyStateComponent={BotDetailCard}

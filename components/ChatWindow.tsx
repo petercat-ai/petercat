@@ -17,7 +17,7 @@ export function ChatWindow(props: {
   emptyStateComponent: ReactElement;
   placeholder?: string;
   titleText?: string;
-  emoji?: string;
+  avatar?: string;
   showIngestForm?: boolean;
   showIntermediateStepsToggle?: boolean;
   prompt?: string;
@@ -31,7 +31,7 @@ export function ChatWindow(props: {
     titleText = 'An LLM',
     showIngestForm,
     showIntermediateStepsToggle,
-    emoji,
+    avatar,
     prompt,
   } = props;
 
@@ -166,8 +166,13 @@ export function ChatWindow(props: {
         messages.length > 0 ? 'border' : ''
       }`}
     >
-      <h2 className={`${messages.length > 0 ? '' : 'hidden'} text-2xl`}>
-        {emoji} {titleText}
+      <h2
+        className={`${
+          messages.length > 0 ? '' : 'hidden'
+        } text-2xl flex items-center`}
+      >
+        <img className="w-12 rounded-full  m-2" src={avatar} />
+        <div className="flex">{titleText}</div>
       </h2>
       {messages.length === 0 ? emptyStateComponent : ''}
       <div
@@ -183,7 +188,7 @@ export function ChatWindow(props: {
                 <ChatMessageBubble
                   key={m.id}
                   message={m}
-                  aiEmoji={emoji}
+                  aiAvatar={avatar}
                   sources={sourcesForMessages[sourceKey]}
                 ></ChatMessageBubble>
               );
