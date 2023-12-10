@@ -93,7 +93,6 @@ export default function AgentsPage() {
       endpoint="/api/chat/structured_output"
       emptyStateComponent={InfoCard}
       placeholder={`No matter what you type here, I'll always return the same JSON object with the same structure!`}
-      emoji="🧱"
       titleText="Structured Output"
     ></ChatWindow>
   );

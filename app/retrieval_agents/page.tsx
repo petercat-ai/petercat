@@ -1,27 +1,25 @@
-import { ChatWindow } from "@/components/ChatWindow";
+import { ChatWindow } from '@/components/ChatWindow';
 
 export default function AgentsPage() {
   const InfoCard = (
     <div className="p-4 md:p-8 rounded bg-[#ffffff] w-full max-h-[85%] overflow-hidden">
-      <h1 className="text-3xl md:text-4xl mb-4">
-        🦉 xuexiao
-      </h1>
+      <h1 className="text-3xl md:text-4xl mb-4">🦉 xuexiao</h1>
       <ul>
         <li className="hidden text-l md:block">
           🤝
           <span className="ml-2">
-            This template showcases a{" "}
+            This template showcases a{' '}
             <a href="https://js.langchain.com/" target="_blank">
               LangChain.js
-            </a>{" "}
-            retrieval chain and the Vercel{" "}
+            </a>{' '}
+            retrieval chain and the Vercel{' '}
             <a href="https://sdk.vercel.ai/docs" target="_blank">
               AI SDK
-            </a>{" "}
-            in a{" "}
+            </a>{' '}
+            in a{' '}
             <a href="https://nextjs.org/" target="_blank">
               Next.js
-            </a>{" "}
+            </a>{' '}
             project.
           </span>
         </li>
@@ -36,7 +34,7 @@ export default function AgentsPage() {
         <li className="hidden text-l md:block">
           💻
           <span className="ml-2">
-            You can find the prompt and model logic for this use-case in{" "}
+            You can find the prompt and model logic for this use-case in{' '}
             <code>app/api/chat/retrieval_agents/route.ts</code>.
           </span>
         </li>
@@ -50,7 +48,7 @@ export default function AgentsPage() {
         <li className="hidden text-l md:block">
           🎨
           <span className="ml-2">
-            The main frontend logic is found in{" "}
+            The main frontend logic is found in{' '}
             <code>app/retrieval_agents/page.tsx</code>.
           </span>
         </li>
@@ -58,7 +56,7 @@ export default function AgentsPage() {
           🐙
           <span className="ml-2">
             This template is open source - you can see the source code and
-            deploy your own version{" "}
+            deploy your own version{' '}
             <a
               href="https://github.com/langchain-ai/langchain-nextjs-template"
               target="_blank"
@@ -78,8 +76,8 @@ export default function AgentsPage() {
         <li className="text-l">
           👇
           <span className="ml-2">
-            Upload some text, then try asking e.g.{" "}
-            <code>What are some ways of doing retrieval in LangChain</code>{" "}
+            Upload some text, then try asking e.g.{' '}
+            <code>What are some ways of doing retrieval in LangChain</code>{' '}
             below!
           </span>
         </li>
@@ -95,7 +93,6 @@ export default function AgentsPage() {
       placeholder={
         'Beep boop! I\'m a robot retrieval-focused agent! Ask, "What are some ways of doing retrieval in LangChain.js?"'
       }
-      emoji="🤖"
       titleText="Robbie the Retrieval Robot"
     ></ChatWindow>
   );
