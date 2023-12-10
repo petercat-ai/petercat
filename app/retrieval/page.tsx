@@ -104,7 +104,6 @@ export default function AgentsPage() {
       placeholder={
         'I\'ve got a nose for finding the right documents! Ask, "What is a document loader?"'
       }
-      emoji="🐶"
       titleText="Dana the Document-Retrieving Dog"
     ></ChatWindow>
   );
