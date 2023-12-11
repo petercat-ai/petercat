@@ -36,7 +36,6 @@ export function useChat({
 
   const { data: messages = [], mutate } = useSWR<Message[]>([chatKey, 'messages'], null, { fallbackData: initialMessages });
   const { data: isLoading = false, mutate: mutateLoading } = useSWR<boolean>([chatKey, 'loading'], null);
-  const { data: streamData, mutate: mutateStreamData } = useSWR<{}[] | undefined>([chatKey, 'streamData'], null);
 
   const setMessages = useCallback(
     (messages: Message[]) => {
