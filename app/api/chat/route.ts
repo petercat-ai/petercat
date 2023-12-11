@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 import { HttpsProxyAgent } from 'https-proxy-agent';
-import { z } from 'zod';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { PromptTemplate } from 'langchain/prompts';
-import zodToJsonSchema from 'zod-to-json-schema';
-import { JsonOutputFunctionsParser } from 'langchain/output_parsers';
+import { BytesOutputParser } from 'langchain/schema/output_parser';
 
 export const runtime = process.env.PROXY_URL ? undefined : 'edge';
 
@@ -56,42 +54,17 @@ export async function POST(req: NextRequest) {
         : undefined,
     });
 
-    const schema = z.object({
-      tone: z
-        .enum(['positive', 'negative', 'neutral'])
-        .describe('The overall tone of the input'),
-      output: z.string().describe("answer to the user's question"),
-    });
+    const outputParser = new BytesOutputParser();
 
-    /**
-     * Bind the function and schema to the OpenAI model.
-     * Future invocations of the returned model will always use these arguments.
-     *
-     * Specifying "function_call" ensures that the provided function will always
-     * be called by the model.
-     */
-    const functionCallingModel = model.bind({
-      functions: [
-        {
-          name: 'output_formatter',
-          description: 'Should always be used to properly format output',
-          parameters: zodToJsonSchema(schema),
-        },
-      ],
-      function_call: { name: 'output_formatter' },
-    });
+    const chain = prompt.pipe(model).pipe(outputParser);
 
-    const chain = prompt
-      .pipe(functionCallingModel)
-      .pipe(new JsonOutputFunctionsParser());
-
-    const result = await chain.invoke({
+    const stream = await chain.stream({
       prompt: promptString,
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
     });
 
-    return NextResponse.json(result, { status: 200 });
+    return new StreamingTextResponse(stream);
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

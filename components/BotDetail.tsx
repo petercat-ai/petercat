@@ -57,6 +57,7 @@ const BotDetail = (props: { id: string }) => {
         placeholder={detail?.description || 'Ask me anything!'}
         emptyStateComponent={BotDetailCard}
         prompt={detail?.prompt || ''}
+        streamming
       />
     </>
   );
