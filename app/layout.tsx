@@ -26,7 +26,7 @@ export default function RootLayout({
       </head>
       <UserProvider>
         <body className={publicSans.className}>
-          <div className="flex flex-col p-4 md:p-12 h-[100vh]">
+          <div className="flex flex-col h-[100vh]">
             <Navbar></Navbar>
             <NextUIProvider> {children}</NextUIProvider>
           </div>

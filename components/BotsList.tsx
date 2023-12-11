@@ -2,6 +2,7 @@
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
+import { Avatar, Spinner } from '@nextui-org/react';
 
 declare type Bots = Tables<'bots'>[];
 declare type Bot = Tables<'bots'>;
@@ -14,10 +15,10 @@ const Card = (props: { bot: Bot }) => {
       className="mx-auto bg-white rounded-lg border border-gray-200  shadow-md flex items-center overflow-hidden w-full hover:bg-gray-100 cursor-pointer"
       href={`/chat/${bot.id}`}
     >
-      <img
-        className="h-24 w-24 rounded-full m-4"
-        src={bot.avatar || ''}
-        alt={bot.name || ''}
+      <Avatar
+        src={bot?.avatar!}
+        className="h-24 w-24 text-large m-4"
+        name={bot?.name!}
       />
       <div className="flex flex-col justify-between p-4 leading-normal">
         <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white hover:text-blue-500 transition-colors duration-30">
@@ -39,7 +40,7 @@ const Card = (props: { bot: Bot }) => {
 const FullPageSkeleton = () => {
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-white bg-opacity-75">
-      <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-gray-900"></div>
+      Spinner
     </div>
   );
 };

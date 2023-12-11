@@ -2,7 +2,7 @@
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useState } from 'react';
 import { ChatWindow } from '@/components/ChatWindow';
-import { Skeleton } from '@nextui-org/react';
+import { Skeleton, Image, Avatar } from '@nextui-org/react';
 
 declare type Bot = Tables<'bots'>;
 
@@ -33,13 +33,12 @@ const BotDetail = (props: { id: string }) => {
 
   const BotDetailCard = (
     <div className="p-4 md:p-8 rounded bg-[#ffffff] w-full max-h-[85%] overflow-hidden flex items-center">
-      <Skeleton isLoaded={!loading} className="h-24 w-24 rounded-full">
-        <img
-          className="w-24 rounded-full"
-          src={detail?.avatar || ''}
-          alt={detail?.name || ''}
-        />
-      </Skeleton>
+      <Avatar
+        src={detail?.avatar!}
+        className="h-24 w-24 text-large"
+        name={detail?.name!}
+      />
+
       <Skeleton isLoaded={!loading} className="w-full h-20 rounded-lg ml-4">
         <div>
           <h1 className="text-3xl md:text-4xl mb-4">{detail?.name}</h1>
@@ -52,11 +51,11 @@ const BotDetail = (props: { id: string }) => {
     <>
       <ChatWindow
         endpoint="/api/chat"
-        avatar={detail?.avatar || ''}
+        avatar={detail?.avatar!}
         titleText={detail?.name || 'Bot'}
         placeholder={detail?.description || 'Ask me anything!'}
         emptyStateComponent={BotDetailCard}
-        prompt={detail?.prompt || ''}
+        prompt={detail?.prompt!}
         streamming
       />
     </>
