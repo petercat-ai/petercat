@@ -35,7 +35,6 @@ const BotCreateFrom = () => {
             placeholder="Name your bot"
             labelPlacement="outside"
             value={profile.name}
-            isClearable
             onChange={handleChange}
             required
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-4"
@@ -47,7 +46,6 @@ const BotCreateFrom = () => {
           label="Description"
           placeholder="Description  about your bot"
           labelPlacement="outside"
-          isClearable
           value={profile.info}
           onChange={handleChange}
           required
@@ -58,7 +56,6 @@ const BotCreateFrom = () => {
           label="Instructions"
           labelPlacement="outside"
           value={profile.bio}
-          isClearable
           disableAutosize
           onChange={handleChange}
           placeholder="What does your bot do? How does it behave? What should it avoid doing?"

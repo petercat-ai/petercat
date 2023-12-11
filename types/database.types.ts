@@ -23,6 +23,7 @@ export interface Database {
           label: string | null
           name: string | null
           prompt: string | null
+          starter: string[] | null
           uid: string | null
         }
         Insert: {
@@ -38,6 +39,7 @@ export interface Database {
           label?: string | null
           name?: string | null
           prompt?: string | null
+          starter?: string[] | null
           uid?: string | null
         }
         Update: {
@@ -53,6 +55,7 @@ export interface Database {
           label?: string | null
           name?: string | null
           prompt?: string | null
+          starter?: string[] | null
           uid?: string | null
         }
         Relationships: []
