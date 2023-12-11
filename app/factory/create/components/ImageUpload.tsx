@@ -38,10 +38,10 @@ const ImageUploadComponent = () => {
           <svg
             stroke="currentColor"
             fill="none"
-            stroke-width="2"
+            strokeWidth="2"
             viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="text-3xl"
             height="1em"
             width="1em"

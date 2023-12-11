@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Tabs, Tab } from '@nextui-org/react';
+import { Tabs, Tab, Button } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
 
@@ -8,7 +8,10 @@ export default function Create() {
   return (
     <div className="flex h-screen w-full flex-col items-center">
       <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
-        <a className="text-slate-500 hover:text-blue-600" href="/">
+        <a
+          className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
+          href="/"
+        >
           <svg
             width="24"
             height="24"
@@ -20,12 +23,17 @@ export default function Create() {
             <path
               d="M15 5L8 12L15 19"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></path>
           </svg>
         </a>
+        <div className="flex items-center gap-2">
+          <Button color="success" size="sm" variant="flat">
+            Save
+          </Button>
+        </div>
       </div>
       <div className="relative flex w-full grow overflow-hidden">
         <div className="flex w-full justify-center md:w-1/2">
@@ -55,7 +63,7 @@ export default function Create() {
             </div>
           </div>
         </div>
-        <div className="hidden w-1/2 justify-center border-l border-token-border-medium bg-token-surface-secondary pt-4 md:flex relative">
+        <div className="hidden w-1/2 justify-center bg-default-100 border-l border-token-border-medium bg-token-surface-secondary pt-4 md:flex relative">
           <ChatWindow
             endpoint="/api/chat"
             avatar={''}
