@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MAX_INPUTS = 6; // Max number of inputs
+const MAX_INPUTS = 4; // Max number of inputs
 
 const InputList = () => {
   const [inputs, setInputs] = useState(['']);

@@ -1,10 +1,13 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
-import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
+import BotCreateFrom, {
+  BotFormRef,
+} from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
 
 export default function Create() {
+  const botFormRef = useRef<BotFormRef>();
   return (
     <div className="flex h-screen w-full flex-col items-center">
       <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
@@ -30,7 +33,16 @@ export default function Create() {
           </svg>
         </a>
         <div className="flex items-center gap-2">
-          <Button color="success" size="sm" variant="flat">
+          <Button
+            color="success"
+            size="sm"
+            variant="flat"
+            onClick={(e) => {
+              if (botFormRef?.current) {
+                botFormRef.current.submit(e);
+              }
+            }}
+          >
             Save
           </Button>
         </div>
@@ -57,7 +69,7 @@ export default function Create() {
                   />
                 </Tab>
                 <Tab key="Configure" title="Configure">
-                  <BotCreateFrom />
+                  <BotCreateFrom formRef={botFormRef} />
                 </Tab>
               </Tabs>
             </div>

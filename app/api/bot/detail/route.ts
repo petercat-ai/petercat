@@ -1,13 +1,6 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Database, Tables } from '@/types/database.types';
+import { Tables } from '@/types/database.types';
 import { NextResponse } from 'next/server';
-
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseAnonKey = process.env.SUPABASE_PRIVATE_KEY!;
-const supabase: SupabaseClient = createClient<Database>(
-  supabaseUrl,
-  supabaseAnonKey,
-);
+import { supabase } from '@/share/supabas-client';
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);

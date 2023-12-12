@@ -1,13 +1,25 @@
 import { Textarea, Input } from '@nextui-org/react';
-import { useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import ImageUploadComponent from './ImageUpload';
 import InputList from './InputList';
-const BotCreateFrom = () => {
+import { toast } from 'react-toastify';
+
+export interface BotFormRef {
+  submit: (e: any) => Promise<void>;
+  resetFields: () => void;
+}
+
+interface BotFormProps {
+  formRef?: React.MutableRefObject<BotFormRef | undefined>;
+}
+
+const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }) => {
   const [profile, setProfile] = useState({
     avatar: null,
-    name: '',
-    bio: '',
-    info: '',
+    name: 'Untitled',
+    description: '',
+    prompt: '',
+    starter: [],
   });
   const handleChange = (e: any) => {
     const { name, value, files } = e.target;
@@ -16,16 +28,51 @@ const BotCreateFrom = () => {
       [name]: files ? files[0] : value,
     }));
   };
+  const resetFields = useCallback(() => {
+    setProfile({
+      avatar: null,
+      name: 'Untitled',
+      description: '',
+      prompt: '',
+      starter: [],
+    });
+  }, []);
 
-  const handleSubmit = (e: any) => {
+  const submit = async (e: any) => {
     e.preventDefault();
-    // 这里可以添加将表单数据发送到服务器的逻辑，例如使用 fetch API。
-    console.log(profile);
+
+    try {
+      const response = await fetch('/api/bot/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
+      });
+      console.log(response);
+
+      if (response.ok) {
+        await response.json();
+        toast('Save success');
+      } else {
+        toast('Save failed');
+      }
+    } catch (error) {
+      console.error('Save failed:', error);
+      toast('Save failed');
+    }
   };
+
+  useImperativeHandle(formRef, () => {
+    return {
+      submit,
+      resetFields,
+    };
+  });
 
   return (
     <div className="container mx-auto p-8">
-      <form className="space-y-8" onSubmit={handleSubmit}>
+      <form className="space-y-8" onSubmit={submit}>
         <ImageUploadComponent />
         <div>
           <Input
@@ -42,26 +89,26 @@ const BotCreateFrom = () => {
         </div>
         <Input
           type="text"
-          name="name"
+          name="description"
           label="Description"
           placeholder="Description  about your bot"
           labelPlacement="outside"
-          value={profile.info}
+          value={profile.description}
           onChange={handleChange}
           required
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
         <Textarea
-          name="bio"
+          name="prompt"
           label="Instructions"
           labelPlacement="outside"
-          value={profile.bio}
+          value={profile.prompt}
           disableAutosize
           onChange={handleChange}
           placeholder="What does your bot do? How does it behave? What should it avoid doing?"
           required
           classNames={{
-            input: 'resize min-h-[520px]',
+            input: 'resize-y min-h-[120px]',
           }}
         />
         <label className="block text-sm font-medium text-gray-700">
@@ -71,6 +118,6 @@ const BotCreateFrom = () => {
       </form>
     </div>
   );
-};
+});
 
 export default BotCreateFrom;

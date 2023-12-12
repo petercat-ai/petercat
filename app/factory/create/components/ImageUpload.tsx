@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { ChangeEventHandler, useState } from 'react';
 import { Image } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const ImageUploadComponent = () => {
   const [imageSrc, setImageSrc] = useState<string>('');
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
@@ -14,6 +15,29 @@ const ImageUploadComponent = () => {
 
     if (file) {
       reader.readAsDataURL(file);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'image/jpeg',
+          },
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('文件上传成功:', data);
+          // 处理上传后的操作，例如显示上传的图片
+        } else {
+          console.error('文件上传失败');
+        }
+      } catch (error) {
+        console.error('上传出错:', error);
+      }
     }
   };
 
@@ -27,6 +51,7 @@ const ImageUploadComponent = () => {
             alt="Preview"
           />
           <input
+            name="avatar"
             accept="image/*"
             type="file"
             className="hidden"
