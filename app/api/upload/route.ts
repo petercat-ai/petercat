@@ -3,34 +3,37 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    console.log('formData');
-    const formData = await req.json();
-    console.log('formData', formData);
-    const file = formData.get('file');
-    // console.log('file', file);
-    if (!file) {
+    const arrayBuffer = await req.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const contentType = req.headers.get('content-type');
+
+    if (!buffer) {
       return NextResponse.json(
         { error: 'No files received.' },
         { status: 400 },
       );
     }
+    const fileName = `upload_${Date.now()}.jpg`;
 
-    const filename = `${Date.now()}`;
-    // console.log('console.log(filename);', filename);
     const { data, error } = await supabase.storage
       .from('bot-avatars')
-      .upload(filename, file);
+      .upload(fileName, arrayBuffer, {
+        contentType: contentType || 'image/jpeg',
+      });
     if (error) {
       return NextResponse.json({ error }, { status: 500 });
     }
-    return NextResponse.json({ data }, { status: 200 });
+
+    return NextResponse.json(
+      {
+        data: {
+          ...data,
+          realPath: `${process.env.SUPABASE_URL}/v1/object/public/bot-avatars/${data?.path}`,
+        },
+      },
+      { status: 200 },
+    );
   } catch (err) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
-
-// export const config = {
-//   api: {
-//     bodyParser: false, // Disallow body parsing, consume as stream
-//   },
-// };

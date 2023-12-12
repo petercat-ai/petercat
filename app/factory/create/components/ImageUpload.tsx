@@ -1,9 +1,15 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import { Image } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
-const ImageUploadComponent = () => {
-  const [imageSrc, setImageSrc] = useState<string>('');
+interface ImageUploadProps {
+  updateAvatar: (src: string) => void;
+  avatar?: string;
+}
+
+const ImageUploadComponent = (props: ImageUploadProps) => {
+  const { updateAvatar, avatar } = props;
+  const [imageSrc, setImageSrc] = useState<string>(avatar);
 
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0];
@@ -15,31 +21,31 @@ const ImageUploadComponent = () => {
 
     if (file) {
       reader.readAsDataURL(file);
-
       const formData = new FormData();
       formData.append('file', file);
-
       try {
         const response = await fetch('/api/upload', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'image/jpeg',
-          },
           body: formData,
         });
 
         if (response.ok) {
           const data = await response.json();
-          console.log('文件上传成功:', data);
-          // 处理上传后的操作，例如显示上传的图片
+          updateAvatar(data?.realPath);
         } else {
-          console.error('文件上传失败');
+          console.error('upload error');
+          toast.error('upload error');
         }
       } catch (error) {
-        console.error('上传出错:', error);
+        console.error('upload error:', error);
+        toast.error('upload error');
       }
     }
   };
+
+  useEffect(() => {
+    setImageSrc(imageSrc);
+  }, [avatar]);
 
   return (
     <div className="flex justify-center items-center">

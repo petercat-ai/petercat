@@ -3,6 +3,8 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import ImageUploadComponent from './ImageUpload';
 import InputList from './InputList';
 import { toast } from 'react-toastify';
+import { BotProfile } from '../interface';
+import { useBot } from '../hooks/useBot';
 
 export interface BotFormRef {
   submit: (e: any) => Promise<void>;
@@ -13,9 +15,10 @@ interface BotFormProps {
   formRef?: React.MutableRefObject<BotFormRef | undefined>;
 }
 
-const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }) => {
-  const [profile, setProfile] = useState({
-    avatar: null,
+const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }, ref) => {
+  const { onCreateBot, createBotLoading } = useBot();
+  const [profile, setProfile] = useState<BotProfile>({
+    avatar: '',
     name: 'Untitled',
     description: '',
     prompt: '',
@@ -28,9 +31,18 @@ const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }) => {
       [name]: files ? files[0] : value,
     }));
   };
+
+  const updateAvatar = (src: string) => {
+    console.log('src', src);
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      avatar: src,
+    }));
+  };
+
   const resetFields = useCallback(() => {
     setProfile({
-      avatar: null,
+      avatar: '',
       name: 'Untitled',
       description: '',
       prompt: '',
@@ -39,27 +51,20 @@ const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }) => {
   }, []);
 
   const submit = async (e: any) => {
+    toast.info('Submit success');
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/bot/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(profile),
-      });
-      console.log(response);
-
+      const response = await onCreateBot(profile);
       if (response.ok) {
         await response.json();
-        toast('Save success');
+        toast.success('Save success');
       } else {
-        toast('Save failed');
+        toast.error('Save failed');
       }
     } catch (error) {
       console.error('Save failed:', error);
-      toast('Save failed');
+      toast.error('Save failed');
     }
   };
 
@@ -73,7 +78,10 @@ const BotCreateFrom: React.FC<BotFormProps> = forwardRef(({ formRef }) => {
   return (
     <div className="container mx-auto p-8">
       <form className="space-y-8" onSubmit={submit}>
-        <ImageUploadComponent />
+        <ImageUploadComponent
+          avatar={profile.avatar}
+          updateAvatar={updateAvatar}
+        />
         <div>
           <Input
             type="text"
