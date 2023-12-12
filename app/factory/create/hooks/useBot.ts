@@ -5,17 +5,18 @@ import {
   updateBot,
   getBotDetail,
 } from '../services/BotController';
-import { useState } from 'react';
 import { BotProfile } from '../interface';
+import { useImmer } from 'use-immer';
 
 export const useBot = () => {
-  const [botProfile, setBotProfile] = useState<BotProfile>({
+  const [botProfile, setBotProfile] = useImmer<BotProfile>({
     avatar: '',
     name: 'Untitled',
     description: '',
     prompt: '',
     starter: [],
   });
+
   const {
     runAsync: onGetBotDetail,
     loading: getBotDetailLoading,
@@ -27,6 +28,7 @@ export const useBot = () => {
     loading: createBotLoading,
     error: createBotError,
   } = useRequest(createBot, { manual: true });
+
   const {
     runAsync: onDeleteBot,
     loading: deleteBotLoading,

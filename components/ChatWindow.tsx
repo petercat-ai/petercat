@@ -1,5 +1,4 @@
 'use client';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef, useState, ReactElement, useCallback } from 'react';
@@ -75,6 +74,7 @@ export function ChatWindow(props: {
   const sendMessage = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      setInput('');
       if (!chatEndpointIsLoading) {
         return handleSubmit({
           prompt,
@@ -160,6 +160,7 @@ export function ChatWindow(props: {
             className="block w-full resize-none rounded-xl bg-white border p-4 pl-10 pr-20 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
             rows={1}
             placeholder={placeholder ?? "What's it like to be a pirate?"}
+            value={input}
             onChange={handleInputChange}
           />
           <button

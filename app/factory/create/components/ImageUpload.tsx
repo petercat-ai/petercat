@@ -1,15 +1,18 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import React from 'react';
 import { Image } from '@nextui-org/react';
 import { toast } from 'react-toastify';
+import { BotProfile } from '../interface';
+import { useImmer } from 'use-immer';
+import type { Updater } from 'use-immer';
 
 interface ImageUploadProps {
-  updateAvatar: (src: string) => void;
-  avatar?: string;
+  botProfile?: BotProfile;
+  setBotProfile?: Updater<BotProfile>;
 }
 
 const ImageUploadComponent = (props: ImageUploadProps) => {
-  const { updateAvatar, avatar } = props;
-  const [imageSrc, setImageSrc] = useState<string>(avatar);
+  const { botProfile, setBotProfile } = props;
+  const [imageSrc, setImageSrc] = useImmer(botProfile?.avatar);
 
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0];
@@ -17,6 +20,9 @@ const ImageUploadComponent = (props: ImageUploadProps) => {
 
     reader.onloadend = () => {
       setImageSrc(reader?.result as string);
+      setBotProfile?.((draft) => {
+        draft.avatar = reader?.result as string;
+      });
     };
 
     if (file) {
@@ -31,7 +37,9 @@ const ImageUploadComponent = (props: ImageUploadProps) => {
 
         if (response.ok) {
           const data = await response.json();
-          updateAvatar(data?.realPath);
+          setBotProfile?.((draft) => {
+            draft.avatar = data.realPath;
+          });
         } else {
           console.error('upload error');
           toast.error('upload error');
@@ -42,10 +50,6 @@ const ImageUploadComponent = (props: ImageUploadProps) => {
       }
     }
   };
-
-  useEffect(() => {
-    setImageSrc(imageSrc);
-  }, [avatar]);
 
   return (
     <div className="flex justify-center items-center">

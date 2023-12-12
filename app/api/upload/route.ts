@@ -26,10 +26,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        data: {
-          ...data,
-          realPath: `${process.env.SUPABASE_URL}/v1/object/public/bot-avatars/${data?.path}`,
-        },
+        ...data,
+        realPath: `${process.env.SUPABASE_URL}/storage/v1/object/public/bot-avatars/${data?.path}`,
       },
       { status: 200 },
     );
