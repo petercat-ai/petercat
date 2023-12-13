@@ -1,77 +1,23 @@
 import { Textarea, Input } from '@nextui-org/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ImageUploadComponent from './ImageUpload';
 import { BotProfile } from '../interface';
 import type { Updater } from 'use-immer';
+import InputList from './InputList';
 
 interface BotFormProps {
   botProfile?: BotProfile;
   setBotProfile?: Updater<BotProfile>;
 }
 
-const MAX_INPUTS = 4; // Max number of starters
-
 const BotCreateFrom = (props: BotFormProps) => {
   const { botProfile, setBotProfile } = props;
-  const starters = useMemo(() => botProfile?.starters || [''], [botProfile]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
     setBotProfile?.((draft: BotProfile) => {
       draft[name] = value;
     });
-  };
-
-  const InputList = () => {
-    const handleChange = (index: number, value: string) => {
-      const newStarters = [...starters];
-      newStarters[index] = value;
-      setBotProfile?.((draft: BotProfile) => {
-        draft.starters = newStarters;
-      });
-
-      if (
-        index === starters.length - 1 &&
-        value &&
-        starters.length < MAX_INPUTS
-      ) {
-        setBotProfile?.((draft: BotProfile) => {
-          draft.starters = [...newStarters, ''];
-        });
-      }
-    };
-    const handleRemove = (index: number) => {
-      const newStarters = starters.filter((_, idx) => idx !== index);
-      setBotProfile?.((draft: BotProfile) => {
-        draft.starters = newStarters;
-      });
-    };
-
-    useEffect(() => {
-      console.log('botProfile', botProfile);
-    }, [starters]);
-
-    return (
-      <>
-        {starters.map((input, index) => (
-          <div key={index} className="flex items-center mb-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => handleChange(index, e.target.value)}
-              className="w-full resize-none overflow-y-auto rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 border focus:ring-blue-400 border-token-border-medium h-9 dark:bg-gray-800 rounded-r-none"
-            />
-            <button
-              onClick={() => handleRemove(index)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg rounded-l-none border border-l-0 border-token-border-medium"
-            >
-              &#10005;
-            </button>
-          </div>
-        ))}
-      </>
-    );
   };
 
   return (
@@ -120,7 +66,7 @@ const BotCreateFrom = (props: BotFormProps) => {
         />
         <label className="block text-sm font-medium text-gray-700">
           Conversation starterss
-          <InputList />
+          <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
         </label>
       </form>
     </div>

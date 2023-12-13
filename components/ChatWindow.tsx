@@ -8,17 +8,22 @@ import { UploadDocumentsForm } from '@/components/UploadDocumentsForm';
 import { IntermediateStep } from './IntermediateStep';
 import { useChat } from './hooks/useChat';
 import { Avatar } from '@nextui-org/react';
+import BotInfoCard from './BotInfoCard';
 
 export function ChatWindow(props: {
   endpoint: string;
-  emptyStateComponent: ReactElement;
+  emptyStateComponent?: ReactElement;
   placeholder?: string;
   titleText?: string;
   avatar?: string;
+  name?: string;
   showIngestForm?: boolean;
   showIntermediateStepsToggle?: boolean;
   prompt?: string;
+  description?: string;
+  starters?: string[];
   streamming?: boolean;
+  loading?: boolean;
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,10 +31,14 @@ export function ChatWindow(props: {
     endpoint,
     emptyStateComponent,
     placeholder,
-    titleText = 'An LLM',
+    titleText,
     showIngestForm,
     showIntermediateStepsToggle,
     avatar,
+    description,
+    starters,
+    name,
+    loading = false,
     prompt,
   } = props;
 
@@ -71,6 +80,17 @@ export function ChatWindow(props: {
     },
   });
 
+  const welcomeComponent = emptyStateComponent ?? (
+    <BotInfoCard
+      loading={loading}
+      name={name!}
+      description={description!}
+      avatar={avatar!}
+      starters={starters!}
+      setInput={setInput}
+    />
+  );
+
   const sendMessage = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -87,24 +107,25 @@ export function ChatWindow(props: {
   );
 
   return (
-    <div className="flex flex-col h-full items-center p-4 md:p-8 grow overflow-hidden relative">
-      <h2
+    <div className="flex flex-col h-full items-center p-2 md:p-4 grow overflow-hidden relative">
+      <h2 className="items-center text-l">{titleText}</h2>
+      <h3
         className={`${
           messages.length > 0 ? '' : 'hidden'
-        } text-2xl flex items-center`}
+        } text-xl flex items-center`}
       >
         <Avatar
           src={avatar!}
           className="h-12 w-12 text-large m-4"
-          name={titleText!}
+          name={name!}
         />
 
-        <div className="flex">{titleText}</div>
-      </h2>
-      {messages.length === 0 ? emptyStateComponent : ''}
+        <div className="flex">{name}</div>
+      </h3>
+      {messages.length === 0 ? welcomeComponent : ''}
 
       <div
-        className="flex flex-col-reverse w-full h-full mb-16 overflow-auto transition-[flex-grow] ease-in-out"
+        className="flex flex-col-reverse w-full mb-16 overflow-auto transition-[flex-grow] ease-in-out"
         ref={messageContainerRef}
       >
         {messages.length > 0
@@ -116,7 +137,7 @@ export function ChatWindow(props: {
                 <ChatMessageBubble
                   key={m.id}
                   message={m}
-                  aiName={titleText}
+                  aiName={name}
                   aiAvatar={avatar}
                   sources={sourcesForMessages[sourceKey]}
                 ></ChatMessageBubble>
@@ -127,7 +148,7 @@ export function ChatWindow(props: {
 
       {messages.length === 0 && ingestForm}
       <form
-        className="flex w-full flex-col absolute p-4 md:p-8 inset-x-0 bottom-0"
+        className="flex w-full flex-col absolute p-2 md:p-4inset-x-0 bottom-0"
         onSubmit={sendMessage}
       >
         <div className="flex">{intemediateStepsToggle}</div>
@@ -159,7 +180,7 @@ export function ChatWindow(props: {
             id="chat-input"
             className="block w-full resize-none rounded-xl bg-white border p-4 pl-10 pr-20 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
             rows={1}
-            placeholder={placeholder ?? "What's it like to be a pirate?"}
+            placeholder={placeholder}
             value={input}
             onChange={handleInputChange}
           />

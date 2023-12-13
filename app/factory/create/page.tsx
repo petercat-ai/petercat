@@ -5,6 +5,7 @@ import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
 import { useBot } from './hooks/useBot';
 import { toast } from 'react-toastify';
+import BotInfoCard from '@/components/BotInfoCard';
 
 export default function Create() {
   const {
@@ -136,11 +137,12 @@ export default function Create() {
         <div className="hidden w-1/2 justify-center bg-default-100 border-l border-token-border-medium bg-token-surface-secondary pt-4 md:flex relative">
           <ChatWindow
             endpoint="/api/chat"
-            avatar={''}
-            titleText={'Bot'}
-            placeholder={'Ask me anything!'}
-            emptyStateComponent={<div className="self-center f">Preview</div>}
-            prompt={''}
+            avatar={botProfile?.avatar}
+            name={botProfile?.name}
+            titleText="Preview"
+            description={botProfile?.description!}
+            starters={botProfile?.starters!}
+            prompt={botProfile?.prompt}
             streamming
           />
         </div>
