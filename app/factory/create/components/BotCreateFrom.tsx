@@ -1,5 +1,4 @@
 import { Textarea, Input } from '@nextui-org/react';
-import { useEffect, useMemo, useState } from 'react';
 import ImageUploadComponent from './ImageUpload';
 import { BotProfile } from '../interface';
 import type { Updater } from 'use-immer';

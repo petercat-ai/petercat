@@ -5,7 +5,6 @@ import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
 import { useBot } from './hooks/useBot';
 import { toast } from 'react-toastify';
-import BotInfoCard from '@/components/BotInfoCard';
 
 export default function Create() {
   const {
