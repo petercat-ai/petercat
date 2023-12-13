@@ -14,10 +14,7 @@ body textarea {
 
 a {
   color: #2d7bd4;
-}
-
-a:hover {
-  border-bottom: 1px solid;
+  text-decoration: none;
 }
 
 p {

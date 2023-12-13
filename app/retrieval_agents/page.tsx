@@ -2,7 +2,7 @@ import { ChatWindow } from '@/components/ChatWindow';
 
 export default function AgentsPage() {
   const InfoCard = (
-    <div className="p-4 md:p-8 rounded bg-[#ffffff] w-full max-h-[85%] overflow-hidden">
+    <div className="p-2 md:p-4rounded bg-[#ffffff] w-full max-h-[85%] overflow-hidden">
       <h1 className="text-3xl md:text-4xl mb-4">🦉 xuexiao</h1>
       <ul>
         <li className="hidden text-l md:block">

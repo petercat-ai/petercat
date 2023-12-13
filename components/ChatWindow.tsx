@@ -1,26 +1,29 @@
 'use client';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef, useState, ReactElement, useCallback } from 'react';
 import type { FormEvent } from 'react';
-import { Button } from '@nextui-org/react';
-
 import { ChatMessageBubble } from '@/components/ChatMessageBubble';
 import { UploadDocumentsForm } from '@/components/UploadDocumentsForm';
 import { IntermediateStep } from './IntermediateStep';
 import { useChat } from './hooks/useChat';
+import { Avatar } from '@nextui-org/react';
+import BotInfoCard from './BotInfoCard';
 
 export function ChatWindow(props: {
   endpoint: string;
-  emptyStateComponent: ReactElement;
+  emptyStateComponent?: ReactElement;
   placeholder?: string;
   titleText?: string;
   avatar?: string;
+  name?: string;
   showIngestForm?: boolean;
   showIntermediateStepsToggle?: boolean;
   prompt?: string;
+  description?: string;
+  starters?: string[];
   streamming?: boolean;
+  loading?: boolean;
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,16 +31,18 @@ export function ChatWindow(props: {
     endpoint,
     emptyStateComponent,
     placeholder,
-    titleText = 'An LLM',
+    titleText,
     showIngestForm,
     showIntermediateStepsToggle,
     avatar,
+    description,
+    starters,
+    name,
+    loading = false,
     prompt,
   } = props;
 
   const [showIntermediateSteps, setShowIntermediateSteps] = useState(true);
-  const [intermediateStepsLoading, setIntermediateStepsLoading] =
-    useState(false);
   const ingestForm = showIngestForm && (
     <UploadDocumentsForm></UploadDocumentsForm>
   );
@@ -61,6 +66,7 @@ export function ChatWindow(props: {
   const {
     messages,
     input,
+    setInput,
     handleInputChange,
     handleSubmit,
     isLoading: chatEndpointIsLoading,
@@ -74,34 +80,52 @@ export function ChatWindow(props: {
     },
   });
 
-  const sendMessage = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!chatEndpointIsLoading) {
-      return handleSubmit({
-        prompt,
-        show_intermediate_steps: true,
-      });
-    }
-    stop();
-  }, [chatEndpointIsLoading, handleSubmit, prompt, stop]);
+  const welcomeComponent = emptyStateComponent ?? (
+    <BotInfoCard
+      loading={loading}
+      name={name!}
+      description={description!}
+      avatar={avatar!}
+      starters={starters!}
+      setInput={setInput}
+    />
+  );
+
+  const sendMessage = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setInput('');
+      if (!chatEndpointIsLoading) {
+        return handleSubmit({
+          prompt,
+          show_intermediate_steps: true,
+        });
+      }
+      stop();
+    },
+    [chatEndpointIsLoading, handleSubmit, prompt, stop],
+  );
 
   return (
-    <div
-      className={`flex flex-col items-center p-4 md:p-8 rounded grow overflow-hidden ${
-        messages.length > 0 ? 'border' : ''
-      }`}
-    >
-      <h2
+    <div className="flex flex-col h-full items-center p-2 md:p-4 grow overflow-hidden relative">
+      <h2 className="items-center text-l">{titleText}</h2>
+      <h3
         className={`${
           messages.length > 0 ? '' : 'hidden'
-        } text-2xl flex items-center`}
+        } text-xl flex items-center`}
       >
-        <img className="w-12 rounded-full  m-2" alt={titleText} src={avatar!} />
-        <div className="flex">{titleText}</div>
-      </h2>
-      {messages.length === 0 ? emptyStateComponent : ''}
+        <Avatar
+          src={avatar!}
+          className="h-12 w-12 text-large m-4"
+          name={name!}
+        />
+
+        <div className="flex">{name}</div>
+      </h3>
+      {messages.length === 0 ? welcomeComponent : ''}
+
       <div
-        className="flex flex-col-reverse w-full mb-4 overflow-auto transition-[flex-grow] ease-in-out"
+        className="flex flex-col-reverse w-full mb-16 overflow-auto transition-[flex-grow] ease-in-out"
         ref={messageContainerRef}
       >
         {messages.length > 0
@@ -113,6 +137,7 @@ export function ChatWindow(props: {
                 <ChatMessageBubble
                   key={m.id}
                   message={m}
+                  aiName={name}
                   aiAvatar={avatar}
                   sources={sourcesForMessages[sourceKey]}
                 ></ChatMessageBubble>
@@ -122,19 +147,49 @@ export function ChatWindow(props: {
       </div>
 
       {messages.length === 0 && ingestForm}
-
-      <form onSubmit={sendMessage} className="flex w-full flex-col">
+      <form
+        className="flex w-full flex-col absolute p-2 md:p-4inset-x-0 bottom-0"
+        onSubmit={sendMessage}
+      >
         <div className="flex">{intemediateStepsToggle}</div>
-        <div className="flex w-full mt-4">
-          <input
-            className="grow mr-8 p-4 rounded"
+        <label htmlFor="chat-input" className="sr-only">
+          Enter your prompt
+        </label>
+        <div className="relative">
+          <button
+            type="button"
+            className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-500"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M9 7C9 4.23858 11.2386 2 14 2C16.7614 2 19 4.23858 19 7V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9C5 8.44772 5.44772 8 6 8C6.55228 8 7 8.44772 7 9V15C7 17.7614 9.23858 20 12 20C14.7614 20 17 17.7614 17 15V7C17 5.34315 15.6569 4 14 4C12.3431 4 11 5.34315 11 7V15C11 15.5523 11.4477 16 12 16C12.5523 16 13 15.5523 13 15V9C13 8.44772 13.4477 8 14 8C14.5523 8 15 8.44772 15 9V15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15V7Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            <span className="sr-only">Use voice input</span>
+          </button>
+          <textarea
+            id="chat-input"
+            className="block w-full resize-none rounded-xl bg-white border p-4 pl-10 pr-20 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
+            rows={1}
+            placeholder={placeholder}
             value={input}
-            placeholder={placeholder ?? "What's it like to be a pirate?"}
             onChange={handleInputChange}
           />
-          <Button type="submit" radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+          <button
+            type="submit"
+            className="absolute bottom-2 right-2.5 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:text-base"
+          >
             {chatEndpointIsLoading ? 'Cancel' : 'Send'}
-          </Button>
+          </button>
         </div>
       </form>
       <ToastContainer />

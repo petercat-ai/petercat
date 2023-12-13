@@ -1,19 +1,25 @@
+import { Avatar } from '@nextui-org/react';
 import type { Message } from 'ai/react';
 
 export function ChatMessageBubble(props: {
   message: Message;
-  aiAvatar?: string;
   sources: any[];
+  aiAvatar?: string;
+  aiName?: string;
 }) {
   const colorClassName =
-    props.message.role === 'user' ? 'bg-sky-600' : 'bg-slate-50 text-black';
+    props.message.role === 'user' ? 'bg-[#d2e3fc]' : 'bg-slate-50 text-black';
   const alignmentClassName =
     props.message.role === 'user' ? 'ml-auto' : 'mr-auto';
   const prefix = props.message.role === 'user' ? '' : props.aiAvatar;
   return (
     <div className="flex">
       {prefix && (
-        <img className="w-8 h-8 rounded-full  m-2" src={prefix} alt="avatar" />
+        <Avatar
+          src={prefix!}
+          className="mb-8 mr-4 w-8 h-8  text-large"
+          name={props?.aiName!}
+        />
       )}
       <div
         className={`${alignmentClassName} ${colorClassName} rounded  px-4 py-2 max-w-[80%] mb-8 flex`}
