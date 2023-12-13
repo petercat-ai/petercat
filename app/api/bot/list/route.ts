@@ -2,6 +2,8 @@ import { supabase } from '@/share/supabas-client';
 import { Tables } from '@/types/database.types';
 import { NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 export const GET = async () => {
   try {
     const res = await supabase.from('bots').select('*');
