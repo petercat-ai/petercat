@@ -1,13 +1,15 @@
 import { BotProfile } from '../interface';
+import { omit } from 'lodash';
 
 /* Create Bot*/
 export async function createBot(profile: BotProfile) {
+  const params = omit(profile, 'id');
   return fetch('/api/bot/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(profile),
+    body: JSON.stringify(params),
   });
 }
 

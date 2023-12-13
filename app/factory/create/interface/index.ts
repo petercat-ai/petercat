@@ -1,7 +1,8 @@
 export interface BotProfile {
+  id: string;
   avatar?: string;
   name: string;
   description?: string;
   prompt?: string;
-  starter?: string[];
+  starters?: string[];
 }

@@ -10,11 +10,12 @@ import { useImmer } from 'use-immer';
 
 export const useBot = () => {
   const [botProfile, setBotProfile] = useImmer<BotProfile>({
+    id: '',
     avatar: '',
     name: 'Untitled',
     description: '',
     prompt: '',
-    starter: [],
+    starters: [''],
   });
 
   const {

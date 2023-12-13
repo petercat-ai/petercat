@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
@@ -7,7 +7,57 @@ import { useBot } from './hooks/useBot';
 import { toast } from 'react-toastify';
 
 export default function Create() {
-  const { createBotLoading, botProfile, onCreateBot, setBotProfile } = useBot();
+  const {
+    onCreateBot,
+    createBotLoading,
+    onUpdateBot,
+    updateBotLoading,
+    botProfile,
+    setBotProfile,
+  } = useBot();
+
+  const createBot = async () => {
+    const params = {
+      ...botProfile,
+      starters: botProfile?.starters?.filter((s) => s),
+    };
+
+    try {
+      const response = await onCreateBot(params);
+      if (response.ok) {
+        const data = await response.json();
+        setBotProfile?.((draft) => {
+          draft.id = data.data?.id;
+        });
+        toast.success('Save success');
+      } else {
+        toast.error('Save failed');
+      }
+    } catch (error) {
+      console.error('Save failed:', error);
+      toast.error('Save failed');
+    }
+  };
+
+  const updateBot = async () => {
+    const params = {
+      ...botProfile,
+      starters: botProfile?.starters?.filter((s) => s),
+    };
+
+    try {
+      const response = await onUpdateBot(params);
+      if (response.ok) {
+        await response.json();
+        toast.success('Save success');
+      } else {
+        toast.error('Save failed');
+      }
+    } catch (error) {
+      console.error('Save failed:', error);
+      toast.error('Save failed');
+    }
+  };
 
   return (
     <div className="flex h-screen w-full flex-col items-center">
@@ -37,21 +87,14 @@ export default function Create() {
           <Button
             color="success"
             size="sm"
-            isLoading={createBotLoading}
+            isLoading={createBotLoading || updateBotLoading}
             variant="flat"
-            onClick={async (e) => {
+            onClick={(e) => {
               e.preventDefault();
-              try {
-                const response = await onCreateBot(botProfile);
-                if (response.ok) {
-                  await response.json();
-                  toast.success('Save success');
-                } else {
-                  toast.error('Save failed');
-                }
-              } catch (error) {
-                console.error('Save failed:', error);
-                toast.error('Save failed');
+              if (botProfile?.id) {
+                updateBot();
+              } else {
+                createBot();
               }
             }}
           >
