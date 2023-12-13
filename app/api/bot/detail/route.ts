@@ -2,6 +2,8 @@ import { Tables } from '@/types/database.types';
 import { NextResponse } from 'next/server';
 import { supabase } from '@/share/supabas-client';
 
+export const runtime = 'edge';
+
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
