@@ -27,11 +27,13 @@ const Card = (props: { bot: Bot }) => {
         <p className="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap hover:whitespace-normal hover:overflow-visible">
           {bot.description}
         </p>
-        <div>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-            {bot.label}
-          </span>
-        </div>
+        {bot?.label && (
+          <div>
+            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+              {bot.label}
+            </span>
+          </div>
+        )}
       </div>
     </a>
   );
@@ -49,7 +51,6 @@ const BotsList = () => {
   const [bots, setBots] = useState<Bots>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     fetch('/api/bot/list')
       .then((res) => res.json())

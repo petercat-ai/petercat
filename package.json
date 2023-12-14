@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "bootstrap": "yarn && pip3 install fastapi 'uvicorn[standard]' langchain",
+    "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn python.index:app --reload",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
