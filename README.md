@@ -28,9 +28,13 @@ Next, install the required packages using your preferred package manager (e.g. `
 
 Now you're ready to run the development server:
 
-```bash                                                                                                                                                                        
-yarn dev
+
+```bash  
+yarn run bootstrap                                                                                                                                            
+yarn run dev
+yarn run fastapi-dev
 ```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result! Ask the bot something and you'll see a streamed response:
 
