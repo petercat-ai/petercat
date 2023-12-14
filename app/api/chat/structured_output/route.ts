@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import { z } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { PromptTemplate } from "langchain/prompts";
-import { JsonOutputFunctionsParser } from "langchain/output_parsers";
-
-export const runtime = "edge";
+import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { PromptTemplate } from 'langchain/prompts';
+import { JsonOutputFunctionsParser } from 'langchain/output_parsers';
 
 const TEMPLATE = `Extract the requested fields from the input.
 
@@ -35,7 +33,7 @@ export async function POST(req: NextRequest) {
      */
     const model = new ChatOpenAI({
       temperature: 0.8,
-      modelName: "gpt-4",
+      modelName: 'gpt-4',
     });
 
     /**
@@ -44,14 +42,14 @@ export async function POST(req: NextRequest) {
      */
     const schema = z.object({
       tone: z
-        .enum(["positive", "negative", "neutral"])
-        .describe("The overall tone of the input"),
-      entity: z.string().describe("The entity mentioned in the input"),
-      word_count: z.number().describe("The number of words in the input"),
+        .enum(['positive', 'negative', 'neutral'])
+        .describe('The overall tone of the input'),
+      entity: z.string().describe('The entity mentioned in the input'),
+      word_count: z.number().describe('The number of words in the input'),
       chat_response: z.string().describe("A response to the human's input"),
       final_punctuation: z
         .optional(z.string())
-        .describe("The final punctuation mark in the input, if any."),
+        .describe('The final punctuation mark in the input, if any.'),
     });
 
     /**
@@ -64,12 +62,12 @@ export async function POST(req: NextRequest) {
     const functionCallingModel = model.bind({
       functions: [
         {
-          name: "output_formatter",
-          description: "Should always be used to properly format output",
+          name: 'output_formatter',
+          description: 'Should always be used to properly format output',
           parameters: zodToJsonSchema(schema),
         },
       ],
-      function_call: { name: "output_formatter" },
+      function_call: { name: 'output_formatter' },
     });
 
     /**
