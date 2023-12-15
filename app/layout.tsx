@@ -25,12 +25,14 @@ export default function RootLayout({
         <meta property="og:image" content="/images/favicon.ico" />
       </head>
       <UserProvider>
-        <body className={publicSans.className}>
-          <div className="flex flex-col h-[100vh]">
-            <Navbar></Navbar>
-            <NextUIProvider> {children}</NextUIProvider>
-          </div>
-        </body>
+        <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat" >
+          <NextUIProvider>
+            <div className="flex flex-col h-[100vh]">
+              <Navbar></Navbar>
+              {children}
+            </div>
+            </NextUIProvider>
+          </body>
       </UserProvider>
     </html>
   );
