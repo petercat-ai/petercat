@@ -88,16 +88,19 @@ export function useChat({
         const reader = response.body!.getReader();
         return new ReadableStream({
           start(controller) {
+            let buffer = new Uint8Array();
+
             function read(): Promise<string | undefined> {
               return reader.read().then(({ done, value }) => {
                 mutate((prevMessages = []) => {
                   const lastMessage = prevMessages.at(-1)!;
-                  const text = new TextDecoder().decode(value);
+                  buffer = mergeBuffer(buffer, value);
+                  const text = new TextDecoder().decode(buffer);
                   return [
                     ...prevMessages.slice(0, -1),
                     {
                       ...lastMessage,
-                      content: lastMessage.content.concat(text),
+                      content: text,
                     },
                   ];
                 }, false);
@@ -181,4 +184,15 @@ export function useChat({
     handleInputChange,
     stop,
   };
+}
+
+function mergeBuffer(buffer1: Uint8Array, buffer2?: Uint8Array) {
+  if (!buffer2) {
+    return buffer1;
+  }
+
+  const newBuffer = new Uint8Array(buffer1.length + buffer2.length);
+  newBuffer.set(buffer1, 0)
+  newBuffer.set(buffer2, buffer1.length);
+  return newBuffer;
 }
