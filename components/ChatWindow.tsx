@@ -80,6 +80,16 @@ export function ChatWindow(props: {
     },
   });
 
+  const handleKeydown = useCallback((ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (ev.key === 'Enter') {
+      ev.preventDefault();
+      handleSubmit({
+        prompt,
+        show_intermediate_steps: true,
+      })
+    }
+  }, [handleSubmit, prompt]);
+
   const welcomeComponent = emptyStateComponent ?? (
     <BotInfoCard
       loading={loading}
@@ -107,7 +117,7 @@ export function ChatWindow(props: {
   );
 
   return (
-    <div className="flex flex-col h-full items-center p-2 md:p-4 grow overflow-hidden relative">
+    <div className="flex flex-col h-full items-center p-2 md:p-4 grow overflow-hidden relative mx-auto w-[1024px]">
       <h2 className="items-center text-l">{titleText}</h2>
       <h3
         className={`${
@@ -178,11 +188,12 @@ export function ChatWindow(props: {
           </button>
           <textarea
             id="chat-input"
-            className="block w-full resize-none rounded-xl bg-white border p-4 pl-10 pr-20 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
+            className="block w-full resize-none rounded-xl bg-white whitespace-nowrap border p-4 pl-10 pr-20 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-400 dark:focus:ring-blue-500 sm:text-base"
             rows={1}
             placeholder={placeholder}
             value={input}
             onChange={handleInputChange}
+            onKeyDown={handleKeydown}
           />
           <button
             type="submit"

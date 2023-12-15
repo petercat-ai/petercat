@@ -1,32 +1,48 @@
 'use client';
 
+import { NavbarBrand, Navbar as NextNavbar, Image, NavbarContent, NavbarItem, Link, Button, Tabs, Tab, Card } from '@nextui-org/react';
 import { usePathname } from 'next/navigation';
 
 export function Navbar() {
   const pathname = usePathname();
+  const navs = [{
+    id: "market",
+    label: "市场",
+    href: '/'
+  }, {
+    id: "factory",
+    label: "工厂",
+    href: '/factory/create'
+  }];
+
   if (pathname === '/factory/create') {
     return null;
   }
+
   return (
-    <nav className="mb-4 p-4 md:p-12">
-      <a
-        className={`mr-4 ${pathname === '/' ? 'text-black border-b' : ''}`}
-        href="/"
-      >
-        🤖 人才市场
-      </a>
-      <a
-        className={`mr-4 ${
-          pathname === '/factory/create' ? 'text-black border-b' : ''
-        }`}
-        href="/factory/create"
-      >
-        ➕ 捏皮套人
-      </a>
-      {/* <a className={`mr-4 ${pathname === "/structured_output" ? "text-white border-b" : ""}`} href="/structured_output">🧱 Structured Output</a>
-      <a className={`mr-4 ${pathname === "/agents" ? "text-white border-b" : ""}`} href="/agents">🦜 Agents</a>
-      <a className={`mr-4 ${pathname === "/retrieval" ? "text-white border-b" : ""}`} href="/retrieval">🐶 Retrieval</a>
-      <a className={`mr-4 ${pathname === "/retrieval_agents" ? "text-white border-b" : ""}`} href="/retrieval_agents">🤖 Retrieval Agents</a> */}
-    </nav>
+    <NextNavbar>
+      <NavbarBrand>
+        <Link href="/">
+          <Image src="/images/logo.png" alt="botcombo" width={215} height={54}/>
+        </Link>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <Tabs items={navs}>
+          {(item) => (
+            <Tab key={item.id} title={<Link href={item.href}>{item.label}</Link>} />
+          )}
+        </Tabs>
+      </NavbarContent>
+      <NavbarContent justify="end">
+        <NavbarItem className="hidden lg:flex">
+          <Link href="#">Login</Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Button as={Link} color="primary" href="#" variant="flat">
+            Sign Up
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
+    </NextNavbar>
   );
 }
