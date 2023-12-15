@@ -13,14 +13,14 @@ const BotCard = (props: { bot: Bot }) => {
   const router = useRouter()
 
   return (
-    <Card shadow="sm" isPressable onPress={() => router.push(`/chat/${bot.id}`)}>
+    <Card className='border-none' shadow="sm" isPressable onPress={() => router.push(`/chat/${bot.id}`)} >
       <CardBody className="overflow-visible p-0 flex-initial">
         <Image
-          shadow="sm"
+          shadow="none"
           radius="lg"
           width="100%"
           alt={bot.name!}
-          className="w-full object-cover h-[140px]"
+          className="w-full object-cover h-[200px]"
           src={bot.avatar!}
         />
       </CardBody>
