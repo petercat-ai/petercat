@@ -80,7 +80,7 @@ export function ChatWindow(props: {
     },
   });
 
-  const handleKeydown = useCallback((ev: KeyboardEvent) => {
+  const handleKeydown = useCallback((ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (ev.key === 'Enter') {
       ev.preventDefault();
       handleSubmit({
