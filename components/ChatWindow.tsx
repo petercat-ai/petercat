@@ -9,6 +9,7 @@ import { IntermediateStep } from './IntermediateStep';
 import { useChat } from './hooks/useChat';
 import { Avatar } from '@nextui-org/react';
 import BotInfoCard from './BotInfoCard';
+import AppendixIcon from './icons/AppendixIcon';
 
 export function ChatWindow(props: {
   endpoint: string;
@@ -80,15 +81,18 @@ export function ChatWindow(props: {
     },
   });
 
-  const handleKeydown = useCallback((ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (ev.key === 'Enter') {
-      ev.preventDefault();
-      handleSubmit({
-        prompt,
-        show_intermediate_steps: true,
-      })
-    }
-  }, [handleSubmit, prompt]);
+  const handleKeydown = useCallback(
+    (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        handleSubmit({
+          prompt,
+          show_intermediate_steps: true,
+        });
+      }
+    },
+    [handleSubmit, prompt],
+  );
 
   const welcomeComponent = emptyStateComponent ?? (
     <BotInfoCard
@@ -170,20 +174,8 @@ export function ChatWindow(props: {
             type="button"
             className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-500"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M9 7C9 4.23858 11.2386 2 14 2C16.7614 2 19 4.23858 19 7V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9C5 8.44772 5.44772 8 6 8C6.55228 8 7 8.44772 7 9V15C7 17.7614 9.23858 20 12 20C14.7614 20 17 17.7614 17 15V7C17 5.34315 15.6569 4 14 4C12.3431 4 11 5.34315 11 7V15C11 15.5523 11.4477 16 12 16C12.5523 16 13 15.5523 13 15V9C13 8.44772 13.4477 8 14 8C14.5523 8 15 8.44772 15 9V15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15V7Z"
-                fill="currentColor"
-              ></path>
-            </svg>
+            <AppendixIcon />
+
             <span className="sr-only">Use voice input</span>
           </button>
           <textarea

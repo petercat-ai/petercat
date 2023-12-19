@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "yarn && pip3 install fastapi 'uvicorn[standard]' langchain",
-    "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn python.index:app --reload",
+    "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn server.index:app --reload",
     "dev": "next dev",
+    "dev:python": "concurrently \"yarn run dev\" \"yarn run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -25,6 +25,7 @@
     "ahooks": "^3.7.8",
     "ai": "^2.1.28",
     "autoprefixer": "10.4.14",
+    "concurrently": "^8.2.2",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.15",
@@ -44,6 +45,7 @@
     "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/lodash": "^4.14.202",
     "prettier": "3.0.0"
   },

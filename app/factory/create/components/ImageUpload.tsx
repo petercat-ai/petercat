@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { BotProfile } from '../interface';
 import { useImmer } from 'use-immer';
 import type { Updater } from 'use-immer';
+import PlusIcon from '@/components/icons/PlusIcon';
 
 interface ImageUploadProps {
   botProfile?: BotProfile;
@@ -69,22 +70,8 @@ const ImageUploadComponent = (props: ImageUploadProps) => {
           />
         </label>
       ) : (
-        <label className="w-16 h-16 flex items-center justify-center cursor-pointer rounded-full border-2 border-dashed border-token-border-medium">
-          <svg
-            stroke="currentColor"
-            fill="none"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-3xl"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
+        <label className="w-16 h-16 flex items-center justify-center cursor-pointer rounded-full border-2 border-dashed border-token-border-medium text-3xl">
+          <PlusIcon />
           <input
             accept="image/*"
             type="file"

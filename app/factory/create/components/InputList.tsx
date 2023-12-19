@@ -25,6 +25,9 @@ const InputList = (props: InputListProps) => {
     }
   };
   const handleRemove = (index: number) => {
+    if (inputs.length === 1) {
+      return;
+    }
     const newInputs = inputs.filter((_, idx) => idx !== index);
     setInputs(newInputs);
     setBotProfile?.((draft: BotProfile) => {
