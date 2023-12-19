@@ -64,7 +64,7 @@ const BotCreateFrom = (props: BotFormProps) => {
           }}
         />
         <label className="block text-sm font-medium text-gray-700">
-          Conversation starterss
+          Conversation starters
           <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
         </label>
       </form>

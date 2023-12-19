@@ -5,6 +5,7 @@ import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/ChatWindow';
 import { useBot } from './hooks/useBot';
 import { toast } from 'react-toastify';
+import BackIcon from '@/components/icons/BackIcon';
 
 export default function Create() {
   const {
@@ -60,28 +61,13 @@ export default function Create() {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col items-center">
+    <div className="flex h-screen w-full flex-col items-center bg-white">
       <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
         <a
           className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
           href="/"
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="icon-lg"
-          >
-            <path
-              d="M15 5L8 12L15 19"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
+          <BackIcon />
         </a>
         <div className="flex items-center gap-2">
           <Button
