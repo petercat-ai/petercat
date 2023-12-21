@@ -43,14 +43,18 @@ const InputList = (props: InputListProps) => {
             type="text"
             value={input}
             onChange={(e) => handleChange(index, e.target.value)}
-            className="w-full resize-none overflow-y-auto rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 border focus:ring-blue-400 border-token-border-medium h-9 dark:bg-gray-800 rounded-r-none"
+            className={`w-full resize-none overflow-y-auto rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 border focus:ring-blue-400 border-token-border-medium h-9 dark:bg-gray-800 ${
+              inputs.length > 1 ? 'rounded-r-none' : ''
+            }`}
           />
-          <button
-            onClick={() => handleRemove(index)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg rounded-l-none border border-l-0 border-token-border-medium"
-          >
-            &#10005;
-          </button>
+          {inputs.length > 1 && (
+            <button
+              onClick={() => handleRemove(index)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg rounded-l-none border border-l-0 border-token-border-medium"
+            >
+              &#10005;
+            </button>
+          )}
         </div>
       ))}
     </>

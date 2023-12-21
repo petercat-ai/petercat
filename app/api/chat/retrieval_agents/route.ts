@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Message as VercelChatMessage, StreamingTextResponse } from "ai";
+import { NextRequest, NextResponse } from 'next/server';
+import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js';
 
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
-import { AIMessage, ChatMessage, HumanMessage } from "langchain/schema";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { SupabaseVectorStore } from 'langchain/vectorstores/supabase';
+import { AIMessage, ChatMessage, HumanMessage } from 'langchain/schema';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import {
   createRetrieverTool,
   OpenAIAgentTokenBufferMemory,
-} from "langchain/agents/toolkits";
-import { ChatMessageHistory } from "langchain/memory";
-import { initializeAgentExecutorWithOptions } from "langchain/agents";
+} from 'langchain/agents/toolkits';
+import { ChatMessageHistory } from 'langchain/memory';
+import { initializeAgentExecutorWithOptions } from 'langchain/agents';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 const convertVercelMessageToLangChainMessage = (message: VercelChatMessage) => {
-  if (message.role === "user") {
+  if (message.role === 'user') {
     return new HumanMessage(message.content);
-  } else if (message.role === "assistant") {
+  } else if (message.role === 'assistant') {
     return new AIMessage(message.content);
   } else {
     return new ChatMessage(message.content, message.role);
@@ -45,24 +45,24 @@ export async function POST(req: NextRequest) {
      */
     const messages = (body.messages ?? []).filter(
       (message: VercelChatMessage) =>
-        message.role === "user" || message.role === "assistant",
+        message.role === 'user' || message.role === 'assistant',
     );
     const returnIntermediateSteps = body.show_intermediate_steps;
     const previousMessages = messages.slice(0, -1);
     const currentMessageContent = messages[messages.length - 1].content;
 
     const model = new ChatOpenAI({
-      modelName: "gpt-4",
+      modelName: 'gpt-4',
     });
 
     const client = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PRIVATE_KEY!,
+      process.env.SUPABASE_API_KEY!,
     );
     const vectorstore = new SupabaseVectorStore(new OpenAIEmbeddings(), {
       client,
-      tableName: "documents",
-      queryName: "match_documents",
+      tableName: 'documents',
+      queryName: 'match_documents',
     });
 
     const chatHistory = new ChatMessageHistory(
@@ -82,8 +82,8 @@ export async function POST(req: NextRequest) {
      */
     const memory = new OpenAIAgentTokenBufferMemory({
       llm: model,
-      memoryKey: "chat_history",
-      outputKey: "output",
+      memoryKey: 'chat_history',
+      outputKey: 'output',
       chatHistory,
     });
 
@@ -94,12 +94,12 @@ export async function POST(req: NextRequest) {
      * usable form.
      */
     const tool = createRetrieverTool(retriever, {
-      name: "search_latest_knowledge",
-      description: "Searches and returns up-to-date general information.",
+      name: 'search_latest_knowledge',
+      description: 'Searches and returns up-to-date general information.',
     });
 
     const executor = await initializeAgentExecutorWithOptions([tool], model, {
-      agentType: "openai-functions",
+      agentType: 'openai-functions',
       memory,
       returnIntermediateSteps: true,
       verbose: true,

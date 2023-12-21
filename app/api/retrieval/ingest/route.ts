@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { NextRequest, NextResponse } from 'next/server';
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
-import { createClient } from "@supabase/supabase-js";
-import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { createClient } from '@supabase/supabase-js';
+import { SupabaseVectorStore } from 'langchain/vectorstores/supabase';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 // Before running, follow set-up instructions at
 // https://js.langchain.com/docs/modules/indexes/vector_stores/integrations/supabase
@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const text = body.text;
 
-  if (process.env.NEXT_PUBLIC_DEMO === "true") {
+  if (process.env.NEXT_PUBLIC_DEMO === 'true') {
     return NextResponse.json(
       {
         error: [
-          "Ingest is not supported in demo mode.",
-          "Please set up your own version of the repo here: https://github.com/langchain-ai/langchain-nextjs-template",
-        ].join("\n"),
+          'Ingest is not supported in demo mode.',
+          'Please set up your own version of the repo here: https://github.com/langchain-ai/langchain-nextjs-template',
+        ].join('\n'),
       },
       { status: 403 },
     );
@@ -36,10 +36,10 @@ export async function POST(req: NextRequest) {
   try {
     const client = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PRIVATE_KEY!,
+      process.env.SUPABASE_API_KEY!,
     );
 
-    const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
+    const splitter = RecursiveCharacterTextSplitter.fromLanguage('markdown', {
       chunkSize: 256,
       chunkOverlap: 20,
     });
@@ -51,8 +51,8 @@ export async function POST(req: NextRequest) {
       new OpenAIEmbeddings(),
       {
         client,
-        tableName: "documents",
-        queryName: "match_documents",
+        tableName: 'documents',
+        queryName: 'match_documents',
       },
     );
 
