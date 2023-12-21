@@ -1,18 +1,16 @@
-import { getSession } from "@auth0/nextjs-auth0";
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { Avatar, Button, Link } from '@nextui-org/react';
 
-export default async function ProfileServer() {
-  const session = await getSession();
+export default function Profile() {
+  const { user } = useUser();
 
-  if (!session) {
-    return null;
+  if (!user) {
+    return (
+      <Button as={Link} color="primary" href="/api/auth/login" variant="flat">
+        Login
+      </Button>
+    );
   }
 
-  const { user } = session;
-  return (
-    <div>
-      <img src={user.picture} alt={user.name} />
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-    </div>
-  );
+  return (<Avatar size="sm" src={user.picture!} alt={user.name!} />);
 }
