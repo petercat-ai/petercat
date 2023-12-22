@@ -1,6 +1,18 @@
+import os
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.utilities.dalle_image_generator import DallEAPIWrapper
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True, override=True)
+
+open_api_key = os.getenv("OPENAI_API_KEY")
+
 
 app = FastAPI()
 
@@ -19,15 +31,17 @@ app.add_middleware(
 )
 
 
-class Item(BaseModel):
-    name: str
-    price: float
+class InputData(BaseModel):
+    desc: str = None
 
-@app.get("/api/test")
-def hello_world():
-    return {"message": "Hello World"}
-
-
-@app.get("/api/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+@app.post("/api/dall-e")
+def img_generator(input_data: InputData):
+    os.environ["OPENAI_API_KEY"] = open_api_key
+    llm = OpenAI(temperature=0.8)
+    prompt = PromptTemplate(
+        input_variables=["image_desc"],
+        template="Generate a detailed prompt to generate an image based on the following description: {image_desc}",
+    )
+    chain = LLMChain(llm=llm, prompt=prompt)
+    image_url = DallEAPIWrapper().run(chain.run(input_data))
+    return image_url
