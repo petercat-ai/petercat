@@ -156,13 +156,16 @@ export function ChatWindow(props: {
                 if (/\$\$END\$\$/.test(m.content)) {
                   return (
                     <ImgItem
+                      key={m.id}
                       aiName={name}
                       aiAvatar={avatar}
                       content={m.content}
                     />
                   );
                 }
-                return <ToolsCheck aiName={name} aiAvatar={avatar} />;
+                return (
+                  <ToolsCheck key={m.id} aiName={name} aiAvatar={avatar} />
+                );
               }
               return (
                 <ChatMessageBubble
