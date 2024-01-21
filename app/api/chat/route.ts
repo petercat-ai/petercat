@@ -11,8 +11,26 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = `{prompt}
+const TOOLS = `When you are asked questions, you can determine whether to use the corresponding tools based on the descriptions of the actions. There may be two situations:
+  1. There is no need to use tools, just answer this question directly, don't output extra characters besides your answer to this question
+  2. There are available tools. According to the information of parameters in actions, the corresponding information in the question needs to be extracted and converted into the parameters required for the action call in the name of the parameter, and return in the following format: $$TOOLS$$ {"action_name":"","parameters":{"parameter0": "value0", "parameter1": "value1", ...} $$END$$ Don't output extra characters other than this.
+  You have the following actions:
+  [{
+      "name":"imageGenerator",
+      "type": "fuction",
+      "description":"Create images from a text-only prompt",
+      "parameters":{
+        "prompt":{
+          "type":"string",
+          "description":"Prompt to generate images from"
+        },
+      },
+    "required":["prompt"]
+  }]
+  `;
 
+const TEMPLATE = `{prompt}
+{tools}
 Current conversation:
 {chat_history}
 
@@ -34,6 +52,7 @@ export async function POST(req: NextRequest) {
       'You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.';
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
+
     const prompt = PromptTemplate.fromTemplate(TEMPLATE);
     /**
      * You can also try e.g.:
@@ -62,6 +81,7 @@ export async function POST(req: NextRequest) {
       prompt: promptString,
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
+      tools: TOOLS,
     });
 
     return new StreamingTextResponse(stream);

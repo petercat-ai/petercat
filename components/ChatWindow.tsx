@@ -10,6 +10,8 @@ import { useChat } from './hooks/useChat';
 import { Avatar } from '@nextui-org/react';
 import BotInfoCard from './BotInfoCard';
 import AppendixIcon from './icons/AppendixIcon';
+import { ToolsCheck } from './ToolsCheck';
+import { ImgItem } from './ImgItem';
 
 export function ChatWindow(props: {
   endpoint: string;
@@ -145,9 +147,24 @@ export function ChatWindow(props: {
         {messages.length > 0
           ? [...messages].reverse().map((m, i) => {
               const sourceKey = (messages.length - 1 - i).toString();
-              return m.role === 'system' ? (
-                <IntermediateStep key={m.id} message={m}></IntermediateStep>
-              ) : (
+              if (m.role === 'system') {
+                return (
+                  <IntermediateStep key={m.id} message={m}></IntermediateStep>
+                );
+              }
+              if (/\$\$TOOLS\$\$/.test(m.content)) {
+                if (/\$\$END\$\$/.test(m.content)) {
+                  return (
+                    <ImgItem
+                      aiName={name}
+                      aiAvatar={avatar}
+                      content={m.content}
+                    />
+                  );
+                }
+                return <ToolsCheck aiName={name} aiAvatar={avatar} />;
+              }
+              return (
                 <ChatMessageBubble
                   key={m.id}
                   message={m}
