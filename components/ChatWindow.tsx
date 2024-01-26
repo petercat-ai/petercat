@@ -159,7 +159,7 @@ export function ChatWindow(props: {
                       key={m.id}
                       aiName={name}
                       aiAvatar={avatar}
-                      content={m.content}
+                      message={m}
                     />
                   );
                 }

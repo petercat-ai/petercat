@@ -1,10 +1,6 @@
+import axios from 'axios';
 /* generate img from prompt */
 export async function generateImgByPrompt(params: { prompt: string }) {
-  return fetch('/api/chat/image', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
+  const response = await axios.get(`/api/chat/image?prompt=${params?.prompt}`);
+  return response.data;
 }

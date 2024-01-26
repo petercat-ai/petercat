@@ -3,19 +3,22 @@ import { Avatar, CircularProgress, Image } from '@nextui-org/react';
 import { useImgGenerator } from './hooks/useImgGenerator';
 import { useMemo } from 'react';
 import { extractParametersByTools } from '@/app/utils/tools';
-import { Space_Mono } from 'next/font/google';
+import type { Message } from 'ai/react';
 
 export function ImgItem(props: {
   aiAvatar?: string;
   aiName?: string;
-  content: string;
+  message: Message;
 }) {
   const parameters = useMemo(
-    () => extractParametersByTools(props.content),
-    [props.content],
+    () => extractParametersByTools(props.message?.content),
+    [props.message],
   );
 
-  const { data, error, isLoading } = useImgGenerator(parameters);
+  const { data, error, isLoading } = useImgGenerator(
+    parameters,
+    props.message?.id
+  );
 
   return (
     <div className="flex">
@@ -40,7 +43,7 @@ export function ImgItem(props: {
             width={500}
             height={500}
             alt="Generated Image"
-            src={data?.url}
+            src={data}
           />
         )}
       </div>

@@ -1,11 +1,11 @@
 'use client';
 import './globals.css';
-import { Public_Sans } from 'next/font/google';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
 
-const publicSans = Public_Sans({ subsets: ['latin'] });
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -24,15 +24,18 @@ export default function RootLayout({
         <meta property="og:title" content="xuexiao" />
         <meta property="og:image" content="/images/favicon.ico" />
       </head>
+
       <UserProvider>
-        <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat">
-          <NextUIProvider>
-            <div className="flex flex-col h-[100vh]">
-              <Navbar></Navbar>
-              {children}
-            </div>
-          </NextUIProvider>
-        </body>
+        <QueryClientProvider client={queryClient}>
+          <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat">
+            <NextUIProvider>
+              <div className="flex flex-col h-[100vh]">
+                <Navbar></Navbar>
+                {children}
+              </div>
+            </NextUIProvider>
+          </body>
+        </QueryClientProvider>
       </UserProvider>
     </html>
   );

@@ -1,16 +1,17 @@
 import OpenAI from 'openai';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
-export const POST = async (req: NextRequest) => {
+export const GET = async (request: Request) => {
   const openai = new OpenAI();
 
   try {
-    const body = await req.json();
+    const { searchParams } = new URL(request.url);
+    const prompt = searchParams.get('prompt');
     const response = await openai.images.generate({
       model: 'dall-e-3',
-      prompt: body.prompt,
+      prompt: prompt!,
       quality: 'standard',
       n: 1,
       size: '1024x1024',
