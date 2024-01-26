@@ -11,12 +11,12 @@ export function ChatMessageBubble(props: {
     props.message.role === 'user' ? 'bg-[#d2e3fc]' : 'bg-slate-50 text-black';
   const alignmentClassName =
     props.message.role === 'user' ? 'ml-auto' : 'mr-auto';
-  const prefix = props.message.role === 'user' ? '' : props.aiAvatar;
+  const prefix = props.message.role === 'user' ? false : true;
   return (
     <div className="flex">
       {prefix && (
         <Avatar
-          src={prefix!}
+          src={props?.aiAvatar!}
           className="mb-8 mr-4 w-8 h-8  text-large"
           name={props?.aiName!}
         />
