@@ -91,11 +91,12 @@ export function ChatWindow(props: {
         ev.preventDefault();
         handleSubmit({
           prompt,
+          enableImgGeneration,
           show_intermediate_steps: true,
         });
       }
     },
-    [handleSubmit, prompt],
+    [handleSubmit, prompt, enableImgGeneration],
   );
 
   const welcomeComponent = emptyStateComponent ?? (
@@ -122,7 +123,7 @@ export function ChatWindow(props: {
       }
       stop();
     },
-    [chatEndpointIsLoading, handleSubmit, prompt, stop],
+    [chatEndpointIsLoading, handleSubmit, prompt, stop, enableImgGeneration],
   );
 
   return (
