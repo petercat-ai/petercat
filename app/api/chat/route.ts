@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
       'You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.';
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
+    const enableImgGeneration = body.enableImgGeneration ?? false;
 
     const prompt = PromptTemplate.fromTemplate(TEMPLATE);
     /**
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
       prompt: promptString,
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
-      tools: TOOLS,
+      tools: enableImgGeneration ? TOOLS : '',
     });
 
     return new StreamingTextResponse(stream);
