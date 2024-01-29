@@ -27,6 +27,7 @@ export function ChatWindow(props: {
   starters?: string[];
   streamming?: boolean;
   loading?: boolean;
+  enableImgGeneration?: boolean;
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,6 +44,7 @@ export function ChatWindow(props: {
     name,
     loading = false,
     prompt,
+    enableImgGeneration = true,
   } = props;
 
   const [showIntermediateSteps, setShowIntermediateSteps] = useState(true);
@@ -114,6 +116,7 @@ export function ChatWindow(props: {
       if (!chatEndpointIsLoading) {
         return handleSubmit({
           prompt,
+          enableImgGeneration,
           show_intermediate_steps: true,
         });
       }
@@ -152,7 +155,7 @@ export function ChatWindow(props: {
                   <IntermediateStep key={m.id} message={m}></IntermediateStep>
                 );
               }
-              if (/\$\$TOOLS\$\$/.test(m.content)) {
+              if (/\$\$TOOLS\$\$/.test(m.content) && enableImgGeneration) {
                 if (/\$\$END\$\$/.test(m.content)) {
                   return (
                     <ImgItem

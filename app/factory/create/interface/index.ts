@@ -5,4 +5,5 @@ export interface BotProfile {
   description?: string;
   prompt?: string;
   starters?: string[];
+  enable_img_generation?: boolean;
 }
