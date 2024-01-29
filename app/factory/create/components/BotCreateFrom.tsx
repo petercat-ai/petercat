@@ -1,4 +1,4 @@
-import { Textarea, Input } from '@nextui-org/react';
+import { Textarea, Input, Checkbox } from '@nextui-org/react';
 import ImageUploadComponent from './ImageUpload';
 import { BotProfile } from '../interface';
 import type { Updater } from 'use-immer';
@@ -12,10 +12,20 @@ interface BotFormProps {
 const BotCreateFrom = (props: BotFormProps) => {
   const { botProfile, setBotProfile } = props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
+    const name = e.target.name as keyof Omit<
+      BotProfile,
+      'starters' | 'enable_img_generation'
+    >;
     const value = e.target.value;
     setBotProfile?.((draft: BotProfile) => {
       draft[name] = value;
+    });
+  };
+
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.checked;
+    setBotProfile?.((draft: BotProfile) => {
+      draft.enable_img_generation = value;
     });
   };
 
@@ -66,6 +76,19 @@ const BotCreateFrom = (props: BotFormProps) => {
         <label className="block text-sm font-medium text-gray-700">
           Conversation starters
           <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
+        </label>
+
+        <label className="block text-sm font-medium text-gray-700">
+          Capabilities
+          <Checkbox
+            className="block"
+            name="enable_img_generation"
+            size="sm"
+            onChange={handleCheck}
+            isSelected={botProfile?.enable_img_generation}
+          >
+            DALL·E Image Generation
+          </Checkbox>
         </label>
       </form>
     </div>

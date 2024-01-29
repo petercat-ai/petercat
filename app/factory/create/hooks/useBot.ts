@@ -16,6 +16,7 @@ export const useBot = () => {
     description: '',
     prompt: '',
     starters: [''],
+    enable_img_generation: true,
   });
 
   const {

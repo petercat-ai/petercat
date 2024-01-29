@@ -128,6 +128,7 @@ export default function Create() {
             description={botProfile?.description!}
             starters={botProfile?.starters!}
             prompt={botProfile?.prompt}
+            enableImgGeneration={botProfile?.enable_img_generation}
             streamming
           />
         </div>
