@@ -3,13 +3,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef, useState, ReactElement, useCallback } from 'react';
 import type { FormEvent } from 'react';
-import { ChatMessageBubble } from '@/components/ChatMessageBubble';
+import { ChatMessageBubble } from '@/components/chat/ChatMessageBubble';
 import { UploadDocumentsForm } from '@/components/UploadDocumentsForm';
 import { IntermediateStep } from './IntermediateStep';
-import { useChat } from './hooks/useChat';
+import { useChat } from '../hooks/useChat';
 import { Avatar } from '@nextui-org/react';
-import BotInfoCard from './BotInfoCard';
-import AppendixIcon from './icons/AppendixIcon';
+import BotInfoCard from '../BotInfoCard';
+import AppendixIcon from '../icons/AppendixIcon';
 import { ToolsCheck } from './ToolsCheck';
 import { ImgItem } from './ImgItem';
 
@@ -28,6 +28,7 @@ export function ChatWindow(props: {
   streamming?: boolean;
   loading?: boolean;
   enableImgGeneration?: boolean;
+  voice?: string;
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,7 +45,8 @@ export function ChatWindow(props: {
     name,
     loading = false,
     prompt,
-    enableImgGeneration = true,
+    enableImgGeneration = false,
+    voice,
   } = props;
 
   const [showIntermediateSteps, setShowIntermediateSteps] = useState(true);
@@ -177,6 +179,7 @@ export function ChatWindow(props: {
                   message={m}
                   aiName={name}
                   aiAvatar={avatar}
+                  voice={voice}
                   sources={sourcesForMessages[sourceKey]}
                 ></ChatMessageBubble>
               );

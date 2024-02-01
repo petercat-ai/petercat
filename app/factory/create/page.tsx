@@ -2,7 +2,7 @@
 import React from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
-import { ChatWindow } from '@/components/ChatWindow';
+import { ChatWindow } from '@/components/chat/ChatWindow';
 import { useBot } from './hooks/useBot';
 import { toast } from 'react-toastify';
 import BackIcon from '@/components/icons/BackIcon';
@@ -128,6 +128,7 @@ export default function Create() {
             description={botProfile?.description!}
             starters={botProfile?.starters!}
             prompt={botProfile?.prompt}
+            voice={botProfile?.voice}
             enableImgGeneration={botProfile?.enable_img_generation}
             streamming
           />

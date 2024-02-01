@@ -13,7 +13,7 @@ import {
   Card,
 } from '@nextui-org/react';
 import { usePathname } from 'next/navigation';
-import Profile from './User';
+import Profile from '../User';
 
 export function Navbar() {
   const pathname = usePathname();

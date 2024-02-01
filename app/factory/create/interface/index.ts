@@ -6,4 +6,5 @@ export interface BotProfile {
   prompt?: string;
   starters?: string[];
   enable_img_generation?: boolean;
+  voice?: string;
 }

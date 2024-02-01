@@ -1,4 +1,4 @@
-import { ChatWindow } from '@/components/ChatWindow';
+import { ChatWindow } from '@/components/chat/ChatWindow';
 
 export default function AgentsPage() {
   const InfoCard = (
