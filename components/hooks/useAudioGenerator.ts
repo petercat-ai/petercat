@@ -5,7 +5,7 @@ export function useAudioGenerator() {
   const mutation = useMutation({
     mutationFn: generateAudioByText,
   });
-  console.log('response', mutation.data);
+
   return {
     generateAudioByText: mutation.mutate,
     data: mutation.data?.data?.realPath,

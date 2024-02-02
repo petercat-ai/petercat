@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     if (!buffer) {
       return NextResponse.json({ error: 'Generate error' }, { status: 400 });
     }
+
     const fileName = `${Date.now()}.mp3`;
 
     const { data, error } = await supabase.storage
@@ -28,9 +29,9 @@ export async function POST(req: NextRequest) {
     if (error) {
       return NextResponse.json({ error }, { status: 500 });
     }
-    return NextResponse.json(
+
+    https: return NextResponse.json(
       {
-        ...data,
         realPath: `${process.env.SUPABASE_URL}/storage/v1/object/public/bot-audio/${data?.path}`,
       },
       { status: 200 },

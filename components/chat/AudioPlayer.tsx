@@ -60,6 +60,37 @@ const AudioPlayer = (props: AudioProps) => {
     }
   };
 
+  const initPlayer = async () => {
+    const newAudio = new Audio(audioSrc);
+    setState((draft) => {
+      // @ts-ignore
+      draft.audio = newAudio;
+    });
+
+    newAudio.onloadedmetadata = () => {
+      setState((draft) => {
+        draft.audioDuration = formatDuration(newAudio.duration);
+      });
+    };
+
+    newAudio.onplay = () => {
+      startTimer();
+    };
+    newAudio.onpause = newAudio.onended = () => {
+      stopTimer();
+    };
+
+    await newAudio.play();
+    setState((draft) => {
+      draft.isPlaying = true;
+    });
+    newAudio.onended = () => {
+      setState((draft) => {
+        draft.isPlaying = false;
+      });
+    };
+  };
+
   const handlePlayClick = async () => {
     if (!audioSrc) {
       generateAudioByText({
@@ -68,34 +99,7 @@ const AudioPlayer = (props: AudioProps) => {
       });
     }
     if (!audio) {
-      const newAudio = new Audio(audioSrc);
-      setState((draft) => {
-        // @ts-ignore
-        draft.audio = newAudio;
-      });
-
-      newAudio.onloadedmetadata = () => {
-        setState((draft) => {
-          draft.audioDuration = formatDuration(newAudio.duration);
-        });
-      };
-
-      newAudio.onplay = () => {
-        startTimer();
-      };
-      newAudio.onpause = newAudio.onended = () => {
-        stopTimer();
-      };
-
-      await newAudio.play();
-      setState((draft) => {
-        draft.isPlaying = true;
-      });
-      newAudio.onended = () => {
-        setState((draft) => {
-          draft.isPlaying = false;
-        });
-      };
+      initPlayer();
     } else {
       if (isPlaying) {
         audio.pause();
@@ -135,6 +139,13 @@ const AudioPlayer = (props: AudioProps) => {
     };
   }, [isPlaying, audio]);
 
+  useEffect(() => {
+    if (!audioSrc) {
+      return;
+    }
+    initPlayer();
+  }, [audioSrc]);
+
   if (error) {
     return <span className="text-red-600">Something error</span>;
   }
@@ -143,7 +154,7 @@ const AudioPlayer = (props: AudioProps) => {
     <div className="w-full mt-2 pl-3">
       <div className="flex items-center justify-start space-x-2 text-xs">
         <button
-          className={`w-[21px] h-[20px] rounded-full ${
+          className={`w-[21px] h-[20px] cursor-pointer rounded-full ${
             !isLoading ? 'bg-[#3e5cfa]' : ''
           } flex items-center justify-center
           `}

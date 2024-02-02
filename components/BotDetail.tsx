@@ -25,6 +25,7 @@ const BotDetail = (props: { id: string }) => {
         starters={detail?.starters!}
         description={detail?.description!}
         placeholder={detail?.description || 'Ask me anything!'}
+        enableImgGeneration={detail?.enable_img_generation!}
         prompt={detail?.prompt!}
         voice={detail?.voice ?? undefined}
         streamming

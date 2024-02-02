@@ -45,7 +45,7 @@ export function ChatWindow(props: {
     name,
     loading = false,
     prompt,
-    enableImgGeneration = false,
+    enableImgGeneration,
     voice,
   } = props;
 
