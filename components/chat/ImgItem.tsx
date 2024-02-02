@@ -1,6 +1,6 @@
 'use client';
 import { Avatar, CircularProgress, Image } from '@nextui-org/react';
-import { useImgGenerator } from './hooks/useImgGenerator';
+import { useImgGenerator } from '../hooks/useImgGenerator';
 import { useMemo } from 'react';
 import { extractParametersByTools } from '@/app/utils/tools';
 import type { Message } from 'ai/react';
@@ -17,7 +17,7 @@ export function ImgItem(props: {
 
   const { data, error, isLoading } = useImgGenerator(
     parameters,
-    props.message?.id
+    props.message?.id,
   );
 
   return (

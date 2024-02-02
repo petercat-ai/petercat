@@ -25,6 +25,7 @@ export interface Database {
           prompt: string | null;
           starters: string[] | null;
           uid: string | null;
+          voice?: string | null;
         };
         Insert: {
           avatar?: string | null;
@@ -41,6 +42,7 @@ export interface Database {
           prompt?: string | null;
           starters?: string[] | null;
           uid?: string | null;
+          voice?: string | null;
         };
         Update: {
           avatar?: string | null;
@@ -57,6 +59,7 @@ export interface Database {
           prompt?: string | null;
           starters?: string[] | null;
           uid?: string | null;
+          voice?: string | null;
         };
         Relationships: [];
       };
