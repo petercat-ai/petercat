@@ -4,9 +4,28 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
-export const GET = async () => {
+export const GET = async (request: Request) => {
+  const headers = request.headers;
+  const uid = headers.get('x-bot-meta-uid');
   try {
-    const res = await supabase.from('bots').select('*');
+    let res;
+    if (!uid) {
+      res = await supabase
+        .from('bots')
+        .select(
+          'id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, voice, public',
+        )
+        .eq('public', true)
+        .order('created_at', { ascending: false });
+    } else {
+      res = await supabase
+        .from('bots')
+        .select(
+          'id, created_at, updated_at avatar, description, enable_img_generation, label, name, starters, voice, public',
+        )
+        .eq('uid', uid)
+        .order('created_at', { ascending: false });
+    }
     if (res?.error) {
       return NextResponse.json({ error: res?.error?.message }, { status: 400 });
     }

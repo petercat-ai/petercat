@@ -15,6 +15,7 @@ import { ImgItem } from './ImgItem';
 
 export function ChatWindow(props: {
   endpoint: string;
+  botId?: string;
   emptyStateComponent?: ReactElement;
   placeholder?: string;
   titleText?: string;
@@ -45,6 +46,7 @@ export function ChatWindow(props: {
     name,
     loading = false,
     prompt,
+    botId,
     enableImgGeneration,
     voice,
   } = props;
@@ -92,6 +94,7 @@ export function ChatWindow(props: {
       if (ev.key === 'Enter') {
         ev.preventDefault();
         handleSubmit({
+          botId,
           prompt,
           enableImgGeneration,
           show_intermediate_steps: true,
