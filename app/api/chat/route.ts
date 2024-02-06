@@ -4,6 +4,7 @@ import { HttpsProxyAgent } from 'https-proxy-agent';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { PromptTemplate } from 'langchain/prompts';
 import { BytesOutputParser } from 'langchain/schema/output_parser';
+import { supabase } from '@/share/supabas-client';
 
 export const runtime = process.env.PROXY_URL ? undefined : 'edge';
 
@@ -48,9 +49,22 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const messages = body.messages ?? [];
-    const promptString =
-      body?.prompt ??
-      'You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.';
+    let promptString = '';
+    if (body?.botId) {
+      const res = await supabase
+        .from('bots')
+        .select('prompt')
+        .eq('id', body?.botId);
+      if (res?.error) {
+        return NextResponse.json(
+          { error: 'Bot is not exist' },
+          { status: 400 },
+        );
+      }
+      promptString = res?.data[0]?.prompt;
+    } else if (body?.prompt) {
+      promptString = body?.prompt;
+    }
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
     const enableImgGeneration = body.enableImgGeneration ?? false;
