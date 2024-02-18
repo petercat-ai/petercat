@@ -2,7 +2,7 @@
 import React from 'react';
 import { ChatWindow } from '@/components/chat/ChatWindow';
 import { Spinner } from '@nextui-org/react';
-import { useBotDetail } from './hooks/useBot';
+import { useBotDetail } from '@/hooks/useBot';
 
 const BotDetail = (props: { id: string }) => {
   const { data: detail, isLoading, error } = useBotDetail(props?.id);

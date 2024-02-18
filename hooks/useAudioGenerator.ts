@@ -1,4 +1,4 @@
-import { generateAudioByText } from '@/app/services/audioGeneratorController';
+import { generateAudioByText } from '@/app/services/AudioGeneratorController';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useAudioGenerator() {

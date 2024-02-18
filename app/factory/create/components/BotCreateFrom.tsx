@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Textarea, Input, Checkbox, Switch, cn } from '@nextui-org/react';
 import ImageUploadComponent from './ImageUpload';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/interface';
 import type { Updater } from 'use-immer';
 import InputList from './InputList';
 import VoiceSelector from './VoiceSelector';

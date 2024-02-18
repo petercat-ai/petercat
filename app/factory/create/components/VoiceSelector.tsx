@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Select, SelectItem } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
-import { voiceOptions } from './../constant/voice';
-import { BotProfile } from '../interface';
+import { voiceOptions } from '@/data/DeafultVoice';
+import { BotProfile } from '@/interface';
 
 interface InputListProps {
   botProfile?: BotProfile;

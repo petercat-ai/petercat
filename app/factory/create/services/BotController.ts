@@ -1,4 +1,4 @@
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/interface';
 import { omit } from 'lodash';
 
 /* Create Bot*/

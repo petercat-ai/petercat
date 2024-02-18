@@ -1,21 +1,25 @@
 import { supabase } from '@/share/supabas-client';
 import { omit } from 'lodash';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@auth0/nextjs-auth0/edge';
 
 export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
+  const session = await getSession();
   try {
+    const uid = session!.user.sub;
     const body = await req.json();
     const id = body?.id;
     const params = omit(body, 'id');
-    if (!id) {
-      return NextResponse.json({ error: 'id is required!' }, { status: 400 });
+    if (!id || !uid) {
+      return NextResponse.json({ error: 'Auth failed' }, { status: 401 });
     }
     const { data, error } = await supabase
       .from('bots')
       .update(params)
       .eq('id', id)
+      .eq('uid', uid)
       .select();
 
     if (error) {

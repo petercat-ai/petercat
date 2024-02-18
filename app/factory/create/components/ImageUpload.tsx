@@ -1,10 +1,10 @@
 import React from 'react';
 import { Image } from '@nextui-org/react';
 import { toast } from 'react-toastify';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/interface';
 import { useImmer } from 'use-immer';
 import type { Updater } from 'use-immer';
-import PlusIcon from '@/components/icons/PlusIcon';
+import PlusIcon from '@/public/icons/PlusIcon';
 
 interface ImageUploadProps {
   botProfile?: BotProfile;

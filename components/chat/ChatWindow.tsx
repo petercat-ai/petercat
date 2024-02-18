@@ -6,10 +6,10 @@ import type { FormEvent } from 'react';
 import { ChatMessageBubble } from '@/components/chat/ChatMessageBubble';
 import { UploadDocumentsForm } from '@/components/UploadDocumentsForm';
 import { IntermediateStep } from './IntermediateStep';
-import { useChat } from '../hooks/useChat';
+import { useChat } from '@/hooks/useChat';
 import { Avatar } from '@nextui-org/react';
 import BotInfoCard from '../BotInfoCard';
-import AppendixIcon from '../icons/AppendixIcon';
+import AppendixIcon from '@/public/icons/AppendixIcon';
 import { ToolsCheck } from './ToolsCheck';
 import { ImgItem } from './ImgItem';
 

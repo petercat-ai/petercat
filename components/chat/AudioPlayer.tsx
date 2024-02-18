@@ -1,8 +1,8 @@
 import { formatDuration } from '@/app/utils/audio';
 import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import PlayIcon from '../icons/PlayIcon';
-import { useAudioGenerator } from '../hooks/useAudioGenerator';
+import PlayIcon from '@/public/icons/PlayIcon';
+import { useAudioGenerator } from '@/hooks/useAudioGenerator';
 import { Spinner } from '@nextui-org/react';
 
 interface AudioProps {

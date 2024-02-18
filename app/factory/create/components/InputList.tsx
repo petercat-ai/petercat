@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Updater } from 'use-immer';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/interface';
 
 const MAX_INPUTS = 4; // Max number of inputs
 

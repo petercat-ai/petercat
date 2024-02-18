@@ -5,7 +5,7 @@ import {
   updateBot,
   getBotDetail,
 } from '../services/BotController';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/interface';
 import { useImmer } from 'use-immer';
 
 export const useBot = () => {

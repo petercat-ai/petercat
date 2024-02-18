@@ -3,9 +3,9 @@ import React from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
 import { ChatWindow } from '@/components/chat/ChatWindow';
-import { useBot } from './hooks/useBot';
+import { useBot } from '@/app/factory/create/hooks/useBot';
 import { toast } from 'react-toastify';
-import BackIcon from '@/components/icons/BackIcon';
+import BackIcon from '@/public/icons/BackIcon';
 
 export default function Create() {
   const {
