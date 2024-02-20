@@ -7,13 +7,11 @@ import {
   NavbarContent,
   NavbarItem,
   Link,
-  Button,
   Tabs,
   Tab,
-  Card,
 } from '@nextui-org/react';
 import { usePathname } from 'next/navigation';
-import Profile from '../User';
+import Profile from './User';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -26,11 +24,11 @@ export function Navbar() {
     {
       id: 'factory',
       label: '工厂',
-      href: '/factory/create',
+      href: '/factory/list',
     },
   ];
 
-  if (pathname === '/factory/create') {
+  if (pathname.includes('/factory/edit')) {
     return null;
   }
 
@@ -38,16 +36,14 @@ export function Navbar() {
     <NextNavbar>
       <NavbarBrand>
         <Link href="/">
-          <Image
-            src="/images/logo.png"
-            alt="botcombo"
-            width={215}
-            height={54}
-          />
+          <Image src="/images/logo.png" alt="botmeta" width={215} height={54} />
         </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <Tabs items={navs}>
+        <Tabs
+          items={navs}
+          selectedKey={pathname === '/' ? 'market' : 'factory'}
+        >
           {(item) => (
             <Tab
               key={item.id}

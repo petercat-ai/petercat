@@ -26,6 +26,7 @@ export interface Database {
           starters: string[] | null;
           uid: string | null;
           voice?: string | null;
+          updated_at: string | null;
         };
         Insert: {
           avatar?: string | null;
@@ -43,6 +44,7 @@ export interface Database {
           starters?: string[] | null;
           uid?: string | null;
           voice?: string | null;
+          updated_at: string | null;
         };
         Update: {
           avatar?: string | null;
@@ -60,6 +62,7 @@ export interface Database {
           starters?: string[] | null;
           uid?: string | null;
           voice?: string | null;
+          updated_at: string | null;
         };
         Relationships: [];
       };

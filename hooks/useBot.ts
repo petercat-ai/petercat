@@ -1,5 +1,9 @@
-import { getBotDetail, getBotList } from '@/app/services/BotController';
-import { useQuery } from '@tanstack/react-query';
+import {
+  deleteBot,
+  getBotDetail,
+  getBotList,
+} from '@/app/services/BotController';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useBotDetail = (id: string) => {
   return useQuery({
@@ -18,3 +22,23 @@ export const useBotList = (personal?: boolean) => {
     retry: false,
   });
 };
+
+export function useBotDelete() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: deleteBot,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['bot.list.true'],
+        refetchType: 'active',
+      });
+    },
+  });
+
+  return {
+    deleteBot: mutation.mutate,
+    isLoading: mutation.isPending,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+  };
+}

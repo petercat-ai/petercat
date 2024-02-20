@@ -6,7 +6,6 @@ import { Spinner } from '@nextui-org/react';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/hooks/useBot';
 
-declare type Bots = Tables<'bots'>[];
 declare type Bot = Tables<'bots'>;
 
 const FullPageSkeleton = () => {

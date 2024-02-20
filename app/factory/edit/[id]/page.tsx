@@ -1,13 +1,13 @@
 'use client';
 import React from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
-import BotCreateFrom from '@/app/factory/create/components/BotCreateFrom';
+import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { ChatWindow } from '@/components/chat/ChatWindow';
-import { useBot } from '@/app/factory/create/hooks/useBot';
+import { useBot } from '@/app/factory/edit/hooks/useBot';
 import { toast } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
 
-export default function Create() {
+export default function Edit({ params }: { params: { id: string } }) {
   const {
     onCreateBot,
     createBotLoading,
@@ -65,7 +65,7 @@ export default function Create() {
       <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
         <a
           className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
-          href="/"
+          href="/factory/list"
         >
           <BackIcon />
         </a>
