@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Select, SelectItem } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
 import { voiceOptions } from '@/data/DeafultVoice';
-import { BotProfile } from '@/interface';
+import { BotProfile } from '@/app/interface';
 
 interface VoiceSelectorProps {
   botProfile?: BotProfile;

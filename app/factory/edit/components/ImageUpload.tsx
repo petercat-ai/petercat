@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Image } from '@nextui-org/react';
 import { toast } from 'react-toastify';
-import { BotProfile } from '@/interface';
+import { BotProfile } from '@/app/interface';
 import type { Updater } from 'use-immer';
 import PlusIcon from '@/public/icons/PlusIcon';
 

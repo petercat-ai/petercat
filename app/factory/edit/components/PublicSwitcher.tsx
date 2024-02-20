@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
-import { BotProfile } from '@/interface';
+import { BotProfile } from '@/app/interface';
 
 interface PublicSwitcherProps {
   isSelected: boolean;

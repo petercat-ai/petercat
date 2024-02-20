@@ -24,7 +24,7 @@ import {
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import SettingIcon from '@/public/icons/SettingIcon';
-import { useBotDelete } from '@/hooks/useBot';
+import { useBotDelete } from '@/app/hooks/useBot';
 
 declare type Bot = Tables<'bots'>;
 

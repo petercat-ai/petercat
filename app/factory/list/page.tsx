@@ -4,7 +4,7 @@ import React from 'react';
 import { isEmpty, map } from 'lodash';
 import { Card, CardBody, Spinner, Image } from '@nextui-org/react';
 import BotCard from './components/BotCard';
-import { useBotList } from '@/hooks/useBot';
+import { useBotList } from '@/app/hooks/useBot';
 import { useRouter } from 'next/navigation';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 

@@ -1,7 +1,7 @@
 import { omit } from 'lodash';
 import { Tables } from '@/types/database.types';
 import axios from 'axios';
-import { BotProfile } from '@/interface';
+import { BotProfile } from '@/app/interface';
 
 declare type Bot = Tables<'bots'>;
 

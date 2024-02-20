@@ -4,7 +4,7 @@ import React from 'react';
 import { isEmpty, map } from 'lodash';
 import { Spinner } from '@nextui-org/react';
 import BotCard from '@/components/BotCard';
-import { useBotList } from '@/hooks/useBot';
+import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 
 declare type Bot = Tables<'bots'>;

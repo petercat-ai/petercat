@@ -1,6 +1,6 @@
 'use client';
 import { Avatar, CircularProgress, Image } from '@nextui-org/react';
-import { useImgGenerator } from '@/hooks/useImgGenerator';
+import { useImgGenerator } from '@/app/hooks/useImgGenerator';
 import { useMemo } from 'react';
 import { extractParametersByTools } from '@/app/utils/tools';
 import type { Message } from 'ai/react';
