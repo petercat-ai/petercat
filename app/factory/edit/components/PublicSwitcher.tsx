@@ -11,10 +11,6 @@ interface PublicSwitcherProps {
 const PublicSwitcher = (props: PublicSwitcherProps) => {
   const { isSelected, setBotProfile } = props;
 
-  // useEffect(() => {
-  //   setIsSelected(!!botProfile?.public);
-  // }, [botProfile?.public]);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.checked;
 
