@@ -1,10 +1,11 @@
+import { Tables } from '@/types/database.types';
+import { NextResponse } from 'next/server';
 import { supabase } from '@/share/supabas-client';
-import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0/edge';
 
 export const runtime = 'edge';
 
-export async function DELETE(request: NextRequest) {
+export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
@@ -13,21 +14,18 @@ export async function DELETE(request: NextRequest) {
   if (!id || !uid) {
     return NextResponse.json({ error: 'Auth failed' }, { status: 401 });
   }
-
   try {
-    const uid = session!.user.sub;
-    const { error } = await supabase
+    const res = await supabase
       .from('bots')
-      .delete()
+      .select('*')
       .eq('id', id)
       .eq('uid', uid);
-
-    if (error) {
-      return NextResponse.json({ error: error?.message }, { status: 400 });
+    if (res?.error) {
+      return NextResponse.json({ error: res?.error?.message }, { status: 400 });
     }
-
-    return NextResponse.json({ id }, { status: 200 });
+    const bots = res?.data ?? ([] as Tables<'bots'>[]);
+    return NextResponse.json({ data: bots }, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
-}
+};

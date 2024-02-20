@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, SelectItem } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
-import { voiceOptions } from './../constant/voice';
-import { BotProfile } from '../interface';
+import { voiceOptions } from '@/data/DeafultVoice';
+import { BotProfile } from '@/app/interface';
 
-interface InputListProps {
+interface VoiceSelectorProps {
   botProfile?: BotProfile;
   setBotProfile?: Updater<BotProfile>;
 }
 
-const VoiceSelector = (props: InputListProps) => {
+const VoiceSelector = (props: VoiceSelectorProps) => {
   const { botProfile, setBotProfile } = props;
-  const [selectedVoice, setSelectedVoice] = useState(botProfile?.voice || '');
+  const [selectedVoice, setSelectedVoice] = useState('');
+  useEffect(() => {
+    if (botProfile?.voice) {
+      setSelectedVoice(botProfile?.voice);
+    }
+  }, [botProfile?.voice]);
   return (
     <Select
       items={voiceOptions}

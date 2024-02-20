@@ -3,7 +3,7 @@ import './globals.css';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
-import { Navbar } from '@/components/chat/Navbar';
+import { Navbar } from '@/components/Navbar';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Bot Combo</title>
+        <title>Bot Meta</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <meta
           name="description"

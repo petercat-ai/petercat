@@ -1,5 +1,5 @@
 {
-  "name": "bot-combo",
+  "name": "bot-meta",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -24,11 +24,11 @@
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
-    "ahooks": "^3.7.8",
     "ai": "^2.1.28",
     "autoprefixer": "10.4.14",
     "axios": "^1.6.7",
     "concurrently": "^8.2.2",
+    "dayjs": "^1.11.10",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.15",

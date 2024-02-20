@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
   const session = await getSession();
   try {
     const body = await req.json();
-    const { data, error } = await supabase.from('bots').insert([{ ...body, uid: session!.user.sub }]).select();
+    const { data, error } = await supabase
+      .from('bots')
+      .insert([{ ...body, uid: session!.user.sub }])
+      .select();
     if (error) {
       return NextResponse.json({ error: error?.message }, { status: 400 });
     }

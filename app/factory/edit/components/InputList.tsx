@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Updater } from 'use-immer';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/app/interface';
 
 const MAX_INPUTS = 4; // Max number of inputs
 
@@ -11,7 +11,13 @@ interface InputListProps {
 
 const InputList = (props: InputListProps) => {
   const { botProfile, setBotProfile } = props;
-  const [inputs, setInputs] = useState(botProfile?.starters || ['']);
+  const [inputs, setInputs] = useState(['']);
+
+  useEffect(() => {
+    if (botProfile?.starters) {
+      setInputs(botProfile?.starters);
+    }
+  }, [botProfile?.starters]);
 
   const handleChange = (index: number, value: string) => {
     const newInputs = [...inputs];

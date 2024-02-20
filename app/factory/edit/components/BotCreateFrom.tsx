@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Textarea, Input, Checkbox, Switch, cn } from '@nextui-org/react';
 import ImageUploadComponent from './ImageUpload';
-import { BotProfile } from '../interface';
+import { BotProfile } from '@/app/interface';
 import type { Updater } from 'use-immer';
 import InputList from './InputList';
 import VoiceSelector from './VoiceSelector';
@@ -21,6 +21,7 @@ const BotCreateFrom = (props: BotFormProps) => {
     >;
     const value = e.target.value;
     setBotProfile?.((draft: BotProfile) => {
+      // @ts-ignore
       draft[name] = value;
     });
   };
@@ -33,12 +34,10 @@ const BotCreateFrom = (props: BotFormProps) => {
   };
 
   useEffect(() => {
-    if (!enableVoice) {
-      setBotProfile?.((draft: BotProfile) => {
-        draft.voice = '';
-      });
+    if (botProfile?.voice) {
+      setEnableVoice(true);
     }
-  }, [enableVoice]);
+  }, [botProfile?.voice]);
 
   return (
     <div className="container mx-auto p-8">
@@ -100,7 +99,6 @@ const BotCreateFrom = (props: BotFormProps) => {
             DALL·E Image Generation
           </Checkbox>
         </label>
-
         <Switch
           isSelected={enableVoice}
           onValueChange={(isSeleted: boolean) => setEnableVoice(isSeleted)}
