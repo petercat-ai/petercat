@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useMemo } from 'react';
-import { Tabs, Tab, Button } from '@nextui-org/react';
+import { Tabs, Tab, Button, Switch } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { ChatWindow } from '@/components/chat/ChatWindow';
-import { useBot } from '@/app/factory/edit/hooks/useBot';
 import { toast } from 'react-toastify';
 import { BotProfile } from '@/interface';
 import BackIcon from '@/public/icons/BackIcon';
 import { useBotConfig, useBotCreate, useBotEdit } from '@/hooks/useBot';
+import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { useImmer } from 'use-immer';
@@ -92,7 +92,6 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (createResponseData) {
-      console.log('createResponseData', createResponseData);
       setBotProfile?.((draft) => {
         draft.id = createResponseData;
       });
@@ -124,12 +123,21 @@ export default function Edit({ params }: { params: { id: string } }) {
   return (
     <div className="flex h-screen w-full flex-col items-center bg-white">
       <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
-        <a
-          className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
-          href="/factory/list"
-        >
-          <BackIcon />
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
+            href="/factory/list"
+          >
+            <BackIcon />
+          </a>
+          <div className="flex items-center gap-2">
+            <PublicSwitcher
+              isSelected={!!botProfile?.public}
+              setBotProfile={setBotProfile}
+            />
+          </div>
+        </div>
+
         <div className="flex items-center gap-2">
           <Button
             color="success"

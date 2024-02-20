@@ -98,7 +98,6 @@ const BotCreateFrom = (props: BotFormProps) => {
             DALL·E Image Generation
           </Checkbox>
         </label>
-
         <Switch
           isSelected={enableVoice}
           onValueChange={(isSeleted: boolean) => setEnableVoice(isSeleted)}

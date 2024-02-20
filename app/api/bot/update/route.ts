@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
     const uid = session!.user.sub;
     const body = await req.json();
     const id = body?.id;
-    console.log('uid', uid);
     if (!id || !uid) {
       return NextResponse.json({ error: 'Auth failed' }, { status: 401 });
     }

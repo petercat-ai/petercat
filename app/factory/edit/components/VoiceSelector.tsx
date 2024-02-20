@@ -4,12 +4,12 @@ import type { Updater } from 'use-immer';
 import { voiceOptions } from '@/data/DeafultVoice';
 import { BotProfile } from '@/interface';
 
-interface InputListProps {
+interface VoiceSelectorProps {
   botProfile?: BotProfile;
   setBotProfile?: Updater<BotProfile>;
 }
 
-const VoiceSelector = (props: InputListProps) => {
+const VoiceSelector = (props: VoiceSelectorProps) => {
   const { botProfile, setBotProfile } = props;
   const [selectedVoice, setSelectedVoice] = useState('');
   useEffect(() => {
