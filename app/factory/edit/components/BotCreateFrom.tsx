@@ -21,6 +21,7 @@ const BotCreateFrom = (props: BotFormProps) => {
     >;
     const value = e.target.value;
     setBotProfile?.((draft: BotProfile) => {
+      // @ts-ignore
       draft[name] = value;
     });
   };
