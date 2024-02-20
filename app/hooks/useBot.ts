@@ -5,7 +5,7 @@ import {
   getBotDetail,
   getBotList,
   updateBot,
-} from '@/app/services/BotController';
+} from '@/app/services/BotsController';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useBotDetail = (id: string) => {
