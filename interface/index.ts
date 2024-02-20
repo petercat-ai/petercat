@@ -7,4 +7,5 @@ export interface BotProfile {
   starters?: string[];
   enable_img_generation?: boolean;
   voice?: string;
+  public?: boolean;
 }

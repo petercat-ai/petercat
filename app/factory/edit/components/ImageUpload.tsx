@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { BotProfile } from '@/interface';
-import { useImmer } from 'use-immer';
 import type { Updater } from 'use-immer';
 import PlusIcon from '@/public/icons/PlusIcon';
 
@@ -13,7 +12,13 @@ interface ImageUploadProps {
 
 const ImageUploadComponent = (props: ImageUploadProps) => {
   const { botProfile, setBotProfile } = props;
-  const [imageSrc, setImageSrc] = useImmer(botProfile?.avatar);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (botProfile?.avatar) {
+      setImageSrc(botProfile?.avatar);
+    }
+  }, [botProfile?.avatar]);
 
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0];

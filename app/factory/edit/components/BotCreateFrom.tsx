@@ -33,12 +33,10 @@ const BotCreateFrom = (props: BotFormProps) => {
   };
 
   useEffect(() => {
-    if (!enableVoice) {
-      setBotProfile?.((draft: BotProfile) => {
-        draft.voice = '';
-      });
+    if (botProfile?.voice) {
+      setEnableVoice(true);
     }
-  }, [enableVoice]);
+  }, [botProfile?.voice]);
 
   return (
     <div className="container mx-auto p-8">

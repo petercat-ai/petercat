@@ -11,6 +11,7 @@ export interface Database {
     Tables: {
       bots: {
         Row: {
+          public: boolean | null;
           avatar: string | null;
           created_at: string;
           description: string | null;
@@ -29,6 +30,7 @@ export interface Database {
           updated_at: string | null;
         };
         Insert: {
+          public: boolean | null;
           avatar?: string | null;
           created_at?: string;
           description?: string | null;
@@ -47,6 +49,7 @@ export interface Database {
           updated_at: string | null;
         };
         Update: {
+          public: boolean | null;
           avatar?: string | null;
           created_at?: string;
           description?: string | null;

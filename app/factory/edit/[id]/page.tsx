@@ -1,43 +1,73 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Tabs, Tab, Button } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { ChatWindow } from '@/components/chat/ChatWindow';
 import { useBot } from '@/app/factory/edit/hooks/useBot';
 import { toast } from 'react-toastify';
+import { BotProfile } from '@/interface';
 import BackIcon from '@/public/icons/BackIcon';
+import { useBotConfig, useBotCreate, useBotEdit } from '@/hooks/useBot';
+import FullPageSkeleton from '@/components/FullPageSkeleton';
+import { isEmpty } from 'lodash';
+import { useImmer } from 'use-immer';
 
 export default function Edit({ params }: { params: { id: string } }) {
+  const [botProfile, setBotProfile] = useImmer<BotProfile>({
+    id: '',
+    avatar: '',
+    name: 'Untitled',
+    description: '',
+    prompt: '',
+    starters: [''],
+    enable_img_generation: true,
+    voice: '',
+    public: false,
+  });
+
   const {
-    onCreateBot,
-    createBotLoading,
-    onUpdateBot,
-    updateBotLoading,
-    botProfile,
-    setBotProfile,
-  } = useBot();
+    updateBot: onUpdateBot,
+    isLoading: updateBotLoading,
+    isSuccess: editSuccess,
+    error: editError,
+  } = useBotEdit();
+
+  const {
+    data: createResponseData,
+    createBot: onCreateBot,
+    isLoading: createBotLoading,
+    isSuccess: createSuccess,
+    error: createError,
+  } = useBotCreate();
+
+  const isEdit = useMemo(
+    () => !!params?.id && params?.id !== 'new',
+    [params?.id],
+  );
+
+  const { data: config, isLoading } = useBotConfig(params?.id, isEdit);
+
+  useEffect(() => {
+    if (!isEmpty(config))
+      setBotProfile?.((draft) => {
+        draft.id = config.id;
+        draft.name = config.name || '';
+        draft.description = config.description || '';
+        draft.avatar = config.avatar || '';
+        draft.enable_img_generation = config.enable_img_generation ?? false;
+        draft.voice = config.voice || '';
+        draft.starters = config.starters || [''];
+        draft.prompt = config.prompt || '';
+        draft.public = config.public ?? false;
+      });
+  }, [config]);
 
   const createBot = async () => {
     const params = {
       ...botProfile,
       starters: botProfile?.starters?.filter((s) => s),
     };
-
-    try {
-      const response = await onCreateBot(params);
-      if (response.ok) {
-        const data = await response.json();
-        setBotProfile?.((draft) => {
-          draft.id = data.data?.id;
-        });
-        toast.success('Save success');
-      } else {
-        toast.error('Save failed');
-      }
-    } catch (error) {
-      console.error('Save failed:', error);
-      toast.error('Save failed');
-    }
+    onCreateBot(params);
   };
 
   const updateBot = async () => {
@@ -45,20 +75,51 @@ export default function Edit({ params }: { params: { id: string } }) {
       ...botProfile,
       starters: botProfile?.starters?.filter((s) => s),
     };
-
-    try {
-      const response = await onUpdateBot(params);
-      if (response.ok) {
-        await response.json();
-        toast.success('Save success');
-      } else {
-        toast.error('Save failed');
-      }
-    } catch (error) {
-      console.error('Save failed:', error);
-      toast.error('Save failed');
-    }
+    onUpdateBot(params);
   };
+
+  useEffect(() => {
+    if (createSuccess) {
+      toast.success('Save success');
+    }
+  }, [createSuccess]);
+
+  useEffect(() => {
+    if (createError) {
+      toast.error(`Save failed${createError.message}`);
+    }
+  }, [createError]);
+
+  useEffect(() => {
+    if (createResponseData) {
+      console.log('createResponseData', createResponseData);
+      setBotProfile?.((draft) => {
+        draft.id = createResponseData;
+      });
+    }
+  }, [createResponseData]);
+
+  useEffect(() => {
+    if (editError) {
+      toast.error(`Save failed${editError.message}`);
+    }
+  }, [editError]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast.success('Save success');
+    }
+  }, [editSuccess]);
+
+  useEffect(() => {
+    if (editError) {
+      toast.error(`Save failed${editError.message}`);
+    }
+  }, [editError]);
+
+  if (isLoading) {
+    return <FullPageSkeleton />;
+  }
 
   return (
     <div className="flex h-screen w-full flex-col items-center bg-white">

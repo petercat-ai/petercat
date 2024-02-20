@@ -20,7 +20,6 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react';
-import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import SettingIcon from '@/public/icons/SettingIcon';
@@ -81,7 +80,7 @@ const BotCard = (props: { bot: Bot }) => {
             <DropdownMenu aria-label="Static Actions">
               <DropdownItem
                 key="edit"
-                onClick={() => router.push(`/factor/edit/${bot.id}`)}
+                onClick={() => router.push(`/factory/edit/${bot.id}`)}
               >
                 编辑
               </DropdownItem>
