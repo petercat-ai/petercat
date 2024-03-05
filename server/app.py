@@ -27,5 +27,6 @@ def run_img_generator(input_data: DalleData):
 def run_langchain_chat(input_data: ChatData):
     result = chat.langchain_chat(input_data, open_api_key)
     return result
+
 if __name__ == "__main__":
    uvicorn.run(app, host="0.0.0.0", port=8080)
