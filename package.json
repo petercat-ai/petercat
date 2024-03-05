@@ -8,6 +8,7 @@
     "dev": "next dev",
     "dev:python": "concurrently \"yarn run dev\" \"yarn run fastapi-dev\"",
     "build": "next build",
+    "build:docker": "docker build -t bot-meta .",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"app\""

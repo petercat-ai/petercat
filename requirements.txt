@@ -3,4 +3,4 @@ uvicorn[standard]==0.23.2
 langchain==0.0.352
 openai==1.6.0
 python-dotenv==1.0.0
-
+mangum
