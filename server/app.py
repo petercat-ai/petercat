@@ -1,7 +1,6 @@
 import os
 from fastapi import FastAPI
 from mangum import Mangum
-import uvicorn
 
 from data_class import DalleData, ChatData
 from openai_api import dalle
@@ -29,4 +28,7 @@ def run_langchain_chat(input_data: ChatData):
     return result
 
 if __name__ == "__main__":
-   uvicorn.run(app, host="0.0.0.0", port=8080)
+    # run main.py to debug backend
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=5050)
