@@ -2,8 +2,8 @@ test:
 	pytest backend/tests
 
 dev:
-	docker compose -f docker-compose.dev.yml build backend-core
-	docker compose -f docker-compose.dev.yml up --build
+	docker compose -f docker/docker-compose.dev.yml build backend-core
+	docker compose -f docker/docker-compose.dev.yml up --build
 
 prod:
 	docker compose build backend-core
