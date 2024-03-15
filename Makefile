@@ -5,6 +5,11 @@ dev:
 	docker compose -f docker/docker-compose.dev.yml build backend-core
 	docker compose -f docker/docker-compose.dev.yml up --build
 
+dev-init:
+	rm -rf docker/volumes/db/data 
+	docker compose -f docker/docker-compose.dev.yml build backend-core
+	docker compose -f docker/docker-compose.dev.yml up --build
+
 prod:
 	docker compose build backend-core
 	docker compose -f docker-compose.yml up --build

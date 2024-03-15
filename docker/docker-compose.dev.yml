@@ -402,6 +402,12 @@ services:
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       # Changes required for Analytics support
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
+      # migrate extensions
+      - ./volumes/db/extensions.sql:/docker-entrypoint-initdb.d/migrations/00-extensions.sql:Z
+      # migrate datas
+      - ./volumes/db/init/bots.sql:/docker-entrypoint-initdb.d/migrations/100-init-bots.sql:Z
+      - ./volumes/db/init/documents.sql:/docker-entrypoint-initdb.d/migrations/101-init-documents.sql:Z
+      - ./volumes/db/init/profiles.sql:/docker-entrypoint-initdb.d/migrations/102-init-profiles.sql:Z
 
   vector:
     container_name: supabase-vector
