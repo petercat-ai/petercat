@@ -2,7 +2,7 @@ const PlayIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill="#fefefe"
     aria-hidden="true"
     className="ml-[2px] fill-[#fefefe] w-[16px] h-[16px]"
     focusable="false"
