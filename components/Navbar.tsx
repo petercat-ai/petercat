@@ -36,7 +36,7 @@ export function Navbar() {
     <NextNavbar>
       <NavbarBrand>
         <Link href="/">
-          <Image src="/images/logo.png" alt="botmeta" width={215} height={54} />
+          <Image src="/images/logo.svg" alt="botmeta" width={215} height={54} />
         </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
     const model = new ChatOpenAI({
       temperature: 0.8,
       modelName: 'gpt-4',
+      maxTokens: -1,
       configuration: process.env.PROXY_URL
         ? {
             httpAgent: new HttpsProxyAgent(process.env.PROXY_URL!),

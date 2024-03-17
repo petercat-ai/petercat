@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Bot Meta</title>
+        <title>Agent Hub</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <meta
           name="description"
