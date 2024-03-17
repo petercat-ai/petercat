@@ -3,6 +3,14 @@ test:
 
 dev:
 	docker compose -f docker/docker-compose.dev.yml build backend-core
+	docker compose -f docker/docker-compose.dev.yml up --build -d
+
+dev-ps:
+	docker compose -f docker/docker-compose.dev.yml ps
+
+dev-init:
+	rm -rf docker/volumes/db/data 
+	docker compose -f docker/docker-compose.dev.yml build backend-core
 	docker compose -f docker/docker-compose.dev.yml up --build
 
 prod:
