@@ -15,7 +15,7 @@ Follow these steps to start BotMeta locally:
 git clone --depth 1 git@github.com:ant-xuexiao/bot-meta.git
 
 # Copy the fake env vars
-cp server/.env.example server/.env
+cp docker/.env.example docker/.env
 cp .env.example .env
 
 # Start the services (in detached mode)

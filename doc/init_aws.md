@@ -13,7 +13,7 @@ https://ap-northeast-1.signin.aws/platform/login
 #### Docker Login 
 
 ```bash
-aws ecr get-login-password \
+$ aws ecr get-login-password \
         --region ap-northeast-1 | docker login \
         --username AWS \
         --password-stdin 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/xuexiao
@@ -21,7 +21,7 @@ aws ecr get-login-password \
 
 #### Build Docker Image
 ```bash
-docker build -t bot-meta .
+$ docker build -t bot-meta .
 ```
 
 > If successful, the command line will display the following information:
@@ -51,9 +51,47 @@ docker build -t bot-meta .
 #### Tag and Push Docker Image
 
 ```bash
-docker tag bot-meta:latest 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/xuexiao:latest
+$ docker tag bot-meta:latest 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/xuexiao:latest
 ```
 
 ```
-docker push 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/xuexiao:latest
+$ docker push 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/xuexiao:latest
+```
+
+
+#### Create an ECS context
+```bash
+$ docker context create ecs botmetaecscontext
+```
+
+```
+Docker Compose's integration for ECS and ACI will be retired in November 2023. Learn more: https://docs.docker.com/go/compose-ecs-eol/
+? Create a Docker context using: An existing AWS profile
+? Select AWS Profile 654654285942_administratoraccess
+Successfully created ecs context "botmetaecscontext"
+```
+
+The current context in use is marked by  * in the output of context listing:
+
+```bash
+$ docker context ls
+```
+
+```
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                                KUBERNETES ENDPOINT   ORCHESTRATOR
+botmetaecscontext   ecs
+default             moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock
+```
+
+To make all subsequent commands target Amazon ECS, make the newly created ECS context the one in use by running:
+
+```bash
+docker context use botmetaecscontext
+```
+
+
+Docker Compose converts the Compose file to a CloudFormation template defining a set of AWS resources. Details on the resource mapping can be found in the documentation. To review the CloudFormation template generated, we can run the command:
+
+```bash
+$ docker compose convert
 ```
