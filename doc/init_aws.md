@@ -71,27 +71,6 @@ Docker Compose's integration for ECS and ACI will be retired in November 2023. L
 Successfully created ecs context "botmetaecscontext"
 ```
 
-The current context in use is marked by  * in the output of context listing:
 
-```bash
-$ docker context ls
-```
-
-```
-NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                                KUBERNETES ENDPOINT   ORCHESTRATOR
-botmetaecscontext   ecs
-default             moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock
-```
-
-To make all subsequent commands target Amazon ECS, make the newly created ECS context the one in use by running:
-
-```bash
-docker context use botmetaecscontext
-```
-
-
-Docker Compose converts the Compose file to a CloudFormation template defining a set of AWS resources. Details on the resource mapping can be found in the documentation. To review the CloudFormation template generated, we can run the command:
-
-```bash
-$ docker compose convert
-```
+#### REFERENCES
+https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-private-integration.html

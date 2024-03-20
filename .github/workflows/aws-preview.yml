@@ -5,12 +5,18 @@ on:
     branches: ["main"]
     paths:
       - "server/**"
+  pull_request:
+    branches: [ "main" ]
 
 env:
   AWS_REGION: ap-northeast-1
   ECR_REPOSITORY: xuexiao
   ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
   ECS_CLUSTER: xuexiao
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
 
 jobs:
   build_and_push:
@@ -23,10 +29,10 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
+          audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -87,10 +93,10 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
+          audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition for ${{ matrix.name }}
