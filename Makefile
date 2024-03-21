@@ -2,16 +2,16 @@ test:
 	pytest backend/tests
 
 dev:
-	docker compose -f docker/docker-compose.dev.yml build backend-core
-	docker compose -f docker/docker-compose.dev.yml up --build -d
+	docker compose -f docker/docker-compose.yml build backend-core
+	docker compose -f docker/docker-compose.yml up --build -d
 
 dev-ps:
-	docker compose -f docker/docker-compose.dev.yml ps
+	docker compose -f docker/docker-compose.yml ps
 
 dev-init:
 	rm -rf docker/volumes/db/data 
-	docker compose -f docker/docker-compose.dev.yml build backend-core
-	docker compose -f docker/docker-compose.dev.yml up --build
+	docker compose -f docker/docker-compose.yml build backend-core
+	docker compose -f docker/docker-compose.yml up --build
 
 prod:
 	docker compose build backend-core

@@ -33,7 +33,7 @@ make dev-ps
 ```
 docker compose -f docker/docker-compose.dev.yml ps
 NAME                             IMAGE                              COMMAND                   SERVICE        CREATED       STATUS                      PORTS
-backend-core                     backend-base                       "uvicorn app:app --h…"    backend-core   2 hours ago   Up 54 seconds               0.0.0.0:5050->5050/tcp
+backend-core                     backend-base                       "uvicorn main:app --h…"    backend-core   2 hours ago   Up 54 seconds               0.0.0.0:5050->5050/tcp
 realtime-dev.supabase-realtime   supabase/realtime:v2.25.66         "/usr/bin/tini -s -g…"    realtime       2 hours ago   Up 37 seconds (healthy)
 redis                            redis:latest                       "docker-entrypoint.s…"    redis          2 hours ago   Up 54 seconds               0.0.0.0:6379->6379/tcp
 supabase-analytics               supabase/logflare:1.4.0            "sh run.sh"               analytics      2 hours ago   Up 43 seconds (healthy)     0.0.0.0:4000->4000/tcp
