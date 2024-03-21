@@ -9,4 +9,4 @@ RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cach
 
 EXPOSE 80
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--workers", "6"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--workers", "6"]
