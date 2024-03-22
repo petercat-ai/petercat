@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "yarn && bash setup_python.sh",
-    "fastapi-dev": "cd server && ../venv/bin/python3 -m uvicorn index:app --reload",
+    "bootstrap": "yarn && cd server && bash setup_python.sh",
+    "fastapi-dev": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
     "dev": "next dev",
     "dev:python": "concurrently \"yarn run dev\" \"yarn run fastapi-dev\"",
     "build": "next build",
