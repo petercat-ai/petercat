@@ -6,6 +6,7 @@
     "bootstrap": "yarn && cd server && bash setup_python.sh",
     "fastapi-dev": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
     "dev": "next dev",
+    "prepare": "husky install",
     "dev:python": "concurrently \"yarn run dev\" \"yarn run fastapi-dev\"",
     "build": "next build",
     "build:docker": "docker build -t bot-meta .",
