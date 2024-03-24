@@ -52,7 +52,7 @@
     "react-dom": ">=16.9.0"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.8.3",
+    "@ant-design/icons": "^5.3.5",
     "@ant-design/pro-chat": "^1.10.1",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",
