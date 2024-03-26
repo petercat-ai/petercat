@@ -1,26 +1,45 @@
 import os
 from fastapi import FastAPI
-
-from data_class import DalleData, ChatData
+from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+from data_class import DalleData, ChatData, DataItem
 from openai_api import dalle
 from langchain_api import chat
+from agent import stream
 
 open_api_key = os.getenv("OPENAI_API_KEY")
 
-app = FastAPI()
+app = FastAPI( 
+    title="Bo-meta Server",
+    version="1.0",
+    description="Agent Chat APIs"
+    )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
 
 @app.post("/api/dall-e")
 def run_img_generator(input_data: DalleData):
     result = dalle.img_generator(input_data, open_api_key)
     return result
 
-
 @app.post("/api/chat")
 def run_langchain_chat(input_data: ChatData):
     result = chat.langchain_chat(input_data, open_api_key)
     return result
+
+
+@app.post("/api/chat/stream", response_class=StreamingResponse)
+async def run_agent_chat(input_data: DataItem):
+    result = stream.agent_chat(input_data, open_api_key)
+    return StreamingResponse(result, media_type="text/event-stream")
