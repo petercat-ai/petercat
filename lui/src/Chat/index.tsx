@@ -61,7 +61,13 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
           return [];
         }}
         request={async (messages) => {
-          const response = await streamChat(messages);
+          const newMessages = messages.map((message) => {
+            return {
+              role: message.role,
+              content: message.content as string,
+            };
+          });
+          const response = await streamChat(newMessages);
           return handleStream(response);
         }}
         inputAreaProps={{ className: 'userInputBox h-24 !important' }}

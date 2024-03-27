@@ -13,6 +13,3 @@ class Message(BaseModel):
 class ChatData(BaseModel):
     messages: list[Message] = []
     prompt: str = None
-
-class DataItem(BaseModel):
-    input_data: str

@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from data_class import DalleData, ChatData, DataItem
+from data_class import DalleData, ChatData
 from openai_api import dalle
 from langchain_api import chat
 from agent import stream
@@ -40,6 +40,6 @@ def run_langchain_chat(input_data: ChatData):
 
 
 @app.post("/api/chat/stream", response_class=StreamingResponse)
-async def run_agent_chat(input_data: DataItem):
+async def run_agent_chat(input_data: ChatData):
     result = stream.agent_chat(input_data, open_api_key)
     return StreamingResponse(result, media_type="text/event-stream")

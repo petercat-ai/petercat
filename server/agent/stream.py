@@ -1,14 +1,16 @@
-from typing import Any, AsyncIterator, List, Literal
-from langchain.agents import AgentExecutor, tool
+from typing import AsyncIterator
+from langchain.agents import AgentExecutor
+from data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain.prompts import MessagesPlaceholder
-from langchain_community.tools.convert_to_openai import format_tool_to_openai_tool
+from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from tools import issue
+from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
 
 
 prompt = ChatPromptTemplate.from_messages(
@@ -19,11 +21,11 @@ prompt = ChatPromptTemplate.from_messages(
             "1. Talk with the user as normal. "
             "2. If they ask you about issues, use a tool",
         ),
+        MessagesPlaceholder(variable_name="chat_history"),
         ("user", "{input}"),
         MessagesPlaceholder(variable_name="agent_scratchpad"),
     ]
 )
-
 
 
 TOOL_MAPPING = {
@@ -46,7 +48,7 @@ def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
 
     if tools:
         llm_with_tools = llm.bind(
-            tools=[format_tool_to_openai_tool(tool) for tool in tools]
+            tools=[convert_to_openai_tool(tool) for tool in tools]
         )
     else:
         llm_with_tools = llm
@@ -57,6 +59,7 @@ def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
             "agent_scratchpad": lambda x: format_to_openai_tool_messages(
                 x["intermediate_steps"]
             ),
+            "chat_history": lambda x: x["chat_history"],
         }
         | prompt
         | llm_with_tools
@@ -68,13 +71,28 @@ def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
     return agent_executor
 
 
+def chat_history_transform(messages: list[Message]):
+    transformed_messages = []
+    for message in messages:
+        print('meaage', message)
+        if message.role == "user":
+            transformed_messages.append(HumanMessage(content=message.content))
+        elif message.role == "assistant":
+           transformed_messages.append(AIMessage(content=message.content))
+        else:
+            transformed_messages.append(FunctionMessage(content=message.content))
+    return transformed_messages
 
-async def agent_chat(input_data: str, openai_api_key) -> AsyncIterator[str]:
+
+async def agent_chat(input_data: ChatData, openai_api_key) -> AsyncIterator[str]:
     try:
+        messages = input_data.messages
         agent_executor = _create_agent_with_tools(openai_api_key)
+        print(chat_history_transform(messages))
         async for event in agent_executor.astream_events(
             {
-                "input": input_data,
+                "input": messages[len(messages) - 1].content,
+                "chat_history": chat_history_transform(messages),
             },
             version="v1",
         ):
@@ -82,29 +100,22 @@ async def agent_chat(input_data: str, openai_api_key) -> AsyncIterator[str]:
             if kind == "on_chain_start":
                 if (
                     event["name"] == "agent"
-                ):  # matches `.with_config({"run_name": "Agent"})` in agent_executor
-                    yield "\n"
-                    yield (
+                ): 
+                    print(
                         f"Starting agent: {event['name']} "
                         f"with input: {event['data'].get('input')}"
                     )
-                    yield "\n"
             elif kind == "on_chain_end":
                 if (
                     event["name"] == "agent"
-                ):  # matches `.with_config({"run_name": "Agent"})` in agent_executor
-                    yield "\n"
-                    yield (
+                ): 
+                    print (
                         f"Done agent: {event['name']} "
                         f"with output: {event['data'].get('output')['output']}"
                     )
-                    yield "\n"
             if kind == "on_chat_model_stream":
                 content = event["data"]["chunk"].content
                 if content:
-                    # Empty content in the context of OpenAI means
-                    # that the model is asking for a tool to be invoked.
-                    # So we only print non-empty content
                     yield f"{content}"
             elif kind == "on_tool_start":
                 yield "\n"
