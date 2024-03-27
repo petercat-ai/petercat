@@ -1,12 +1,10 @@
-import { ChatMessage } from '@ant-design/pro-chat';
+import { IPrompt } from 'lui/interface';
 
 /**
  * Chat api
  * @param message IPrompt
  */
-export async function streamChat(
-  messages: ChatMessage<Record<string, any>>[],
-): Promise<Response> {
+export async function streamChat(messages: IPrompt[]): Promise<Response> {
   return fetch('http://127.0.0.1:8000/api/chat/stream', {
     method: 'POST',
     headers: {
@@ -15,7 +13,8 @@ export async function streamChat(
       'keep-alive': 'timeout=5',
     },
     body: JSON.stringify({
-      input_data: messages[0].content,
+      messages: messages,
+      prompt: '',
     }),
   });
 }
