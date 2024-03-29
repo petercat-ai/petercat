@@ -25,13 +25,13 @@ make dev
 After all the services have started you can see them running in the background:
 
 ```sh
-docker compose -f docker/docker-compose.dev.yml ps
+docker compose -f docker/docker-compose.yml ps
 ## or run make
 make dev-ps
 ```
 
 ```
-docker compose -f docker/docker-compose.dev.yml ps
+docker compose -f docker/docker-compose.yml ps
 NAME                             IMAGE                              COMMAND                   SERVICE        CREATED       STATUS                      PORTS
 backend-core                     backend-base                       "uvicorn main:app --h…"    backend-core   2 hours ago   Up 54 seconds               0.0.0.0:5050->5050/tcp
 realtime-dev.supabase-realtime   supabase/realtime:v2.25.66         "/usr/bin/tini -s -g…"    realtime       2 hours ago   Up 37 seconds (healthy)
