@@ -6,9 +6,9 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
-  ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+  ECR_REPOSITORY: xuexiao
   ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
-  ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
 
 permissions:
   id-token: write   # This is required for requesting the JWT
