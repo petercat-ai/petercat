@@ -9,6 +9,7 @@ env:
   ECR_REPOSITORY: xuexiao
   ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+  ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -80,7 +81,7 @@ jobs:
       matrix:
         include:
           - name: "xuexiao"
-            service: "xuexiao"
+            service: ${{ env.ECS_SERVICE }}
             task_definition: ".aws/task_definition.json"
             container: "xuexiao"
 
