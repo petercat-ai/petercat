@@ -47,10 +47,9 @@ def get_datetime() -> datetime:
 TOOL_MAPPING = {
     "get_datetime": get_datetime,
     "create_issue": issue.create_issue,
-    "get_issues_list": issue.get_issues_list,
-    "get_issues_by_number": issue.get_issues_by_number
+    "search_issues": issue.search_issues,
 }
-TOOLS = ["get_datetime", "create_issue", "get_issues_list", "get_issues_by_number"]
+TOOLS = ["get_datetime", "create_issue", "search_issues"]
 
 
 def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
