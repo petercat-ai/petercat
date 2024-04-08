@@ -82,7 +82,7 @@ jobs:
         include:
           - name: "xuexiao"
             task_definition: ".aws/task_definition.json"
-            container: "xuexiao"
+            container: "petercat-web"
 
     steps:
       - name: Checkout
