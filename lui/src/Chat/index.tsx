@@ -1,16 +1,18 @@
 import type {
   ChatItemProps,
+  ChatMessage,
   MetaData,
   ProChatInstance,
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import StopBtn from 'lui/StopBtn';
 import { theme } from 'lui/Theme';
+import ThoughtChain from 'lui/ThoughtChain';
 import { Role } from 'lui/interface';
 import { BOT_INFO } from 'lui/mock';
 import { streamChat } from 'lui/services/ChatController';
 import { handleStream } from 'lui/utils';
-import React, { memo, useRef, type FC } from 'react';
+import React, { ReactNode, memo, useRef, useState, type FC } from 'react';
 import Actions from './inputArea/actions';
 
 const { getDesignToken } = theme;
@@ -27,7 +29,7 @@ export interface ChatProps {
 
 const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
   const proChatRef = useRef<ProChatInstance>();
-
+  const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
   return (
     <div
       className="h-full w-full"
@@ -35,6 +37,10 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
     >
       <ProChat
         showTitle
+        chats={chats}
+        onChatsChange={(chats) => {
+          setChats(chats);
+        }}
         chatRef={proChatRef}
         helloMessage={helloMessage || BOT_INFO.work_info.prologue}
         userMeta={{ title: 'User' }}
@@ -43,6 +49,22 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
             if (props.originData?.role === Role.user) {
               return <></>;
             }
+          },
+          contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
+            const _originData = props.originData || {};
+            const { role, ext, status, content, timeCost } = _originData;
+
+            if ([Role.knowledge, Role.tool].includes(role)) {
+              return (
+                <ThoughtChain
+                  content={ext}
+                  status={status}
+                  source={content}
+                  timeCost={timeCost}
+                />
+              );
+            }
+            return defaultDom;
           },
         }}
         assistantMeta={{

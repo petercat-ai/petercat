@@ -1,3 +1,6 @@
+import datetime
+import json
+from langchain.tools import tool
 from typing import AsyncIterator
 from langchain.agents import AgentExecutor
 from data_class import ChatData, Message
@@ -17,9 +20,18 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are very powerful assistant. When you are asked questions, you can determine whether to use the corresponding tools based on the descriptions of the actions. There may be two situations:"
+            "Character: Ant Design Bot"
+            "You are a question-and-answer robot specifically dedicated to providing solutions for Ant Design. You are well-versed in Ant Design-related knowledge and capable of assisting in fixing code issues related to it. However, you are unable to answer questions not related to Ant Design."
+            "Skill 1: Normal Conversation"
+            "In most cases, you will have ordinary conversations with users, answering questions about Ant Design."
+            "Skill 2: Issue Handling"
+            "When users ask about issues, you will choose to use the appropriate tools for handling based on the description of actions. There could be two scenarios:"
             "1. Talk with the user as normal. "
-            "2. If they ask you about issues, use a tool",
+            "2. If they ask you about issues, use a tool"
+            "Constraints:"
+            "Only answer questions related to Ant Design; if users pose unrelated questions, you need to inform the user that you cannot answer and guide them to ask questions related to Ant Design."
+            "Decide whether to use relevant tools for handling based on the nature of the question and the description of actions."
+            "You must answer questions in the language the user inputs. You are programmed with the ability to recognize multiple languages, allowing you to understand and respond in the same language used by the user. If a user poses a question in English, you should answer in English; if a user communicates in Chinese, you should respond in Chinese."
         ),
         MessagesPlaceholder(variable_name="chat_history"),
         ("user", "{input}"),
@@ -27,13 +39,18 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
+@tool
+def get_datetime() -> datetime:
+    """Get current date time."""
+    return datetime.now().strftime("%H:%M:%S")
 
 TOOL_MAPPING = {
+    "get_datetime": get_datetime,
     "create_issue": issue.create_issue,
     "get_issues_list": issue.get_issues_list,
     "get_issues_by_number": issue.get_issues_by_number
 }
-TOOLS = ["create_issue", "get_issues_list", "get_issues_by_number"]
+TOOLS = ["get_datetime", "create_issue", "get_issues_list", "get_issues_by_number"]
 
 
 def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
@@ -116,23 +133,40 @@ async def agent_chat(input_data: ChatData, openai_api_key) -> AsyncIterator[str]
             if kind == "on_chat_model_stream":
                 content = event["data"]["chunk"].content
                 if content:
-                    yield f"{content}"
+                    json_output = json.dumps({
+                        "role": "assistant",
+                        "content": content,
+                    }, ensure_ascii=False)
+                    yield f"data:{json_output}\n"
             elif kind == "on_tool_start":
-                yield "\n"
-                yield (
-                    f"Starting tool: {event['name']} "
-                    f"with inputs: {event['data'].get('input')}"
-                )
-                yield "\n"
+                children_value = event["data"].get("input", {})
+                json_output = json.dumps({
+                    "role": "tool",
+                    "ext": {
+                        "source": f"已调用工具: {event['name']}",
+                        "pluginName": "GitHub",
+                        "children": children_value,
+                        "status": "loading"
+                    }
+                }, ensure_ascii=False)
+                yield f"data:{json_output}\n"
             elif kind == "on_tool_end":
-                yield "\n"
-                yield (
-                    f"Done tool: {event['name']} "
-                    f"with output: {event['data'].get('output')}"
-                )
-                yield "\n"
-
-        
+                children_value = event["data"].get("output", {})
+                json_output = json.dumps({
+                    "role": "tool",
+                    "ext": {
+                        "source": f"已调用工具: {event['name']}",
+                        "pluginName": "GitHub",
+                        "children": children_value,
+                        "status": "success"
+                    },
+                }, ensure_ascii=False)
+                yield f"data:{json_output}\n"
     except Exception as e:
-        yield f"data: {str(e)}\n\n"
+        json_output = json.dumps({
+            "role": "assistant",
+            "content": {str(e)},
+            "status": "failed"
+        }, ensure_ascii=False)
+        yield f"data: {json_output}\n"
         
