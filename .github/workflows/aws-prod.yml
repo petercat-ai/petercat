@@ -81,7 +81,7 @@ jobs:
       matrix:
         include:
           - name: "xuexiao"
-            service: ${{ env.ECS_SERVICE }}
+            service: "${{ env.ECS_SERVICE }}"
             task_definition: ".aws/task_definition.json"
             container: "xuexiao"
 
