@@ -81,7 +81,6 @@ jobs:
       matrix:
         include:
           - name: "xuexiao"
-            service: "${{ env.ECS_SERVICE }}"
             task_definition: ".aws/task_definition.json"
             container: "xuexiao"
 
@@ -108,6 +107,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a # v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ matrix.service }}
+          service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
