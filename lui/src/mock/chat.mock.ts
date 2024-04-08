@@ -1,4 +1,4 @@
-import { ContentType, IContentMessage, Role, Status } from '@/interface';
+import { ContentType, IContentMessage, Role, Status } from '../interface';
 
 export const CONVERSATION_MOCK_DATA: IContentMessage = {
   id: 'testdata',
@@ -94,11 +94,11 @@ export const CONVERSATION_MOCK_DATA: IContentMessage = {
       ext: [
         {
           source: '已搜索知识库',
-          knowledgeName: '海绵知识库',
+          knowledgeName: '测试知识库',
           status: 'success' as Status,
           timeCost: '0.6s',
           children: `recall slice 1:
-          陈海锦的花名：海绵`,
+          test：test`,
         },
         {
           source: '已调用必应搜索',
@@ -127,7 +127,7 @@ export const CONVERSATION_MOCK_DATA: IContentMessage = {
           status: 'success' as Status,
           timeCost: '4.3s：模型3.4s | 工具0.9s',
           children: `recall slice 1:
-          陈海锦的花名：海绵`,
+          test：test`,
         },
       ],
     },
@@ -149,7 +149,7 @@ export const CONVERSATION_MOCK_DATA: IContentMessage = {
           status: 'loading' as Status,
           timeCost: '4.3s：模型3.4s | 工具0.9s',
           children: `recall slice 1:
-          陈海锦的花名：海绵`,
+          test：test`,
         },
       ],
     },
@@ -171,7 +171,7 @@ export const CONVERSATION_MOCK_DATA: IContentMessage = {
           status: 'failed' as Status,
           timeCost: '4.3s：模型3.4s | 工具0.9s',
           children: `recall slice 1:
-          陈海锦的花名：海绵`,
+          test：test`,
         },
       ],
     },

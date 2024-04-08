@@ -9,3 +9,4 @@ langchain
 langchain-openai
 PyGithub
 python-multipart
+httpx[socks]

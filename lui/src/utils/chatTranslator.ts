@@ -1,3 +1,32 @@
+import { join, map } from 'lodash';
+import { Role } from 'lui/interface';
+
+const convertChunkToJson = (rawData: string) => {
+  const regex = /data:(.*)/;
+  const match = rawData.match(regex);
+  if (match && match[1]) {
+    try {
+      const res = JSON.parse(match[1]);
+      if (res?.role === Role.assistant) {
+        return res?.content;
+      } else if (res?.role === Role.tool) {
+        return JSON.stringify(res);
+      }
+    } catch (e) {
+      console.error('Parsing error:', e);
+      return null;
+    }
+  } else {
+    console.error('No valid JSON found in input');
+    return null;
+  }
+};
+
+const chunkFormatter = (chunk: string) => {
+  const dataLines = chunk.split('\n');
+  return map(dataLines, (item: string) => convertChunkToJson(item));
+};
+
 export const handleStream = async (response: Response) => {
   const reader = response.body!.getReader();
   const decoder = new TextDecoder('utf-8');
@@ -13,9 +42,15 @@ export const handleStream = async (response: Response) => {
               controller.close();
               return;
             }
-            const chunk = decoder.decode(value, { stream: true });
-            controller.enqueue(encoder.encode(chunk));
-            push();
+            if (value) {
+              const chunk = decoder.decode(value, { stream: true });
+
+              const messages = chunkFormatter(chunk);
+
+              controller.enqueue(encoder.encode(join(messages, '')));
+
+              push();
+            }
           })
           .catch((err) => {
             console.error('读取流中的数据时发生错误', err);
