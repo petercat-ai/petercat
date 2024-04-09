@@ -1,8 +1,12 @@
-name: Deploy Backend to Product ECS
+name: Deploy Backend to Preview ECS
 
 on:
   push:
     branches: ["main"]
+    paths:
+      - "server/**"
+  pull_request:
+    branches: [ "main" ]
 
 env:
   AWS_REGION: ap-northeast-1
@@ -32,7 +36,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       # Build inside Docker containers
-      - run: sam build --use-container --config-file .aws/petercat-prod.toml
+      - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file .aws/petercat-prod.toml
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file .aws/petercat-preview.toml

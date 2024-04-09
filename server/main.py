@@ -6,6 +6,7 @@ from data_class import DalleData, ChatData
 from openai_api import dalle
 from langchain_api import chat
 from agent import stream
+import uvicorn
 
 open_api_key = os.getenv("OPENAI_API_KEY")
 
@@ -40,6 +41,9 @@ def run_langchain_chat(input_data: ChatData):
 
 
 @app.post("/api/chat/stream", response_class=StreamingResponse)
-async def run_agent_chat(input_data: ChatData):
+def run_agent_chat(input_data: ChatData):
     result = stream.agent_chat(input_data, open_api_key)
     return StreamingResponse(result, media_type="text/event-stream")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
