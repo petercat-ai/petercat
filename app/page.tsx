@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div>
-      <Assistant host={process.env.CHAT_HOST} />
+      <Assistant host="https://api.petercat.chat" />
 
       <div className="container mx-auto max-w-[1024px]">
         <div className="mt-8">
