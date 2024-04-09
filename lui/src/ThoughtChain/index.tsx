@@ -45,6 +45,7 @@ export interface ThoughtChainProps {
 
 const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   const { content, status, source } = params;
+
   const [activeKey, setActiveKey] = useState([]);
 
   const items: CollapseProps['items'] = useMemo(() => {

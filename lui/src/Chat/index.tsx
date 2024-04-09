@@ -5,6 +5,7 @@ import type {
   ProChatInstance,
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
+import { Markdown } from '@ant-design/pro-editor';
 import StopBtn from 'lui/StopBtn';
 import { theme } from 'lui/Theme';
 import ThoughtChain from 'lui/ThoughtChain';
@@ -21,13 +22,15 @@ const globalToken = getDesignToken();
 export interface ChatProps {
   assistantMeta?: MetaData;
   helloMessage?: string;
+  host?: string;
   slot?: {
     componentID: string;
     renderFunc: (data: any) => React.ReactNode;
   }[];
 }
 
-const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
+const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
+  console.log('Chat render', host);
   const proChatRef = useRef<ProChatInstance>();
   const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
   return (
@@ -36,6 +39,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
       style={{ backgroundColor: globalToken.chatBoxBackgroundColor }}
     >
       <ProChat
+        showTitle
         chats={chats}
         onChatsChange={(chats) => {
           setChats(chats);
@@ -43,29 +47,6 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
         chatRef={proChatRef}
         helloMessage={helloMessage || BOT_INFO.work_info.prologue}
         userMeta={{ title: 'User' }}
-        transformToChatMessage={async (pre) => {
-          if (!pre.startsWith('data:')) {
-            return pre;
-          }
-          const regex = /data:(.*)/;
-          const match = pre.match(regex);
-          if (match && match[1]) {
-            const res = JSON.parse(match[1]);
-            const { content, role, id } = res;
-            if (role === Role.tool && content.status === 'success') {
-              proChatRef?.current?.pushChat({
-                content: content,
-                id,
-                role: 'tool',
-              });
-            }
-          } else {
-            console.error('No valid JSON found in input');
-            return '';
-          }
-
-          return '';
-        }}
         chatItemRenderConfig={{
           avatarRender: (props: ChatItemProps) => {
             if (props.originData?.role === Role.user) {
@@ -79,20 +60,56 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
             }
           },
           contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
-            const _originData = props.originData || {};
-            const { role, content } = _originData;
-            const { status, source } = content;
+            const originData = props.originData || {};
+            const message = originData.content;
 
-            if ([Role.knowledge, Role.tool].includes(role)) {
-              return (
-                <ThoughtChain
-                  content={content}
-                  status={status}
-                  source={source}
-                />
-              );
+            if (!message || !message.startsWith('<TOOL>')) {
+              return defaultDom;
             }
-            return defaultDom;
+
+            const [toolStr, answerStr] = message.split('<ANSWER>');
+            const tools = toolStr.split('\n').filter(Boolean);
+            const lastTool = tools[tools.length - 1];
+
+            const regex = /<TOOL>(.*)/;
+            const match = lastTool.match(regex);
+
+            if (!match) {
+              console.error('No valid JSON found in input');
+              return defaultDom;
+            }
+
+            try {
+              const config = JSON.parse(match[1]);
+              const { type, extra } = config;
+
+              if (![Role.knowledge, Role.tool].includes(type)) {
+                return defaultDom;
+              }
+
+              const { status, source } = extra;
+
+              return (
+                <div
+                  className="p-2 bg-white rounded-md "
+                  style={{ minWidth: 'calc(375px - 90px)' }}
+                >
+                  <div className="mb-1">
+                    <ThoughtChain
+                      content={extra}
+                      status={status}
+                      source={source}
+                    />
+                  </div>
+                  <Markdown style={{ overflowX: 'hidden', overflowY: 'auto' }}>
+                    {answerStr}
+                  </Markdown>
+                </div>
+              );
+            } catch (error) {
+              console.error(`JSON parse error: ${error}`);
+              return defaultDom;
+            }
           },
         }}
         assistantMeta={{
@@ -120,7 +137,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
               content: message.content as string,
             }));
 
-          const response = await streamChat(newMessages);
+          const response = await streamChat(newMessages, host);
           return handleStream(response);
         }}
         inputAreaProps={{ className: 'userInputBox h-24 !important' }}
