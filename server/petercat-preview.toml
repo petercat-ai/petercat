@@ -1,0 +1,10 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "petercat-api-preview"
+resolve_s3 = true
+s3_prefix = "petercat-api-preview"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = ["FastAPIFunction=654654285942.dkr.ecr.ap-northeast-1.amazonaws.com/samapp7427b055/fastapifunctionead79d0drepo"]
