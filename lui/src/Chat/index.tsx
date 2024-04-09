@@ -30,7 +30,6 @@ export interface ChatProps {
 }
 
 const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
-  console.log('Chat render', host);
   const proChatRef = useRef<ProChatInstance>();
   const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
   return (
