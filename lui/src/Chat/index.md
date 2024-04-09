@@ -10,7 +10,8 @@ export default () => (
       assistantMeta={{
         avatar:
           'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
-        title: 'Kate',
+        title: 'Ant Design',
+
       }}
     />
   </div>
