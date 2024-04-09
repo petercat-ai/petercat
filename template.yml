@@ -30,7 +30,7 @@ Resources:
       Tracing: Active
     Metadata:
       Dockerfile: Dockerfile.aws.lambda
-      DockerContext: .
+      DockerContext: server
       DockerTag: v1
 
 Outputs:

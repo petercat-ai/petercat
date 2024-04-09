@@ -38,3 +38,4 @@ next-env.d.ts
 
 .yarn
 /server/.aws-sam/*
+.aws-sam/*

@@ -18,28 +18,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 jobs:
-  build_and_push:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
-          audience: sts.amazonaws.com
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@2fc7aceee09e9e4a7105c0d060c656fad0b4f63d # v1
-
   deploy:
-    needs: build_and_push
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -57,7 +36,30 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       # Build inside Docker containers
-      - run: cd server && sam build --use-container --config-file petercat-preview.toml
+      - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: cd server && sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file petercat-preview.toml
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file .aws/petercat-preview.toml
+
+      # Output deployment result
+      - name: Retrieve Deployment output
+        id: sam-output
+        run: echo ::set-output name=stack_output::$(sam list stack-outputs --stack-name petercat-api-preview --output table)
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Build output
+  
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Build output
+            ${{ steps.sam-output.outputs.stack_output }}
+          edit-mode: replace
