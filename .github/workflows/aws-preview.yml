@@ -57,7 +57,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       # Build inside Docker containers
-      - run: sam build --use-container --config-file petercat-preview.toml
+      - run: cd server && sam build --use-container --config-file petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file petercat-preview.toml
+      - run: cd server && sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file petercat-preview.toml
