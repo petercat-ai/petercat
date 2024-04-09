@@ -40,26 +40,3 @@ jobs:
 
       # Prevent prompts and failure when the stack is unchanged
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --config-file .aws/petercat-preview.toml
-
-      # Output deployment result
-      - name: Retrieve Deployment output
-        id: sam-output
-        run: echo ::set-output name=stack_output::$(sam list stack-outputs --stack-name petercat-api-preview --output table)
-
-      - name: Find Comment
-        uses: peter-evans/find-comment@v3
-        id: fc
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: Build output
-  
-      - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Build output
-            ${{ steps.sam-output.outputs.stack_output }}
-          edit-mode: replace
