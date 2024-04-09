@@ -53,12 +53,14 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
-    "@ant-design/pro-chat": "^1.10.1",
+    "@ant-design/pro-chat": "1.12.1-beta.1",
+    "@ant-design/pro-editor": "^1.1.1",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",
     "antd-style": "^3.6.1",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
+    "react-json-view": "^1.21.3",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {

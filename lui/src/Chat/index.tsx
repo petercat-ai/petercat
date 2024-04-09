@@ -36,7 +36,6 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
       style={{ backgroundColor: globalToken.chatBoxBackgroundColor }}
     >
       <ProChat
-        showTitle
         chats={chats}
         onChatsChange={(chats) => {
           setChats(chats);
@@ -44,23 +43,52 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
         chatRef={proChatRef}
         helloMessage={helloMessage || BOT_INFO.work_info.prologue}
         userMeta={{ title: 'User' }}
+        transformToChatMessage={async (pre) => {
+          if (!pre.startsWith('data:')) {
+            return pre;
+          }
+          const regex = /data:(.*)/;
+          const match = pre.match(regex);
+          if (match && match[1]) {
+            const res = JSON.parse(match[1]);
+            const { content, role, id } = res;
+            if (role === Role.tool && content.status === 'success') {
+              proChatRef?.current?.pushChat({
+                content: content,
+                id,
+                role: 'tool',
+              });
+            }
+          } else {
+            console.error('No valid JSON found in input');
+            return '';
+          }
+
+          return '';
+        }}
         chatItemRenderConfig={{
           avatarRender: (props: ChatItemProps) => {
             if (props.originData?.role === Role.user) {
               return <></>;
             }
+            if (
+              props.originData?.role === Role.tool ||
+              props.originData?.role === Role.knowledge
+            ) {
+              return <div className="w-[40px] h-[40px]" />;
+            }
           },
           contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
             const _originData = props.originData || {};
-            const { role, ext, status, content, timeCost } = _originData;
+            const { role, content } = _originData;
+            const { status, source } = content;
 
             if ([Role.knowledge, Role.tool].includes(role)) {
               return (
                 <ThoughtChain
-                  content={ext}
+                  content={content}
                   status={status}
-                  source={content}
-                  timeCost={timeCost}
+                  source={source}
                 />
               );
             }
@@ -83,12 +111,15 @@ const Chat: FC<ChatProps> = memo(({ helloMessage }) => {
           return [];
         }}
         request={async (messages) => {
-          const newMessages = messages.map((message) => {
-            return {
+          const newMessages = messages
+            .filter(
+              (item) => item.role !== Role.tool && item.role !== Role.knowledge,
+            )
+            .map((message) => ({
               role: message.role,
               content: message.content as string,
-            };
-          });
+            }));
+
           const response = await streamChat(newMessages);
           return handleStream(response);
         }}

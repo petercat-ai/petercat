@@ -9,8 +9,9 @@ import {
   UnorderedListOutlined,
   UpOutlined,
 } from '@ant-design/icons';
+import { Highlight } from '@ant-design/pro-editor';
 import type { CollapseProps } from 'antd';
-import { Collapse, Tag } from 'antd';
+import { Collapse } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { IExtraInfo, Status } from '../interface';
 
@@ -26,51 +27,27 @@ const getColorClass = (status: Status) => {
   return colorClasses[status] || 'text-gray-900';
 };
 
+const safeJsonParse = (jsonString: string) => {
+  try {
+    return JSON.parse(jsonString);
+  } catch (e) {
+    console.error('Parsing error:', e);
+    return null;
+  }
+};
+
 export interface ThoughtChainProps {
-  content?: IExtraInfo[];
+  content?: IExtraInfo;
   status?: Status;
   source?: string;
   timeCost?: string;
 }
 
 const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
-  const { content, status, source, timeCost } = params;
+  const { content, status, source } = params;
   const [activeKey, setActiveKey] = useState([]);
 
   const items: CollapseProps['items'] = useMemo(() => {
-    const statusStringMap = {
-      [Status.success]: (
-        <Tag color="green">
-          {source} {timeCost}
-        </Tag>
-      ),
-      [Status.failed]: <Tag color="red">{source}</Tag>,
-      [Status.end]: <Tag color="grey">{source}</Tag>,
-      [Status.loading]: <></>,
-    };
-
-    const curItems = content?.map((item, index) => ({
-      ...item,
-      label: (
-        <span
-          className={`flex items-center justify-between text-xs min-w-[90px] ${getColorClass(
-            item.status!,
-          )}`}
-        >
-          <span className="mt-px mr-4">{item.source}</span>
-          <span>{item.timeCost}</span>
-        </span>
-      ),
-      key: index,
-    }));
-    if (status && status !== Status.loading) {
-      curItems?.push({
-        label: statusStringMap[status],
-        key: 999,
-        children: null,
-      });
-    }
-
     return [
       {
         key: '1',
@@ -114,12 +91,19 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
               }
               return <></>;
             }}
-            items={curItems}
-          />
+          >
+            {safeJsonParse(content?.data) ? (
+              <Highlight language="json" theme="light" type="block">
+                {JSON.stringify(safeJsonParse(content?.data), null, 2)}
+              </Highlight>
+            ) : (
+              <>{content?.data}</>
+            )}
+          </Collapse>
         ),
       },
     ];
-  }, [status, content?.length, activeKey, source]);
+  }, [status, content, activeKey, source]);
 
   const onChange = useCallback((key: string | string[]) => {
     // @ts-ignore
