@@ -71,6 +71,12 @@ Docker Compose's integration for ECS and ACI will be retired in November 2023. L
 Successfully created ecs context "botmetaecscontext"
 ```
 
+#### Test
+```bash
+curl -v -N --http2 --location 'https://7pgjnn7ecq7hs5jj6csocmt3rm0cyvxb.lambda-url.ap-northeast-1.on.aws/api/chat/stream' \
+--header 'Content-Type: application/json' \
+--data '{"messages":[{"role":"user","content":"彩蛋相关的issue"}],"prompt":""}'
+```
 
 #### REFERENCES
 https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-private-integration.html
