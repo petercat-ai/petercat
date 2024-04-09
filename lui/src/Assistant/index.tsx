@@ -6,11 +6,12 @@ import Chat from '../Chat';
 
 export interface AssistantProps {
   assistantMeta?: MetaData;
+  host?: string;
 }
 
 const drawerWidth = 375; // Tailwind doesn't support custom width directly, you might need to handle this separately
 
-const Assistant = ({ assistantMeta }: AssistantProps) => {
+const Assistant = (props: AssistantProps) => {
   const [chatVisible, setChatVisible] = useState(false);
   const [position, setPosition] = useState({ bottom: 120 });
 
@@ -45,9 +46,9 @@ const Assistant = ({ assistantMeta }: AssistantProps) => {
       {chatVisible ? (
         <div
           className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black bg-gradient-to-r from-f2e9ed via-e9eefb to-f0eeea shadow-[0px_0px_1px_#919eab3d]"
-          style={{ width: drawerWidth }}
+          style={{ width: drawerWidth, zIndex: 9999 }}
         >
-          <Chat assistantMeta={assistantMeta} />
+          <Chat {...props} />
           <div className="absolute top-0 right-0 m-1">
             <ActionIcon
               icon={<CloseCircleFilled />}
@@ -58,16 +59,17 @@ const Assistant = ({ assistantMeta }: AssistantProps) => {
         </div>
       ) : (
         <div
-          className="fixed bottom-[120px] right-2.5 w-14 h-8 mr-[-32px] flex items-center justify-center rounded-full border border-[#ececee] shadow-[0_3.2px_12px_#00000014,_0_5px_25px_#0000000a] bg-white cursor-pointer z-9999 transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
+          className="fixed bottom-[120px] right-2.5 w-14 h-8 mr-[-32px] flex items-center justify-center rounded-full border border-[#ececee] shadow-[0_3.2px_12px_#00000014,_0_5px_25px_#0000000a] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
           onMouseDown={startDrag}
           onClick={toggleDrawer}
           style={{
             bottom: `${position.bottom}px`,
+            zIndex: 9999,
           }}
         >
           <img
             src={
-              assistantMeta?.avatar ||
+              props.assistantMeta?.avatar ||
               'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original'
             }
             className="absolute left-2 w-6 h-6 rounded-full top-1/2 transform -translate-y-1/2"
