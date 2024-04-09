@@ -1,5 +1,6 @@
 import datetime
 import json
+import uuid
 from langchain.tools import tool
 from typing import AsyncIterator
 from langchain.agents import AgentExecutor
@@ -13,6 +14,7 @@ from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from tools import issue
+from tools import sourcecode
 from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
 
 
@@ -47,9 +49,11 @@ def get_datetime() -> datetime:
 TOOL_MAPPING = {
     "get_datetime": get_datetime,
     "create_issue": issue.create_issue,
+    "get_issues": issue.get_issues,
     "search_issues": issue.search_issues,
+    "search_code": sourcecode.search_code,
 }
-TOOLS = ["get_datetime", "create_issue", "search_issues"]
+TOOLS = ["get_datetime", "create_issue", "get_issues", "search_issues",  "search_code"]
 
 
 def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
@@ -130,21 +134,19 @@ async def agent_chat(input_data: ChatData, openai_api_key) -> AsyncIterator[str]
                         f"with output: {event['data'].get('output')['output']}"
                     )
             if kind == "on_chat_model_stream":
+                uid =  str(uuid.uuid4())
                 content = event["data"]["chunk"].content
                 if content:
-                    json_output = json.dumps({
-                        "role": "assistant",
-                        "content": content,
-                    }, ensure_ascii=False)
-                    yield f"data:{json_output}\n"
+                    yield f"{content}"
             elif kind == "on_tool_start":
                 children_value = event["data"].get("input", {})
                 json_output = json.dumps({
                     "role": "tool",
-                    "ext": {
+                    "id": uid,
+                    "content": {
                         "source": f"已调用工具: {event['name']}",
                         "pluginName": "GitHub",
-                        "children": children_value,
+                        "data": children_value,
                         "status": "loading"
                     }
                 }, ensure_ascii=False)
@@ -153,19 +155,15 @@ async def agent_chat(input_data: ChatData, openai_api_key) -> AsyncIterator[str]
                 children_value = event["data"].get("output", {})
                 json_output = json.dumps({
                     "role": "tool",
-                    "ext": {
+                    "id": uid,
+                    "content": {
                         "source": f"已调用工具: {event['name']}",
                         "pluginName": "GitHub",
-                        "children": children_value,
+                        "data": children_value,
                         "status": "success"
                     },
                 }, ensure_ascii=False)
                 yield f"data:{json_output}\n"
     except Exception as e:
-        json_output = json.dumps({
-            "role": "assistant",
-            "content": {str(e)},
-            "status": "failed"
-        }, ensure_ascii=False)
-        yield f"data: {json_output}\n"
+        yield f"data: {str(e)}\n"
         

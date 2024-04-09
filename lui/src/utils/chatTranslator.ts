@@ -1,7 +1,7 @@
-import { join, map } from 'lodash';
+import { map } from 'lodash';
 import { Role } from 'lui/interface';
 
-const convertChunkToJson = (rawData: string) => {
+export const convertChunkToJson = (rawData: string) => {
   const regex = /data:(.*)/;
   const match = rawData.match(regex);
   if (match && match[1]) {
@@ -22,7 +22,7 @@ const convertChunkToJson = (rawData: string) => {
   }
 };
 
-const chunkFormatter = (chunk: string) => {
+export const chunkFormatter = (chunk: string) => {
   const dataLines = chunk.split('\n');
   return map(dataLines, (item: string) => convertChunkToJson(item));
 };
@@ -44,11 +44,7 @@ export const handleStream = async (response: Response) => {
             }
             if (value) {
               const chunk = decoder.decode(value, { stream: true });
-
-              const messages = chunkFormatter(chunk);
-
-              controller.enqueue(encoder.encode(join(messages, '')));
-
+              controller.enqueue(encoder.encode(chunk));
               push();
             }
           })
