@@ -49,8 +49,8 @@ Resources:
           Resource: '*'
       Tracing: Active
     Metadata:
-      Dockerfile: Dockerfile.aws.subscriber
-      DockerContext: server
+      Dockerfile: Dockerfile
+      DockerContext: subscriber
       DockerTag: v1
 
 Outputs:
