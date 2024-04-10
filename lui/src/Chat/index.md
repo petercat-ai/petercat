@@ -1,7 +1,7 @@
 
 ```jsx
 import React from 'react';
-import { Chat } from 'lui';
+import { Chat } from 'petercat-lui';
 
 
 export default () => (

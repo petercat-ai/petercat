@@ -1,4 +1,4 @@
-import { IPrompt } from 'lui/interface';
+import { IPrompt } from '../interface';
 
 /**
  * Chat api

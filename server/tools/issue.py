@@ -1,14 +1,12 @@
 import json
-import os
 from typing import Optional
 from github import Github
 from langchain.tools import tool
-
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+from uilts.env import get_env_variable
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
-g = Github(GITHUB_TOKEN)
+g = Github()
 
 @tool
 def create_issue(repo_name, title, body):

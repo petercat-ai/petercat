@@ -1,5 +1,5 @@
 import { map } from 'lodash';
-import { Role } from 'lui/interface';
+import { Role } from '../interface';
 
 export const convertChunkToJson = (rawData: string) => {
   const regex = /data:(.*)/;

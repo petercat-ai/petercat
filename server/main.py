@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,9 +5,10 @@ from data_class import DalleData, ChatData
 from openai_api import dalle
 from langchain_api import chat
 from agent import stream
+from uilts.env import get_env_variable
 import uvicorn
 
-open_api_key = os.getenv("OPENAI_API_KEY")
+open_api_key = get_env_variable("OPENAI_API_KEY")
 
 app = FastAPI( 
     title="Bo-meta Server",

@@ -6,7 +6,7 @@ atomId: Assistant
 
 ```tsx
 import React from 'react';
-import { Assistant } from 'lui';
+import { Assistant } from 'petercat-lui';
 
 export default () => (
   <Assistant
