@@ -1,15 +1,17 @@
 import os
+import uvicorn
+
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from data_class import DalleData, ChatData
-from openai_api import dalle
-from langchain_api import chat
+
 from agent import stream
 from uilts.env import get_env_variable
-import uvicorn
+from data_class import ChatData, ExecuteMessage
+from message_queue.queue_wrapper import delete_messages, get_queue, receive_messages, send_message, unpack_message
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
+sqs_queue_name = get_env_variable("PETERCAT_EX_SQS")
 
 app = FastAPI( 
     title="Bo-meta Server",
@@ -30,15 +32,15 @@ app.add_middleware(
 def read_root():
     return {"Hello": "World"}
 
-@app.post("/api/dall-e")
-def run_img_generator(input_data: DalleData):
-    result = dalle.img_generator(input_data, open_api_key)
-    return result
+@app.post("/api/message")
+def send_sqs_message(message: ExecuteMessage):
+    queue = get_queue(sqs_queue_name)
+    return send_message(queue=queue, message=message)
 
-@app.post("/api/chat")
-def run_langchain_chat(input_data: ChatData):
-    result = chat.langchain_chat(input_data, open_api_key)
-    return result
+@app.get("/api/message/receive")
+def receive_sqs_message():
+    queue = get_queue(sqs_queue_name)
+    return StreamingResponse(receive_messages(queue), media_type="text/event-stream")
 
 
 @app.post("/api/chat/stream", response_class=StreamingResponse)
