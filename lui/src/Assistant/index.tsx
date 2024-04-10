@@ -48,7 +48,7 @@ const Assistant = (props: AssistantProps) => {
           className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black bg-gradient-to-r from-f2e9ed via-e9eefb to-f0eeea shadow-[0px_0px_1px_#919eab3d]"
           style={{ width: drawerWidth, zIndex: 9999 }}
         >
-          <Chat {...props} />
+          <Chat {...props} drawerWidth={drawerWidth} />
           <div className="absolute top-0 right-0 m-1">
             <ActionIcon
               icon={<CloseCircleFilled />}

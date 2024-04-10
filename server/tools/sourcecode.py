@@ -1,15 +1,13 @@
-import os
 from typing import List, Optional
 from github import Github
 from github.ContentFile import ContentFile
 from langchain.tools import tool
+from uilts.env import get_env_variable
 
-
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
-g = Github(GITHUB_TOKEN)
+g = Github()
 
 @tool
 def search_code(

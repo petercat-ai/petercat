@@ -1,4 +1,4 @@
-import { IBot } from 'lui/interface';
+import { IBot } from '../interface';
 
 export const DEFAULT_HELLO_MESSAGE =
   '我是你的私人助理Kate, 我有许多惊人的能力，比如你可以对我说我想创建一个机器人';

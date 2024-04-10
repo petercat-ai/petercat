@@ -1,10 +1,8 @@
 import {
-  ApiOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
   DownOutlined,
   ExclamationCircleOutlined,
-  FileTextOutlined,
   LoadingOutlined,
   UnorderedListOutlined,
   UpOutlined,
@@ -72,35 +70,12 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
               <DownOutlined className={`${getColorClass(status!)}`} />
             </span>
           ),
-        children: (
-          <Collapse
-            ghost
-            size="small"
-            expandIcon={(panelProps) => {
-              const {
-                status: itemStatus,
-                knowledgeName,
-                pluginName,
-              } = (panelProps as IExtraInfo) || {};
-
-              if (itemStatus === Status.loading) {
-                return <LoadingOutlined className="text-blue-600 text-xs" />;
-              } else if (knowledgeName) {
-                return <FileTextOutlined className="text-gray-900 text-xs" />;
-              } else if (pluginName) {
-                return <ApiOutlined className="text-gray-900 text-xs" />;
-              }
-              return <></>;
-            }}
-          >
-            {safeJsonParse(content?.data) ? (
-              <Highlight language="json" theme="light" type="block">
-                {JSON.stringify(safeJsonParse(content?.data), null, 2)}
-              </Highlight>
-            ) : (
-              <>{content?.data}</>
-            )}
-          </Collapse>
+        children: safeJsonParse(content?.data) ? (
+          <Highlight language="json" theme="light" type="block">
+            {JSON.stringify(safeJsonParse(content?.data), null, 2)}
+          </Highlight>
+        ) : (
+          <>{content?.data}</>
         ),
       },
     ];

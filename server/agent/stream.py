@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import uuid
 from langchain.tools import tool
 from typing import AsyncIterator
@@ -12,11 +13,15 @@ from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputP
 from langchain.prompts import MessagesPlaceholder
 from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.utilities.tavily_search import TavilySearchAPIWrapper
+from langchain.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
+from uilts.env import get_env_variable
 from tools import issue
 from tools import sourcecode
 from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
 
+TAVILY_API_KEY =  get_env_variable("TAVILY_API_KEY")
 
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -56,10 +61,11 @@ TOOL_MAPPING = {
 TOOLS = ["get_datetime", "create_issue", "get_issues", "search_issues",  "search_code"]
 
 
-def _create_agent_with_tools(openai_api_key: str ) -> AgentExecutor:
-    openai_api_key=openai_api_key
-    llm = ChatOpenAI(model="gpt-4", temperature=0.2, streaming=True)
-    tools = []
+def _create_agent_with_tools(open_api_key: str) -> AgentExecutor:
+    llm = ChatOpenAI(model="gpt-4-1106-preview", temperature=0.2, streaming=True, max_tokens=1500, openai_api_key=open_api_key)
+    search = TavilySearchAPIWrapper()
+    tavily_tool = TavilySearchResults(api_wrapper=search)
+    tools = [tavily_tool]
 
     for requested_tool in TOOLS:
         if requested_tool not in TOOL_MAPPING:
@@ -104,10 +110,10 @@ def chat_history_transform(messages: list[Message]):
     return transformed_messages
 
 
-async def agent_chat(input_data: ChatData, openai_api_key) -> AsyncIterator[str]:
+async def agent_chat(input_data: ChatData, open_api_key: str) -> AsyncIterator[str]:
     try:
         messages = input_data.messages
-        agent_executor = _create_agent_with_tools(openai_api_key)
+        agent_executor = _create_agent_with_tools(open_api_key)
         print(chat_history_transform(messages))
         async for event in agent_executor.astream_events(
             {

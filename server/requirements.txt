@@ -10,3 +10,4 @@ langchain-openai
 PyGithub
 python-multipart
 httpx[socks]
+load_dotenv

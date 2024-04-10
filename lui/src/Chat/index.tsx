@@ -6,14 +6,14 @@ import type {
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
-import StopBtn from 'lui/StopBtn';
-import { theme } from 'lui/Theme';
-import ThoughtChain from 'lui/ThoughtChain';
-import { Role } from 'lui/interface';
-import { BOT_INFO } from 'lui/mock';
-import { streamChat } from 'lui/services/ChatController';
-import { handleStream } from 'lui/utils';
 import React, { ReactNode, memo, useRef, useState, type FC } from 'react';
+import StopBtn from '../StopBtn';
+import { theme } from '../Theme';
+import ThoughtChain from '../ThoughtChain';
+import { Role } from '../interface';
+import { BOT_INFO } from '../mock';
+import { streamChat } from '../services/ChatController';
+import { handleStream } from '../utils';
 import Actions from './inputArea/actions';
 
 const { getDesignToken } = theme;
@@ -23,15 +23,19 @@ export interface ChatProps {
   assistantMeta?: MetaData;
   helloMessage?: string;
   host?: string;
+  drawerWidth?: number;
   slot?: {
     componentID: string;
     renderFunc: (data: any) => React.ReactNode;
   }[];
 }
 
-const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
+const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
   const proChatRef = useRef<ProChatInstance>();
   const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
+  const messageMinWidth = drawerWidth
+    ? `calc(${drawerWidth}px - 90px)`
+    : '100%';
   return (
     <div
       className="h-full w-full"
@@ -60,10 +64,16 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
           },
           contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
             const originData = props.originData || {};
+            if (originData?.role === Role.user) {
+              return defaultDom;
+            }
             const message = originData.content;
+            const defaultMessageContent = (
+              <div style={{ minWidth: messageMinWidth }}>{defaultDom}</div>
+            );
 
             if (!message || !message.startsWith('<TOOL>')) {
-              return defaultDom;
+              return defaultMessageContent;
             }
 
             const [toolStr, answerStr] = message.split('<ANSWER>');
@@ -75,7 +85,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
 
             if (!match) {
               console.error('No valid JSON found in input');
-              return defaultDom;
+              return defaultMessageContent;
             }
 
             try {
@@ -83,7 +93,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
               const { type, extra } = config;
 
               if (![Role.knowledge, Role.tool].includes(type)) {
-                return defaultDom;
+                return defaultMessageContent;
               }
 
               const { status, source } = extra;
@@ -91,7 +101,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
               return (
                 <div
                   className="p-2 bg-white rounded-md "
-                  style={{ minWidth: 'calc(375px - 90px)' }}
+                  style={{ minWidth: messageMinWidth }}
                 >
                   <div className="mb-1">
                     <ThoughtChain
@@ -107,7 +117,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host }) => {
               );
             } catch (error) {
               console.error(`JSON parse error: ${error}`);
-              return defaultDom;
+              return defaultMessageContent;
             }
           },
         }}

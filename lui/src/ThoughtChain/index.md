@@ -6,7 +6,7 @@ atomId: ThoughtChain
 
 ```tsx
 import React from 'react';
-import { ThoughtChain } from 'lui';
+import { ThoughtChain } from 'petercat-lui';
 
 export default () => (
   <ThoughtChain
