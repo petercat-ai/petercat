@@ -27,7 +27,10 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {
+        "Hello": "World",
+        "GithubToken": os.getenv('GITHUB_TOKEN')
+    }
 
 @app.post("/api/dall-e")
 def run_img_generator(input_data: DalleData):
