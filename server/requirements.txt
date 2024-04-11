@@ -11,3 +11,4 @@ PyGithub
 python-multipart
 httpx[socks]
 load_dotenv
+boto3>=1.26.79
