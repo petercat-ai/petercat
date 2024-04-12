@@ -72,7 +72,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
               <div style={{ minWidth: messageMinWidth }}>{defaultDom}</div>
             );
 
-            if (!message || !message.startsWith('<TOOL>')) {
+            if (!message || !message.includes('<TOOL>')) {
               return defaultMessageContent;
             }
 

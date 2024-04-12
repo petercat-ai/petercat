@@ -8,6 +8,8 @@ langchain_community
 langchain
 langchain-openai
 PyGithub
+GitPython
 python-multipart
 httpx[socks]
 load_dotenv
+supabase
