@@ -13,3 +13,8 @@ class Message(BaseModel):
 class ChatData(BaseModel):
     messages: list[Message] = []
     prompt: str = None
+
+class ExecuteMessage(BaseModel):
+    type: str
+    repo: str
+    path: str
