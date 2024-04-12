@@ -1,6 +1,6 @@
 import os
+from rag import retrieval
 import uvicorn
-
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -47,6 +47,16 @@ def receive_sqs_message():
 def run_agent_chat(input_data: ChatData):
     result = stream.agent_chat(input_data, open_api_key)
     return StreamingResponse(result, media_type="text/event-stream")
+
+@app.post("/api/rag/add_knowledge")
+def add_knowledge():
+    data=retrieval.add_knowledge()
+    return data
+
+@app.post("/api/rag/search_knowledge")
+def search_knowledge(query: str):
+    data=retrieval.search_knowledge(query)
+    return data
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
