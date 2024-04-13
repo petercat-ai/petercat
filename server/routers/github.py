@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
     
-@router.post("/app/callback")
+@router.get("/app/callback")
 def github_app_callback(callbackParams):
     logger.info("Github App Callback: %s", callbackParams)
     return {"Hello": "World"}
