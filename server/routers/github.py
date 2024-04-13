@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 import logging
 import requests
+from pydantic import BaseModel
+
 
 from uilts.env import get_env_variable
 
@@ -15,18 +17,19 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-    
+
 @router.get("/app/callback")
-def github_app_callback(callbackParams):
-    logger.info("Github App Callback: %s", callbackParams)
-    resp = requests.post(
-        url='https://github.com/login/oauth/access_token',
-        data={
+def github_app_callback(code: str):
+    print("Github App Callback", code)
+    logger.info("Github App Callback: %s", code)
+    resp = requests.post('https://github.com/login/oauth/access_token',
+        json={
             "client_id": CLIENT_ID,
             "client_secret": CLIENT_SECRET,
-            "code": callbackParams.code,
+            "code": code,
         }
     )
+
     return resp.json()
 
 @router.post("/app/webhook")
