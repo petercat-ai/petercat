@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 import logging
+import requests
 
 from uilts.env import get_env_variable
 
@@ -18,7 +19,15 @@ router = APIRouter(
 @router.get("/app/callback")
 def github_app_callback(callbackParams):
     logger.info("Github App Callback: %s", callbackParams)
-    return {"Hello": "World"}
+    resp = requests.post(
+        url='https://github.com/login/oauth/access_token',
+        data={
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "code": callbackParams.code,
+        }
+    )
+    return resp.json()
 
 @router.post("/app/webhook")
 def github_app_webhook(callbackParams):
