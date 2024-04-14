@@ -14,6 +14,7 @@ from data_class import ChatData
 from routers import health_checker, messages, github
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
+is_dev = bool(get_env_variable("IS_DEV"))
 
 app = FastAPI( 
     title="Bo-meta Server",
@@ -51,4 +52,7 @@ def search_knowledge(query: str):
     return data
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+    if is_dev:
+        uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", "8080")), reload=True)
+    else:
+        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
