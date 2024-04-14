@@ -15,7 +15,9 @@ CLIENT_ID = get_env_variable("GITHUB_APP_CLIENT_ID")
 CLIENT_SECRET = get_env_variable("GITHUB_APP_CLIENT_SECRET")
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
+logger.setLevel("INFO")
+
 router = APIRouter(
     prefix="/api/github",
     tags=["health_checkers"],
@@ -97,5 +99,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
 @router.post("/app/webhook")
 async def github_app_webhook(request: Request, background_tasks: BackgroundTasks, x_github_event: str = Header(...)):
     payload = await request.body()
+    print("x_github_event=", x_github_event)
+    print("payload=", payload)
     logger.info("github_app_webhook: x_github_event=%s, %s", x_github_event, payload)
     return {"hello": "world"}
