@@ -33,26 +33,6 @@ Resources:
       DockerContext: server
       DockerTag: v1
 
-  SQSSubscriptionFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      PackageType: Image
-      MemorySize: 512
-      FunctionUrlConfig:
-        AuthType: NONE
-      Policies:
-      - Statement:
-        - Sid: BedrockInvokePolicy
-          Effect: Allow
-          Action:
-          - bedrock:InvokeModelWithResponseStream
-          Resource: '*'
-      Tracing: Active
-    Metadata:
-      Dockerfile: Dockerfile
-      DockerContext: subscriber
-      DockerTag: v1
-
 Outputs:
   FastAPIFunctionUrl:
     Description: "Function URL for FastAPI function"
@@ -60,10 +40,3 @@ Outputs:
   FastAPIFunction:
     Description: "FastAPI Lambda Function ARN"
     Value: !GetAtt FastAPIFunction.Arn
-
-  SQSSubscriptionFunctionUrl:
-    Description: "Function URL for SQS Subscriptio function"
-    Value: !GetAtt FastAPIFunctionUrl.FunctionUrl
-  SQSSubscriptionFunction:
-    Description: "SQS Subscription Function Lambda Function ARN"
-    Value: !GetAtt SQSSubscriptionFunction.Arn
