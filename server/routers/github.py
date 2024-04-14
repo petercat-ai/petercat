@@ -95,6 +95,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
         return { "success": success, "message": message }
 
 @router.post("/app/webhook")
-def github_app_webhook(request: Request, background_tasks: BackgroundTasks, x_github_event: str = Header(...)):
-    logger.info("github_app_webhook: x_github_event=%s, %s", x_github_event, request.json())
+async def github_app_webhook(request: Request, background_tasks: BackgroundTasks, x_github_event: str = Header(...)):
+    payload = await request.body()
+    logger.info("github_app_webhook: x_github_event=%s, %s", x_github_event, payload)
     return {"hello": "world"}
