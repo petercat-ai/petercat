@@ -4,7 +4,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import SupabaseVectorStore
-from supabase.client import Client, create_client
+from db.supabase.client import get_client
 from uilts.env import get_env_variable
 
 supabase_url = get_env_variable("SUPABASE_URL")
@@ -12,8 +12,6 @@ supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
 table_name="antd_knowledge"
 query_name="match_antd_knowledge"
 chunk_size=500
-
-supabase: Client = create_client(supabase_url, supabase_key)
 
 def convert_document_to_dict(document):
     return {
@@ -26,7 +24,7 @@ def init_retriever():
     embeddings = OpenAIEmbeddings()
     db = SupabaseVectorStore(
       embedding=embeddings,
-      client=supabase,
+      client=get_client(),
       table_name=table_name,
       query_name=query_name,
       chunk_size=chunk_size,
