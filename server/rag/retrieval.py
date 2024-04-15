@@ -40,8 +40,7 @@ def init_retriever():
 
 def add_knowledge(config: S3Config):    
     try:
-        session = boto3.session.Session()
-        loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path, aws_session_token=session.get_token())
+        loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
         documents = loader.load()
         text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=0)
         docs = text_splitter.split_documents(documents)
