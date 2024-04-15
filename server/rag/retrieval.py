@@ -11,8 +11,7 @@ from langchain_community.document_loaders import S3DirectoryLoader
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
-aws_access_key_id=get_env_variable("AWS_ACCESS_KEY_ID")
-aws_secret_access_key=get_env_variable("AWS_SECRET_ACCESS_KEY")
+
 
 table_name="antd_knowledge"
 query_name="match_antd_knowledge"
@@ -41,13 +40,8 @@ def init_retriever():
 
 def add_knowledge(config: S3Config):    
     try:
-        region_name = "ap-northeast-1"
         session = boto3.session.Session()
-        session.client(
-            service_name='secretsmanager',
-            region_name=region_name
-        )
-        loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
+        loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path, aws_session_token=session.get_token())
         documents = loader.load()
         text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=0)
         docs = text_splitter.split_documents(documents)
