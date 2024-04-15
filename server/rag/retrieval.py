@@ -1,22 +1,23 @@
-import os
 import json
-from langchain_community.document_loaders import TextLoader
+import boto3
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import SupabaseVectorStore
 from db.supabase.client import get_client
-from data_class import GitRepo
+from data_class import S3Config
 from uilts.env import get_env_variable
-from langchain_community.document_loaders import GitLoader
-from github import Github, Repository
+from langchain_community.document_loaders import S3DirectoryLoader
+
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
-github_token = get_env_variable("GITHUB_TOKEN")
+aws_access_key_id=get_env_variable("AWS_ACCESS_KEY_ID")
+aws_secret_access_key=get_env_variable("AWS_SECRET_ACCESS_KEY")
+
 table_name="antd_knowledge"
 query_name="match_antd_knowledge"
-chunk_size=500
-g = Github()
+chunk_size=2000
+
 
 def convert_document_to_dict(document):
     return {
@@ -37,49 +38,38 @@ def init_retriever():
 
     return db.as_retriever()
 
-def get_repo_info(repo_name: str):
-    try:
-        repo = g.get_repo(repo_name)
-        return repo
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
 
-def add_knowledge(repo: GitRepo):
-    repo_info: Repository = get_repo_info(repo.repo_name)
-    if not repo_info:
-      return json.dumps({
-          "success": False,
-          "message": "Invalid repository name!"
-    })
-    loader=GitLoader(
-      clone_url=repo_info.html_url,
-      repo_path=repo.path,
-      branch=repo.branch  or repo_info.default_branch,
-    )
-    documents = loader.load()
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    docs = text_splitter.split_documents(documents)
-    embeddings = OpenAIEmbeddings()
-
+def add_knowledge(config: S3Config):    
     try:
-      SupabaseVectorStore.from_documents(
-        docs,
-        embeddings,
-        client=get_client(),
-        table_name=table_name,
-        query_name=query_name,
-        chunk_size=chunk_size,
-      )
-      return json.dumps({
-        "success": True,
-        "message": "Knowledge added successfully!"
-      })
+        region_name = "ap-northeast-1"
+        session = boto3.session.Session()
+        session.client(
+            service_name='secretsmanager',
+            region_name=region_name
+        )
+        loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
+        documents = loader.load()
+        text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=0)
+        docs = text_splitter.split_documents(documents)
+        embeddings = OpenAIEmbeddings()
+        SupabaseVectorStore.from_documents(
+            docs,
+            embeddings,
+            client=get_client(),
+            table_name=table_name,
+            query_name=query_name,
+            chunk_size=chunk_size,
+        )
+        return json.dumps({
+            "success": True,
+            "message": "Knowledge added successfully!",
+            "docs_len": len(documents)
+        })
     except Exception as e:
-      return json.dumps({
-        "success": False,
-        "message": str(e)
-      })
+        return json.dumps({
+            "success": False,
+            "message": str(e)
+        })
    
 def search_knowledge(query: str):
     retriever = init_retriever()

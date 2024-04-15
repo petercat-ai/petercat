@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from rag import retrieval
-from data_class import GitRepo
+from data_class import S3Config
 
 router = APIRouter(
     prefix="/api",
@@ -10,8 +10,8 @@ router = APIRouter(
 
 
 @router.post("/rag/add_knowledge")
-def add_knowledge(repo: GitRepo):
-    data=retrieval.add_knowledge(repo)
+def add_knowledge(config: S3Config):
+    data=retrieval.add_knowledge(config)
     return data
 
 @router.post("/rag/search_knowledge")

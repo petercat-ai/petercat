@@ -83,15 +83,15 @@ def search_issues(
         :param state: The state of the issue, e.g: open, closed, all
         """
         try:
-            search_query = f'{keyword} in:title,body,comments repo:{repo_name}'
+            search_query = f"{keyword} in:title,body,comments repo:{repo_name}"
             # Retrieve a list of open issues from the repository
             issues = g.search_issues(query=search_query, sort=sort, order=order)[:max_num]
             print(f"issues: {issues}")
          
             issues_list = [
                 {
-                    'issue_name': f'Issue #{issue.number} - {issue.title}',
-                    'issue_url': issue.html_url
+                    "issue_name": f"Issue #{issue.number} - {issue.title}",
+                    "issue_url": issue.html_url
                 }
                 for issue in issues
             ]

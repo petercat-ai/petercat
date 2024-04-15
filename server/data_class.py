@@ -20,7 +20,6 @@ class ExecuteMessage(BaseModel):
     repo: str
     path: str
 
-class GitRepo(BaseModel):
-    repo_name: str
-    path: Optional[str] = None
-    branch: Optional[str] = None
+class S3Config(BaseModel):
+    s3_bucket: str
+    file_path: Optional[str] = None
