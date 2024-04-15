@@ -18,7 +18,7 @@ logger.setLevel("INFO")
 
 router = APIRouter(
     prefix="/api/github",
-    tags=["health_checkers"],
+    tags=["github"],
     responses={404: {"description": "Not found"}},
 )
 

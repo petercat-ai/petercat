@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -18,3 +19,8 @@ class ExecuteMessage(BaseModel):
     type: str
     repo: str
     path: str
+
+class GitRepo(BaseModel):
+    repo_name: str
+    path: Optional[str] = None
+    branch: Optional[str] = None

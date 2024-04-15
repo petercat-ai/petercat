@@ -2,7 +2,6 @@ import json
 from typing import Optional
 from github import Github
 from langchain.tools import tool
-from uilts.env import get_env_variable
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
