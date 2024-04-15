@@ -15,6 +15,10 @@ from routers import health_checker, github, rag
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
 is_dev = bool(get_env_variable("IS_DEV"))
+task_root = get_env_variable("LAMBDA_TASK_ROOT")
+
+if task_root:
+    os.environ["NLTK_DATA"] = os.path.join(task_root, "nltk_data")
 
 app = FastAPI( 
     title="Bo-meta Server",
