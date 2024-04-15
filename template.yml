@@ -17,6 +17,8 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+      Layers:
+        - arn:aws:lambda:ap-northeast-1:654654285942:layer:nltk-layer:1
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
