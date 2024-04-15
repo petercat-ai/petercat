@@ -11,12 +11,12 @@ RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cach
 # Setup NLTK again in system path to execute nltk.downloader
 RUN pip install nltk
 # Setup directory for NLTK_DATA
-RUN mkdir -p ./nltk_data
+RUN mkdir -p /opt/nltk_data
 
 # Download NLTK_DATA to build directory
-RUN python -W ignore -m nltk.downloader punkt -d ./nltk_data
-RUN python -W ignore -m nltk.downloader stopwords -d ./nltk_data
-RUN python -W ignore -m nltk.downloader averaged_perceptron_tagger -d ./nltk_data
+RUN python -W ignore -m nltk.downloader punkt -d /opt/nltk_data
+RUN python -W ignore -m nltk.downloader stopwords -d /opt/nltk_data
+RUN python -W ignore -m nltk.downloader averaged_perceptron_tagger -d /opt/nltk_data
 COPY ./nltk_data /opt/nltk_data
 
 CMD ["python", "main.py"]
