@@ -7,10 +7,7 @@ import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { PromptTemplate } from 'langchain/prompts';
 import { SupabaseVectorStore } from 'langchain/vectorstores/supabase';
 import { Document } from 'langchain/document';
-import {
-  RunnableSequence,
-  RunnablePassthrough,
-} from 'langchain/schema/runnable';
+import { RunnableSequence } from 'langchain/schema/runnable';
 import {
   BytesOutputParser,
   StringOutputParser,
