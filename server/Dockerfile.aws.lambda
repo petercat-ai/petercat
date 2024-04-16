@@ -1,6 +1,11 @@
 FROM public.ecr.aws/docker/library/python:3.12.0-slim-bullseye
 
+# Copy aws-lambda-adapter for Steaming response
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.1 /lambda-adapter /opt/extensions/lambda-adapter
+
+# Copy nltk_lambda_layer for using nltk in lambda
+COPY --from=public.ecr.aws/m5s2b0d4/nltk_lambda_layer:latest /nltk_data /opt/nltk_data
+
 
 # Copy function code
 COPY . ${LAMBDA_TASK_ROOT}
@@ -8,14 +13,8 @@ COPY . ${LAMBDA_TASK_ROOT}
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cache-dir
 
-# Setup NLTK again in system path to execute nltk.downloader
-RUN pip install nltk
-# Setup directory for NLTK_DATA
-RUN mkdir -p /opt/nltk_data
+# Set NLTK_DATA to load nltk_data
+ENV NLTK_DATA=/opt/nltk_data
 
-# Download NLTK_DATA to build directory
-RUN python -W ignore -m nltk.downloader punkt -d /opt/nltk_data
-RUN python -W ignore -m nltk.downloader stopwords -d /opt/nltk_data
-RUN python -W ignore -m nltk.downloader averaged_perceptron_tagger -d /opt/nltk_data
 
 CMD ["python", "main.py"]
