@@ -11,7 +11,7 @@ from uilts.env import get_env_variable
 from data_class import ChatData
 
 # Import fastapi routers
-from routers import health_checker, github
+from routers import bot, health_checker, github
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
 is_dev = bool(get_env_variable("IS_DEV"))
@@ -33,6 +33,7 @@ app.add_middleware(
 
 app.include_router(health_checker.router)
 app.include_router(github.router)
+app.include_router(bot.router)
 
 
 @app.post("/api/chat/stream", response_class=StreamingResponse)
