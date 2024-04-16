@@ -11,11 +11,7 @@ from uilts.env import get_env_variable
 from data_class import ChatData
 
 # Import fastapi routers
-<<<<<<< HEAD
-from routers import bot, health_checker, github
-=======
 from routers import bot, health_checker, github, rag
->>>>>>> new-branch-name
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
 is_dev = bool(get_env_variable("IS_DEV"))
