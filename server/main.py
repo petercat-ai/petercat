@@ -1,5 +1,5 @@
 import os
-from rag import retrieval
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
@@ -11,7 +11,11 @@ from uilts.env import get_env_variable
 from data_class import ChatData
 
 # Import fastapi routers
+<<<<<<< HEAD
 from routers import bot, health_checker, github
+=======
+from routers import bot, health_checker, github, rag
+>>>>>>> new-branch-name
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
 is_dev = bool(get_env_variable("IS_DEV"))
@@ -33,6 +37,7 @@ app.add_middleware(
 
 app.include_router(health_checker.router)
 app.include_router(github.router)
+app.include_router(rag.router)
 app.include_router(bot.router)
 
 
@@ -41,15 +46,7 @@ def run_agent_chat(input_data: ChatData):
     result = stream.agent_chat(input_data, open_api_key)
     return StreamingResponse(result, media_type="text/event-stream")
 
-@app.post("/api/rag/add_knowledge")
-def add_knowledge():
-    data=retrieval.add_knowledge()
-    return data
 
-@app.post("/api/rag/search_knowledge")
-def search_knowledge(query: str):
-    data=retrieval.search_knowledge(query)
-    return data
 
 if __name__ == "__main__":
     if is_dev:

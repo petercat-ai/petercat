@@ -8,4 +8,4 @@ router = APIRouter(
 
 @router.get("/health_checker")
 def health_checker():
-    return {"Hello": "World"}
+    return { "Hello": "World" }

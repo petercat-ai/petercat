@@ -2,8 +2,6 @@ from typing import List, Optional
 from github import Github
 from github.ContentFile import ContentFile
 from langchain.tools import tool
-from uilts.env import get_env_variable
-
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
@@ -29,7 +27,8 @@ def search_code(
         
         # Perform the search for code files containing the keyword
         code_files = g.search_code(query=query)[:max_num]
-        return code_files 
+        
+        return code_files
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
