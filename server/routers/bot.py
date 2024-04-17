@@ -1,30 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body, Path
-from typing import Optional, List
-from pydantic import BaseModel
 from db.supabase.client import get_client
-class BotCreateRequest(BaseModel):
-    uid: str
-    avatar: Optional[str] = None
-    description: Optional[str] = None
-    prompt: Optional[str] = None
-    files: Optional[List[str]] = None  # 假设为文件的URL或标识符列表
-    enable_img_generation: Optional[bool] = None
-    label: Optional[str] = None
-    name: Optional[str] = None
-    starters: Optional[List[str]] = None  # 假设为起始文本列表
-    voice: Optional[str] = None
-    public: Optional[bool] = None
-class BotUpdateRequest(BaseModel):
-    avatar: Optional[str] = None
-    description: Optional[str] = None
-    prompt: Optional[str] = None
-    files: Optional[List[str]] = None
-    enable_img_generation: Optional[bool] = None
-    label: Optional[str] = None
-    name: Optional[str] = None
-    starters: Optional[List[str]] = None
-    voice: Optional[str] = None
-    public: Optional[bool] = None
+from type_class.bot import BotUpdateRequest, BotCreateRequest
+from typing import Optional
+
 router = APIRouter(
     prefix="/api/bot",
     tags=["bot"],
@@ -51,7 +29,7 @@ def get_bot_detail(id: Optional[str] = Query(None, description="Filter bots by p
     
 @router.get("/config")
 def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by personal category")):
-    uid = "google-oauth2|110531372948747483359"
+    uid = "u123456"
     if not id or not uid: 
       return{
         "error": "Auth failed",
