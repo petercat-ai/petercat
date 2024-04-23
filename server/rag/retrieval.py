@@ -1,13 +1,9 @@
 import json
-import boto3
 from langchain_openai import OpenAIEmbeddings
-from langchain_text_splitters import CharacterTextSplitter
 from langchain_community.vectorstores import SupabaseVectorStore
 from db.supabase.client import get_client
 from data_class import S3Config
 from uilts.env import get_env_variable
-from langchain_community.document_loaders import S3DirectoryLoader
-
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
@@ -39,6 +35,9 @@ def init_retriever():
 
 
 def add_knowledge(config: S3Config):    
+    from langchain_community.document_loaders import S3DirectoryLoader
+    from langchain_text_splitters import CharacterTextSplitter
+
     try:
         loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
         documents = loader.load()
