@@ -1,13 +1,35 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Body, Path
+from fastapi import APIRouter, Depends, HTTPException, Query, Body, Path, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2AuthorizationCodeBearer
 from db.supabase.client import get_client
 from type_class.bot import BotUpdateRequest, BotCreateRequest
-from typing import Optional
+from typing import Optional, Any
+from jose import jwt,JWTError
+import httpx
+from fastapi_auth0 import Auth0, Auth0User
+
 
 router = APIRouter(
     prefix="/api/bot",
     tags=["bot"],
     responses={404: {"description": "Not found"}},
 )
+# 你的 Auth0 配置
+AUTH0_DOMAIN = 'xuexiao.us.auth0.com'
+ALGORITHMS = ["RS256"]
+API_AUDIENCE = 'https://xuexiao.us.auth0.com/api/v2/'
+auth = Auth0(domain=AUTH0_DOMAIN, api_audience=API_AUDIENCE, scopes={'read:blabla': ''})
+# 设置 OAuth2
+oauth2_scheme = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=f"https://{AUTH0_DOMAIN}/authorize",
+    tokenUrl=f"https://{AUTH0_DOMAIN}/oauth/token"
+)
+
+
+
+
+@router.get("/protected", dependencies=[Depends(auth.implicit_scheme)])
+async def read_protected(user: Auth0User = Security(auth.get_user)):
+        return {"message": f"{user}"}
 
 @router.get("/list")
 def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots by personal category")):

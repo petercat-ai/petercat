@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from agent import stream
 
@@ -11,11 +12,11 @@ from uilts.env import get_env_variable
 from data_class import ChatData
 
 # Import fastapi routers
-from routers import bot, health_checker, github, rag
+from routers import bot, health_checker, github, rag, auth
 
 open_api_key = get_env_variable("OPENAI_API_KEY")
 is_dev = bool(get_env_variable("IS_DEV"))
-
+session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
 app = FastAPI( 
     title="Bo-meta Server",
     version="1.0",
@@ -24,17 +25,21 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # 明确指定允许的源
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
+    allow_methods=["*"],  # 允许所有方法
+    allow_headers=["*"],  # 允许所有头部
+)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key = session_secret_key,
 )
 
 app.include_router(health_checker.router)
 app.include_router(github.router)
 app.include_router(rag.router)
 app.include_router(bot.router)
+app.include_router(auth.router)
 
 
 @app.post("/api/chat/stream", response_class=StreamingResponse)
