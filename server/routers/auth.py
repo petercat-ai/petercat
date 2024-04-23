@@ -34,8 +34,6 @@ async def getUserInfoByToken(token):
     headers = {"authorization": f"Bearer {token}"}
     async with httpx.AsyncClient() as client:
         user_info_response = await client.get(userinfo_url, headers=headers)
-        print("user_info_response",user_info_response)
-
         if user_info_response.status_code == 200:
             user_info = user_info_response.json()
             data = {
@@ -61,7 +59,6 @@ async def getTokenByCode(code):
         "code": code,
         "redirect_uri": CALLBACK_URL,
     }
-    print()
     # 发送请求以交换访问令牌
     async with httpx.AsyncClient() as client:
         response = await client.post(token_url, headers=headers, data=data)
@@ -80,7 +77,6 @@ def login():
 @router.get("/callback")
 async def callback(request: Request, response: Response):
     code = request.query_params.get("code")
-    print("step1 code:",code)
     if not code:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization code")
     # 通过code获取token
