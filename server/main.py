@@ -41,13 +41,10 @@ app.include_router(rag.router)
 app.include_router(bot.router)
 app.include_router(auth.router)
 
-
 @app.post("/api/chat/stream", response_class=StreamingResponse)
 def run_agent_chat(input_data: ChatData):
     result = stream.agent_chat(input_data, open_api_key)
     return StreamingResponse(result, media_type="text/event-stream")
-
-
 
 if __name__ == "__main__":
     if is_dev:
