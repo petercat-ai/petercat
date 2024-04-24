@@ -7,7 +7,7 @@
     "client-dev": "cd client && yarn run dev",
     "server-dev": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
     "dev:python": "concurrently \"client-dev\" \"yarn run server-dev\"",
-    "build:docker": "docker build -t bot-meta .",
+    "build:docker": "docker build -t bot-meta ."
   },
   "engines": {
     "node": ">=18"
