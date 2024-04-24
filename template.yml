@@ -10,7 +10,7 @@ Globals:
 
 Parameters:
   X_GITHUB_APP_ID:
-    Type: String
+    Type: Number
   X_GITHUB_APPS_CLIENT_ID:
     Type: String
   X_GITHUB_APPS_CLIENT_SECRET:
