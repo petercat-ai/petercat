@@ -8,6 +8,22 @@ Globals:
   Function:
     Timeout: 300
 
+Parameters:
+  X_GITHUB_APP_ID:
+    Type: String
+  X_GITHUB_APPS_CLIENT_ID:
+    Type: String
+  X_GITHUB_APPS_CLIENT_SECRET:
+    Type: String
+  OPENAI_API_KEY:
+    Type: String
+  SUPABASE_SERVICE_KEY:
+    Type: String
+  SUPABASE_URL:
+    Type: String
+  TAVILY_API_KEY:
+    Type: String
+
 Resources:
   FastAPIFunction:
     Type: AWS::Serverless::Function
