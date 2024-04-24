@@ -39,14 +39,15 @@ jobs:
       - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: sam deploy \
-              --no-confirm-changeset \
-              --no-fail-on-empty-changeset \
-              --config-file .aws/petercat-preview.toml \
-              --parameter-overrides GitHubAppID=$X_GITHUB_APP_ID \
-                                    GithubAppsClientId=$X_GITHUB_APPS_CLIENT_ID \
-                                    GithubAppsClientSecret=$X_GITHUB_APPS_CLIENT_SECRET \
-                                    OpenAIAPIKey=$OPENAI_API_KEY \
-                                    SupabaseServiceKey=$SUPABASE_SERVICE_KEY \
-                                    SupabaseUrl=$SUPABASE_URL \
-                                    TavilyAPIKey=$TAVILY_API_KEY
+      - run: | 
+          sam deploy \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --config-file .aws/petercat-preview.toml \
+            --parameter-overrides GitHubAppID=$X_GITHUB_APP_ID \
+                                  GithubAppsClientId=$X_GITHUB_APPS_CLIENT_ID \
+                                  GithubAppsClientSecret=$X_GITHUB_APPS_CLIENT_SECRET \
+                                  OpenAIAPIKey=$OPENAI_API_KEY \
+                                  SupabaseServiceKey=$SUPABASE_SERVICE_KEY \
+                                  SupabaseUrl=$SUPABASE_URL \
+                                  TavilyAPIKey=$TAVILY_API_KEY
