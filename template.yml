@@ -9,20 +9,34 @@ Globals:
     Timeout: 300
 
 Parameters:
-  X_GITHUB_APP_ID:
+  GitHubAppID:
     Type: Number
-  X_GITHUB_APPS_CLIENT_ID:
+    Description: Github App Id
+    Default: 1
+  GithubAppsClientId:
     Type: String
-  X_GITHUB_APPS_CLIENT_SECRET:
+    Description: Github App Id
+    Default: 1
+  GithubAppsClientSecret:
     Type: String
-  OPENAI_API_KEY:
+    Description: Github App Id
+    Default: 1
+  OpenAIAPIKey:
     Type: String
-  SUPABASE_SERVICE_KEY:
+    Description: Github App Id
+    Default: 1
+  SupabaseServiceKey:
     Type: String
-  SUPABASE_URL:
+    Description: Github App Id
+    Default: 1
+  SupabaseUrl:
     Type: String
-  TAVILY_API_KEY:
+    Description: Github App Id
+    Default: 1
+  TavilyAPIKey:
     Type: String
+    Description: Github App Id
+    Default: 1
 
 Resources:
   FastAPIFunction:
@@ -33,13 +47,13 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
-          X_GITHUB_APP_ID: !Ref X_GITHUB_APP_ID
-          X_GITHUB_APPS_CLIENT_ID: !Ref X_GITHUB_APPS_CLIENT_ID
-          X_GITHUB_APPS_CLIENT_SECRET: !Ref X_GITHUB_APPS_CLIENT_SECRET
-          OPENAI_API_KEY: !Ref OPENAI_API_KEY
-          SUPABASE_SERVICE_KEY: !Ref SUPABASE_SERVICE_KEY
-          SUPABASE_URL: !Ref SUPABASE_URL
-          TAVILY_API_KEY: !Ref TAVILY_API_KEY
+          X_GITHUB_APP_ID: !Ref GitHubAppID
+          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
+          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          OPENAI_API_KEY: !Ref OpenAIAPIKey
+          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
+          SUPABASE_URL: !Ref SupabaseUrl
+          TAVILY_API_KEY: !Ref TavilyAPIKey
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
