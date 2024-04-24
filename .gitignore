@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 # dependencies
 /node_modules
+**/node_modules/
 /.pnp
 .pnp.js
 
@@ -12,8 +13,8 @@ server/temp/
 /coverage
 
 # next.js
-/.next/
-/out/
+**/.next/
+**/out/
 
 # production
 /build

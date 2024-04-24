@@ -17,6 +17,12 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          GITHUB_APP_CLIENT_ID: !Ref GITHUB_APP_CLIENT_ID
+          GITHUB_APP_CLIENT_SECRET: !Ref GITHUB_APP_CLIENT_SECRET
+          OPENAI_API_KEY: !Ref OPENAI_API_KEY
+          SUPABASE_SERVICE_KEY: !Ref SUPABASE_SERVICE_KEY
+          SUPABASE_URL: !Ref SUPABASE_URL
+          TAVILY_API_KEY: !Ref TAVILY_API_KEY
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
