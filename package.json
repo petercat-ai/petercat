@@ -1,0 +1,16 @@
+{
+  "name": "bot-meta",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "bootstrap": "cd client && yarn && cd server && bash setup_python.sh",
+    "client-dev": "cd client && yarn run dev",
+    "server-dev": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
+    "dev:python": "concurrently \"client-dev\" \"yarn run server-dev\"",
+    "build:docker": "docker build -t bot-meta .",
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": "https://github.com/ant-xuexiao/bot-combo.git"
+}
