@@ -6,6 +6,7 @@
 
 name: petercat
 version: "1.0"
+
 services:
   backend-core:
     image: petercat-backend-base
@@ -32,3 +33,9 @@ services:
     restart: always
     ports:
       - 3000:3000
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_API_KEY: ${SUPABASE_SERVICE_KEY}
+      NEXT_PUBLIC_ASSISTANT_API_HOST: http://0.0.0.0:8080
+      NEXT_STANDALONE: true
+      

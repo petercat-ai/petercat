@@ -22,6 +22,6 @@ cp .env.example .env
 docker compose pull
 
 # Start the services (in detached mode)
-docker compose up -d
+docker compose --env-file .env -f docker/docker-compose.yml up
 ```
 

@@ -10,6 +10,8 @@ import { Assistant } from 'petercat-lui';
 
 declare type Bot = Tables<'bots'>;
 
+const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
+
 export default function Home() {
   const { data: bots, isLoading, error } = useBotList();
   if (isLoading) {
@@ -21,7 +23,7 @@ export default function Home() {
 
   return (
     <div>
-      <Assistant host="https://api.petercat.chat" />
+      <Assistant host={ASSISTANT_API_HOST} />
 
       <div className="container mx-auto max-w-[1024px]">
         <div className="mt-8">
