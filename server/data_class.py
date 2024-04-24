@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -18,3 +19,7 @@ class ExecuteMessage(BaseModel):
     type: str
     repo: str
     path: str
+
+class S3Config(BaseModel):
+    s3_bucket: str
+    file_path: Optional[str] = None
