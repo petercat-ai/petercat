@@ -1,0 +1,42 @@
+# Usage
+#   Start:          docker compose up
+#   With helpers:   docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up
+#   Stop:           docker compose down
+#   Destroy:        docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down -v --remove-orphans
+
+name: petercat
+version: "1.0"
+
+services:
+  backend-core:
+    image: petercat-backend-base
+    build:
+      context: ../server
+      dockerfile: ../docker/Dockerfile.aws.lambda
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      X_GITHUB_APP_ID: ${X_GITHUB_APP_ID}
+      X_GITHUB_APPS_CLIENT_ID: ${X_GITHUB_APPS_CLIENT_ID}
+      X_GITHUB_APPS_CLIENT_SECRET: ${X_GITHUB_APPS_CLIENT_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY}
+      SUPABASE_URL: ${SUPABASE_URL}
+      TAVILY_API_KEY: ${TAVILY_API_KEY}
+  front-end:
+    image: petercat-frontend
+    depends_on:
+      - backend-core
+    build: 
+      context: ..
+      dockerfile: ./docker/Dockerfile.vercel
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_API_KEY: ${SUPABASE_SERVICE_KEY}
+      NEXT_PUBLIC_ASSISTANT_API_HOST: http://0.0.0.0:8080
+      NEXT_STANDALONE: true
+      

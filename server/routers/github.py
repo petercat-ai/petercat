@@ -8,9 +8,9 @@ from github import Auth
 
 from uilts.env import get_env_variable
 
-APP_ID = get_env_variable("GITHUB_APP_ID")
-CLIENT_ID = get_env_variable("GITHUB_APP_CLIENT_ID")
-CLIENT_SECRET = get_env_variable("GITHUB_APP_CLIENT_SECRET")
+APP_ID = get_env_variable("X_GITHUB_APP_ID")
+CLIENT_ID = get_env_variable("X_GITHUB_APPS_CLIENT_ID")
+CLIENT_SECRET = get_env_variable("X_GITHUB_APPS_CLIENT_SECRET")
 
 
 logger = logging.getLogger()

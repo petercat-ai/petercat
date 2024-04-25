@@ -2,9 +2,7 @@
 __pycache__/
 *.pyc
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+node_modules/
 
 server/temp/
 
@@ -12,11 +10,12 @@ server/temp/
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
+
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -26,6 +25,7 @@ server/temp/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.yarnrc.yml
 
 # local env files
 .env*.local
