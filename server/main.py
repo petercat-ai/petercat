@@ -3,7 +3,7 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-
+from fastapi.middleware.cors import CORSMiddleware
 from agent import stream
 
 from uilts.env import get_env_variable
@@ -19,6 +19,15 @@ app = FastAPI(
     title="Bo-meta Server",
     version="1.0",
     description="Agent Chat APIs"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 app.include_router(health_checker.router)
