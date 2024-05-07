@@ -8,6 +8,36 @@ Globals:
   Function:
     Timeout: 300
 
+Parameters:
+  GitHubAppID:
+    Type: Number
+    Description: Github App Id
+    Default: 1
+  GithubAppsClientId:
+    Type: String
+    Description: Github App Id
+    Default: 1
+  GithubAppsClientSecret:
+    Type: String
+    Description: Github App Id
+    Default: 1
+  OpenAIAPIKey:
+    Type: String
+    Description: Github App Id
+    Default: 1
+  SupabaseServiceKey:
+    Type: String
+    Description: Github App Id
+    Default: 1
+  SupabaseUrl:
+    Type: String
+    Description: Github App Id
+    Default: 1
+  TavilyAPIKey:
+    Type: String
+    Description: Github App Id
+    Default: 1
+
 Resources:
   FastAPIFunction:
     Type: AWS::Serverless::Function
@@ -17,6 +47,13 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          X_GITHUB_APP_ID: !Ref GitHubAppID
+          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
+          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          OPENAI_API_KEY: !Ref OpenAIAPIKey
+          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
+          SUPABASE_URL: !Ref SupabaseUrl
+          TAVILY_API_KEY: !Ref TavilyAPIKey
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
@@ -29,8 +66,8 @@ Resources:
           Resource: '*'
       Tracing: Active
     Metadata:
-      Dockerfile: Dockerfile.aws.lambda
       DockerContext: server
+      Dockerfile: ../docker/Dockerfile.aws.lambda
       DockerTag: v1
 
 Outputs:
