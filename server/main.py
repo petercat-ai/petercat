@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 from agent import stream
 
@@ -25,6 +26,14 @@ app = FastAPI(
 app.add_middleware(
     SessionMiddleware,
     secret_key = session_secret_key,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 明确指定允许的源
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有方法
+    allow_headers=["*"],  # 允许所有头部
 )
 
 app.include_router(health_checker.router)
