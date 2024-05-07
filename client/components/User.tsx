@@ -1,12 +1,13 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
 import { Avatar, Button, Link } from '@nextui-org/react';
+import useUser from '../app/hooks/useUser';
 
 export default function Profile() {
-  const { user } = useUser();
+  const { data: user } = useUser();
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 
   if (!user) {
     return (
-      <Button as={Link} color="primary" href="/api/auth/login" variant="flat">
+      <Button as={Link} color="primary" href={`${apiDomain}/api/auth/login`} variant="flat">
         Login
       </Button>
     );

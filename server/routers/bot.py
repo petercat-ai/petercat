@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Body, Path
+from fastapi import APIRouter, Query, Body, Path
 from db.supabase.client import get_client
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional
