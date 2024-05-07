@@ -49,7 +49,6 @@ async def getUserInfoByToken(token):
             return {}
 
 async def getTokenByCode(code):
-    # 准备请求访问令牌的参数
     token_url = f"https://{AUTH0_DOMAIN}/oauth/token"
     headers = {"content-type": "application/x-www-form-urlencoded"}
     data = {
@@ -59,7 +58,6 @@ async def getTokenByCode(code):
         "code": code,
         "redirect_uri": CALLBACK_URL,
     }
-    # 发送请求以交换访问令牌
     async with httpx.AsyncClient() as client:
         response = await client.post(token_url, headers=headers, data=data)
         token_response = response.json()
@@ -79,19 +77,16 @@ async def callback(request: Request, response: Response):
     code = request.query_params.get("code")
     if not code:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization code")
-    # 通过code获取token
     token = await getTokenByCode(code)
-    # 通过token获取userinfo并入库
     data = await getUserInfoByToken(token)
     
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
-    #准备跳转地址并存cookie
     response = RedirectResponse(url=f'{WEB_URL}', status_code=302)  # 303 See Other 确保正确处理 POST 到 GET 的重定向
     response.set_cookie(key="petercat", value=token, httponly=True, secure=True, samesite='Lax')
     return response
 
-@router.get("/userinfo")?
+@router.get("/userinfo")
 async def userinfo(petercat: str = Cookie(None)):
     if not petercat:
         return RedirectResponse(url=LOGIN_URL, status_code=303)
@@ -99,5 +94,4 @@ async def userinfo(petercat: str = Cookie(None)):
     if data :
         return { "data": data, "status": 200}
     else:
-        # 处理错误响应或 token 无效的情况
         return RedirectResponse(url=LOGIN_URL, status_code=303)
