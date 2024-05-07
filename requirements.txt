@@ -1,4 +1,0 @@
-python-dotenv
-python-jose
-six
-jose

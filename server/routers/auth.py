@@ -1,7 +1,7 @@
-from fastapi import APIRouter,Cookie, Depends, Security, Request, HTTPException, status, Response
+from fastapi import APIRouter,Cookie, Request, HTTPException, status, Response
 from uilts.env import get_env_variable
-from fastapi_auth0 import Auth0, Auth0User
-from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi_auth0 import Auth0
+from fastapi.responses import RedirectResponse
 import httpx
 from db.supabase.client import get_client
 import secrets
