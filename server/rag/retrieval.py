@@ -15,10 +15,7 @@ chunk_size=2000
 
 
 def convert_document_to_dict(document):
-    return {
-        'page_content': document.page_content,
-        'metadata': document.metadata,
-    }
+   return document.page_content,
 
 
 def init_retriever():

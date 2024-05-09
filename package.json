@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "bootstrap": "cd client && yarn && cd ../server && bash setup_python.sh",
-    "dev:client": "cd client && yarn run dev",
-    "dev:server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
-    "dev:app": "concurrently \"yarn run dev:client\" \"yarn run dev:server\"",
+    "client": "cd client && yarn run dev",
+    "lui": "cd lui && yarn run dev",
+    "server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
+    "client:server": "concurrently \"yarn run server\" \"yarn run client\"",
+    "lui:server": "concurrently \"yarn run server\" \"yarn run lui\"",
     "build:docker": "docker build -t bot-meta ."
   },
   "engines": {
