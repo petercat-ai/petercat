@@ -54,8 +54,8 @@ def get_issues(
             
             issues_list = [
                 {
-                    'issue_name': f'Issue #{issue.number} - {issue.title}',
-                    'issue_url': issue.html_url
+                    "issue_name": f"Issue #{issue.number} - {issue.title}",
+                    "issue_url": issue.html_url
                 }
                 for issue in issues
             ]
