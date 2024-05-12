@@ -20,7 +20,7 @@ async def verify_rate_limit(petercat: str = Cookie(None)):
 
     now = datetime.now().isoformat()
     user_usage = rows.data[0] if len(rows.data) > 0 else { "user_id": user_id, 'request_count': 0, 'last_request': now }
-    print('user_usage', user_usage)
+
     # Calculate the time elapsed since the last request
     elapsed_time = datetime.now() - datetime.fromisoformat(user_usage["last_request"])
     
