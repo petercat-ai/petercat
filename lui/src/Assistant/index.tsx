@@ -42,7 +42,7 @@ const Assistant = (props: AssistantProps) => {
     e.preventDefault(); // Prevent text selection
   };
   return (
-    <>
+    <div className="petercat-lui">
       {chatVisible ? (
         <div
           className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black bg-gradient-to-r from-f2e9ed via-e9eefb to-f0eeea shadow-[0px_0px_1px_#919eab3d]"
@@ -58,12 +58,13 @@ const Assistant = (props: AssistantProps) => {
           </div>
         </div>
       ) : (
-        <div
-          className="fixed bottom-[120px] right-2.5 w-14 h-8 mr-[-32px] flex items-center justify-center rounded-full border border-[#ececee] shadow-[0_3.2px_12px_#00000014,_0_5px_25px_#0000000a] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
+          <div
+          className="fixed bottom-[120px] right-0 w-14 h-8 flex items-center justify-center rounded-full border border-[#ececee] shadow-[0_3.2px_12px_#00000014,_0_5px_25px_#0000000a] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
           onMouseDown={startDrag}
           onClick={toggleDrawer}
           style={{
             bottom: `${position.bottom}px`,
+            marginRight: '-18px',
             zIndex: 9999,
           }}
         >
@@ -76,7 +77,7 @@ const Assistant = (props: AssistantProps) => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
