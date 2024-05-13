@@ -37,7 +37,8 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
     ? `calc(${drawerWidth}px - 90px)`
     : '100%';
   return (
-    <div
+    <div className="petercat-lui">
+       <div
       className="h-full w-full"
       style={{ backgroundColor: globalToken.chatBoxBackgroundColor }}
     >
@@ -167,6 +168,8 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
         }}
       />
     </div>
+    </div>
+   
   );
 });
 

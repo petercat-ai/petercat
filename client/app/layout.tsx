@@ -4,8 +4,10 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
+import { Assistant } from 'petercat-lui';
 
 const queryClient = new QueryClient();
+const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
 
 export default function RootLayout({
   children,
@@ -26,6 +28,7 @@ export default function RootLayout({
       </head>
 
       <UserProvider>
+        <Assistant host={ASSISTANT_API_HOST} />
         <QueryClientProvider client={queryClient}>
           <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat">
             <NextUIProvider>

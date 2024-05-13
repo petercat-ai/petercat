@@ -8002,10 +8002,10 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-petercat-lui@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.0.4.tgz#b98d4369681d822a7199c18529002c608a1af46a"
-  integrity sha512-rQyz24tIgFWZKAsipKM1NACFvfqE3iN4BEy2FoAob+K3DP/TTiAxNgDOkGKP1q/woKpN66KTyLX7uwlAGrjpvA==
+petercat-lui@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.0.8.tgz#e6f2e9240910ba41897db59141fb23d9504757d6"
+  integrity sha512-IsuAVJsRUVkUaA7xiwPi4oZNvyQtBpgOMDwAIvaKOzWs2EssT3BJHRm9rJ/uLq1PDNHtFBUsQRAZcFVHh/UVVw==
   dependencies:
     "@ant-design/icons" "^5.3.5"
     "@ant-design/pro-chat" "1.12.1-beta.1"
@@ -8017,6 +8017,7 @@ petercat-lui@^0.0.4:
     lodash "^4.17.21"
     react-json-view "^1.21.3"
     tailwindcss "^3.4.1"
+    tailwindcss-scoped-preflight "^3.2.6"
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -9381,6 +9382,11 @@ tailwind-variants@^0.1.20:
   integrity sha512-AMh7x313t/V+eTySKB0Dal08RHY7ggYK0MSn/ad8wKWOrDUIzyiWNayRUm2PIJ4VRkvRnfNuyRuKbLV3EN+ewQ==
   dependencies:
     tailwind-merge "^1.14.0"
+
+tailwindcss-scoped-preflight@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.npmjs.org/tailwindcss-scoped-preflight/-/tailwindcss-scoped-preflight-3.2.6.tgz#db1f2654d8694b8615e113c86c27d6dcb5e37b3a"
+  integrity sha512-Q0mE+77258D5kIfMOAJ8iOFEUFoeGMqaWG/n8H9deBFwN7E9zB+qmxTmcF6JfmrEkwx6vfBZN7JSneBGYJn4Kg==
 
 tailwindcss@3.3.3:
   version "3.3.3"
