@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.3.0",
+    "@fingerprintjs/fingerprintjs": "^4.3.0",
     "@next/bundle-analyzer": "^13.4.19",
     "@nextui-org/react": "^2.2.9",
     "@supabase/supabase-js": "^2.32.0",
@@ -28,7 +29,6 @@
     "axios": "^1.6.7",
     "concurrently": "^8.2.2",
     "dayjs": "^1.11.10",
-    "petercat-lui": "^0.0.8",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.16.15",
@@ -38,6 +38,7 @@
     "lodash": "^4.17.21",
     "next": "14.0.1",
     "openai": "^4.24.7",
+    "petercat-lui": "^0.0.8",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
