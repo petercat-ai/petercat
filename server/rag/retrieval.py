@@ -1,5 +1,4 @@
 import json
-from typing import Optional
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import SupabaseVectorStore
 from db.supabase.client import get_client
