@@ -4,11 +4,16 @@ from datetime import datetime, timedelta
 
 from auth.get_user_info import getUserInfoByToken
 from db.supabase.client import get_client
+from uilts.env import get_env_variable
 
-RATE_LIMIT_REQUESTS = 100
-RATE_LIMIT_DURATION = timedelta(minutes=1)
+RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED")
+RATE_LIMIT_REQUESTS = get_env_variable("RATE_LIMIT_REQUESTS") or 100
+RATE_LIMIT_DURATION = timedelta(minutes=int(get_env_variable("RATE_LIMIT_DURATION") or 1))
 
 async def verify_rate_limit(petercat: str = Cookie(None)):
+    if not RATE_LIMIT_ENABLED:
+        return
+
     if not petercat:
         raise HTTPException(status_code=403, detail="Must Login")
     user = await getUserInfoByToken(petercat)
@@ -28,7 +33,7 @@ async def verify_rate_limit(petercat: str = Cookie(None)):
         # If the elapsed time is greater than the rate limit duration, reset the count
         user_usage['request_count'] = 1
     else:
-        if user_usage['request_count'] >= RATE_LIMIT_REQUESTS:
+        if user_usage['request_count'] >= int(RATE_LIMIT_REQUESTS):
             # If the request count exceeds the rate limit, return a JSON response with an error message
             raise HTTPException(
                 status_code=429, 
