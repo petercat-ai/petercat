@@ -4,6 +4,8 @@ import React from 'react';
 import { isEmpty, map } from 'lodash';
 import { Spinner } from '@nextui-org/react';
 import BotCard from '@/components/BotCard';
+import AddBotCard from '@/components/AddBotCard';
+
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { Assistant } from 'petercat-lui';
@@ -27,14 +29,10 @@ export default function Home() {
 
       <div className="container mx-auto max-w-[1024px]">
         <div className="mt-8">
-          <div className="text-center text-purple-500 text-base font-semibold font-['PingFang SC']">
-            <div className="uppercase">Bot-market</div>
-            <div className="m-1 leading-[62px] text-indigo-950 text-[50px]">
-              人才市场
-            </div>
-          </div>
+          
 
           <div className="grid grid-flow-row-dense grid-cols-3 gap-8 my-8">
+            <AddBotCard />
             {!isEmpty(bots) &&
               map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}
           </div>
