@@ -34,8 +34,8 @@ const BotCard = (props: { bot: Bot }) => {
           {/* {bot?.label && <span className="text-default-500">#{bot.label}</span>} */}
         </div>
 
-        <div className="flex-1 w-full border-zinc-100/50 pt-2 text-left text-[#9CA3AF] font-[400] text-[14px] leading-[22px]">
-          {bot.description}
+        <div className="flex-1 w-full border-zinc-100/50 text-left text-[#9CA3AF] font-[400] text-[14px] leading-[22px]">
+          <p className='my-0 overflow-hidden text-ellipsis line-clamp-2'>{bot.description}</p>
         </div>
       </CardFooter>
     </Card>

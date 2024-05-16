@@ -100,9 +100,8 @@ const BotCard = (props: { bot: Bot }) => {
           </Dropdown>
         </CardBody>
         <CardBody className="py-0 text-small text-default-400">
-          <p>{bot.description}</p>
+          <p className='my-0 overflow-hidden text-ellipsis line-clamp-2'>{bot.description}</p>
         </CardBody>
-        <Divider />
       </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
