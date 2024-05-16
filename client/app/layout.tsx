@@ -3,8 +3,10 @@ import './globals.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
+import { Assistant } from 'petercat-lui';
 
 const queryClient = new QueryClient();
+const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
 
 export default function RootLayout({
   children,

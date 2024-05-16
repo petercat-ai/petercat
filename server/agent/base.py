@@ -51,7 +51,7 @@ class AgentBuilder:
         return [tavily_tool]
     
     def _create_agent_with_tools(self) -> AgentExecutor:
-        llm = ChatOpenAI(model="gpt-4-1106-preview", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
+        llm = ChatOpenAI(model="gpt-4-turbo", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
 
         tools =  self.init_tavily_tools() if self.enable_tavily else []
         for tool in self.tools.values():

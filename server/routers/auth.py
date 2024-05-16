@@ -1,10 +1,11 @@
 from fastapi import APIRouter,Cookie, Request, HTTPException, status, Response
-from uilts.env import get_env_variable
-from fastapi_auth0 import Auth0
+
 from fastapi.responses import RedirectResponse
 import httpx
+
 from db.supabase.client import get_client
-import secrets
+from auth.get_user_info import generateAnonymousUser, getAnonymousUserInfoByToken, getUserInfoByToken
+from uilts.env import get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -19,34 +20,12 @@ LOGIN_URL = f"{API_URL}/api/auth/login"
 WEB_URL =  get_env_variable("WEB_URL")
 
 
-auth = Auth0(domain=AUTH0_DOMAIN, api_audience=API_AUDIENCE, scopes={'read': 'get list'})
-
 router = APIRouter(
     prefix="/api/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
 )
 
-async def getUserInfoByToken(token):
-    userinfo_url = f"https://{AUTH0_DOMAIN}/userinfo"
-    
-
-    headers = {"authorization": f"Bearer {token}"}
-    async with httpx.AsyncClient() as client:
-        user_info_response = await client.get(userinfo_url, headers=headers)
-        if user_info_response.status_code == 200:
-            user_info = user_info_response.json()
-            data = {
-                "id": user_info["sub"],
-                "nickname": user_info.get("nickname"),
-                "name": user_info.get("name"),
-                "picture": user_info.get("picture"),
-                "sub": user_info["sub"],
-                "sid": secrets.token_urlsafe(32)
-            }
-            return data
-        else :
-            return {}
 
 async def getTokenByCode(code):
     token_url = f"https://{AUTH0_DOMAIN}/oauth/token"
@@ -66,6 +45,17 @@ async def getTokenByCode(code):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token")
     return token_response['access_token']
 
+async def getAnonymousUser(request: Request, response: Response):
+    clientId = request.query_params.get("clientId")
+    if not clientId:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing clientId")
+    token, data = await generateAnonymousUser(clientId)
+
+    supabase = get_client()
+    supabase.table("profiles").upsert(data).execute()
+    
+    response.set_cookie(key="petercat", value=token, httponly=True, secure=True, samesite='Lax')
+    return { "data": data, "status": 200}
 
 @router.get("/login")
 def login():
@@ -87,11 +77,15 @@ async def callback(request: Request, response: Response):
     return response
 
 @router.get("/userinfo")
-async def userinfo(petercat: str = Cookie(None)):
+async def userinfo(request: Request, response: Response, petercat: str = Cookie(None)):
     if not petercat:
-        return RedirectResponse(url=LOGIN_URL, status_code=303)
-    data = await getUserInfoByToken(petercat)
+        return await getAnonymousUser(request, response)
+
+    data = await getAnonymousUserInfoByToken(petercat) if petercat.startswith("client|") else await getUserInfoByToken(petercat)
+    if data is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token") 
     if data :
         return { "data": data, "status": 200}
+
     else:
         return RedirectResponse(url=LOGIN_URL, status_code=303)

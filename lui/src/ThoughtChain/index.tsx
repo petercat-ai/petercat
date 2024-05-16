@@ -87,46 +87,48 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   }, []);
 
   return (
-    <Collapse
-      size="small"
-      items={items}
-      activeKey={activeKey}
-      onChange={onChange}
-      style={{ maxWidth: '100%' }}
-      expandIcon={(panelProps) => {
-        if (panelProps.isActive) {
-          return <UnorderedListOutlined className="text-gray-900 text-xs" />;
-        }
-        switch (status) {
-          case Status.success:
-            return (
-              <CheckCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case Status.loading:
-            return (
-              <LoadingOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case Status.failed:
-            return (
-              <CloseCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case Status.end:
-            return (
-              <ExclamationCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          default:
-            return '';
-        }
-      }}
-    />
+    <div className="petercat-lui">
+      <Collapse
+        size="small"
+        items={items}
+        activeKey={activeKey}
+        onChange={onChange}
+        style={{ maxWidth: '100%' }}
+        expandIcon={(panelProps) => {
+          if (panelProps.isActive) {
+            return <UnorderedListOutlined className="text-gray-900 text-xs" />;
+          }
+          switch (status) {
+            case Status.success:
+              return (
+                <CheckCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case Status.loading:
+              return (
+                <LoadingOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case Status.failed:
+              return (
+                <CloseCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case Status.end:
+              return (
+                <ExclamationCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            default:
+              return '';
+          }
+        }}
+      />
+    </div>
   );
 };
 

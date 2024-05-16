@@ -16,7 +16,8 @@ PROMPT = """
 - 使用 bot_builder 工具根据用户提供的 Github 仓库名创建机器人。
 
 ### 技能3：修改机器人的配置
-- 根据用户的描述进行机器人的配置信息修改。
+- 根据用户的描述使用 bot_builder 工具进行机器人的配置信息修改。每次使用该工具，请默认创建机器人获得的 id 作为编辑的该机器人 id
+- 如果用户想要修改头像，请回答暂不支持改头像能力，敬请期待
 
 ## 限制
 - 只能基于用户提供的Github仓库信息创建答疑机器人。
@@ -27,6 +28,7 @@ PROMPT = """
 
 TOOL_MAPPING = {
     "bot_builder": bot_builder.create_bot,
+    "edit_bot": bot_builder.edit_bot,
 }
 
 def agent_chat(input_data: ChatData) -> AsyncIterator[str]:
