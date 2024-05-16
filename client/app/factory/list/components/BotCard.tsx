@@ -18,6 +18,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Image,
   useDisclosure,
   Badge,
 } from '@nextui-org/react';
@@ -47,37 +48,31 @@ const BotCard = (props: { bot: Bot }) => {
   return (
     <>
       <Card
-        className="border-none max-h-[166px]"
+        className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2"
         shadow="sm"
         isPressable
         onPress={() => router.push(`/chat/${bot.id}`)}
       >
-        <CardHeader className="justify-between ">
-          <div className="flex gap-5">
-            <Badge
-              content=""
-              color={bot?.public ? 'success' : 'warning'}
-              shape="circle"
-              placement="bottom-right"
-            >
-              <Avatar isBordered radius="full" size="md" src={bot.avatar!} />
-            </Badge>
-
-            <div className="flex flex-col gap-1 items-start justify-center">
-              <h4 className="text-small font-semibold leading-none text-default-600">
-                {bot.name}
-              </h4>
-
-              {bot?.label && (
-                <h5 className="text-small tracking-tight text-default-400">
-                  #{bot.label}
-                </h5>
-              )}
+        <CardBody className="overflow-visible p-0 flex-initial">
+          <Image
+            shadow="none"
+            loading="eager"
+            radius="lg"
+            width="100%"
+            alt={bot.name!}
+            className="rounded-[8px] opacity-100 w-full object-cover h-[268px] w-[300px]"
+            src={bot.avatar!}
+          />
+        </CardBody>
+        <CardBody className="flex flex-row justify-between pt-4">
+          <div className="flex items-end">
+            <div className="leading-8 h-8 font-semibold text-2xl">
+              {bot.name}
             </div>
           </div>
           <Dropdown
             classNames={{
-              base: 'before:bg-default-200',
+              base: 'before:bg-default-200 justify-end',
               content: 'min-w-[100px]',
             }}
           >
@@ -86,7 +81,7 @@ const BotCard = (props: { bot: Bot }) => {
                 <SettingIcon />
               </Button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions">
+            <DropdownMenu aria-label="Static Actions" className='bg-[#efefef] rounded-[6px]'>
               <DropdownItem
                 key="edit"
                 onClick={() => router.push(`/factory/edit/${bot.id}`)}
@@ -103,16 +98,11 @@ const BotCard = (props: { bot: Bot }) => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-400">
+        </CardBody>
+        <CardBody className="py-0 text-small text-default-400">
           <p>{bot.description}</p>
         </CardBody>
         <Divider />
-        <CardFooter>
-          <span className="text-default-400 text-[12px]">
-            Edited {dayjs(bot.updated_at).format('YYYY-MM-DD HH:mm')}
-          </span>
-        </CardFooter>
       </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
