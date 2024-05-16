@@ -46,7 +46,7 @@ begin
     1 - (rag_docs.embedding <=> query_embedding
   ) as similarity
   from rag_docs
-  where metadata @> filter AND
+  where metadata @> filter
   order by rag_docs.embedding <=> query_embedding;
 end;
 $$;
