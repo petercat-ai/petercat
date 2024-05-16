@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Agent Hub</title>
+        <title>PeterCat</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <meta
           name="description"

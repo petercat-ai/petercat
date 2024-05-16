@@ -1,20 +1,20 @@
 {
-  "name": "bot-meta",
+  "name": "petercat",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "cd client && yarn && cd ../server && bash setup_python.sh",
+    "bootstrap": "cd client && yarn && cd ../lui && yarn && cd ../server && bash setup_python.sh",
     "client": "cd client && yarn run dev",
     "lui": "cd lui && yarn run dev",
     "server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
     "client:server": "concurrently \"yarn run server\" \"yarn run client\"",
     "lui:server": "concurrently \"yarn run server\" \"yarn run lui\"",
-    "build:docker": "docker build -t bot-meta ."
+    "build:docker": "docker build -t petercat ."
   },
   "engines": {
-    "node": ">=18"
+    "node": "^18 || >=20"
   },
-  "repository": "https://github.com/ant-xuexiao/bot-meta.git",
+  "repository": "https://github.com/ant-xuexiao/petercat.git",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }

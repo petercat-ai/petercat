@@ -1,12 +1,12 @@
 {
-  "name": "bot-meta",
+  "name": "petercat",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "bootstrap": "yarn",
     "dev": "next dev",
     "build": "next build",
-    "build:docker": "docker build -t bot-meta .",
+    "build:docker": "docker build -t petercat .",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"app\""

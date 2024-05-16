@@ -45,7 +45,7 @@ export function Navbar() {
     <NextNavbar className='custom-nav-bar w-full'>
       <NavbarBrand className='custom-nav-brand w-[115px]' >
         <Link href="/">
-          <Image className="opacity-100" src="/images/logo_new.svg" alt="botmeta" width={114} height={32} />
+          <Image className="opacity-100" src="/images/logo_new.svg" alt="petercat" width={114} height={32} />
         </Link>
       </NavbarBrand>
       <NavbarContent className="w-[160px] mt-0.5 custom-nav-content hidden sm:flex gap-0" justify="start">
