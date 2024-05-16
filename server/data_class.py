@@ -39,6 +39,8 @@ class GitIssueConfig(BaseModel):
 class GitDocConfig(BaseModel):
     repo_name: str
     file_path: str
+    commit_id: Optional[str] = None
+    commit_sha: Optional[str] = None
     """File path of the documentation file. eg:'docs/blog/build-ghost.zh-CN.md'"""
     branch: Optional[str] = 'main'
     

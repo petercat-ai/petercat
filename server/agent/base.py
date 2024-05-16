@@ -8,10 +8,10 @@ from langchain.agents.format_scratchpad.openai_tools import (
 )
 from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
-from langchain.prompts import PromptTemplate, MessagesPlaceholder
+from langchain.prompts import MessagesPlaceholder
 from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.utilities.tavily_search import TavilySearchAPIWrapper
+from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
 from uilts.env import get_env_variable

@@ -1,6 +1,7 @@
 import json
+from typing import Any, Optional
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import SupabaseVectorStore
+from rag.supabase_vectorstore import SupabaseVectorStore
 from db.supabase.client import get_client
 from data_class import GitDocConfig, GitIssueConfig, S3Config
 from rag.github_file_loader import GithubFileLoader
@@ -23,7 +24,7 @@ def convert_document_to_dict(document):
 
 def init_retriever():
     embeddings = OpenAIEmbeddings()
-    db = SupabaseVectorStore(
+    vector_store = SupabaseVectorStore(
       embedding=embeddings,
       client=get_client(),
       table_name=TABLE_NAME,
@@ -31,7 +32,7 @@ def init_retriever():
       chunk_size=CHUNK_SIZE,
     )
 
-    return db.as_retriever()
+    return vector_store.as_retriever()
 
 
 def init_s3_Loader(config: S3Config):
@@ -61,38 +62,43 @@ def init_github_file_loader(config: GitDocConfig):
     )
     return loader
     
-def supabase_embedding(documents):
+def supabase_embedding(documents, **kwargs: Any):
     from langchain_text_splitters import CharacterTextSplitter
     
     try:    
         text_splitter = CharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
         docs = text_splitter.split_documents(documents)
         embeddings = OpenAIEmbeddings()
-        SupabaseVectorStore.from_documents(
+        vector_store = SupabaseVectorStore.from_documents(
             docs,
             embeddings,
             client=get_client(),
             table_name=TABLE_NAME,
             query_name=QUERY_NAME,
             chunk_size=CHUNK_SIZE,
+            **kwargs
         )
-        return json.dumps({
-            "success": True,
-            "message": "Knowledge added successfully!",
-            "docs_len": len(documents)
-        }) 
+        return vector_store
     except Exception as e:
-        return json.dumps({
-            "success": False,
-            "message": str(e)
-        })
+        print(e)
+        return None
    
 
-def add_knowledge_by_issues(config: GitIssueConfig):    
+def add_knowledge_by_issues(config: GitIssueConfig, ):    
     try:
         loader = init_github_issue_loader(config)
         documents = loader.load()
-        supabase_embedding(documents)
+        store = supabase_embedding(documents, repo_name=config.repo_name)
+        if(store):
+            return json.dumps({
+                "success": True,
+                "message": "Knowledge added successfully!",
+            }) 
+        else:
+            return json.dumps({
+                "success": False,
+                "message": "Knowledge not added!"
+            })
     except Exception as e:
         return json.dumps({
             "success": False,
@@ -103,7 +109,18 @@ def add_knowledge_by_doc(config: GitDocConfig):
     try:
         loader = init_github_file_loader(config)
         documents = loader.load()
-        supabase_embedding(documents)
+        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=config.commit_id, commit_sha=config.commit_sha)
+        if(store):
+            return json.dumps({
+                "success": True,
+                "message": "Knowledge added successfully!",
+            }) 
+        else:
+            return json.dumps({
+                "success": False,
+                "message": "Knowledge not added!"
+            })
+
     except Exception as e:
         return json.dumps({
             "success": False,
