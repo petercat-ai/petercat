@@ -16,10 +16,11 @@
   },
   "repository": "https://github.com/ant-xuexiao/petercat.git",
   "devDependencies": {
-    "concurrently": "^8.2.2"
-  },
-  "dependencies": {
+    "concurrently": "^8.2.2",
     "@tailwindcss/line-clamp": "^0.4.4",
     "tailwindcss": "^3.4.3"
+  },
+  "dependencies": {
+
   }
 }
