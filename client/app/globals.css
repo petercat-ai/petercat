@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 html, body {
-  background-color: #666666;
+  background-color: #F3F4F6;
   margin: 0; 
   padding: 0; 
   min-height: 100%;

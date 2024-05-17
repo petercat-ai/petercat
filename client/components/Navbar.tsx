@@ -12,8 +12,6 @@ import {
   Input,
   Button
 } from '@nextui-org/react';
-import './Navbar.css';
-
 import { usePathname } from 'next/navigation';
 import Profile from './User';
 import {ShopIcon} from "../app/icon/shopicon";
@@ -42,18 +40,19 @@ export function Navbar() {
   }
 
   return (
-    <NextNavbar className='custom-nav-bar w-full'>
-      <NavbarBrand className='custom-nav-brand w-[115px]' >
+    <NextNavbar className='w-full flex bg-[#F3F4F6]'>
+      <NavbarContent className='w-[115px] flex-grow-0'>
         <Link href="/">
           <Image className="opacity-100" src="/images/logo_new.svg" alt="petercat" width={114} height={32} />
         </Link>
-      </NavbarBrand>
-      <NavbarContent className="w-[160px] mt-0.5 custom-nav-content hidden sm:flex gap-0" justify="start">
-      
+      </NavbarContent>
+      <NavbarContent className="w-40 flex-grow-0 mt-0.5 hidden sm:flex gap-0" justify="start">
         <Tabs
           items={navs}
+          variant="underlined"
           selectedKey={pathname === '/' ? 'market' : 'factory'}
           classNames={{
+            base: "bg-[#F3F4F6] rounded-full",
             tabContent: "group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-4 py-1 h-10 leading-10" 
           }}
         >
@@ -61,7 +60,7 @@ export function Navbar() {
             <Tab
               key={item.id}
               className='px-0'
-              title={<Link className="text-[#000]  group-data-[selected=true]:text-[#000]"href={item.href}>{item.icon}{item.label}</Link>}
+              title={<Link className="text-[#000] group-data-[selected=true]:text-[#000]" href={item.href}>{item.icon}{item.label}</Link>}
             />
           )}
         </Tabs>
@@ -91,7 +90,7 @@ export function Navbar() {
         }
       />
       </NavbarContent>
-      <NavbarContent className="w-[200px]" justify="end">
+      <NavbarContent className="w-50 flex-grow-0" justify="end">
         <NavbarItem>
           <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
         </NavbarItem>
