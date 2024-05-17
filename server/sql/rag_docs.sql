@@ -1,3 +1,6 @@
+-- Supabase AI is experimental and may produce incorrect answers
+-- Always verify the output before executing
+
 -- Enable the pgvector extension to work with embedding vectors
 create extension
 if not exists vector;
@@ -10,12 +13,20 @@ create table rag_docs
   -- corresponds to Document.pageContent
   metadata jsonb,
   -- corresponds to Document.metadata
-  embedding vector (1536)
+  embedding vector (1536),
   -- 1536 works for OpenAI embeddings, change if needed
+  -- per request info
+  repo_name varchar,
+  commit_id varchar,
+  commit_sha varchar
 );
 
+-- Drop the existing function if it already exists
+drop function if exists match_rag_docs
+(vector, jsonb);
+
 -- Create a function to search for rag_docs
-create function match_rag_docs(
+create function match_rag_docs (
   query_embedding vector (1536),
   filter jsonb default '{}'
 ) returns table
