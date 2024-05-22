@@ -4,6 +4,7 @@ import boto3
 from botocore.exceptions import ClientError
 # from jwt import JWT, jwk_from_pem
 from event_handler.pull_request import PullRequestEventHandler
+from event_handler.issue import IssueEventHandler
 from github import Auth
 
 from uilts.env import get_env_variable
@@ -53,11 +54,14 @@ async def github_app_webhook(request: Request, background_tasks: BackgroundTasks
     if "installation" in payload:
         installation_id = payload["installation"]["id"]
         auth = Auth.AppAuth(app_id=APP_ID, private_key=get_private_key(), jwt_algorithm="RS256").get_installation_auth(installation_id=int(installation_id))
-    
+        print(f"pull_request: {x_github_event}")
         match x_github_event:
             case 'pull_request':
                 handler = PullRequestEventHandler(payload=payload, auth=auth)
-                handler.execute()
+                await handler.execute()
+            case 'issues':
+                handler = IssueEventHandler(payload=payload, auth=auth)
+                await handler.execute()
             case _:
                 return { "success": True }
     else:
