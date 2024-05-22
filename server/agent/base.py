@@ -51,7 +51,7 @@ class AgentBuilder:
         return [tavily_tool]
     
     def _create_agent_with_tools(self) -> AgentExecutor:
-        llm = ChatOpenAI(model="gpt-4-turbo", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
+        llm = ChatOpenAI(model="gpt-4o", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
 
         tools =  self.init_tavily_tools() if self.enable_tavily else []
         for tool in self.tools.values():
@@ -103,7 +103,7 @@ class AgentBuilder:
                 transformed_messages.append(FunctionMessage(content=message.content))
         return transformed_messages
 
-    async def run_chat(self, input_data: ChatData) -> AsyncIterator[str]:
+    async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[str]:
         try:
             messages = input_data.messages
             print(self.chat_history_transform(messages))
@@ -166,5 +166,19 @@ class AgentBuilder:
                     yield f"<TOOL>{json_output}\n<ANSWER>"
         except Exception as e:
             yield f"data: {str(e)}\n"
-            
+    
+    async def run_chat(self, input_data: ChatData) -> str:
+        try:
+            messages = input_data.messages
+            print('history', self.chat_history_transform(messages))
+        
+            return self.agent_executor.invoke(
+                {
+                    "input": messages[len(messages) - 1].content,
+                    "chat_history": self.chat_history_transform(messages),
+                },
+                 return_only_outputs=True,
+                )
+        except Exception as e:
+            return f"error: {str(e)}\n"
 

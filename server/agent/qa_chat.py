@@ -13,7 +13,12 @@ TOOL_MAPPING = {
     "search_code": sourcecode.search_code,
 }
 
-def agent_chat(input_data: ChatData) -> AsyncIterator[str]:
+def agent_stream_chat(input_data: ChatData) -> AsyncIterator[str]:
    prompt = generate_prompt_by_repo_name("ant-design")
    agent = AgentBuilder(prompt=prompt, tools=TOOL_MAPPING)
-   return agent.run_chat(input_data)
+   return agent.run_stream_chat(input_data)
+
+def agent_chat(input_data: ChatData) -> AsyncIterator[str]:
+    prompt = generate_prompt_by_repo_name("ant-design")
+    agent = AgentBuilder(prompt=prompt, tools=TOOL_MAPPING)
+    return agent.run_chat(input_data)
