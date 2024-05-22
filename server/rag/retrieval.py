@@ -129,7 +129,7 @@ def add_knowledge_by_doc(config: GitDocConfig):
    
 def search_knowledge(query: str):
     retriever = init_retriever()
-    docs = retriever.get_relevant_documents(query)
+    docs = retriever.invoke(query)
     documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
     return json_output
