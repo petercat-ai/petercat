@@ -118,8 +118,34 @@ def add_knowledge_by_doc(config: GitDocConfig):
         .eq('file_path', config.file_path).execute()
         )
     if (is_added_query.data == []):
-        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, file_sha=loader.file_sha, file_path=config.file_path)
-        return store
+        is_equal_query = (
+            supabase.table(TABLE_NAME)
+            .select("*")
+            .eq('file_sha', loader.file_sha)
+        ).execute()
+        if (is_equal_query.data == []):
+            store = supabase_embedding(documents,
+                                       repo_name=config.repo_name,
+                                       commit_id=loader.commit_id,
+                                       file_sha=loader.file_sha,
+                                       file_path=config.file_path)
+            return store
+        else:
+            new_commit_list = [
+                {
+                    **{k: v for k, v in item.items() if k != "id"},
+                    "repo_name": config.repo_name,
+                    "commit_id": loader.commit_id,
+                    "file_path": config.file_path
+                }
+                for item in is_equal_query.data
+            ]
+            insert_result = (
+                supabase.table(TABLE_NAME)
+                .insert(new_commit_list)
+                .execute()
+            )
+            return insert_result
     else:
         return True
 
