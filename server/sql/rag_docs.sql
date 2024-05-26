@@ -19,6 +19,7 @@ create table rag_docs
   repo_name varchar,
   commit_id varchar,
   file_sha varchar
+  file_path varchar
 );
 
 -- Drop the existing function if it already exists

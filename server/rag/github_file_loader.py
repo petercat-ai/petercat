@@ -52,7 +52,10 @@ class GithubFileLoader(BaseGitHubLoader, ABC):
 
     def __init__(self, **data: Dict):
         super().__init__(**data)
-        self.commit_id = self.get_commit_id_by_branch(self.branch)
+        if (data.get('commit_id')):
+            self.commit_id = data.get('commit_id')
+        else:
+            self.commit_id = self.get_commit_id_by_branch(self.branch)
 
     def get_commit_id_by_branch(self, branch: str) -> str:
         branch_url = f"{self.github_api_url}/repos/{self.repo}/branches/{branch}"

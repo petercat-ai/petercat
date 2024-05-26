@@ -1,5 +1,5 @@
 import json
-from typing import Any, Optional
+from typing import Any
 from langchain_openai import OpenAIEmbeddings
 from rag.supabase_vectorstore import SupabaseVectorStore
 from db.supabase.client import get_client
@@ -19,7 +19,7 @@ CHUNK_SIZE=2000
 CHUNK_OVERLAP=20
 
 def convert_document_to_dict(document):
-   return document.page_content,
+    return document.page_content,
 
 
 def init_retriever():
@@ -58,7 +58,8 @@ def init_github_file_loader(config: GitDocConfig):
         github_api_url="https://api.github.com",
         branch=config.branch,
         file_path=config.file_path,
-        file_filter=lambda file_path: file_path.endswith(".md")
+        file_filter=lambda file_path: file_path.endswith(".md"),
+        commit_id=config.commit_id
     )
     return loader
 
@@ -106,26 +107,21 @@ def add_knowledge_by_issues(config: GitIssueConfig, ):
         })
 
 def add_knowledge_by_doc(config: GitDocConfig):
-    try:
-        loader = init_github_file_loader(config)
-        documents= loader.load()
-        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, file_sha=loader.file_sha)
-        if(store):
-            return json.dumps({
-                "success": True,
-                "message": "Knowledge added successfully!",
-            })
-        else:
-            return json.dumps({
-                "success": False,
-                "message": "Knowledge not added!"
-            })
-
-    except Exception as e:
-        return json.dumps({
-            "success": False,
-            "message": str(e)
-        })
+    loader = init_github_file_loader(config)
+    documents = loader.load()
+    supabase = get_client()
+    is_added_query = (
+        supabase.table(TABLE_NAME)
+        .select("id, repo_name, commit_id, file_path")
+        .eq('repo_name', config.repo_name)
+        .eq('commit_id', loader.commit_id)
+        .eq('file_path', config.file_path).execute()
+        )
+    if (is_added_query.data == []):
+        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, file_sha=loader.file_sha, file_path=config.file_path)
+        return store
+    else:
+        return True
 
 def search_knowledge(query: str):
     retriever = init_retriever()

@@ -41,3 +41,4 @@ class GitDocConfig(BaseModel):
     """File path of the documentation file. eg:'docs/blog/build-ghost.zh-CN.md'"""
     file_path: str
     branch: Optional[str] = 'main'
+    commit_id: Optional[str] = None
