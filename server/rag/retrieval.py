@@ -109,7 +109,7 @@ def add_knowledge_by_doc(config: GitDocConfig):
     try:
         loader = init_github_file_loader(config)
         documents= loader.load()
-        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, commit_sha=loader.file_sha)
+        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, file_sha=loader.file_sha)
         if(store):
             return json.dumps({
                 "success": True,
