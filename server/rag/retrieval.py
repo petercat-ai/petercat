@@ -39,10 +39,10 @@ def init_s3_Loader(config: S3Config):
     from langchain_community.document_loaders import S3DirectoryLoader
     loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
     return loader
-     
-def init_github_issue_loader(config: GitIssueConfig): 
+
+def init_github_issue_loader(config: GitIssueConfig):
     from langchain_community.document_loaders import GitHubIssuesLoader
-    
+
     loader = GitHubIssuesLoader(
         repo=config.repo_name,
         access_token=ACCESS_TOKEN,
@@ -51,7 +51,7 @@ def init_github_issue_loader(config: GitIssueConfig):
         state=config.state
     )
     return loader
-def init_github_file_loader(config: GitDocConfig): 
+def init_github_file_loader(config: GitDocConfig):
     loader = GithubFileLoader(
         repo=config.repo_name,
         access_token=ACCESS_TOKEN,
@@ -61,11 +61,11 @@ def init_github_file_loader(config: GitDocConfig):
         file_filter=lambda file_path: file_path.endswith(".md")
     )
     return loader
-    
+
 def supabase_embedding(documents, **kwargs: Any):
     from langchain_text_splitters import CharacterTextSplitter
-    
-    try:    
+
+    try:
         text_splitter = CharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
         docs = text_splitter.split_documents(documents)
         embeddings = OpenAIEmbeddings()
@@ -82,9 +82,9 @@ def supabase_embedding(documents, **kwargs: Any):
     except Exception as e:
         print(e)
         return None
-   
 
-def add_knowledge_by_issues(config: GitIssueConfig, ):    
+
+def add_knowledge_by_issues(config: GitIssueConfig, ):
     try:
         loader = init_github_issue_loader(config)
         documents = loader.load()
@@ -93,7 +93,7 @@ def add_knowledge_by_issues(config: GitIssueConfig, ):
             return json.dumps({
                 "success": True,
                 "message": "Knowledge added successfully!",
-            }) 
+            })
         else:
             return json.dumps({
                 "success": False,
@@ -104,17 +104,17 @@ def add_knowledge_by_issues(config: GitIssueConfig, ):
             "success": False,
             "message": str(e)
         })
-   
-def add_knowledge_by_doc(config: GitDocConfig):    
+
+def add_knowledge_by_doc(config: GitDocConfig):
     try:
         loader = init_github_file_loader(config)
-        documents = loader.load()
-        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=config.commit_id, commit_sha=config.commit_sha)
+        documents= loader.load()
+        store = supabase_embedding(documents, repo_name=config.repo_name, commit_id=loader.commit_id, commit_sha=loader.file_sha)
         if(store):
             return json.dumps({
                 "success": True,
                 "message": "Knowledge added successfully!",
-            }) 
+            })
         else:
             return json.dumps({
                 "success": False,
@@ -126,7 +126,7 @@ def add_knowledge_by_doc(config: GitDocConfig):
             "success": False,
             "message": str(e)
         })
-   
+
 def search_knowledge(query: str):
     retriever = init_retriever()
     docs = retriever.invoke(query)
