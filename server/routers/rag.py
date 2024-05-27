@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, Depends
 from rag import retrieval
 from data_class import GitDocConfig, GitIssueConfig
@@ -12,8 +13,23 @@ router = APIRouter(
 
 @router.post("/rag/add_knowledge_by_doc", dependencies=[Depends(verify_rate_limit)])
 def add_knowledge_by_doc(config: GitDocConfig):
-    data=retrieval.add_knowledge_by_doc(config)
-    return data
+    try:
+        result=retrieval.add_knowledge_by_doc(config)
+        if (result):
+            return json.dumps({
+                "success": True,
+                "message": "Knowledge added successfully!",
+            })
+        else:
+            return json.dumps({
+                "success": False,
+                "message": "Knowledge not added!"
+            })
+    except Exception as e:
+        return json.dumps({
+            "success": False,
+            "message": str(e)
+        })
 
 @router.post("/rag/add_knowledge_by_issues", dependencies=[Depends(verify_rate_limit)])
 def add_knowledge_by_issues(config: GitIssueConfig):

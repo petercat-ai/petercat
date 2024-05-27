@@ -18,7 +18,8 @@ create table rag_docs
   -- per request info
   repo_name varchar,
   commit_id varchar,
-  commit_sha varchar
+  file_sha varchar
+  file_path varchar
 );
 
 -- Drop the existing function if it already exists
