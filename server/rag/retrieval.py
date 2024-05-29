@@ -1,7 +1,7 @@
 import json
 from typing import Any
 from langchain_openai import OpenAIEmbeddings
-from rag.supabase_vectorstore import SupabaseVectorStore
+from langchain_community.vectorstores import SupabaseVectorStore
 from db.supabase.client import get_client
 from data_class import GitDocConfig, GitIssueConfig, S3Config
 from rag.github_file_loader import GithubFileLoader
