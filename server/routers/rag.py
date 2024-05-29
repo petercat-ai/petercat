@@ -1,7 +1,9 @@
 import json
+
 from fastapi import APIRouter, Depends
-from rag_helper import retrieval
+
 from data_class import GitDocConfig, GitIssueConfig
+from rag_helper import retrieval, task
 from verify.rate_limit import verify_rate_limit
 
 router = APIRouter(
@@ -14,7 +16,7 @@ router = APIRouter(
 @router.post("/rag/add_knowledge_by_doc", dependencies=[Depends(verify_rate_limit)])
 def add_knowledge_by_doc(config: GitDocConfig):
     try:
-        result=retrieval.add_knowledge_by_doc(config)
+        result = retrieval.add_knowledge_by_doc(config)
         if (result):
             return json.dumps({
                 "success": True,
@@ -31,12 +33,32 @@ def add_knowledge_by_doc(config: GitDocConfig):
             "message": str(e)
         })
 
+
 @router.post("/rag/add_knowledge_by_issues", dependencies=[Depends(verify_rate_limit)])
 def add_knowledge_by_issues(config: GitIssueConfig):
-    data=retrieval.add_knowledge_by_issues(config)
+    data = retrieval.add_knowledge_by_issues(config)
     return data
+
 
 @router.post("/rag/search_knowledge", dependencies=[Depends(verify_rate_limit)])
 def search_knowledge(query: str):
-    data=retrieval.search_knowledge(query)
+    data = retrieval.search_knowledge(query)
+    return data
+
+
+@router.post("/rag/add_task", dependencies=[Depends(verify_rate_limit)])
+def add_task(config: GitDocConfig):
+    try:
+        data = task.add_task(config)
+        return data
+    except Exception as e:
+        return json.dumps({
+            "success": False,
+            "message": str(e)
+        })
+
+
+@router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
+def trigger_task():
+    data = task.trigger_task()
     return data
