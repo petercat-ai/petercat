@@ -1,5 +1,5 @@
 from langchain.tools import tool
-from rag import retrieval
+from rag_helper import retrieval
 
 
 @tool

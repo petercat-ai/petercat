@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter, Depends
-from rag import retrieval
+from rag_helper import retrieval
 from data_class import GitDocConfig, GitIssueConfig
 from verify.rate_limit import verify_rate_limit
 

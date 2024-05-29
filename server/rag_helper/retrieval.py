@@ -4,7 +4,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import SupabaseVectorStore
 from db.supabase.client import get_client
 from data_class import GitDocConfig, GitIssueConfig, S3Config
-from rag.github_file_loader import GithubFileLoader
+from rag_helper.github_file_loader import GithubFileLoader
 from uilts.env import get_env_variable
 
 
