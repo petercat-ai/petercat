@@ -6,7 +6,7 @@ import { IPrompt } from '../interface';
  */
 export async function streamChat(
   messages: IPrompt[],
-  apiUrl = 'http://127.0.0.1:8000/api/chat/stream_qa',
+  apiUrl = 'http://127.0.0.1:8000/api/chat/stream_builder',
 ): Promise<Response> {
   return fetch(`${apiUrl}`, {
     method: 'POST',

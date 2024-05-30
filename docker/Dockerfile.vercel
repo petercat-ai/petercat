@@ -27,7 +27,7 @@ COPY ./client .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-ENV NEXT_PUBLIC_ASSISTANT_API_HOST ${NEXT_PUBLIC_ASSISTANT_API_HOST}
+ENV NEXT_PUBLIC_API_DOMAIN ${NEXT_PUBLIC_API_DOMAIN}
 
 RUN ls
 RUN \

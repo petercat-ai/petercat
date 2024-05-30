@@ -6,7 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Assistant } from 'petercat-lui';
 
 const queryClient = new QueryClient();
-const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
+const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
 export default function RootLayout({
   children,

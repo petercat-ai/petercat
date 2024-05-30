@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Query, Body, Path
+from fastapi import APIRouter, Cookie, Query, Body, Path
 from db.supabase.client import get_client
+from bot.builder import bot_builder
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional
 
@@ -41,11 +42,9 @@ def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by p
       return { "data": data.data, "status": 200}
 
 @router.post("/create", status_code=200)
-def create_bot(bot_data: BotCreateRequest):
-    supabase = get_client()
-    bot_data.uid = "u123456"
-    response = supabase.table("bots").insert(bot_data.dict()).execute()
-    return {"status": 200}
+async def create_bot(bot_data: BotCreateRequest):
+    return await bot_builder(**bot_data.model_dump())
+    
 
 @router.put("/update/{id}", status_code=200)
 def update_bot(id: str, bot_data: BotUpdateRequest = Body(...)):

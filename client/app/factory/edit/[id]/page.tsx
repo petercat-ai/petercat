@@ -13,7 +13,7 @@ import { isEmpty } from 'lodash';
 import { useImmer } from 'use-immer';
 import { Chat } from 'petercat-lui';
 
-const API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
+const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
 export default function Edit({ params }: { params: { id: string } }) {
   const [botProfile, setBotProfile] = useImmer<BotProfile>({
@@ -68,6 +68,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   const createBot = async () => {
     const params = {
       ...botProfile,
+      repo_name: 'ant-design/ant-design',
       starters: botProfile?.starters?.filter((s) => s),
     };
     onCreateBot(params);
