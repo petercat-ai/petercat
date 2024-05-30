@@ -17,7 +17,5 @@
   "repository": "https://github.com/ant-xuexiao/petercat.git",
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "dependencies": {
   }
 }
