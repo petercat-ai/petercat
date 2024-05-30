@@ -3,7 +3,7 @@ export const BOT_INFO = {
   resourceId: '7347955826042404903',
   resourceName: 'Ant Design',
   avatar:
-    'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
+    'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
   creatorId: '208822222222',
   gmtModified: '2024-03-19 12:23:34',
   gmtCreate: '2024-03-19 12:23:34',

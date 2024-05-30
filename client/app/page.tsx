@@ -21,11 +21,11 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto max-w-[1024px]">
+      <div className="container mx-auto max-w-[1440px]">
         <div className="mt-8">
           
 
-          <div className="grid grid-flow-row-dense grid-cols-3 gap-8 my-8">
+          <div className="grid grid-flow-row-dense grid-cols-4 gap-8 my-8">
             <AddBotCard />
             {!isEmpty(bots) &&
               map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}

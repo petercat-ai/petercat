@@ -15,7 +15,11 @@
     "node": "^18 || >=20"
   },
   "repository": "https://github.com/ant-xuexiao/petercat.git",
-  "devDependencies": {    
+  "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "dumi": "^2.3.5",
+    "umi": "^4.2.5"
   }
 }

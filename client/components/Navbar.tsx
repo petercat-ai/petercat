@@ -18,6 +18,8 @@ import {ShopIcon} from "../app/icon/shopicon";
 import {SpaceIcon} from "../app/icon/spaceicon";
 import {SearchIcon} from "../app/icon/searchicon";
 import {AddIcon} from "../app/icon/addicon";
+import {StoreIcon} from "../app/icon/storeicon";
+
 export function Navbar() {
   const pathname = usePathname();
   const navs = [
@@ -29,7 +31,7 @@ export function Navbar() {
     },
     {
       id: 'factory',
-      label: '工厂',
+      label: '空间',
       href: '/factory/list',
       icon: <SpaceIcon/>
     },
@@ -40,13 +42,13 @@ export function Navbar() {
   }
 
   return (
-    <NextNavbar className='w-full flex bg-[#F3F4F6]'>
-      <NavbarContent className='w-[115px] flex-grow-0'>
+    <div className='flex bg-[#F3F4F6] w-full p-[24px]'>
+      <div className='w-[115px] flex-grow-0'>
         <Link href="/">
           <Image className="opacity-100" src="/images/logo_new.svg" alt="petercat" width={114} height={32} />
         </Link>
-      </NavbarContent>
-      <NavbarContent className="w-40 flex-grow-0 mt-0.5 hidden sm:flex gap-0" justify="start">
+      </div>
+      <div className="w-[200px] ml-[48px] flex-grow-0 mt-0.5 hidden sm:flex gap-0">
         <Tabs
           items={navs}
           variant="underlined"
@@ -64,40 +66,46 @@ export function Navbar() {
             />
           )}
         </Tabs>
-      </NavbarContent>
-      <NavbarContent justify="start" className="flex-grow">
-      <Input
-        isClearable
-        radius="lg"
-        classNames={{
-          input: [
-            "bg-transparent",
-            "h-10"
-          ],
-          inputWrapper: [
-            "shadow-none",
-            "bg-[#E5E7EB]",
-            "hover:bg-default-200/70",
-            "focus-within:!bg-default-200/50",
-            "rounded-full",
-            "py-0",
-            "!cursor-text",
-            "h-10"
-          ]
-        }}
-        startContent={
-          <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-        }
-      />
-      </NavbarContent>
-      <NavbarContent className="w-50 flex-grow-0" justify="end">
-        <NavbarItem>
-          <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
-        </NavbarItem>
-        <NavbarItem>
+      </div>
+      <div className="flex-grow">
+        <Input
+          isClearable
+          radius="lg"
+          classNames={{
+            input: [
+              "bg-transparent",
+              "h-10",
+            ],
+            inputWrapper: [
+              "shadow-none",
+              "bg-[#E5E7EB]",
+              "hover:bg-default-200/70",
+              "focus-within:!bg-default-200/50",
+              "rounded-full",
+              "py-0",
+              "!cursor-text",
+              "h-10"
+            ]
+          }}
+          startContent={
+            <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+          }
+        />
+      </div>
+      <div className="w-[200px] ml-[48px] flex justify-between flex-grow-0" >
+        <div>
+          {!pathname.includes('/factory/list') && (
+            <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<StoreIcon/>}>上架机器人</Button>
+          )}
+          {pathname.includes('/factory/list') && (
+            <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
+          )}
+          
+        </div>
+        <div>
           <Profile />
-        </NavbarItem>
-      </NavbarContent>
-    </NextNavbar>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -5720,10 +5720,10 @@ dumi-assets-types@2.3.0:
   resolved "https://registry.yarnpkg.com/dumi-assets-types/-/dumi-assets-types-2.3.0.tgz#baf3a354e0593151a5c28d98059018c4cd6c7289"
   integrity sha512-mM6UoGTgTNoo8lA4dwaIwoeSGT+4PeQeiFylr2+kCB5z3/7NEf7lIM4tqrAsEyzecE/HX0+w7Z78hnFZQ9k5vQ==
 
-dumi@^2.2.13:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/dumi/-/dumi-2.3.4.tgz#e3c8271acd2d57137aadc00c2f0ea238fd8ea902"
-  integrity sha512-hyYg3OXQdB8vMgEJ+Y1G/jp4X7RgSo63m0J/sC0Dnz1H2PrLnfdAUtZfDOT3Zb5quvdyC8xF39c+a45is1I3GQ==
+dumi@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/dumi/-/dumi-2.3.5.tgz#38fb9a3c11730584a2afe5257fdfbe680f199d94"
+  integrity sha512-nThuxmggYMBq2sS8sdb5jZR4vyFaOFQGl5kfdhiuD0OF7qeZEFDVqeJbJw/COsEgBiZEkxj37z0JrCt59EqdhA==
   dependencies:
     "@ant-design/icons-svg" "^4.2.1"
     "@makotot/ghostui" "^2.0.0"
@@ -14365,7 +14365,7 @@ ua-parser-js@^1.0.35:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.37.tgz#b5dc7b163a5c1f0c510b08446aed4da92c46373f"
   integrity sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==
 
-umi@^4.0.84:
+umi@^4.0.84, umi@^4.2.5:
   version "4.2.5"
   resolved "https://registry.yarnpkg.com/umi/-/umi-4.2.5.tgz#405598cfcff56ec9d88af7a50e195cf513499e3a"
   integrity sha512-CJVQALzL8xiDVSEPI9oyaLQ01pqVGy7rUE07OA8HyC7txPx87VWGOZpVvFJUFFVXuN+1zPwRl1ff3E3AaAqZwA==
