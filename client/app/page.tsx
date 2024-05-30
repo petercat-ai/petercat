@@ -3,11 +3,10 @@ import { Tables } from '@/types/database.types';
 import React from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
-import AddBotCard from '@/components/AddBotCard';
 
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-
+import BotList from "../components/BotList";
 declare type Bot = Tables<'bots'>;
 
 export default function Home() {
@@ -26,7 +25,7 @@ export default function Home() {
           
 
           <div className="grid grid-flow-row-dense grid-cols-4 gap-8 my-8">
-            <AddBotCard />
+            <BotList type='list'/>
             {!isEmpty(bots) &&
               map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}
           </div>

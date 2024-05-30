@@ -1,26 +1,26 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import {
-  NavbarBrand,
-  Navbar as NextNavbar,
+
   Image,
-  NavbarContent,
-  NavbarItem,
+
   Link,
   Tabs,
   Tab,
   Input,
-  Button
+  Button,
 } from '@nextui-org/react';
+
 import { usePathname } from 'next/navigation';
 import Profile from './User';
 import {ShopIcon} from "../app/icon/shopicon";
 import {SpaceIcon} from "../app/icon/spaceicon";
 import {SearchIcon} from "../app/icon/searchicon";
 import {AddIcon} from "../app/icon/addicon";
-import {StoreIcon} from "../app/icon/storeicon";
+import BotList from "./BotList";
 
 export function Navbar() {
+  const router = useRouter();
   const pathname = usePathname();
   const navs = [
     {
@@ -95,10 +95,10 @@ export function Navbar() {
       <div className="w-[200px] ml-[48px] flex justify-between flex-grow-0" >
         <div>
           {!pathname.includes('/factory/list') && (
-            <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<StoreIcon/>}>上架机器人</Button>
+            <BotList type='nav'/>
           )}
-          {pathname.includes('/factory/edit/new') && (
-            <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
+          {pathname.includes('/factory/list') && (
+            <Button onPress={() => router.push(`/factory/edit/new`)} className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
           )}
           
         </div>
