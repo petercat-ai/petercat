@@ -26,7 +26,7 @@ export async function getBotList(personal: boolean): Promise<Bot[]> {
 
 // Delete Bot
 export async function deleteBot(id: string) {
-  return axios.delete(`${apiDomain}/api/bot/delete?id=${id}`);
+  return axios.delete(`${apiDomain}/api/bot/delete/${id}`);
 }
 
 // Create Bot
@@ -37,5 +37,5 @@ export async function createBot(profile: BotProfile) {
 
 // Update Bot
 export async function updateBot(profile: BotProfile) {
-  return axios.post(`${apiDomain}/api/bot/update`, profile);
+  return axios.put(`${apiDomain}/api/bot/update/${profile.id}`, profile);
 }

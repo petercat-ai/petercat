@@ -6,7 +6,6 @@ import useUser from '../app/hooks/useUser';
 export default function Profile() {
   const { data: user, status } = useUser();
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
-
   if (!user || status !== "success") {
     return (
       <Button as={Link} color="primary" href={`${apiDomain}/api/auth/login`} variant="flat">

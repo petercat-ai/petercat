@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Query, Body, Path
+from fastapi import APIRouter,Cookie, Query, Body, Path, HTTPException
 from db.supabase.client import get_client
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional
+from auth.get_user_info import getUserInfoByToken
 
 router = APIRouter(
     prefix="/api/bot",
@@ -10,9 +11,15 @@ router = APIRouter(
 )
 
 @router.get("/list")
-def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots by personal category")):
+def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots by personal category"), user_id: str = Cookie(None)):
     supabase = get_client()
-    data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, voice, public").eq('public', 'true').execute()
+    print(f'personal:{personal}')
+    if personal == 'true':
+        if not user_id:
+          return { "data": [], "personal": personal}
+        data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, voice, public").eq('public', 'true').eq('uid', user_id).execute()
+    if personal == 'false':
+        data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, voice, public").eq('public', 'true').execute()
     return { "data": data.data, "personal": personal}
 
 @router.get("/detail")

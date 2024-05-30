@@ -53,8 +53,8 @@ async def getAnonymousUser(request: Request, response: Response):
 
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
-    
     response.set_cookie(key="petercat", value=token, httponly=True, secure=True, samesite='Lax')
+    response.set_cookie(key="user_id", value=data['id'], httponly=True, secure=True, samesite='Lax')
     return { "data": data, "status": 200}
 
 @router.get("/login")
@@ -80,12 +80,17 @@ async def callback(request: Request, response: Response):
 async def userinfo(request: Request, response: Response, petercat: str = Cookie(None)):
     if not petercat:
         return await getAnonymousUser(request, response)
-
     data = await getAnonymousUserInfoByToken(petercat) if petercat.startswith("client|") else await getUserInfoByToken(petercat)
     if data is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token") 
     if data :
         return { "data": data, "status": 200}
-
     else:
         return RedirectResponse(url=LOGIN_URL, status_code=303)
+
+
+@router.get("/get_user_id")
+async def get_user_id(user_id: str = Cookie(None)):
+    if user_id is None:
+        raise HTTPException(status_code=403, detail="Cookie not found")
+    return {"user_id": user_id}
