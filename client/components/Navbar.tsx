@@ -97,7 +97,7 @@ export function Navbar() {
           {!pathname.includes('/factory/list') && (
             <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<StoreIcon/>}>上架机器人</Button>
           )}
-          {pathname.includes('/factory/list') && (
+          {pathname.includes('/factory/edit/new') && (
             <Button className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
           )}
           
