@@ -23,15 +23,12 @@ const globalToken = getDesignToken();
 export interface ChatProps {
   assistantMeta?: MetaData;
   helloMessage?: string;
-  host?: string;
+  apiUrl?: string;
   drawerWidth?: number;
-  slot?: {
-    componentID: string;
-    renderFunc: (data: any) => React.ReactNode;
-  }[];
+  suggested_questions?: string[];
 }
 
-const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
+const Chat: FC<ChatProps> = memo(({ helloMessage, apiUrl, drawerWidth, assistantMeta, suggested_questions }) => {
   const proChatRef = useRef<ProChatInstance>();
   const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
   const messageMinWidth = drawerWidth
@@ -124,15 +121,17 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
             },
           }}
           assistantMeta={{
-            avatar: BOT_INFO.avatar,
-            title: BOT_INFO.resourceName,
+            avatar: assistantMeta?.avatar || BOT_INFO.avatar ,
+            title: assistantMeta?.title || BOT_INFO.resourceName,
+            backgroundColor: assistantMeta?.backgroundColor
           }}
           autocompleteRequest={async (value) => {
             if (value === '/') {
-              return BOT_INFO.work_info.suggested_questions.map(
-                (prompt: string) => ({
-                  value: prompt,
-                  label: prompt,
+             const questions = suggested_questions ?? BOT_INFO.work_info.suggested_questions
+              return questions.map(
+                (question: string) => ({
+                  value: question,
+                  label: question,
                 }),
               );
             }
@@ -148,7 +147,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, host, drawerWidth }) => {
                 content: message.content as string,
               }));
 
-            const response = await streamChat(newMessages, host);
+            const response = await streamChat(newMessages, apiUrl);
             return handleStream(response);
           }}
           inputAreaProps={{ className: 'userInputBox h-24 !important' }}

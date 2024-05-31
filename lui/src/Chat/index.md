@@ -9,8 +9,8 @@ export default () => (
     <Chat
       assistantMeta={{
         avatar:
-          'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
-        title: 'Ant Design',
+          'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+        title: 'PeterCat',
 
       }}
     />

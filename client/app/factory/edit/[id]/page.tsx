@@ -11,6 +11,9 @@ import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { useImmer } from 'use-immer';
+import { Chat } from 'petercat-lui';
+
+const API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
 
 export default function Edit({ params }: { params: { id: string } }) {
   const [botProfile, setBotProfile] = useImmer<BotProfile>({
@@ -162,23 +165,24 @@ export default function Edit({ params }: { params: { id: string } }) {
           <div className="h-full grow overflow-y-auto overflow-x-hidden">
             <div className="flex h-full flex-col px-2 pt-2">
               <Tabs
-                disabledKeys={['Builder']}
-                defaultSelectedKey="Configure"
+                defaultSelectedKey="Builder"
                 aria-label="Options"
                 className="self-center"
               >
-                <Tab key="Builder" title="Builder" disabled>
-                  <ChatWindow
-                    endpoint="/api/chat"
-                    avatar={''}
-                    titleText={'Bot'}
-                    placeholder={'Ask me anything!'}
-                    emptyStateComponent={<></>}
-                    prompt={''}
-                    streamming
+                <Tab key="Builder" title="对话调试" >
+                  <div style={{ height: 'calc(100vh - 115px)' }}>
+                    <Chat
+                    assistantMeta={{
+                      avatar:
+                        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+                      title: 'PeterCat',
+                    }}
+                    apiUrl={`${API_HOST}/api/chat/stream_builder`}
+                    helloMessage='👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。'
                   />
+                  </div>
                 </Tab>
-                <Tab key="Configure" title="Configure">
+                <Tab key="Configure" title="手动配置">
                   <BotCreateFrom
                     setBotProfile={setBotProfile}
                     botProfile={botProfile}
