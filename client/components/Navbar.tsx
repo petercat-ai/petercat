@@ -18,8 +18,11 @@ import {SpaceIcon} from "../app/icon/spaceicon";
 import {SearchIcon} from "../app/icon/searchicon";
 import {AddIcon} from "../app/icon/addicon";
 import BotList from "./BotList";
+import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
+  const { search, setSearch } = useSearch();
+
   const router = useRouter();
   const pathname = usePathname();
   const navs = [
@@ -40,6 +43,9 @@ export function Navbar() {
   if (pathname.includes('/factory/edit')) {
     return null;
   }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
 
   return (
     <div className='flex bg-[#F3F4F6] w-full p-[24px]'>
@@ -69,6 +75,7 @@ export function Navbar() {
       </div>
       <div className="flex-grow">
         <Input
+          onChange={handleChange}
           isClearable
           radius="lg"
           classNames={{

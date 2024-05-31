@@ -28,10 +28,10 @@ export const useBotConfig = (id: string, enabled: boolean) => {
   });
 };
 
-export const useBotList = (personal?: boolean) => {
+export const useBotList = (personal?: boolean, name?: string) => {
   return useQuery({
-    queryKey: [`bot.list.${personal}`, personal],
-    queryFn: async () => getBotList(personal ?? false),
+    queryKey: [`bot.list.${personal}`, personal ?? false, name ?? ''],
+    queryFn: async () => getBotList(personal ?? false, name ?? ''),
     retry: false,
   });
 };

@@ -19,8 +19,8 @@ export async function getBotConfig(id: string): Promise<Bot[]> {
 }
 
 //  Get the  bot list
-export async function getBotList(personal: boolean): Promise<Bot[]> {
-  const response = await axios.get(`${apiDomain}/api/bot/list?personal=${personal}`);
+export async function getBotList(personal: boolean, name: string): Promise<Bot[]> {
+  const response = await axios.get(`${apiDomain}/api/bot/list?personal=${personal}&name=${name ?? ''}`);
   return response.data.data;
 }
 

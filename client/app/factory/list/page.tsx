@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { isEmpty, map } from 'lodash';
 import { Card, CardBody, Spinner, Image } from '@nextui-org/react';
 import BotCard from './components/BotCard';
@@ -14,14 +14,15 @@ declare type Bot = Tables<'bots'>;
 
 export default function List() {
   const router = useRouter();
-  const { data: bots, isLoading, error } = useBotList(true);
+  let { data: bots, isLoading, error } = useBotList(true, '');
   if (isLoading) {
     return <FullPageSkeleton />;
   }
   if (error) {
     return <div>Error loading bots!{error.message}</div>;
   }
-
+  
+  
   return (
     <div className="container mx-auto max-w-[1440px] ">
       <div className="mt-8">
