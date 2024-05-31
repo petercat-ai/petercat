@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React from 'react';
+import React, { useState }  from 'react';
 import { Card, Image, CardBody, CardFooter } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
@@ -8,6 +8,8 @@ declare type Bot = Tables<'bots'>;
 
 const BotCard = (props: { bot: Bot }) => {
   const { bot } = props;
+  const [isHovered, setIsHovered] = useState(false);
+
   const router = useRouter();
 
   return (
@@ -15,7 +17,10 @@ const BotCard = (props: { bot: Bot }) => {
       className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2"
       shadow="sm"
       isPressable
+      data-hover="true"
       onPress={() => router.push(`/chat/${bot.id}`)}
+      onMouseEnter={() => {setIsHovered(true)}}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <CardBody className="overflow-visible p-0 flex-initial">
         <Image
@@ -25,7 +30,7 @@ const BotCard = (props: { bot: Bot }) => {
           width="100%"
           alt={bot.name!}
           className="rounded-[8px] opacity-100 w-full object-cover h-[268px] w-[300px]"
-          src={bot.avatar!}
+          src={!isHovered ? bot.avatar! : "https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*4Mx7SJk91esAAAAAAAAAAAAADlDCAQ/original"}
         />
       </CardBody>
       <CardFooter className="text-small justify-between flex-col flex-1 mt-4">

@@ -15,6 +15,7 @@ import { BOT_INFO } from '../mock';
 import { streamChat } from '../services/ChatController';
 import { handleStream } from '../utils';
 import Actions from './inputArea/actions';
+import '../style/global.css';
 
 const { getDesignToken } = theme;
 const globalToken = getDesignToken();
@@ -67,7 +68,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, apiUrl, drawerWidth, assistant
               }
               const message = originData.content;
               const defaultMessageContent = (
-                <div style={{ minWidth: messageMinWidth }}>{defaultDom}</div>
+                <div className="leftMessageContent" style={{minWidth: messageMinWidth }}>{defaultDom}</div>
               );
 
               if (!message || !message.includes('<TOOL>')) {

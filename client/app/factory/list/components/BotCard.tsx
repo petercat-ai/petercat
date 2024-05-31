@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -33,6 +33,7 @@ const BotCard = (props: { bot: Bot }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { bot } = props;
   const router = useRouter();
+  const [isHovered, setIsHovered] = useState(false);
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
 
   useEffect(() => {
@@ -51,7 +52,10 @@ const BotCard = (props: { bot: Bot }) => {
         className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2"
         shadow="sm"
         isPressable
-        onPress={() => router.push(`/chat/${bot.id}`)}
+        data-hover="true"
+        onPress={() => router.push(`/factory/edit/${bot.id}`)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <CardBody className="overflow-visible p-0 flex-initial">
           <Image
@@ -61,7 +65,7 @@ const BotCard = (props: { bot: Bot }) => {
             width="100%"
             alt={bot.name!}
             className="rounded-[8px] opacity-100 w-full object-cover h-[268px] w-[300px]"
-            src={bot.avatar!}
+            src={!isHovered ? bot.avatar! : "https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*SF3YSYtzYksAAAAAAAAAAAAADlDCAQ/original"}
           />
         </CardBody>
         <CardBody className="flex flex-row justify-between pt-4">
@@ -70,34 +74,7 @@ const BotCard = (props: { bot: Bot }) => {
               {bot.name}
             </div>
           </div>
-          <Dropdown
-            classNames={{
-              base: 'before:bg-default-200 justify-end',
-              content: 'min-w-[100px]',
-            }}
-          >
-            <DropdownTrigger>
-              <Button isIconOnly variant="light" size="sm" className="w-[24px]">
-                <SettingIcon />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions" className='bg-[#efefef] rounded-[6px]'>
-              <DropdownItem
-                key="edit"
-                onClick={() => router.push(`/factory/edit/${bot.id}`)}
-              >
-                编辑
-              </DropdownItem>
-              <DropdownItem
-                key="delete"
-                className="text-danger"
-                color="danger"
-                onClick={onOpen}
-              >
-                删除
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+         
         </CardBody>
         <CardBody className="py-0 text-small text-default-400">
           <p className='my-0 overflow-hidden text-ellipsis line-clamp-2'>{bot.description}</p>

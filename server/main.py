@@ -1,8 +1,8 @@
 import os
 
 import uvicorn
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, Cookie, Request, HTTPException
+from fastapi.responses import StreamingResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,7 +11,11 @@ from uilts.env import get_env_variable
 
 # Import fastapi routers
 from routers import bot, health_checker, github, rag, auth, chat
-
+AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
+API_AUDIENCE = get_env_variable("API_IDENTIFIER")
+CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
+API_URL =  get_env_variable("API_URL")
+CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
 session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
@@ -20,6 +24,18 @@ app = FastAPI(
     version="1.0",
     description="Agent Chat APIs"
 )
+
+@app.middleware("http")
+async def auth_middleware(request: Request, call_next):
+    if request.url.path == "/api/auth/login":
+        return await call_next(request)
+    petercat: str = request.cookies.get('petercat')
+    if not petercat:
+        redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email&state=STATE"
+        return RedirectResponse(redirect_uri)
+    response = await call_next(request)
+    return response
+    
 
 app.add_middleware(
     SessionMiddleware,

@@ -19,14 +19,14 @@ export async function getBotConfig(id: string): Promise<Bot[]> {
 }
 
 //  Get the  bot list
-export async function getBotList(personal: boolean): Promise<Bot[]> {
-  const response = await axios.get(`${apiDomain}/api/bot/list?personal=${personal}`);
+export async function getBotList(personal: boolean, name: string): Promise<Bot[]> {
+  const response = await axios.get(`${apiDomain}/api/bot/list?personal=${personal}&name=${name ?? ''}`);
   return response.data.data;
 }
 
 // Delete Bot
 export async function deleteBot(id: string) {
-  return axios.delete(`${apiDomain}/api/bot/delete?id=${id}`);
+  return axios.delete(`${apiDomain}/api/bot/delete/${id}`);
 }
 
 // Create Bot
@@ -37,5 +37,5 @@ export async function createBot(profile: BotProfile) {
 
 // Update Bot
 export async function updateBot(profile: BotProfile) {
-  return axios.post(`${apiDomain}/api/bot/update`, profile);
+  return axios.put(`${apiDomain}/api/bot/update/${profile.id}`, profile);
 }
