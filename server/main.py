@@ -25,16 +25,16 @@ app = FastAPI(
     description="Agent Chat APIs"
 )
 
-# @app.middleware("http")
-# async def auth_middleware(request: Request, call_next):
-#     if request.url.path == "/api/auth/login":
-#         return await call_next(request)
-#     petercat: str = request.cookies.get('petercat')
-#     if not petercat:
-#         redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email&state=STATE"
-#         return RedirectResponse(redirect_uri)
-#     response = await call_next(request)
-#     return response
+@app.middleware("http")
+async def auth_middleware(request: Request, call_next):
+    if request.url.path == "/api/auth/login":
+        return await call_next(request)
+    petercat: str = request.cookies.get('petercat')
+    if not petercat:
+        redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email&state=STATE"
+        return RedirectResponse(redirect_uri)
+    response = await call_next(request)
+    return response
     
 
 app.add_middleware(
