@@ -5,6 +5,8 @@ import { BotProfile } from '@/app/interface';
 
 declare type Bot = Tables<'bots'>;
 
+axios.defaults.withCredentials = true
+
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 //  Get the public bot profile by id
 export async function getBotDetail(id: string): Promise<Bot[]> {
