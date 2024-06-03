@@ -152,7 +152,15 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, apiUrl, drawerWidth, assistant
             const response = await streamChat(newMessages, apiUrl);
             return handleStream(response);
           }}
-          inputAreaRender={InputArea}
+          inputAreaRender={(    
+            _: ReactNode,
+            onMessageSend: (message: string) => void | Promise<any>,
+            onClear: () => void,
+          ) => {
+            return <InputArea isShowStop={!!proChatRef?.current?.getChatLoadingId()} onMessageSend={onMessageSend} onClear={onClear} onStop={() => proChatRef?.current?.stopGenerateMessage()}/>;
+
+          }}
+
           inputAreaProps={{ className: 'userInputBox h-24 !important' }}
           actions={{
             render: () => [

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardBody } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { AddBotIcon } from "../app/icon/addboticon";
+import { AddBotIcon } from "@/public/icons/AddBotIcon";
 const BotCard = (props: {onPress: Function}) => {
   return (
     <Card
