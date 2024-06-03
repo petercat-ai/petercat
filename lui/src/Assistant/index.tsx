@@ -9,7 +9,7 @@ export interface AssistantProps {
   host?: string;
 }
 
-const drawerWidth = 375; // Tailwind doesn't support custom width directly, you might need to handle this separately
+const drawerWidth = 400; // Tailwind doesn't support custom width directly, you might need to handle this separately
 
 const Assistant = (props: AssistantProps) => {
   const [chatVisible, setChatVisible] = useState(false);
@@ -45,8 +45,8 @@ const Assistant = (props: AssistantProps) => {
     <div className="petercat-lui">
       {chatVisible ? (
         <div
-          className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black bg-gradient-to-r from-f2e9ed via-e9eefb to-f0eeea shadow-[0px_0px_1px_#919eab3d]"
-          style={{ width: drawerWidth, zIndex: 9999 }}
+          className="fixed right-0 top-0 h-full bg-[#FCFCFC] flex flex-row z-[999] overflow-hidden text-left text-black rounded-tl-[20px] rounded-bl-[20px]"
+          style={{ width: drawerWidth, zIndex: 9999,borderBottomLeftRadius: "20px!important",boxShadow: "0px 8px 32px -12px rgba(0, 0, 0, 0.1)" }}
         >
           <Chat {...props} drawerWidth={drawerWidth} />
           <div className="absolute top-0 right-0 m-1">
@@ -71,7 +71,7 @@ const Assistant = (props: AssistantProps) => {
           <img
             src={
               props.assistantMeta?.avatar ||
-              'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original'
+              'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original'
             }
             className="absolute left-2 w-6 h-6 rounded-full top-1/2 transform -translate-y-1/2"
           />

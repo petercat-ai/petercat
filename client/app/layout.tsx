@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
 import { Assistant } from 'petercat-lui';
+import { SearchProvider } from './contexts/SearchContext';
 
 const queryClient = new QueryClient();
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -29,10 +30,12 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat">
             <NextUIProvider>
+            <SearchProvider>
               <div className="flex flex-col">
                 <Navbar></Navbar>
                 {children}
               </div>
+            </SearchProvider>
             </NextUIProvider>
           </body>
         </QueryClientProvider>

@@ -14,18 +14,18 @@ export const BOTS: IBot[] = [
     displayName: 'bailing65b',
     name: 'bailing65b_trtint4_stream',
     avatar:
-      'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
+      'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
   },
   {
     displayName: 'gpt',
     name: 'qwen72b_stream',
     avatar:
-      'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
+      'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
   },
   {
     displayName: 'qwen',
     name: 'qwen14b_stream',
     avatar:
-      'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
+      'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
   },
 ];

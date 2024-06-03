@@ -1,6 +1,6 @@
 const defaultTheme = {
   transitionDuration: '0.3s',
-  chatBoxBackgroundColor: 'rgba(243, 244, 246, 1)',
+  chatBoxBackgroundColor: 'background: rgba(252, 252, 252, 1)',
   userBubbleBackgroundColor: 'rgba(37, 99, 235, 1)',
   systemBubbleBackgroundColor: 'rgba(255, 255, 255, 1)',
   stopButtonBackgroundColor: 'rgba(254, 226, 226, 1)',

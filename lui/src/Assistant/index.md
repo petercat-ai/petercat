@@ -12,7 +12,7 @@ export default () => (
   <Assistant
     assistantMeta={{
       avatar:
-        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*R_7BSIzhH9wAAAAAAAAAAAAADrPSAQ/original',
+        'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*li7ySppF7TYAAAAAAAAAAAAADlDCAQ/original',
       title: 'Kate',
     }}
   />

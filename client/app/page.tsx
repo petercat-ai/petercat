@@ -1,17 +1,20 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
-import AddBotCard from '@/components/AddBotCard';
 
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
+import BotList from "../components/BotList";
+import { useSearch } from '@/app/contexts/SearchContext';
 
 declare type Bot = Tables<'bots'>;
 
 export default function Home() {
-  const { data: bots, isLoading, error } = useBotList();
+  const { search } = useSearch();
+  let { data: bots, isLoading, error } = useBotList(false, search);
+
   if (isLoading) {
     return <FullPageSkeleton />;
   }
@@ -21,12 +24,12 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto max-w-[1024px]">
+      <div className="container mx-auto max-w-[1440px]">
         <div className="mt-8">
           
 
-          <div className="grid grid-flow-row-dense grid-cols-3 gap-8 my-8">
-            <AddBotCard />
+          <div className="grid grid-flow-row-dense grid-cols-4 gap-4 my-8 justify-items-center px-[20px]">
+            <BotList type='list'/>
             {!isEmpty(bots) &&
               map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}
           </div>
