@@ -44,7 +44,7 @@ async def generateAnonymousUser(clientId: str):
         "sid": secrets.token_urlsafe(32)
     }
 
-    return clientId, data
+    return token, data
 
 async def getAnonymousUserInfoByToken(token: str):
     supabase = get_client()
