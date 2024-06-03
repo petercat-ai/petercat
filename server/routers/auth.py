@@ -53,8 +53,7 @@ async def getAnonymousUser(request: Request, response: Response):
 
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
-    response.set_cookie(key="petercat", value=token, httponly=True, secure=True, samesite='Lax')
-    response.set_cookie(key="user_id", value=data['id'], httponly=True, secure=True, samesite='Lax')
+    response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
     return { "data": data, "status": 200}
 
 @router.get("/login")
@@ -74,14 +73,14 @@ async def callback(request: Request, response: Response):
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
     response = RedirectResponse(url=f'{WEB_URL}', status_code=302)
-    response.set_cookie(key="petercat", value=token, httponly=True, secure=True, samesite='Lax')
+    response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
     return response
 
 @router.get("/userinfo")
-async def userinfo(request: Request, response: Response, petercat: str = Cookie(None)):
-    if not petercat:
+async def userinfo(request: Request, response: Response, petercat_user_token: str = Cookie(None)):
+    if not petercat_user_token:
         return await getAnonymousUser(request, response)
-    data = await getAnonymousUserInfoByToken(petercat) if petercat.startswith("client|") else await getUserInfoByToken(petercat)
+    data = await getAnonymousUserInfoByToken(petercat_user_token) if petercat_user_token.startswith("client|") else await getUserInfoByToken(petercat_user_token)
     if data is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token") 
     if data :
