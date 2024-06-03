@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter, } from '@nextui-org/react';
-import {StoreIcon} from "../app/icon/storeicon";
+import {StoreIcon} from "../public/icons/StoreIcon";
 import { useBotList } from '@/app/hooks/useBot';
 import BotItem from "./BotItem";
 

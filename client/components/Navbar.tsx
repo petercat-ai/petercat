@@ -13,10 +13,10 @@ import {
 
 import { usePathname } from 'next/navigation';
 import Profile from './User';
-import { ShopIcon } from "../app/icon/shopicon";
-import { SpaceIcon } from "../app/icon/spaceicon";
-import { SearchIcon } from "../app/icon/searchicon";
-import { AddIcon } from "../app/icon/addicon";
+import { ShopIcon } from "@/public/icons/ShopIcon";
+import { SpaceIcon } from "@/public/icons/SpaceIcon";
+import { SearchIcon } from "@/public/icons/SearchIcon";
+import { AddIcon } from "@/public/icons/AddIcon";
 import BotList from "./BotList";
 import { useSearch } from '@/app/contexts/SearchContext';
 

@@ -3,7 +3,7 @@ import { Tables } from '@/types/database.types';
 import React from 'react';
 import { Card, Image, CardBody, CardFooter } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { AddBotIcon } from "../../../icon/addboticon";
+import { AddBotIcon } from "@/public/icons/AddBotIcon";
 
 declare type Bot = Tables<'bots'>;
 

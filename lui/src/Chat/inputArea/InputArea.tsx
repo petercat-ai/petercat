@@ -1,13 +1,20 @@
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { SendMessageIcon } from "../../icon/sendMessageIcon";
-import { StopMessageIcon } from "../../icon/stopMessageIcon";
-import { NewMessageIcon } from "../../icon/newMessageIcon";
-import { UploadImageIcon } from "../../icon/uploadImageIcon";
+import { SendMessageIcon } from "../../icons/SendMessageIcon";
+import { StopMessageIcon } from "../../icons/StopMessageIcon";
+import { NewMessageIcon } from "../../icons/NewMessageIcon";
+import { UploadImageIcon } from "../../icons/UploadImageIcon";
 
-const inputAreaRender = () => {
-  const finish = () => {
-    
+const inputAreaRender = (props: {
+  isShowStop: boolean,
+  onMessageSend: (message: string) => void | Promise<any>,
+  onClear: () => void,
+  onStop: () => void,
+}) => {
+  const finish = (value: { question: string }) => {
+    if (props && props.onMessageSend) {
+      props.onMessageSend(value.question ?? '');
+    }
   }
   return (
     <Form
@@ -17,19 +24,33 @@ const inputAreaRender = () => {
       <Form.Item
         name="question"
       >
-        <Input.TextArea style={{ height: 100 , border: 'none',resize: 'none', backgroundColor: '#F1F1F1'}} />
+        <Input.TextArea style={{ height: 100, border: 'none', resize: 'none', backgroundColor: '#F1F1F1' }} />
       </Form.Item>
       <div className="flex w-[100%]">
         <div className="space-x-2 flex-1">
-          <Button type="primary" className="bg-white hover:!bg-white" htmlType="submit" icon={<StopMessageIcon />}>
+          {
+            props && props.isShowStop && (
+              <Button type="primary" className="bg-white hover:!bg-white" icon={<StopMessageIcon />}
+                onClick={() => {
+                  if (props && props.onStop) {
+                    props.onStop();
+                  }
+                }}
+              >
+              </Button>
+            )
+          }
+          <Button type="primary" className="bg-white hover:!bg-white" onClick={() => {
+            if (props && props.onClear) {
+              props.onClear();
+            }
+          }} icon={<NewMessageIcon />}>
           </Button>
-          <Button type="primary" className="bg-white hover:!bg-white" htmlType="submit" icon={<NewMessageIcon />}>
+          <Button type="primary" className="bg-white hover:!bg-white" icon={<UploadImageIcon />}>
           </Button>
-          <Button type="primary" className="bg-white hover:!bg-white" htmlType="submit" icon={<UploadImageIcon />}>
-          </Button>
-        </div>          
+        </div>
         <Button type="primary" className="w-[32px] bg-gray-700 hover:!bg-gray-700" htmlType="submit" icon={<SendMessageIcon />}>
-          </Button>
+        </Button>
       </div>
     </Form>
   );
