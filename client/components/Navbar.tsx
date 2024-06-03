@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import React from 'react';
+
 import {
-
   Image,
-
   Link,
   Tabs,
   Tab,
@@ -13,16 +13,17 @@ import {
 
 import { usePathname } from 'next/navigation';
 import Profile from './User';
-import {ShopIcon} from "../app/icon/shopicon";
-import {SpaceIcon} from "../app/icon/spaceicon";
-import {SearchIcon} from "../app/icon/searchicon";
-import {AddIcon} from "../app/icon/addicon";
+import { ShopIcon } from "../app/icon/shopicon";
+import { SpaceIcon } from "../app/icon/spaceicon";
+import { SearchIcon } from "../app/icon/searchicon";
+import { AddIcon } from "../app/icon/addicon";
 import BotList from "./BotList";
 import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
   const { search, setSearch } = useSearch();
-
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const debounceTime: number = 1000;
   const router = useRouter();
   const pathname = usePathname();
   const navs = [
@@ -30,23 +31,35 @@ export function Navbar() {
       id: 'market',
       label: '市场',
       href: '/',
-      icon: <ShopIcon/>
+      icon: <ShopIcon />
     },
     {
       id: 'factory',
       label: '空间',
       href: '/factory/list',
-      icon: <SpaceIcon/>
+      icon: <SpaceIcon />
     },
   ];
 
   if (pathname.includes('/factory/edit')) {
     return null;
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
 
+
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value ?? ''
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId); 
+    }
+  
+    timeoutId = setTimeout(() => {
+      setSearch(query); 
+      clearTimeout(timeoutId); 
+    }, debounceTime);
+  };
+  
   return (
     <div className='flex bg-[#F3F4F6] w-full p-[24px]'>
       <div className='w-[115px] flex-grow-0'>
@@ -61,7 +74,7 @@ export function Navbar() {
           selectedKey={pathname === '/' ? 'market' : 'factory'}
           classNames={{
             base: "bg-[#F3F4F6] rounded-full",
-            tabContent: "group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-4 py-1 h-10 leading-10" 
+            tabContent: "group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-4 py-1 h-10 leading-10"
           }}
         >
           {(item) => (
@@ -102,12 +115,12 @@ export function Navbar() {
       <div className="w-[200px] ml-[48px] flex justify-between flex-grow-0" >
         <div>
           {!pathname.includes('/factory/list') && (
-            <BotList type='nav'/>
+            <BotList type='nav' />
           )}
           {pathname.includes('/factory/list') && (
-            <Button onPress={() => router.push(`/factory/edit/new`)} className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon/>}>创建机器人</Button>
+            <Button onPress={() => router.push(`/factory/edit/new`)} className='bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2' startContent={<AddIcon />}>创建机器人</Button>
           )}
-          
+
         </div>
         <div>
           <Profile />
