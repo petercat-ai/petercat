@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   Image,
@@ -22,6 +22,8 @@ import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
   const { search, setSearch } = useSearch();
+  const [inputValue, setInputValue] = useState('');
+
   let timeoutId: ReturnType<typeof setTimeout>;
   const debounceTime: number = 1000;
   const router = useRouter();
@@ -47,19 +49,22 @@ export function Navbar() {
 
 
 
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value ?? ''
-    if (timeoutId !== null) {
-      clearTimeout(timeoutId); 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setSearch(inputValue);
     }
-  
-    timeoutId = setTimeout(() => {
-      setSearch(query); 
-      clearTimeout(timeoutId); 
-    }, debounceTime);
   };
-  
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    if (event.target.value === '') {
+      setSearch('');
+    }
+  };
+  const handleClear = () => {
+    setInputValue('');
+    setSearch('');
+  };
   return (
     <div className='flex bg-[#F3F4F6] w-full p-[24px]'>
       <div className='w-[115px] flex-grow-0'>
@@ -91,6 +96,8 @@ export function Navbar() {
           onChange={handleChange}
           isClearable
           radius="lg"
+          onKeyDown={handleKeyDown}
+          onClear={handleClear}
           classNames={{
             input: [
               "bg-transparent",
@@ -113,7 +120,7 @@ export function Navbar() {
         />
       </div>
       <div className="w-[200px] ml-[48px] flex justify-between flex-grow-0" >
-        <div>
+        <div className='mr-[10px]'>
           {!pathname.includes('/factory/list') && (
             <BotList type='nav' />
           )}
