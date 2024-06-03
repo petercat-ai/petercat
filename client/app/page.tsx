@@ -24,11 +24,11 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto max-w-[1440px]">
+      <div className="container mx-auto">
         <div className="mt-8">
           
 
-          <div className="grid grid-flow-row-dense grid-cols-4 gap-4 my-8 justify-items-center px-[20px]">
+          <div className="grid grid-flow-row-dense gap-4 my-8 justify-items-center px-[20px] grid-cols-4">
             <BotList type='list'/>
             {!isEmpty(bots) &&
               map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}

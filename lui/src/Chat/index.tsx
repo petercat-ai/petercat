@@ -14,6 +14,8 @@ import { Role } from '../interface';
 import { BOT_INFO } from '../mock';
 import { streamChat } from '../services/ChatController';
 import { handleStream } from '../utils';
+import InputArea from './inputArea/InputArea';
+
 import Actions from './inputArea/actions';
 import '../style/global.css';
 
@@ -150,6 +152,7 @@ const Chat: FC<ChatProps> = memo(({ helloMessage, apiUrl, drawerWidth, assistant
             const response = await streamChat(newMessages, apiUrl);
             return handleStream(response);
           }}
+          inputAreaRender={InputArea}
           inputAreaProps={{ className: 'userInputBox h-24 !important' }}
           actions={{
             render: () => [
