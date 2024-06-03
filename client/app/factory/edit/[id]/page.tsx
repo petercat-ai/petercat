@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useMemo } from 'react';
-import { Tabs, Tab, Button, Switch } from '@nextui-org/react';
+import { Tabs, Tab, Button, Switch, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { ChatWindow } from '@/components/chat/ChatWindow';
 import { toast } from 'react-toastify';
@@ -12,6 +12,9 @@ import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { useImmer } from 'use-immer';
 import { Chat } from 'petercat-lui';
+import AIBtnIcon from '@/public/icons/AIBtnIcon';
+import ChatIcon from '@/public/icons/ChatIcon';
+import ConfigIcon from '@/public/icons/ConfigIcon';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
@@ -23,10 +26,11 @@ export default function Edit({ params }: { params: { id: string } }) {
     description: '',
     prompt: '',
     starters: [''],
-    enable_img_generation: true,
-    voice: '',
     public: false,
+    repoName: '',
+    helloMessage: '',
   });
+  const [activeTab, setActiveTab] = React.useState<string>('manualConfig');
 
   const {
     updateBot: onUpdateBot,
@@ -57,22 +61,11 @@ export default function Edit({ params }: { params: { id: string } }) {
         draft.name = config.name || '';
         draft.description = config.description || '';
         draft.avatar = config.avatar || '';
-        draft.enable_img_generation = config.enable_img_generation ?? false;
-        draft.voice = config.voice || '';
         draft.starters = config.starters || [''];
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
       });
   }, [config]);
-
-  const createBot = async () => {
-    const params = {
-      ...botProfile,
-      repo_name: 'ant-design/ant-design',
-      starters: botProfile?.starters?.filter((s) => s),
-    };
-    onCreateBot(params);
-  };
 
   const updateBot = async () => {
     const params = {
@@ -124,26 +117,121 @@ export default function Edit({ params }: { params: { id: string } }) {
     return <FullPageSkeleton />;
   }
 
+  const chatConfigContent = (
+    <div style={{ height: 'calc(100vh - 75px)' }}>
+      <Chat
+        assistantMeta={{
+          avatar:
+            'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+          title: 'PeterCat',
+        }}
+        apiUrl={`${API_HOST}/api/chat/stream_chatConfig`}
+        helloMessage="👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
+      />
+    </div>
+  );
+
+  const manualConfigContent = (
+    <div className="h-full px-[100px] py-10 overflow-x-hidden overflow-y-scroll">
+      <div className="px-[46px]">
+        <Input
+          type="text"
+          variant="bordered"
+          name="repo_name"
+          label="Github 项目名"
+          placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
+          labelPlacement="outside"
+          value={botProfile?.description}
+          onChange={(e) => {
+            const repoName = e.target.value;
+            setBotProfile?.((draft) => {
+              draft.repoName = repoName;
+            });
+          }}
+          required
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
+        <div className="w-full text-center mt-6">
+          <Button
+            radius="full"
+            className="bg-gray-700 text-white"
+            startContent={<AIBtnIcon />}
+            onClick={() => {
+              onCreateBot(botProfile?.repoName!);
+            }}
+          >
+            自动生成配置
+          </Button>
+        </div>
+      </div>
+
+      <BotCreateFrom setBotProfile={setBotProfile} botProfile={botProfile} />
+    </div>
+  );
+
   return (
     <div className="flex h-screen w-full flex-col items-center bg-white">
-      <div className="relative flex h-14 w-full items-center justify-between gap-2 border-b border-token-border-medium px-3 flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <a
-            className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
-            href="/factory/list"
-          >
-            <BackIcon />
-          </a>
-          <div className="flex items-center gap-2">
-            <PublicSwitcher
-              isSelected={!!botProfile?.public}
-              setBotProfile={setBotProfile}
-            />
-          </div>
-        </div>
+      <div className="relative flex w-full grow overflow-hidden">
+        <div className="flex w-full justify-center md:w-1/2">
+          <div className="h-full grow">
+            <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-b px-6 flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <a
+                  className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
+                  href="/factory/list"
+                >
+                  <BackIcon />
+                </a>
+                <div className="flex items-center gap-2">
+                  <Avatar
+                    src={botProfile?.avatar}
+                    className="mr-1 w-[32px] h-[32px] text-large"
+                    name={botProfile?.name!}
+                  />
+                  <span>{botProfile?.name!}</span>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <Tabs
+                  defaultSelectedKey="manualConfig"
+                  variant="light"
+                  selectedKey={activeTab}
+                  aria-label="Options"
+                  onSelectionChange={(key) => setActiveTab(`${key}`)}
+                  classNames={{
+                    base: 'w-[216px] h-[36px]',
+                    tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
+                    tabContent:
+                      'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2 w-[108px] h-[36px]',
+                    cursor: 'shadow-none rounded-full w-[108px]',
+                  }}
+                >
+                  <Tab
+                    key="chatConfig"
+                    title={
+                      <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
+                        <ChatIcon /> <span className="ml-2">对话调试</span>
+                      </div>
+                    }
+                  />
 
-        <div className="flex items-center gap-2">
-          <Button
+                  <Tab
+                    key="manualConfig"
+                    title={
+                      <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
+                        <ConfigIcon />
+                        <span className="ml-2">手动配置</span>
+                      </div>
+                    }
+                  />
+                </Tabs>
+              </div>
+              <div className="flex items-center gap-2">
+                <PublicSwitcher
+                  isSelected={!!botProfile?.public}
+                  setBotProfile={setBotProfile}
+                />
+                {/* <Button
             color="success"
             size="sm"
             isLoading={createBotLoading || updateBotLoading}
@@ -152,49 +240,22 @@ export default function Edit({ params }: { params: { id: string } }) {
               e.preventDefault();
               if (botProfile?.id) {
                 updateBot();
-              } else {
-                createBot();
-              }
+              } 
             }}
           >
             Save
-          </Button>
-        </div>
-      </div>
-      <div className="relative flex w-full grow overflow-hidden">
-        <div className="flex w-full justify-center md:w-1/2">
-          <div className="h-full grow overflow-y-auto overflow-x-hidden">
-            <div className="flex h-full flex-col px-2 pt-2">
-              <Tabs
-                defaultSelectedKey="Builder"
-                aria-label="Options"
-                className="self-center"
-              >
-                <Tab key="Builder" title="对话调试" >
-                  <div style={{ height: 'calc(100vh - 115px)' }}>
-                    <Chat
-                    assistantMeta={{
-                      avatar:
-                        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
-                      title: 'PeterCat',
-                    }}
-                    apiUrl={`${API_HOST}/api/chat/stream_builder`}
-                    helloMessage='👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。'
-                  />
-                  </div>
-                </Tab>
-                <Tab key="Configure" title="手动配置">
-                  <BotCreateFrom
-                    setBotProfile={setBotProfile}
-                    botProfile={botProfile}
-                  />
-                </Tab>
-              </Tabs>
+          </Button> */}
+              </div>
+            </div>
+            <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
+              {activeTab === 'chatConfig'
+                ? chatConfigContent
+                : manualConfigContent}
             </div>
           </div>
         </div>
         <div className="hidden w-1/2 justify-center bg-default-100 border-l border-token-border-medium bg-token-surface-secondary pt-4 md:flex relative">
-          <ChatWindow
+          {/* <ChatWindow
             endpoint="/api/chat"
             avatar={botProfile?.avatar}
             name={botProfile?.name}
@@ -205,7 +266,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             voice={botProfile?.voice}
             enableImgGeneration={botProfile?.enable_img_generation}
             streamming
-          />
+          /> */}
         </div>
       </div>
     </div>

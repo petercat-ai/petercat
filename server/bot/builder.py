@@ -1,5 +1,4 @@
 from typing import Optional
-from fastapi import Cookie, HTTPException
 from github import Github
 from db.supabase.client import get_client
 from prompts.bot_template import generate_prompt_by_repo_name
@@ -8,6 +7,7 @@ from auth.get_user_info import getUserInfoByToken
 g = Github()
 
 async def bot_builder(
+    uid: str,
     repo_name: str,
     starters: Optional[list[str]] = ["介绍一下项目", "快速上手", "贡献指南"],
 ):
@@ -25,13 +25,12 @@ async def bot_builder(
         prompt = generate_prompt_by_repo_name(repo_name)
         
         # Step3: Create bot based on the prompt
-        user_id = 'petercat'
         bot_data = {
           "name":  repo.name,
           "description": repo.description,
           "avatar": repo.organization.avatar_url if repo.organization else None,
           "prompt": prompt,
-          "uid": user_id,
+          "uid": uid,
           "enable_img_generation": False,
           "label": "Assistant",
           "starters": starters,

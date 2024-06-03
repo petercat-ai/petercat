@@ -48,6 +48,7 @@ const InputList = (props: InputListProps) => {
           <input
             type="text"
             value={input}
+            placeholder="输入开场白引导问题"
             onChange={(e) => handleChange(index, e.target.value)}
             className={`w-full resize-none overflow-y-auto rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 border focus:ring-blue-400 border-token-border-medium h-9 dark:bg-gray-800 ${
               inputs.length > 1 ? 'rounded-r-none' : ''

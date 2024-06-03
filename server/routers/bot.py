@@ -1,10 +1,8 @@
-from fastapi import APIRouter, Cookie, Query, Body, Path
+from fastapi import APIRouter, Cookie, status, HTTPException, Query, Body, Path
 from db.supabase.client import get_client
 from bot.builder import bot_builder
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional
-from auth.get_user_info import getUserInfoByToken
-from supabase import create_client, Client
 
 
 
@@ -24,9 +22,9 @@ def execute_sql(sql: str):
             print("Error hint:", e.hint)
   
 router = APIRouter(
-    prefix="/api/bot",
-    tags=["bot"],
-    responses={404: {"description": "Not found"}},
+  prefix="/api/bot",
+  tags=["bot"],
+  responses={404: {"description": "Not found"}},
 )
 
 @router.get("/list")
@@ -37,7 +35,7 @@ def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots 
           return { "data": [], "personal": personal}
         else :
           if not name:
-            data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, public").eq('public', 'true').eq('uid', user_id).execute()
+            data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, name, public").eq('public', 'true').eq('uid', user_id).execute()
           else :
             sql = f"""
               SELECT * FROM bots where public = true and name like '%{name}%'
@@ -46,7 +44,7 @@ def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots 
            
     else :
         if not name: 
-          data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, public").eq('public', 'true').execute()
+          data = supabase.table("bots").select("id, created_at, updated_at, avatar, description, name, starters, public").eq('public', 'true').execute()
         else:
           sql = f"""
             SELECT * FROM bots where public = true and name like '%{name}%'
@@ -66,7 +64,7 @@ def get_bot_detail(id: Optional[str] = Query(None, description="Filter bots by p
       }
     else :
       supabase = get_client()
-      data = supabase.table("bots").select('id, created_at, updated_at, avatar, description, enable_img_generation, label, name, starters, public').eq('id', id).execute()
+      data = supabase.table("bots").select('id, created_at, updated_at, avatar, description, name, starters, public, hello_message').eq('id', id).execute()
       return { "data": data.data, "status": 200}
     
 @router.get("/config")
@@ -82,9 +80,11 @@ def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by p
       return { "data": data.data, "status": 200}
 
 @router.post("/create", status_code=200)
-async def create_bot(bot_data: BotCreateRequest):
-    return await bot_builder(**bot_data.model_dump())
-    
+async def create_bot(bot_data: BotCreateRequest,  user_id: str = Cookie(None)):
+    print('user_id', user_id)
+    if not user_id:
+      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Must Login")
+    return await bot_builder(user_id, **bot_data.model_dump())
 
 @router.put("/update/{id}", status_code=200)
 def update_bot(id: str, bot_data: BotUpdateRequest = Body(...), user_id: str = Cookie(None)):
@@ -94,7 +94,7 @@ def update_bot(id: str, bot_data: BotUpdateRequest = Body(...), user_id: str = C
         "status": 401
       }
     supabase = get_client()
-    response = supabase.table("bots").update(bot_data.dict()).eq("id", id).eq("uid", user_id).execute()
+    supabase.table("bots").update(bot_data.dict()).eq("id", id).eq("uid", user_id).execute()
     return {"status": 200}
 
 @router.delete("/delete/{id}", status_code=200)
