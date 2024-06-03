@@ -80,7 +80,7 @@ async def callback(request: Request, response: Response):
 async def userinfo(request: Request, response: Response, petercat_user_token: str = Cookie(None)):
     if not petercat_user_token:
         return await getAnonymousUser(request, response)
-    data = await getAnonymousUserInfoByToken(petercat_user_token) if petercat_user_token.startswith("client|") else await getUserInfoByToken(user_token)
+    data = await getAnonymousUserInfoByToken(petercat_user_token) if petercat_user_token.startswith("client|") else await getUserInfoByToken(petercat_user_token)
     if data is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token") 
     if data :
