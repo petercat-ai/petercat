@@ -20,3 +20,6 @@
   opacity: 0px;
   background: rgba(250, 228, 203, 1);
 }
+.lui-input-area #question {
+  box-shadow: none;
+}

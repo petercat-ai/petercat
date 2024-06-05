@@ -28,7 +28,7 @@ export default function RootLayout({
       </head>
 
         <QueryClientProvider client={queryClient}>
-          <body className="bg-[url('/images/bg.svg')] bg-top bg-no-repeat">
+          <body>
             <NextUIProvider>
             <SearchProvider>
               <div className="flex flex-col">

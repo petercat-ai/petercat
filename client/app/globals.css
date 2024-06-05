@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 html, body {
-  background-color: #F3F4F6;
-  margin: 0; 
-  padding: 0; 
+  background: #F3F4F6;
+  min-height: 100vh !important; 
+  margin: 0;
+  padding: 0;
   min-height: 100%;
+  min-width: 1320px;
 }
 body {
   color: #131318;

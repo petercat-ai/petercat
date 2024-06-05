@@ -1,19 +1,22 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { Image, Link, Tabs, Tab, Input, Button } from '@nextui-org/react';
-
 import { usePathname } from 'next/navigation';
 import Profile from './User';
-import { ShopIcon } from '../app/icon/shopicon';
-import { SpaceIcon } from '../app/icon/spaceicon';
-import { SearchIcon } from '../app/icon/searchicon';
-import { AddIcon } from '../app/icon/addicon';
+import { ShopIcon } from '@/public/icons/ShopIcon';
+import { SpaceIcon } from '@/public/icons/SpaceIcon';
+import { SearchIcon } from '@/public/icons/SearchIcon';
+import { AddIcon } from '@/public/icons/AddIcon';
 import BotList from './BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
   const { search, setSearch } = useSearch();
+  const [inputValue, setInputValue] = useState('');
 
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const debounceTime: number = 1000;
   const router = useRouter();
   const pathname = usePathname();
   const navs = [
@@ -34,10 +37,23 @@ export function Navbar() {
   if (pathname.includes('/factory/edit')) {
     return null;
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setSearch(inputValue);
+    }
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    if (event.target.value === '') {
+      setSearch('');
+    }
+  };
+  const handleClear = () => {
+    setInputValue('');
+    setSearch('');
+  };
   return (
     <div className="flex bg-[#F3F4F6] w-full p-[24px]">
       <div className="w-[115px] flex-grow-0">
@@ -84,6 +100,8 @@ export function Navbar() {
           onChange={handleChange}
           isClearable
           radius="lg"
+          onKeyDown={handleKeyDown}
+          onClear={handleClear}
           classNames={{
             input: ['bg-transparent', 'h-10'],
             inputWrapper: [
@@ -103,7 +121,7 @@ export function Navbar() {
         />
       </div>
       <div className="w-[200px] ml-[48px] flex justify-between flex-grow-0">
-        <div>
+        <div className="mr-[10px]">
           {!pathname.includes('/factory/list') && <BotList type="nav" />}
           {pathname.includes('/factory/list') && (
             <Button
