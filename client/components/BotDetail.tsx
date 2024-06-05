@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { ChatWindow } from '@/components/chat/ChatWindow';
 import { Spinner } from '@nextui-org/react';
 import { useBotDetail } from '@/app/hooks/useBot';
 
@@ -18,18 +17,6 @@ const BotDetail = (props: { id: string }) => {
           <Spinner />
         </div>
       )}
-      <ChatWindow
-        endpoint="/api/chat"
-        avatar={detail?.avatar!}
-        name={detail?.name!}
-        starters={detail?.starters!}
-        description={detail?.description!}
-        placeholder={detail?.description || 'Ask me anything!'}
-        enableImgGeneration={detail?.enable_img_generation!}
-        botId={detail?.id!}
-        voice={detail?.voice ?? undefined}
-        streamming
-      />
     </>
   );
 };

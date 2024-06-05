@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import type { Updater } from 'use-immer';
 import { BotProfile } from '@/app/interface';
+import { Button, Input } from '@nextui-org/react';
+import MinusIcon from '@/public/icons/MinusIcon';
 
 const MAX_INPUTS = 4; // Max number of inputs
 
@@ -45,22 +47,26 @@ const InputList = (props: InputListProps) => {
     <>
       {inputs.map((input, index) => (
         <div key={index} className="flex items-center mb-2">
-          <input
-            type="text"
+          <Input
+            variant="bordered"
+            labelPlacement="outside"
             value={input}
+            placeholder="输入开场白引导问题"
             onChange={(e) => handleChange(index, e.target.value)}
-            className={`w-full resize-none overflow-y-auto rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 border focus:ring-blue-400 border-token-border-medium h-9 dark:bg-gray-800 ${
-              inputs.length > 1 ? 'rounded-r-none' : ''
-            }`}
+            className="mb-2"
+            endContent={
+              inputs.length > 1 && (
+                <Button
+                  onClick={() => handleRemove(index)}
+                  isIconOnly
+                  className="min-w-[16px] rounded-full bg-red-500 w-[16px] h-[16px] text-white"
+                  aria-label="删除"
+                >
+                  <MinusIcon />
+                </Button>
+              )
+            }
           />
-          {inputs.length > 1 && (
-            <button
-              onClick={() => handleRemove(index)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg rounded-l-none border border-l-0 border-token-border-medium"
-            >
-              &#10005;
-            </button>
-          )}
         </div>
       ))}
     </>

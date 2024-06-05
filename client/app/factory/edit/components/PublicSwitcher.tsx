@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Switch } from '@nextui-org/react';
+import { Switch, cn } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
 import { BotProfile } from '@/app/interface';
 
@@ -22,11 +22,24 @@ const PublicSwitcher = (props: PublicSwitcherProps) => {
   return (
     <Switch
       isSelected={isSelected}
-      color="success"
-      size="sm"
+      classNames={{
+        wrapper: cn("w-[22px] h-[14px] bg-gray-400 p-[2px]",
+          //selected
+          "group-data-[selected=true]:bg-gray-800",
+          "group-data-[selected=true]:w-[22px]",
+          "group-data-[selected=true]:h-[14px]",
+        ),
+        thumb: cn("w-[10px] h-[10px]",
+          //selected
+          "group-data-[selected=true]:w-[10px]",
+          "group-data-[selected=true]:h-[10px]",
+          "group-data-[selected=true]:ml-[8px]"
+
+        )
+      }}
       onChange={onChange}
     >
-      Public
+      市场中公开
     </Switch>
   );
 };
