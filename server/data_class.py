@@ -14,6 +14,7 @@ class Message(BaseModel):
 class ChatData(BaseModel):
     messages: list[Message] = []
     prompt: Optional[str] = None
+    bot_id: Optional[str] = None
 
 class ExecuteMessage(BaseModel):
     type: str
