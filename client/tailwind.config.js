@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const {nextui} = require("@nextui-org/react");
 module.exports = {
+  mode: 'jit',
   content: [
     './app/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
