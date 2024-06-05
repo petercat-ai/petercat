@@ -66,25 +66,6 @@ const Assistant = (props: AssistantProps) => {
     setChatVisible(visible);
   }, [visible]);
 
-  useEffect(() => {
-    let stopInterval: NodeJS.Timeout;
-    let startInterval: NodeJS.Timeout;
-
-    if (showBubble) {
-      stopInterval = setInterval(stoptAnimation, 2000);
-      startInterval = setInterval(startAnimation, 10000);
-    }
-    // Cleanup function
-    return () => {
-      if (stopInterval) {
-        clearInterval(stopInterval);
-      }
-      if (startInterval) {
-        clearInterval(startInterval);
-      }
-    };
-  }, [showBubble]);
-
   return (
     <div className="petercat-lui">
       {chatVisible ? (
