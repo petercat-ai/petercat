@@ -12,23 +12,23 @@ const InputAreaRender = (props: {
   onStop: () => void,
 }) => {
   const [form] = Form.useForm();
-  const [prompt, setPrompt] = useState('');
+  const [message, setMessage] = useState('');
   const finish = (value: { question: string }) => {
     if (props && props.onMessageSend) {
-      setPrompt('');
+      setMessage('');
       form.resetFields();
       props.onMessageSend(value.question ?? '');
     }
   }
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
-      setPrompt('');
+      setMessage('');
       form.resetFields();
-      props.onMessageSend(prompt);
+      props.onMessageSend(message);
     }
   };
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPrompt(event.target.value);
+    setMessage(event.target.value);
   };
   return (
     <Form
@@ -39,7 +39,7 @@ const InputAreaRender = (props: {
       <Form.Item
         name="question"
       >
-        <Input.TextArea value={prompt} onChange={handleChange} style={{ height: 100, border: 'none', resize: 'none', backgroundColor: '#F1F1F1' }} onKeyDown={handleKeyDown} />
+        <Input.TextArea value={message} onChange={handleChange} style={{ height: 100, border: 'none', resize: 'none', backgroundColor: '#F1F1F1' }} onKeyDown={handleKeyDown} />
       </Form.Item>
       <div className="flex w-[100%]">
         <div className="space-x-2 flex-1">
