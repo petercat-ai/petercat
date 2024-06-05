@@ -38,7 +38,7 @@ const BotCreateFrom = (props: BotFormProps) => {
               <Tooltip content="随机头像">
                 <Button
                   isIconOnly
-                  className="rounded-full bg-gray-700 mr-2"
+                  className="rounded-full bg-gray-700 mr-2 w-[32px] h-[32px]"
                   aria-label="随机头像"
                 >
                   <BulbIcon />
@@ -48,7 +48,7 @@ const BotCreateFrom = (props: BotFormProps) => {
               <Tooltip content="GitHub 头像">
                 <Button
                   isIconOnly
-                  className="rounded-full bg-gray-700"
+                  className="rounded-full bg-gray-700 w-[32px] h-[32px]"
                   aria-label="GitHub 头像"
                 >
                   <GitHubIcon />

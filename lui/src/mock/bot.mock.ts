@@ -12,7 +12,7 @@ export const BOT_INFO = {
     tools: '格式待补充', //插件配置内容
     dataset: '格式待补充', //rag知识库
     prologue: '你好 愚蠢的地球人', //开场白
-    suggested_questions: ['汽车人万岁', '霸天虎屎定了', '你还有什么说的'], //预制问题
+    starters: ['汽车人万岁', '霸天虎屎定了', '你还有什么说的'], //预制问题
   },
   status: 1,
 };
