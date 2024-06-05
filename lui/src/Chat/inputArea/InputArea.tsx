@@ -1,30 +1,45 @@
 import { Button, Form, Input } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { SendMessageIcon } from "../../icons/SendMessageIcon";
 import { StopMessageIcon } from "../../icons/StopMessageIcon";
 import { NewMessageIcon } from "../../icons/NewMessageIcon";
 import { UploadImageIcon } from "../../icons/UploadImageIcon";
 
-const inputAreaRender = (props: {
+const InputAreaRender = (props: {
   isShowStop: boolean,
   onMessageSend: (message: string) => void | Promise<any>,
   onClear: () => void,
   onStop: () => void,
 }) => {
+  const [form] = Form.useForm();
+  const [prompt, setPrompt] = useState('');
   const finish = (value: { question: string }) => {
     if (props && props.onMessageSend) {
+      setPrompt('');
+      form.resetFields();
       props.onMessageSend(value.question ?? '');
     }
   }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      setPrompt('');
+      form.resetFields();
+      props.onMessageSend(prompt);
+    }
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(event.target.value);
+  };
   return (
     <Form
+      form={form}
       onFinish={finish}
       className='px-[12px] py-[10px] m-[12px] rounded-[10px] lui-input-area bg-[#f1f1f1]'
     >
       <Form.Item
         name="question"
       >
-        <Input.TextArea style={{ height: 100, border: 'none', resize: 'none', backgroundColor: '#F1F1F1' }} />
+        <Input.TextArea value={prompt} onChange={handleChange} style={{ height: 100, border: 'none', resize: 'none', backgroundColor: '#F1F1F1' }} onKeyDown={handleKeyDown} />
       </Form.Item>
       <div className="flex w-[100%]">
         <div className="space-x-2 flex-1">
@@ -55,4 +70,4 @@ const inputAreaRender = (props: {
     </Form>
   );
 };
-export default inputAreaRender;
+export default InputAreaRender;
