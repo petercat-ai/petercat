@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 
@@ -59,6 +60,6 @@ def add_task(config: GitDocConfig):
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task():
-    data = task.trigger_task()
+def trigger_task(task_id: Optional[str] = None):
+    data = task.trigger_task(task_id)
     return data
