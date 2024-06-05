@@ -20,6 +20,26 @@ const Assistant = (props: AssistantProps) => {
     setChatVisible(!chatVisible);
   };
 
+  const startAnimation = () => {
+    const element = document.getElementById('petercat-lui-tip');
+    if (!element) {
+      return;
+    }
+    if (!element.classList.contains('animate-shake')) {
+      element.classList.add('animate-shake');
+    }
+  };
+
+  const stoptAnimation = () => {
+    const element = document.getElementById('petercat-lui-tip');
+    if (!element) {
+      return;
+    }
+    if (element.classList.contains('animate-shake')) {
+      element.classList.remove('animate-shake');
+    }
+  };
+
   const startDrag = (e: { clientY: any; preventDefault: () => void }) => {
     const startY = e.clientY;
     const initBottom = position.bottom;
@@ -81,7 +101,8 @@ const Assistant = (props: AssistantProps) => {
               }}
             >
               <div
-                className="animate-wiggle  absolute top-[-9px] left-[-47px] px-2 py-1 w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white
+                id="petercat-lui-tip"
+                className="animate-shake  absolute top-[-9px] left-[-47px] px-2 py-1 w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white
                "
               >
                 Ask me
