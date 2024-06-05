@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Optional, Dict
 
-from github import Auth
+from github import Auth, Repository
 from github import Github
 from langchain_core.utils import get_from_env
 
@@ -38,6 +38,8 @@ def add_task(config: GitDocConfig,
         else:
             extra["node_type"] = 'blob'
 
+    sha = get_path_sha(repo, commit_id, config.file_path)
+
     supabase = get_client()
 
     data = {
@@ -47,11 +49,20 @@ def add_task(config: GitDocConfig,
         "node_type": extra["node_type"],
         "from_task_id": extra["from_task_id"],
         "path": config.file_path,
-        # TODO: need to change when path is not root path
-        "sha": commit_id
+        "sha": sha
     }
 
     return supabase.table(TABLE_NAME).insert(data).execute()
+
+
+def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):
+    if not path:
+        return sha
+    else:
+        tree_data = repo.get_git_tree(sha)
+        for item in tree_data.tree:
+            if path.split("/")[0] == item.path:
+                return get_path_sha(repo, item.sha, "/".join(path.split("/")[1:]))
 
 
 def get_oldest_task():
