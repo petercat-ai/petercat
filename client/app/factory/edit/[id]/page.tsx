@@ -247,20 +247,6 @@ export default function Edit({ params }: { params: { id: string } }) {
                   isSelected={!!botProfile?.public}
                   setBotProfile={setBotProfile}
                 />
-                {/* <Button
-            color="success"
-            size="sm"
-            isLoading={createBotLoading || updateBotLoading}
-            variant="flat"
-            onClick={(e) => {
-              e.preventDefault();
-              if (botProfile?.id) {
-                updateBot();
-              } 
-            }}
-          >
-            Save
-          </Button> */}
               </div>
             </div>
             <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
