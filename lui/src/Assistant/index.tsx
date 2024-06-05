@@ -6,38 +6,20 @@ import BubbleIcon from '../icons/BubbleIcon';
 
 export interface AssistantProps extends ChatProps {
   showBubble: boolean;
-  visible: boolean;
+  isVisible: boolean;
+  onClose?: () => void;
 }
 
 const drawerWidth = 400;
 
 const Assistant = (props: AssistantProps) => {
-  const { showBubble = true, visible } = props;
-  const [chatVisible, setChatVisible] = useState(visible);
+  const { showBubble = true, isVisible, onClose } = props;
+  const [chatVisible, setChatVisible] = useState(isVisible);
   const [position, setPosition] = useState({ bottom: 120 });
 
   const toggleDrawer = () => {
     setChatVisible(!chatVisible);
-  };
-
-  const startAnimation = () => {
-    const element = document.getElementById('petercat-lui-tip');
-    if (!element) {
-      return;
-    }
-    if (!element.classList.contains('animate-shake')) {
-      element.classList.add('animate-shake');
-    }
-  };
-
-  const stoptAnimation = () => {
-    const element = document.getElementById('petercat-lui-tip');
-    if (!element) {
-      return;
-    }
-    if (element.classList.contains('animate-shake')) {
-      element.classList.remove('animate-shake');
-    }
+    onClose?.();
   };
 
   const startDrag = (e: { clientY: any; preventDefault: () => void }) => {
@@ -63,22 +45,27 @@ const Assistant = (props: AssistantProps) => {
   };
 
   useEffect(() => {
-    setChatVisible(visible);
-  }, [visible]);
+    setChatVisible(isVisible);
+  }, [isVisible]);
 
   return (
-    <div className="petercat-lui">
+    <div className="petercat-lui-assistant">
       {chatVisible ? (
         <div
           className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black rounded-tl-[20px] rounded-bl-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]"
           style={{
             width: drawerWidth,
+            height: '100vh',
             zIndex: 9999,
             borderBottomLeftRadius: '20px!important',
             boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <Chat {...props} drawerWidth={drawerWidth} />
+          <Chat
+            style={{ backgroundColor: '#FCFCFC' }}
+            {...props}
+            drawerWidth={drawerWidth}
+          />
           <div className="absolute top-0 right-0 m-1">
             <ActionIcon
               icon={<CloseCircleFilled />}
@@ -102,8 +89,8 @@ const Assistant = (props: AssistantProps) => {
             >
               <div
                 id="petercat-lui-tip"
-                className="animate-shake  absolute top-[-9px] left-[-47px] px-2 py-1 w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white
-               "
+                className="animate-shake absolute top-[-9px] left-[-47px] px-[8px] py-[4px] w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white"
+                style={{ boxSizing: 'border-box' }}
               >
                 Ask me
               </div>
