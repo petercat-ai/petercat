@@ -6,28 +6,39 @@ import type {
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
-import React, { ReactNode, memo, useRef, useState, type FC } from 'react';
+
+import { isEmpty, map } from 'lodash';
+import React, {
+  ReactNode,
+  memo,
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+} from 'react';
 import StopBtn from '../StopBtn';
-import { theme } from '../Theme';
 import ThoughtChain from '../ThoughtChain';
+import SignatureIcon from '../icons/SignatureIcon';
 import { Role } from '../interface';
 import { BOT_INFO } from '../mock';
-import { streamChat } from '../services/ChatController';
+import { fetcher, streamChat } from '../services/ChatController';
 import { handleStream } from '../utils';
 import InputArea from './inputArea/InputArea';
-
-import '../style/global.css';
 import Actions from './inputArea/actions';
 
-const { getDesignToken } = theme;
-const globalToken = getDesignToken();
+import useSWR from 'swr';
+import '../style/global.css';
 
-export interface ChatProps {
+export interface BotInfo {
   assistantMeta?: MetaData;
   helloMessage?: string;
+  starters?: string[];
+}
+
+export interface ChatProps extends BotInfo {
+  apiDomain?: string;
   apiUrl?: string;
   drawerWidth?: number;
-  starters?: string[];
   prompt?: string;
   token?: string;
   style?: React.CSSProperties;
@@ -36,6 +47,7 @@ export interface ChatProps {
 const Chat: FC<ChatProps> = memo(
   ({
     helloMessage,
+    apiDomain = 'http://127.0.0.1:8000',
     apiUrl,
     drawerWidth,
     assistantMeta,
@@ -46,18 +58,62 @@ const Chat: FC<ChatProps> = memo(
   }) => {
     const proChatRef = useRef<ProChatInstance>();
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
+    const { data: detail } = useSWR<BotInfo>(
+      token ? [`${apiDomain}/api/bot/detail?id=${token}`] : null,
+      fetcher,
+    );
+
+    const [botInfo, setBotInfo] = useState<BotInfo>({
+      assistantMeta: {
+        avatar: assistantMeta?.avatar,
+        title: assistantMeta?.title,
+        backgroundColor: assistantMeta?.backgroundColor,
+      },
+      helloMessage: helloMessage,
+      starters: starters,
+    });
+
+    useEffect(() => {
+      setBotInfo({
+        assistantMeta: {
+          avatar: assistantMeta?.avatar,
+          title: assistantMeta?.title,
+          backgroundColor: assistantMeta?.backgroundColor,
+        },
+        helloMessage: helloMessage,
+        starters: starters,
+      });
+    }, [assistantMeta, helloMessage, starters]);
+
+    useEffect(() => {
+      if (isEmpty(detail)) {
+        return;
+      }
+      // @ts-ignore
+      const info = detail?.[0] as any;
+      setBotInfo({
+        assistantMeta: {
+          avatar: info.avatar,
+          title: info.name,
+        },
+        helloMessage: info.hello_message,
+        starters: info.starters,
+      });
+    }, [detail]);
+
     const messageMinWidth = drawerWidth
       ? `calc(${drawerWidth}px - 90px)`
       : '100%';
     return (
       <div
-        className={`petercat-lui bg-[${globalToken.chatBoxBackgroundColor}]`}
+        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
         style={{
           ...style,
           height: '100%',
         }}
       >
         <div className="h-full w-full">
+          <SignatureIcon className="mx-auto my-2" />
           <ProChat
             showTitle
             chats={chats}
@@ -65,7 +121,7 @@ const Chat: FC<ChatProps> = memo(
               setChats(chats);
             }}
             chatRef={proChatRef}
-            helloMessage={helloMessage || BOT_INFO.work_info.prologue}
+            helloMessage={botInfo.helloMessage || BOT_INFO.helloMessage}
             userMeta={{ title: 'User' }}
             chatItemRenderConfig={{
               avatarRender: (props: ChatItemProps) => {
@@ -146,14 +202,15 @@ const Chat: FC<ChatProps> = memo(
               },
             }}
             assistantMeta={{
-              avatar: assistantMeta?.avatar || BOT_INFO.avatar,
-              title: assistantMeta?.title || BOT_INFO.resourceName,
-              backgroundColor: assistantMeta?.backgroundColor,
+              avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,
+              title: botInfo.assistantMeta?.title || BOT_INFO.name,
+              backgroundColor:
+                botInfo.assistantMeta?.backgroundColor || '#FAE4CB',
             }}
             autocompleteRequest={async (value) => {
               if (value === '/') {
-                const questions = starters ?? BOT_INFO.work_info.starters;
-                return questions.map((question: string) => ({
+                const questions = botInfo.starters || BOT_INFO.starters;
+                return map(questions, (question: string) => ({
                   value: question,
                   label: question,
                 }));
@@ -171,7 +228,13 @@ const Chat: FC<ChatProps> = memo(
                   content: message.content as string,
                 }));
 
-              const response = await streamChat(newMessages, apiUrl, prompt, token);
+              const response = await streamChat(
+                newMessages,
+                apiDomain,
+                apiUrl,
+                prompt,
+                token,
+              );
               return handleStream(response);
             }}
             inputAreaRender={(

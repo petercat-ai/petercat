@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { IPrompt } from '../interface';
 
 /**
@@ -6,11 +7,12 @@ import { IPrompt } from '../interface';
  */
 export async function streamChat(
   messages: IPrompt[],
-  apiUrl = 'http://127.0.0.1:8000/api/chat/stream_qa',
+  apiDomain: string,
+  apiUrl = '/api/chat/stream_builder',
   prompt = '',
   token = '',
 ): Promise<Response> {
-  return fetch(`${apiUrl}`, {
+  return fetch(`${apiDomain}${apiUrl}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,4 +25,14 @@ export async function streamChat(
       bot_id: token,
     }),
   });
+}
+
+export async function fetcher(url: string) {
+  const response = await axios.get(url);
+  return response.data.data;
+}
+
+export async function getBotDetail(id: string, apiDomain: string) {
+  const url = `${apiDomain}/api/bot/detail?id=${id}`;
+  return fetcher(url);
 }
