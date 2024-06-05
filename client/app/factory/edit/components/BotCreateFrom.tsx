@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Textarea, Input, Image, Button, Avatar } from '@nextui-org/react';
-import ImageUploadComponent from './ImageUpload';
+import React from 'react';
+import { Textarea, Input, Button, Avatar, Tooltip } from '@nextui-org/react';
 import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
 import type { Updater } from 'use-immer';
 import InputList from './InputList';
+import BulbIcon from '@/public/icons/BulbIcon';
+import GitHubIcon from '@/public/icons/GitHubIcon';
 
 interface BotFormProps {
   botProfile?: BotProfile;
@@ -25,18 +26,41 @@ const BotCreateFrom = (props: BotFormProps) => {
   return (
     <div className="container mx-auto p-8">
       <form>
-        <div className="px-[46px]">
-          <div className="flex items-center mb-6">
-            <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 mr-10">
-              <Avatar
-                radius="sm"
-                icon={<img src="/path-to-default-avatar.png" alt="Avatar" />}
-              />
+        <div className="flex items-center mb-6">
+          <div className="mr-[48px] pl-4">
+            <div>机器人头像*</div>
+            <Avatar
+              className="w-[80px] h-[80px] my-2 rounded-[16px]"
+              src={botProfile?.avatar}
+              alt={botProfile?.name}
+            />
+            <div className="flex justify-between">
+              <Tooltip content="随机头像">
+                <Button
+                  isIconOnly
+                  className="rounded-full bg-gray-700 mr-2"
+                  aria-label="随机头像"
+                >
+                  <BulbIcon />
+                </Button>
+              </Tooltip>
+
+              <Tooltip content="GitHub 头像">
+                <Button
+                  isIconOnly
+                  className="rounded-full bg-gray-700"
+                  aria-label="GitHub 头像"
+                >
+                  <GitHubIcon />
+                </Button>
+              </Tooltip>
             </div>
-            <div className="flex-1">
+          </div>
+          <div className="flex-1">
+            <div className="mb-[50px]">
               <Input
                 name="name"
-                label="机器人名称"
+                label="机器人名称*"
                 variant="bordered"
                 labelPlacement="outside"
                 value={botProfile?.name}
@@ -44,9 +68,11 @@ const BotCreateFrom = (props: BotFormProps) => {
                 placeholder="给机器人起一个独一无二的名字"
                 required
               />
+            </div>
+            <div className="mt-[50px]">
               <Input
                 name="description"
-                label="机器人描述"
+                label="机器人描述*"
                 variant="bordered"
                 labelPlacement="outside"
                 value={botProfile?.description}
@@ -57,32 +83,6 @@ const BotCreateFrom = (props: BotFormProps) => {
             </div>
           </div>
         </div>
-        {/* <div>
-          <Input
-            type="text"
-            variant="bordered"
-            name="name"
-            label="Name"
-            placeholder="Name your bot"
-            labelPlacement="outside"
-            value={botProfile?.name}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-4"
-          />
-        </div>
-        <Input
-          type="text"
-          variant="bordered"
-          name="description"
-          label="Description"
-          placeholder="Description  about your bot"
-          labelPlacement="outside"
-          value={botProfile?.description}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        /> */}
         <Collapse title="人设与回复逻辑">
           <Textarea
             name="prompt"

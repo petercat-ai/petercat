@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Tabs, Tab, Button, Switch, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
-import { ChatWindow } from '@/components/chat/ChatWindow';
 import { toast } from 'react-toastify';
 import { BotProfile } from '@/app/interface';
 import BackIcon from '@/public/icons/BackIcon';
@@ -15,6 +14,7 @@ import { Chat } from 'petercat-lui';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
+import SaveIcon from '@/public/icons/SaveIcon';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
@@ -30,7 +30,8 @@ export default function Edit({ params }: { params: { id: string } }) {
     repoName: '',
     helloMessage: '',
   });
-  const [activeTab, setActiveTab] = React.useState<string>('manualConfig');
+
+  const [activeTab, setActiveTab] = React.useState<string>('chatConfig');
 
   const {
     updateBot: onUpdateBot,
@@ -118,7 +119,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   }
 
   const chatConfigContent = (
-    <div style={{ height: 'calc(100vh - 75px)' }}>
+    <div style={{ height: 'calc(100vh - 73px)' }}>
       <Chat
         assistantMeta={{
           avatar:
@@ -132,7 +133,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   );
 
   const manualConfigContent = (
-    <div className="h-full px-[100px] py-10 overflow-x-hidden overflow-y-scroll">
+    <div className="h-full px-10 py-10 overflow-x-hidden overflow-y-scroll">
       <div className="px-[46px]">
         <Input
           type="text"
@@ -149,23 +150,38 @@ export default function Edit({ params }: { params: { id: string } }) {
             });
           }}
           required
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
-        <div className="w-full text-center mt-6">
+        {isEdit ? (
+          <div className="w-full text-center">
+            <Button
+              radius="full"
+              className="bg-gray-700 text-white"
+              startContent={<AIBtnIcon />}
+              onClick={() => {
+                onCreateBot(botProfile?.repoName!);
+              }}
+            >
+              自动生成配置
+            </Button>
+          </div>
+        ) : (
           <Button
             radius="full"
-            className="bg-gray-700 text-white"
+            className="bg-[#F1F1F1] text-gray-500"
             startContent={<AIBtnIcon />}
             onClick={() => {
               onCreateBot(botProfile?.repoName!);
             }}
           >
-            自动生成配置
+            重新生成配置
           </Button>
-        </div>
+        )}
       </div>
 
-      <BotCreateFrom setBotProfile={setBotProfile} botProfile={botProfile} />
+      {!isEdit && (
+        <BotCreateFrom setBotProfile={setBotProfile} botProfile={botProfile} />
+      )}
     </div>
   );
 
@@ -193,7 +209,7 @@ export default function Edit({ params }: { params: { id: string } }) {
               </div>
               <div className="flex items-center">
                 <Tabs
-                  defaultSelectedKey="manualConfig"
+                  defaultSelectedKey="chatConfig"
                   variant="light"
                   selectedKey={activeTab}
                   aria-label="Options"
@@ -254,19 +270,46 @@ export default function Edit({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <div className="hidden w-1/2 justify-center bg-default-100 border-l border-token-border-medium bg-token-surface-secondary pt-4 md:flex relative">
-          {/* <ChatWindow
-            endpoint="/api/chat"
-            avatar={botProfile?.avatar}
-            name={botProfile?.name}
-            titleText="Preview"
-            description={botProfile?.description!}
-            starters={botProfile?.starters!}
-            prompt={botProfile?.prompt}
-            voice={botProfile?.voice}
-            enableImgGeneration={botProfile?.enable_img_generation}
-            streamming
-          /> */}
+        <div className="hidden w-1/2 justify-center bg-gray-200 border-l border-token-border-medium bg-token-surface-secondary md:flex relative">
+          <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-b px-6 flex-shrink-0">
+            <div className="flex items-center gap-2"></div>
+            <div className="flex items-center">
+              <div>预览与测试</div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                className="rounded-full bg-gray-700 text-white"
+                size="sm"
+                isLoading={createBotLoading || updateBotLoading}
+                variant="flat"
+                startContent={<SaveIcon />}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (botProfile?.id) {
+                    updateBot();
+                  }
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+          <div className="position absolute top-[73px] left-0 w-full">
+            <div style={{ height: 'calc(100vh - 73px)' }}>
+              {isEdit && (
+                <Chat
+                  assistantMeta={{
+                    avatar:
+                      botProfile?.avatar ||
+                      'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+                    title: botProfile?.name || 'PeterCat',
+                  }}
+                  apiUrl={`${API_HOST}/api/chat/stream_chat`}
+                  helloMessage={botProfile?.helloMessage}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
