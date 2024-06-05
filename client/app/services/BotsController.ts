@@ -32,9 +32,8 @@ export async function deleteBot(id: string) {
 }
 
 // Create Bot
-export async function createBot(profile: BotProfile) {
-  const params = omit(profile, 'id');
-  return axios.post(`${apiDomain}/api/bot/create`, params);
+export async function createBot(repo_name: string) {
+  return axios.post(`${apiDomain}/api/bot/create`, repo_name);
 }
 
 // Update Bot

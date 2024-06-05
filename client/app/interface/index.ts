@@ -5,7 +5,7 @@ export interface BotProfile {
   description?: string;
   prompt?: string;
   starters?: string[];
-  enable_img_generation?: boolean;
-  voice?: string;
   public?: boolean;
+  helloMessage?: string;
+  repoName?: string;
 }

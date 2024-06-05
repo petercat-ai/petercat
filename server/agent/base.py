@@ -12,7 +12,7 @@ from langchain.prompts import MessagesPlaceholder
 from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
-from langchain.tools.tavily_search import TavilySearchResults
+from langchain_community.tools.tavily_search.tool import TavilySearchResults
 from langchain_openai import ChatOpenAI
 from uilts.env import get_env_variable
 

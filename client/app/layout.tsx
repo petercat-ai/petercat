@@ -7,7 +7,7 @@ import { Assistant } from 'petercat-lui';
 import { SearchProvider } from './contexts/SearchContext';
 
 const queryClient = new QueryClient();
-const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_ASSISTANT_API_HOST;
+const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
 export default function RootLayout({
   children,

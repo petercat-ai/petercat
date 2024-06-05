@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Textarea, Input, Checkbox, Switch, cn } from '@nextui-org/react';
-import ImageUploadComponent from './ImageUpload';
+import React from 'react';
+import { Textarea, Input, Button, Avatar, Tooltip } from '@nextui-org/react';
+import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
 import type { Updater } from 'use-immer';
 import InputList from './InputList';
-import VoiceSelector from './VoiceSelector';
+import BulbIcon from '@/public/icons/BulbIcon';
+import GitHubIcon from '@/public/icons/GitHubIcon';
 
 interface BotFormProps {
   botProfile?: BotProfile;
@@ -13,12 +14,8 @@ interface BotFormProps {
 
 const BotCreateFrom = (props: BotFormProps) => {
   const { botProfile, setBotProfile } = props;
-  const [enableVoice, setEnableVoice] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name as keyof Omit<
-      BotProfile,
-      'starters' | 'enable_img_generation'
-    >;
+    const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
     setBotProfile?.((draft: BotProfile) => {
       // @ts-ignore
@@ -26,114 +23,102 @@ const BotCreateFrom = (props: BotFormProps) => {
     });
   };
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.checked;
-    setBotProfile?.((draft: BotProfile) => {
-      draft.enable_img_generation = value;
-    });
-  };
-
-  useEffect(() => {
-    if (botProfile?.voice) {
-      setEnableVoice(true);
-    }
-  }, [botProfile?.voice]);
-
   return (
     <div className="container mx-auto p-8">
-      <form className="space-y-8">
-        <ImageUploadComponent
-          botProfile={botProfile}
-          setBotProfile={setBotProfile}
-        />
-        <div>
-          <Input
-            type="text"
-            name="name"
-            label="Name"
-            placeholder="Name your bot"
-            labelPlacement="outside"
-            value={botProfile?.name}
+      <form>
+        <div className="flex items-center mb-6">
+          <div className="mr-[48px] pl-4">
+            <div>机器人头像*</div>
+            <Avatar
+              className="w-[80px] h-[80px] my-2 rounded-[16px]"
+              src={botProfile?.avatar}
+              alt={botProfile?.name}
+            />
+            <div className="flex justify-between">
+              <Tooltip content="随机头像">
+                <Button
+                  isIconOnly
+                  className="rounded-full bg-gray-700 mr-2"
+                  aria-label="随机头像"
+                >
+                  <BulbIcon />
+                </Button>
+              </Tooltip>
+
+              <Tooltip content="GitHub 头像">
+                <Button
+                  isIconOnly
+                  className="rounded-full bg-gray-700"
+                  aria-label="GitHub 头像"
+                >
+                  <GitHubIcon />
+                </Button>
+              </Tooltip>
+            </div>
+          </div>
+          <div className="flex-1">
+            <div className="mb-[50px]">
+              <Input
+                name="name"
+                label="机器人名称*"
+                variant="bordered"
+                labelPlacement="outside"
+                value={botProfile?.name}
+                onChange={handleChange}
+                placeholder="给机器人起一个独一无二的名字"
+                required
+              />
+            </div>
+            <div className="mt-[50px]">
+              <Input
+                name="description"
+                label="机器人描述*"
+                variant="bordered"
+                labelPlacement="outside"
+                value={botProfile?.description}
+                onChange={handleChange}
+                placeholder="简单描述机器人的用途"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <Collapse title="人设与回复逻辑">
+          <Textarea
+            name="prompt"
+            variant="bordered"
+            value={botProfile?.prompt}
+            disableAutosize
             onChange={handleChange}
             required
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-4"
+            classNames={{
+              input: 'resize-y min-h-[216px]',
+            }}
           />
-        </div>
-        <Input
-          type="text"
-          name="description"
-          label="Description"
-          placeholder="Description  about your bot"
-          labelPlacement="outside"
-          value={botProfile?.description}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-        <Textarea
-          name="prompt"
-          label="Instructions"
-          labelPlacement="outside"
-          value={botProfile?.prompt}
-          disableAutosize
-          onChange={handleChange}
-          placeholder="What does your bot do? How does it behave? What should it avoid doing?"
-          required
-          classNames={{
-            input: 'resize-y min-h-[120px]',
-          }}
-        />
-        <label className="block text-sm font-medium text-gray-700">
-          Conversation starters
-          <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
-        </label>
-        <label className="block text-sm font-medium text-gray-700">
-          Capabilities
-          <Checkbox
-            className="block"
-            name="enable_img_generation"
-            size="sm"
-            onChange={handleCheck}
-            isSelected={botProfile?.enable_img_generation}
-          >
-            DALL·E Image Generation
-          </Checkbox>
-        </label>
-        <Switch
-          isSelected={enableVoice}
-          onValueChange={(isSeleted: boolean) => setEnableVoice(isSeleted)}
-          classNames={{
-            base: cn(
-              'inline-flex flex-row-reverse w-full hover:bg-content2 items-center',
-              'justify-between cursor-pointer rounded-lg gap-[8rem] p-4 border-2 border-transparent',
-              'data-[selected=true]:border-primary',
-            ),
-            wrapper: 'p-0 h-4 overflow-visible',
-            thumb: cn(
-              'w-6 h-6 border-2 shadow-lg',
-              'group-data-[hover=true]:border-primary',
-              //selected
-              'group-data-[selected=true]:ml-6',
-              // pressed
-              'group-data-[pressed=true]:w-7',
-              'group-data-[selected]:group-data-[pressed]:ml-4',
-            ),
-          }}
-        >
-          <div className="flex flex-col">
-            <span className="text-medium">Enable Voice</span>
-            <span className="text-tiny text-default-400">
-              After turning on this option, your bot can send voice messages to
-              you
-            </span>
-          </div>
-        </Switch>
-        {enableVoice && (
-          <VoiceSelector
-            botProfile={botProfile}
-            setBotProfile={setBotProfile}
+        </Collapse>
+        <Collapse title="开场白">
+          <Input
+            name="helloMessage"
+            label="开场白文案"
+            variant="bordered"
+            labelPlacement="outside"
+            value={botProfile?.helloMessage}
+            onChange={handleChange}
+            placeholder="输入开场文案"
+            required
           />
-        )}
+          <label className="block text-sm font-medium text-gray-700 mt-2">
+            开场白预置问题
+            <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
+          </label>
+        </Collapse>
+        <Collapse title="危险操作">
+          <Button
+            color="danger"
+            className="bg-[url('/images/delete.png')] h-[160px] w-[160px] bg-cover"
+            rounded-lg
+          />
+        </Collapse>
       </form>
     </div>
   );
