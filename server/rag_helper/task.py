@@ -7,6 +7,7 @@ from langchain_core.utils import get_from_env
 
 from data_class import GitDocConfig
 from db.supabase.client import get_client
+from rag_helper import retrieval
 
 g = Github(auth=Auth.Token(get_from_env("access_token", 'GITHUB_TOKEN')))
 
@@ -67,13 +68,13 @@ def get_oldest_task():
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def get_task_by_id(id):
+def get_task_by_id(task_id):
     supabase = get_client()
 
     response = (supabase
                 .table(TABLE_NAME)
                 .select("*")
-                .eq("id", id)
+                .eq("id", task_id)
                 .execute())
     return response.data[0] if (len(response.data) > 0) else None
 
@@ -110,7 +111,23 @@ def handle_tree_task(task):
 
 
 def handle_blob_task(task):
-    return None
+    supabase = get_client()
+    (supabase
+     .table(TABLE_NAME)
+     .update({"status": TaskStatus.IN_PROGRESS.name})
+     .eq('id', task["id"])
+     .execute()
+     )
+
+    result = retrieval.add_knowledge_by_doc(GitDocConfig(repo_name=task["repo_name"],
+                                                         file_path=task["path"],
+                                                         commit_id=task["commit_id"]
+                                                         ))
+
+    return (supabase.table(TABLE_NAME).update(
+        {"status": TaskStatus.COMPLETED.name})
+            .eq("id", task["id"])
+            .execute())
 
 
 def trigger_task(task_id: Optional[str]):
