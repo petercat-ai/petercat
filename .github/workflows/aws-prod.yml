@@ -46,4 +46,7 @@ jobs:
                                   OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
                                   SupabaseServiceKey=${{ secrets.SUPABASE_SERVICE_KEY }} \
                                   SupabaseUrl=${{ secrets.SUPABASE_URL }} \
-                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }}
+                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }} \
+                                  APIIdentifier=${{ secrets.API_IDENTIFIER }} \
+                                  FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
+                                  GitHubToken=${{ secrets.X_GITHUB_TOKEN }}

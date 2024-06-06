@@ -1,6 +1,6 @@
 {
   "name": "petercat-lui",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "A react library developed with dumi",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -56,8 +56,10 @@
     "@ant-design/pro-chat": "1.12.1-beta.1",
     "@ant-design/pro-editor": "^1.1.1",
     "@babel/runtime": "^7.18.0",
+    "swr": "^2.2.5",
     "antd": "^5.15.3",
     "antd-style": "^3.6.1",
+    "axios": "^1.6.7",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
     "react-json-view": "^1.21.3",

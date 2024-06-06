@@ -1,22 +1,23 @@
 import json
 from typing import Any
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import SupabaseVectorStore
-from db.supabase.client import get_client
-from data_class import GitDocConfig, GitIssueConfig, S3Config
-from rag.github_file_loader import GithubFileLoader
-from uilts.env import get_env_variable
 
+from langchain_community.vectorstores import SupabaseVectorStore
+from langchain_openai import OpenAIEmbeddings
+
+from data_class import GitDocConfig, GitIssueConfig, S3Config
+from db.supabase.client import get_client
+from rag_helper.github_file_loader import GithubFileLoader
+from uilts.env import get_env_variable
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
-ACCESS_TOKEN=get_env_variable("GITHUB_TOKEN")
+ACCESS_TOKEN = get_env_variable("GITHUB_TOKEN")
 
+TABLE_NAME = "rag_docs"
+QUERY_NAME = "match_rag_docs"
+CHUNK_SIZE = 2000
+CHUNK_OVERLAP = 20
 
-TABLE_NAME="rag_docs"
-QUERY_NAME="match_rag_docs"
-CHUNK_SIZE=2000
-CHUNK_OVERLAP=20
 
 def convert_document_to_dict(document):
     return document.page_content,
@@ -25,11 +26,11 @@ def convert_document_to_dict(document):
 def init_retriever():
     embeddings = OpenAIEmbeddings()
     vector_store = SupabaseVectorStore(
-      embedding=embeddings,
-      client=get_client(),
-      table_name=TABLE_NAME,
-      query_name=QUERY_NAME,
-      chunk_size=CHUNK_SIZE,
+        embedding=embeddings,
+        client=get_client(),
+        table_name=TABLE_NAME,
+        query_name=QUERY_NAME,
+        chunk_size=CHUNK_SIZE,
     )
 
     return vector_store.as_retriever()
@@ -39,6 +40,7 @@ def init_s3_Loader(config: S3Config):
     from langchain_community.document_loaders import S3DirectoryLoader
     loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
     return loader
+
 
 def init_github_issue_loader(config: GitIssueConfig):
     from langchain_community.document_loaders import GitHubIssuesLoader
@@ -51,6 +53,8 @@ def init_github_issue_loader(config: GitIssueConfig):
         state=config.state
     )
     return loader
+
+
 def init_github_file_loader(config: GitDocConfig):
     loader = GithubFileLoader(
         repo=config.repo_name,
@@ -62,6 +66,7 @@ def init_github_file_loader(config: GitDocConfig):
         commit_id=config.commit_id
     )
     return loader
+
 
 def supabase_embedding(documents, **kwargs: Any):
     from langchain_text_splitters import CharacterTextSplitter
@@ -90,7 +95,7 @@ def add_knowledge_by_issues(config: GitIssueConfig, ):
         loader = init_github_issue_loader(config)
         documents = loader.load()
         store = supabase_embedding(documents, repo_name=config.repo_name)
-        if(store):
+        if (store):
             return json.dumps({
                 "success": True,
                 "message": "Knowledge added successfully!",
@@ -106,6 +111,7 @@ def add_knowledge_by_issues(config: GitIssueConfig, ):
             "message": str(e)
         })
 
+
 def add_knowledge_by_doc(config: GitDocConfig):
     loader = init_github_file_loader(config)
     documents = loader.load()
@@ -116,14 +122,14 @@ def add_knowledge_by_doc(config: GitDocConfig):
         .eq('repo_name', config.repo_name)
         .eq('commit_id', loader.commit_id)
         .eq('file_path', config.file_path).execute()
-        )
-    if (is_added_query.data == []):
+    )
+    if not is_added_query.data:
         is_equal_query = (
             supabase.table(TABLE_NAME)
             .select("*")
             .eq('file_sha', loader.file_sha)
         ).execute()
-        if (is_equal_query.data == []):
+        if not is_equal_query.data:
             store = supabase_embedding(documents,
                                        repo_name=config.repo_name,
                                        commit_id=loader.commit_id,
@@ -148,6 +154,7 @@ def add_knowledge_by_doc(config: GitDocConfig):
             return insert_result
     else:
         return True
+
 
 def search_knowledge(query: str):
     retriever = init_retriever()
