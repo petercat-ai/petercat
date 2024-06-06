@@ -24,10 +24,8 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto">
+      <div className="mx-auto">
         <div className="mt-8">
-          
-
           <div className="grid grid-flow-row-dense gap-4 my-8 justify-items-center px-[20px] grid-cols-4">
             <BotList type='list'/>
             {!isEmpty(bots) &&

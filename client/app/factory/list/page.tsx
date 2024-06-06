@@ -26,7 +26,7 @@ export default function List() {
   
   
   return (
-    <div className="container mx-auto ">
+    <div className="mx-auto ">
       <div className="mt-8">
       <div className="grid grid-flow-row-dense grid-cols-4 gap-4 my-8 justify-items-center px-[20px]">
           <AddBotCard />
