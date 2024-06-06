@@ -21,6 +21,10 @@ Parameters:
     Type: String
     Description: APIIdentifier
     Default: 1
+  FastAPISecretKey:
+    Type: String
+    Description: FastAPISecretKey
+    Default: 1
   GithubAppsClientSecret:
     Type: String
     Description: Github App Id
