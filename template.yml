@@ -17,6 +17,10 @@ Parameters:
     Type: String
     Description: Github App Id
     Default: 1
+  GitHubToken:
+    Type: String
+    Description: Github Token
+    Default: 1
   APIIdentifier:
     Type: String
     Description: APIIdentifier
@@ -63,6 +67,7 @@ Resources:
           OPENAI_API_KEY: !Ref OpenAIAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
+          GITHUB_TOKEN: !Ref GitHubToken
           TAVILY_API_KEY: !Ref TavilyAPIKey
       FunctionUrlConfig:
         AuthType: NONE
