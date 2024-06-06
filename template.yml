@@ -17,6 +17,14 @@ Parameters:
     Type: String
     Description: Github App Id
     Default: 1
+  APIIdentifier:
+    Type: String
+    Description: APIIdentifier
+    Default: 1
+  FastAPISecretKey:
+    Type: String
+    Description: FastAPISecretKey
+    Default: 1
   GithubAppsClientSecret:
     Type: String
     Description: Github App Id
@@ -50,6 +58,8 @@ Resources:
           X_GITHUB_APP_ID: !Ref GitHubAppID
           X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
           X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          API_IDENTIFIER: !Ref APIIdentifier
+          FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
           OPENAI_API_KEY: !Ref OpenAIAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl

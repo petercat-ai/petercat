@@ -39,7 +39,7 @@ jobs:
       - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: | 
+      - run: |
           sam deploy \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
@@ -50,4 +50,6 @@ jobs:
                                   OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
                                   SupabaseServiceKey=${{ secrets.SUPABASE_SERVICE_KEY }} \
                                   SupabaseUrl=${{ secrets.SUPABASE_URL }} \
-                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }}
+                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }} \
+                                  APIIdentifier=${{ secrets.API_IDENTIFIER }} \
+                                  FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }}
