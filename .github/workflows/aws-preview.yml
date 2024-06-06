@@ -39,7 +39,7 @@ jobs:
       - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
-      - run: | 
+      - run: |
           sam deploy \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
