@@ -41,15 +41,16 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Create requirements.txt Checksum
+        id: requirements-checksum
         run: |
-          echo REQUIREMENTS_CHECKSUM="$(shasum server/requirements.txt | awk '{ print $1 }')" >> "$GITHUB_ENV"
+          echo REQUIREMENTS_CHECKSUM="$(shasum server/requirements.txt | awk '{ print $1 }')" >> "$GITHUB_OUTPUT"
 
       - name: Cache sam
         id: cache-sam
         uses: actions/cache@v3
         with:
           path: .aws-sam/cache
-          key: ${{ REQUIREMENTS_CHECKSUM }}-sam
+          key: ${{ steps.requirements-checksum.outputs.REQUIREMENTS_CHECKSUM }}-sam
 
       # Build inside Docker containers
       - run: sam build --cached --use-container --config-file .aws/petercat-preview.toml
