@@ -28,17 +28,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
     
-      - uses: aws-actions/setup-sam@v2
-        with:
-          use-installer: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-    
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
           audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
+  
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Restore cached Sam
         id: cache-sam
@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       # Build inside Docker containers
-      - run: sam build --cached --use-container --config-file .aws/petercat-preview.toml
+      - run: sam build --cached --config-file .aws/petercat-preview.toml
       
       # Prevent prompts and failure when the stack is unchanged
       - run: |
