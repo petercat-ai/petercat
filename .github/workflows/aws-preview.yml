@@ -46,10 +46,10 @@ jobs:
         with:
           path: |
             .aws-sam/cache
-            server/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+            ~/.cache/pip
+          key: ${{ runner.os }}-sam-cache-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-sam-cache-
 
       # Build inside Docker containers
       - run: sam build --cached --config-file .aws/petercat-preview.toml
