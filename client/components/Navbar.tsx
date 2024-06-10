@@ -95,7 +95,7 @@ export function Navbar() {
           )}
         </Tabs>
       </div>
-      <div className="flex-grow">
+      <div className="sm:flex-grow-0 lg:flex-grow">
         <Input
           onChange={handleChange}
           isClearable

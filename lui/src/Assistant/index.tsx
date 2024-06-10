@@ -52,7 +52,7 @@ const Assistant = (props: AssistantProps) => {
     <div className="petercat-lui-assistant">
       {chatVisible ? (
         <div
-          className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black rounded-tl-[20px] rounded-bl-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]"
+          className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]"
           style={{
             width: drawerWidth,
             height: '100vh',

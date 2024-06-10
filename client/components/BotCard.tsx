@@ -2,7 +2,6 @@
 import { Tables } from '@/types/database.types';
 import React, { useState } from 'react';
 import { Card, Image, CardBody, CardFooter } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
 
 declare type Bot = Tables<'bots'>;
 
@@ -15,8 +14,8 @@ const BotCard = (props: {
 
   return (
     <Card
-      className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2 mx-10"
-      shadow="sm"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 mx-10"
+      shadow="none"
       isPressable
       data-hover="true"
       onClick={(e) => {
@@ -35,7 +34,7 @@ const BotCard = (props: {
           radius="lg"
           width="100%"
           alt={bot.name!}
-          className="rounded-[8px] opacity-100 w-full object-cover h-[268px] w-[300px]"
+          className="rounded-[8px] opacity-100 w-full object-cover h-[268px]"
           src={
             !isHovered
               ? bot.avatar!
@@ -45,7 +44,7 @@ const BotCard = (props: {
       </CardBody>
       <CardFooter className="text-small justify-between flex-col flex-1 mt-4">
         <div className="flex w-full text-small justify-between pb-2">
-          <span className="leading-8 h-8 font-semibold text-2xl">
+          <span className="leading-8 h-8 font-semibold text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
             {bot.name}
           </span>
         </div>
