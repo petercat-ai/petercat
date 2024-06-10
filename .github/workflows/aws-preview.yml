@@ -42,7 +42,7 @@ jobs:
 
       - name: Create requirements.txt Checksum
         run: |
-          echo CHECKSUM="$(shasum server/requirements.txt | awk '{ print $1 }')" >> "$REQUIREMENTS_CHECKSUM"
+          echo REQUIREMENTS_CHECKSUM="$(shasum server/requirements.txt | awk '{ print $1 }')" >> "$GITHUB_ENV"
 
       - name: Cache sam
         id: cache-sam
