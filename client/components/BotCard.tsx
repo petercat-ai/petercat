@@ -15,8 +15,8 @@ const BotCard = (props: {
   return (
     <Card
       className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 mx-10"
-      shadow="none"
       isPressable
+      shadow="lg"
       data-hover="true"
       onClick={(e) => {
         e.preventDefault();

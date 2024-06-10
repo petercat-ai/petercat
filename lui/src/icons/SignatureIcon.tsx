@@ -1,12 +1,11 @@
 import React from 'react';
 const SignatureIcon = (props: any) => (
-  <a href="/" className='inline-block w-full'>
+  <a href="/" className={props.className}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={99}
       height={11}
       fill="none"
-      {...props}
     >
       <path
         fill="#D1D5DB"

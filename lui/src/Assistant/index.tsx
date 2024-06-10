@@ -1,5 +1,6 @@
 import { CloseCircleFilled } from '@ant-design/icons';
 import { ActionIcon } from '@ant-design/pro-editor';
+import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import Chat, { ChatProps } from '../Chat';
 import BubbleIcon from '../icons/BubbleIcon';
@@ -48,11 +49,16 @@ const Assistant = (props: AssistantProps) => {
     setChatVisible(isVisible);
   }, [isVisible]);
 
+  const cls = classnames('fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]', {
+    [`right-[-400px]`]: !chatVisible,
+    [`right-0`]: chatVisible,
+    [`transition-[right]`]: chatVisible,
+  });
+
   return (
     <div className="petercat-lui-assistant">
-      {chatVisible ? (
         <div
-          className="fixed right-0 top-0 h-full flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]"
+          className={cls}
           style={{
             width: drawerWidth,
             height: '100vh',
@@ -61,20 +67,22 @@ const Assistant = (props: AssistantProps) => {
             boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <Chat
-            style={{ backgroundColor: '#FCFCFC' }}
-            {...props}
-            drawerWidth={drawerWidth}
-          />
-          <div className="absolute top-0 right-0 m-1">
-            <ActionIcon
-              icon={<CloseCircleFilled />}
-              onClick={toggleDrawer}
-              className="w-6 h-6"
+          {chatVisible && <>
+            <Chat
+              style={{ backgroundColor: '#FCFCFC' }}
+              {...props}
+              drawerWidth={drawerWidth}
             />
-          </div>
+            <div className="absolute top-0 right-0 m-1">
+              <ActionIcon
+                icon={<CloseCircleFilled />}
+                onClick={toggleDrawer}
+                className="w-6 h-6"
+              />
+            </div>
+          </>}
         </div>
-      ) : (
+
         <>
           {showBubble && (
             <div
@@ -98,7 +106,6 @@ const Assistant = (props: AssistantProps) => {
             </div>
           )}
         </>
-      )}
     </div>
   );
 };
