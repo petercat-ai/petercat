@@ -50,17 +50,17 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .aws-sam/cache
-          key: ${{ steps.requirements-checksum.outputs.REQUIREMENTS_CHECKSUM }}-sam
+          key: ${{ steps.requirements-checksum.outputs.REQUIREMENTS_CHECKSUM }}-sam-preview
 
       # Build inside Docker containers
-      - run: sam build --cached --use-container --config-file .aws/petercat-preview.toml
+      - run: sam build --cached --config-file .aws/petercat-preview.toml
       
       - name: Save Sam Cache
         id: cache-primes-save
         uses: actions/cache/save@v4
         with:
           path: .aws-sam/cache
-          key: ${{ steps.requirements-checksum.outputs.REQUIREMENTS_CHECKSUM }}-sam
+          key: ${{ steps.requirements-checksum.outputs.REQUIREMENTS_CHECKSUM }}-sam-preview
       
       # Prevent prompts and failure when the stack is unchanged
       - run: |
