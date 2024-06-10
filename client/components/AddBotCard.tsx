@@ -6,7 +6,7 @@ const BotCard = (props: {onPress: Function}) => {
   return (
     <Card
       className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2"
-      shadow="none"
+      shadow="lg"
       isPressable
       onPress={() => {
         props.onPress();
