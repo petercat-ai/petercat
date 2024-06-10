@@ -1,13 +1,12 @@
 'use client';
 import React from 'react';
 import { Card, CardBody } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
 import { AddBotIcon } from "@/public/icons/AddBotIcon";
 const BotCard = (props: {onPress: Function}) => {
   return (
     <Card
-      className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2"
-      shadow="sm"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2"
+      shadow="none"
       isPressable
       onPress={() => {
         props.onPress();

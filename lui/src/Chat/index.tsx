@@ -106,15 +106,16 @@ const Chat: FC<ChatProps> = memo(
       : '100%';
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
+        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2 rounded-l-3xl shadow-[0_8px_32px_-12px_rgba(0, 0, 0, 0.10)]"
         style={{
-          ...style,
+          ...style, 
           height: '100%',
         }}
       >
-        <div className="h-full w-full">
-          <SignatureIcon className="mx-auto my-2" />
+        <div className="h-full w-full flex flex-col">
+          <SignatureIcon className="mx-auto my-2 flex-none" />
           <ProChat
+            className="flex-1"
             showTitle
             chats={chats}
             onChatsChange={(chats) => {
