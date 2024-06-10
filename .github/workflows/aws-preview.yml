@@ -27,10 +27,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+    
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
           token: ${{ secrets.GITHUB_TOKEN }}
+    
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -38,8 +40,19 @@ jobs:
           audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Create requirements.txt Checksum
+        run: |
+          echo CHECKSUM="$(shasum server/requirements.txt | awk '{ print $1 }')" >> "$REQUIREMENTS_CHECKSUM"
+
+      - name: Cache sam
+        id: cache-sam
+        uses: actions/cache@v3
+        with:
+          path: .aws-sam/cache
+          key: ${{ REQUIREMENTS_CHECKSUM }}-sam
+
       # Build inside Docker containers
-      - run: sam build --use-container --config-file .aws/petercat-preview.toml
+      - run: sam build --cached --use-container --config-file .aws/petercat-preview.toml
 
       # Prevent prompts and failure when the stack is unchanged
       - run: |
