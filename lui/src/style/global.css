@@ -2,9 +2,7 @@
   padding: 8px 16px 8px 16px;
   gap: 0px;
   border-radius: 18px 18px 18px 0px;
-  opacity: 0px;
   background: rgba(241, 241, 241, 1);
-
 }
 .ant-pro-chat-list-item.ant-pro-chat-list-item-left{
   align-items: flex-end;
@@ -17,7 +15,6 @@
   padding: 8px 16px 8px 16px;
   gap: 0px;
   border-radius: 18px 18px 4px 18px;
-  opacity: 0px;
   background: rgba(250, 228, 203, 1);
 }
 .lui-input-area #question {
