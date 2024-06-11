@@ -8,7 +8,7 @@ import { IPrompt } from '../interface';
 export async function streamChat(
   messages: IPrompt[],
   apiDomain: string,
-  apiUrl = '/api/chat/stream_builder',
+  apiUrl = '/api/chat/stream_qa',
   prompt = '',
   token = '',
 ): Promise<Response> {
