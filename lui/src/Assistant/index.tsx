@@ -49,25 +49,29 @@ const Assistant = (props: AssistantProps) => {
     setChatVisible(isVisible);
   }, [isVisible]);
 
-  const cls = classnames('fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]', {
-    [`right-[-400px]`]: !chatVisible,
-    [`right-0`]: chatVisible,
-    [`transition-[right]`]: chatVisible,
-  });
+  const cls = classnames(
+    'fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]',
+    {
+      [`right-[-400px]`]: !chatVisible,
+      [`right-0`]: chatVisible,
+      [`transition-[right]`]: chatVisible,
+    },
+  );
 
   return (
     <div className="petercat-lui-assistant">
-        <div
-          className={cls}
-          style={{
-            width: drawerWidth,
-            height: '100vh',
-            zIndex: 9999,
-            borderBottomLeftRadius: '20px!important',
-            boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          {chatVisible && <>
+      <div
+        className={cls}
+        style={{
+          width: drawerWidth,
+          height: '100vh',
+          zIndex: 9999,
+          borderBottomLeftRadius: '20px!important',
+          boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        {chatVisible && (
+          <>
             <Chat
               style={{ backgroundColor: '#FCFCFC' }}
               {...props}
@@ -80,32 +84,33 @@ const Assistant = (props: AssistantProps) => {
                 className="w-6 h-6"
               />
             </div>
-          </>}
-        </div>
+          </>
+        )}
+      </div>
 
-        <>
-          {showBubble && (
+      <>
+        {showBubble && !chatVisible && (
+          <div
+            className="fixed bottom-[120px] right-0 flex items-center justify-center rounded-full shadow-[0_8px_8px_-5px_#00000014,_0_16px_24px_-5px_#00000029] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
+            onMouseDown={startDrag}
+            onClick={toggleDrawer}
+            style={{
+              bottom: `${position.bottom}px`,
+              marginRight: '24px',
+              zIndex: 9999,
+            }}
+          >
             <div
-              className="fixed bottom-[120px] right-0 flex items-center justify-center rounded-full shadow-[0_8px_8px_-5px_#00000014,_0_16px_24px_-5px_#00000029] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
-              onMouseDown={startDrag}
-              onClick={toggleDrawer}
-              style={{
-                bottom: `${position.bottom}px`,
-                marginRight: '24px',
-                zIndex: 9999,
-              }}
+              id="petercat-lui-tip"
+              className="animate-shake absolute top-[-9px] left-[-47px] px-[8px] py-[4px] w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white"
+              style={{ boxSizing: 'border-box' }}
             >
-              <div
-                id="petercat-lui-tip"
-                className="animate-shake absolute top-[-9px] left-[-47px] px-[8px] py-[4px] w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white"
-                style={{ boxSizing: 'border-box' }}
-              >
-                Ask me
-              </div>
-              <BubbleIcon />
+              Ask me
             </div>
-          )}
-        </>
+            <BubbleIcon />
+          </div>
+        )}
+      </>
     </div>
   );
 };

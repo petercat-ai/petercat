@@ -86,6 +86,12 @@ const Chat: FC<ChatProps> = memo(
     }, [assistantMeta, helloMessage, starters]);
 
     useEffect(() => {
+      if (proChatRef?.current) {
+        proChatRef?.current?.clearMessage();
+      }
+    }, [token, prompt, proChatRef?.current]);
+
+    useEffect(() => {
       if (isEmpty(detail)) {
         return;
       }
@@ -106,9 +112,9 @@ const Chat: FC<ChatProps> = memo(
       : '100%';
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2 rounded-l-3xl shadow-[0_8px_32px_-12px_rgba(0, 0, 0, 0.10)]"
+        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2 rounded-l-3xl border-[0.5px] border-[#E4E4E7] shadow-[0_8px_32px_-12px_rgba(0, 0, 0, 0.10)]"
         style={{
-          ...style, 
+          ...style,
           height: '100%',
         }}
       >
@@ -122,7 +128,7 @@ const Chat: FC<ChatProps> = memo(
               setChats(chats);
             }}
             chatRef={proChatRef}
-            helloMessage={botInfo.helloMessage || BOT_INFO.helloMessage}
+            helloMessage={botInfo.helloMessage}
             userMeta={{ title: 'User' }}
             chatItemRenderConfig={{
               avatarRender: (props: ChatItemProps) => {

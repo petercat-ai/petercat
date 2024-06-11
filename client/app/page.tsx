@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
@@ -54,6 +54,7 @@ export default function Home() {
       </div>
       <Assistant
         apiDomain={ASSISTANT_API_HOST}
+        apiUrl="/api/chat/stream_qa"
         showBubble={false}
         token={currentBot}
         isVisible={visible}
