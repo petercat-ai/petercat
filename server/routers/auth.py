@@ -58,7 +58,6 @@ async def getAnonymousUser(request: Request, response: Response):
 
 @router.get("/login")
 def login():
-    print(f'redirect_uri={CALLBACK_URL}')
     redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email&state=STATE"
     return RedirectResponse(redirect_uri)
 
@@ -68,8 +67,9 @@ async def callback(request: Request, response: Response):
     if not code:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization code")
     token = await getTokenByCode(code)
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization token")
     data = await getUserInfoByToken(token)
-    
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
     response = RedirectResponse(url=f'{WEB_URL}', status_code=302)

@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto">
+      <div className="mx-auto">
         <div className="grid grid-flow-row-dense gap-8 my-8 justify-items-center px-[20px] md:grid-cols-2 lg:grid-cols-4">
           <BotList type="list" />
           {!isEmpty(bots) &&
