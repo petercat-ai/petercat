@@ -9,6 +9,8 @@ import BotList from '../components/BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 import { Assistant } from 'petercat-lui';
 
+import 'petercat-lui/dist/style/global.css';
+
 declare type Bot = Tables<'bots'>;
 
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
