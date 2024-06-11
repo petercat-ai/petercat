@@ -14,10 +14,6 @@
   "engines": {
     "node": "^18 || >=20"
   },
-  "workspaces": [
-    "lui",
-    "client"
-  ],
   "repository": "https://github.com/ant-xuexiao/petercat.git",
   "devDependencies": {
     "concurrently": "^8.2.2"
