@@ -75,7 +75,7 @@ export function useBotCreate() {
   });
 
   return {
-    data: mutation.data?.data?.data?.id,
+    data: mutation?.data?.data?.data,
     createBot: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,

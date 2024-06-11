@@ -81,7 +81,6 @@ def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by p
 
 @router.post("/create", status_code=200)
 async def create_bot(bot_data: BotCreateRequest,  user_id: str = Cookie(None)):
-    print('user_id', user_id)
     if not user_id:
       raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Must Login")
     return await bot_builder(user_id, **bot_data.model_dump())

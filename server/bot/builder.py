@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from github import Github
 from db.supabase.client import get_client
 from prompts.bot_template import generate_prompt_by_repo_name
@@ -9,7 +9,8 @@ g = Github()
 async def bot_builder(
     uid: str,
     repo_name: str,
-    starters: Optional[list[str]] = ["介绍一下项目", "快速上手", "贡献指南"],
+    starters: Optional[List[str]] = None,
+    hello_message: Optional[str] = None
 ):
     """
     create a bot based on the given github repository.
@@ -31,11 +32,10 @@ async def bot_builder(
           "avatar": repo.organization.avatar_url if repo.organization else None,
           "prompt": prompt,
           "uid": uid,
-          "enable_img_generation": False,
           "label": "Assistant",
           "starters": starters,
-          "enable_img_generation": False,
           "public": False,
+          "hello_message": hello_message
         }
        
         supabase = get_client()

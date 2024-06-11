@@ -8,4 +8,5 @@ export interface BotProfile {
   public?: boolean;
   helloMessage?: string;
   repoName?: string;
+  gitAvatar?: string;
 }

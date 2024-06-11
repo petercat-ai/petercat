@@ -6,6 +6,7 @@ import type { Updater } from 'use-immer';
 import InputList from './InputList';
 import BulbIcon from '@/public/icons/BulbIcon';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import { random } from 'lodash';
 
 interface BotFormProps {
   botProfile?: BotProfile;
@@ -38,6 +39,11 @@ const BotCreateFrom = (props: BotFormProps) => {
               <Tooltip content="随机头像">
                 <Button
                   isIconOnly
+                  onClick={() => {
+                    setBotProfile?.((draft: BotProfile) => {
+                      draft.avatar = `/images/avatar${random(0, 9)}.png`;
+                    });
+                  }}
                   className="rounded-full bg-gray-700 mr-2 w-[32px] h-[32px]"
                   aria-label="随机头像"
                 >
@@ -57,7 +63,7 @@ const BotCreateFrom = (props: BotFormProps) => {
             </div>
           </div>
           <div className="flex-1">
-            <div className="mb-[50px]">
+            <div className="mb-[42px]">
               <Input
                 name="name"
                 label="机器人名称*"
@@ -69,7 +75,7 @@ const BotCreateFrom = (props: BotFormProps) => {
                 required
               />
             </div>
-            <div className="mt-[50px]">
+            <div className="mt-[42px]">
               <Input
                 name="description"
                 label="机器人描述*"
