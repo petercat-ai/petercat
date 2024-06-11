@@ -6,7 +6,8 @@ module.exports = {
     './app/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/**/dist/**/*.{js,ts,jsx,tsx,mjs}",
+    "./node_modules/petercat-lui/dist/**/*.{js,jsx}"
   ],
   theme: {
     extend: {
@@ -15,6 +16,9 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      boxShadow: {
+        'large': '0px 20px 25px -5px rgba(0, 0, 0, 0.10), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);'
+      }
     },
   },
   darkMode: "class",

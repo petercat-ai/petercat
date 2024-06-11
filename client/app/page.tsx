@@ -9,6 +9,8 @@ import BotList from '../components/BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 import { Assistant } from 'petercat-lui';
 
+import 'petercat-lui/dist/style/global.css';
+
 declare type Bot = Tables<'bots'>;
 
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -37,19 +39,17 @@ export default function Home() {
 
   return (
     <div>
-      <div className="mx-auto">
-        <div className="mt-8">
-          <div className="grid grid-flow-row-dense gap-4 my-8 justify-items-center px-[20px] grid-cols-4">
-            <BotList type="list" />
-            {!isEmpty(bots) &&
-              map(bots, (bot: Bot) => (
-                <BotCard
-                  key={bot.id}
-                  bot={bot}
-                  handleCardClick={handleCardClick}
-                />
-              ))}
-          </div>
+      <div className="container mx-auto">
+        <div className="grid grid-flow-row-dense gap-8 my-8 justify-items-center px-[20px] md:grid-cols-2 lg:grid-cols-4">
+          <BotList type="list" />
+          {!isEmpty(bots) &&
+            map(bots, (bot: Bot) => (
+              <BotCard
+                key={bot.id}
+                bot={bot}
+                handleCardClick={handleCardClick}
+              />
+            ))}
         </div>
       </div>
       <Assistant

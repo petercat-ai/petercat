@@ -19,6 +19,7 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
 session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
+cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or ''
 app = FastAPI( 
     title="Bo-meta Server",
     version="1.0",
@@ -30,12 +31,14 @@ app.add_middleware(
     secret_key = session_secret_key,
 )
 
+cors_origins = ["*"] + cors_origins_whitelist.split(',')
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000","http://127.0.0.1:3000","https://petercat.chat"],
+    allow_origins=cors_origins, 
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"], 
 )
 
 app.include_router(health_checker.router)
