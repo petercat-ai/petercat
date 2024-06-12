@@ -22,6 +22,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   const [botProfile, setBotProfile] = useImmer<BotProfile>({
     id: '',
     avatar: '',
+    gitAvatar: '',
     name: 'Untitled',
     description: '',
     prompt: '',
@@ -49,8 +50,8 @@ export default function Edit({ params }: { params: { id: string } }) {
   } = useBotCreate();
 
   const isEdit = useMemo(
-    () => !!params?.id && params?.id !== 'new',
-    [params?.id],
+    () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
+    [params?.id, botProfile?.id],
   );
 
   const { data: config, isLoading } = useBotConfig(params?.id, isEdit);
@@ -89,9 +90,19 @@ export default function Edit({ params }: { params: { id: string } }) {
   }, [createError]);
 
   useEffect(() => {
-    if (createResponseData) {
+    const botInfo = createResponseData?.[0];
+    if (!isEmpty(botInfo)) {
       setBotProfile?.((draft) => {
-        draft.id = createResponseData;
+        draft.repoName = botProfile.repoName;
+        draft.id = botInfo.id;
+        draft.name = botInfo.name;
+        draft.avatar = botInfo.avatar;
+        draft.gitAvatar = botInfo.gitAvatar;
+        draft.prompt = botInfo.prompt;
+        draft.description = botInfo.description;
+        draft.starters = botInfo.starters;
+        draft.public = botInfo.public;
+        draft.helloMessage = botInfo.hello_message;
       });
     }
   }, [createResponseData]);
@@ -141,9 +152,9 @@ export default function Edit({ params }: { params: { id: string } }) {
           variant="bordered"
           name="repo_name"
           label="Github 项目名"
+          value={botProfile?.repoName}
           placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
           labelPlacement="outside"
-          value={botProfile?.description}
           onChange={(e) => {
             const repoName = e.target.value;
             setBotProfile?.((draft) => {
@@ -153,12 +164,13 @@ export default function Edit({ params }: { params: { id: string } }) {
           required
           className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
-        {isEdit ? (
+        {!isEdit ? (
           <div className="w-full text-center">
             <Button
               radius="full"
               className="bg-gray-700 text-white"
               startContent={<AIBtnIcon />}
+              isLoading={createBotLoading}
               onClick={() => {
                 onCreateBot(botProfile?.repoName!);
               }}
@@ -171,6 +183,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             radius="full"
             className="bg-[#F1F1F1] text-gray-500"
             startContent={<AIBtnIcon />}
+            isLoading={createBotLoading}
             onClick={() => {
               onCreateBot(botProfile?.repoName!);
             }}
@@ -180,7 +193,7 @@ export default function Edit({ params }: { params: { id: string } }) {
         )}
       </div>
 
-      {!isEdit && (
+      {isEdit && (
         <BotCreateFrom setBotProfile={setBotProfile} botProfile={botProfile} />
       )}
     </div>
@@ -216,7 +229,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                   aria-label="Options"
                   onSelectionChange={(key) => setActiveTab(`${key}`)}
                   classNames={{
-                    base: 'w-[216px] h-[36px]',
+                    base: 'w-[230px] h-[36px]',
                     tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
                     tabContent:
                       'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2 w-[108px] h-[36px]',
@@ -291,7 +304,10 @@ export default function Edit({ params }: { params: { id: string } }) {
                       'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
                     title: botProfile?.name || 'PeterCat',
                   }}
-                  apiUrl={`${API_HOST}/api/chat/stream_chat`}
+                  apiDomain={API_HOST}
+                  apiUrl="/api/chat/stream_qa"
+                  prompt={botProfile?.prompt}
+                  starters={botProfile?.starters}
                   helloMessage={botProfile?.helloMessage}
                 />
               )}

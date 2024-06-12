@@ -55,10 +55,8 @@ def edit_bot(
             "avatar": bot["avatar"],
             "prompt": prompt if prompt else bot["prompt"],
             "uid": uid, 
-            "enable_img_generation": False,
             "label": "Assistant",
             "starters": starters if isinstance(starters, list) and starters else bot["starters"],
-            "enable_img_generation": False,
             "public": False,
         }
         
