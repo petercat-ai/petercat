@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useMemo } from 'react';
-import { Tabs, Tab, Button, Switch, Input, Avatar } from '@nextui-org/react';
+import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { BotProfile } from '@/app/interface';
 import BackIcon from '@/public/icons/BackIcon';
 import { useBotConfig, useBotCreate, useBotEdit } from '@/app/hooks/useBot';
@@ -15,6 +15,8 @@ import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
@@ -201,6 +203,7 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex h-screen w-full flex-col items-center bg-white">
+      <ToastContainer />
       <div className="relative flex w-full grow overflow-hidden">
         <div className="flex w-full justify-center md:w-1/2">
           <div className="h-full grow">
