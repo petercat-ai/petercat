@@ -3,36 +3,24 @@ import React, { useEffect, useMemo } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
-import { BotProfile } from '@/app/interface';
 import BackIcon from '@/public/icons/BackIcon';
 import { useBotConfig, useBotCreate, useBotEdit } from '@/app/hooks/useBot';
 import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
-import { useImmer } from 'use-immer';
 import { Chat } from 'petercat-lui';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
+import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
 export default function Edit({ params }: { params: { id: string } }) {
-  const [botProfile, setBotProfile] = useImmer<BotProfile>({
-    id: '',
-    avatar: '',
-    gitAvatar: '',
-    name: 'Untitled',
-    description: '',
-    prompt: '',
-    starters: [''],
-    public: false,
-    repoName: '',
-    helloMessage: '',
-  });
+  const { botProfile, setBotProfile } = useBot();
 
   const [activeTab, setActiveTab] = React.useState<string>('chatConfig');
 
@@ -56,11 +44,14 @@ export default function Edit({ params }: { params: { id: string } }) {
     [params?.id, botProfile?.id],
   );
 
-  const { data: config, isLoading } = useBotConfig(params?.id, isEdit);
+  const { data: config, isLoading } = useBotConfig(
+    params?.id,
+    !!params?.id && params?.id !== 'new',
+  );
 
   useEffect(() => {
     if (!isEmpty(config))
-      setBotProfile?.((draft) => {
+      setBotProfile((draft) => {
         draft.id = config.id;
         draft.name = config.name || '';
         draft.description = config.description || '';
@@ -81,20 +72,32 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (createSuccess) {
-      toast.success('Save success');
+      toast.success('保存成功');
     }
   }, [createSuccess]);
 
   useEffect(() => {
     if (createError) {
-      toast.error(`Save failed${createError.message}`);
+      toast.error(`保存失败${createError.message}`);
     }
   }, [createError]);
 
   useEffect(() => {
+    if (editError) {
+      toast.error(`保存失败${editError.message}`);
+    }
+  }, [editError]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast.success('保存成功');
+    }
+  }, [editSuccess]);
+
+  useEffect(() => {
     const botInfo = createResponseData?.[0];
     if (!isEmpty(botInfo)) {
-      setBotProfile?.((draft) => {
+      setBotProfile((draft) => {
         draft.repoName = botProfile.repoName;
         draft.id = botInfo.id;
         draft.name = botInfo.name;
@@ -108,24 +111,6 @@ export default function Edit({ params }: { params: { id: string } }) {
       });
     }
   }, [createResponseData]);
-
-  useEffect(() => {
-    if (editError) {
-      toast.error(`Save failed${editError.message}`);
-    }
-  }, [editError]);
-
-  useEffect(() => {
-    if (editSuccess) {
-      toast.success('Save success');
-    }
-  }, [editSuccess]);
-
-  useEffect(() => {
-    if (editError) {
-      toast.error(`Save failed${editError.message}`);
-    }
-  }, [editError]);
 
   if (isLoading) {
     return <FullPageSkeleton />;
@@ -159,7 +144,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           labelPlacement="outside"
           onChange={(e) => {
             const repoName = e.target.value;
-            setBotProfile?.((draft) => {
+            setBotProfile((draft) => {
               draft.repoName = repoName;
             });
           }}
@@ -195,9 +180,7 @@ export default function Edit({ params }: { params: { id: string } }) {
         )}
       </div>
 
-      {isEdit && (
-        <BotCreateFrom setBotProfile={setBotProfile} botProfile={botProfile} />
-      )}
+      {isEdit && <BotCreateFrom />}
     </div>
   );
 

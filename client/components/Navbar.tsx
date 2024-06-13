@@ -12,11 +12,9 @@ import BotList from './BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
-  const { search, setSearch } = useSearch();
+  const { setSearch } = useSearch();
   const [inputValue, setInputValue] = useState('');
 
-  let timeoutId: ReturnType<typeof setTimeout>;
-  const debounceTime: number = 1000;
   const router = useRouter();
   const pathname = usePathname();
   const navs = [

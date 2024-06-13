@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import type { Updater } from 'use-immer';
 import { BotProfile } from '@/app/interface';
 import { Button, Input } from '@nextui-org/react';
+import { useBot } from '@/app/contexts/BotContext';
+
 import MinusIcon from '@/public/icons/MinusIcon';
 
 const MAX_INPUTS = 4; // Max number of inputs
 
-interface InputListProps {
-  botProfile?: BotProfile;
-  setBotProfile?: Updater<BotProfile>;
-}
-
-const InputList = (props: InputListProps) => {
-  const { botProfile, setBotProfile } = props;
+const InputList = () => {
+  const { botProfile, setBotProfile } = useBot();
   const [inputs, setInputs] = useState(['']);
 
   useEffect(() => {
@@ -25,7 +21,7 @@ const InputList = (props: InputListProps) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
-    setBotProfile?.((draft: BotProfile) => {
+    setBotProfile((draft: BotProfile) => {
       draft.starters = newInputs;
     });
     if (index === inputs.length - 1 && value && inputs.length < MAX_INPUTS) {
@@ -38,7 +34,7 @@ const InputList = (props: InputListProps) => {
     }
     const newInputs = inputs.filter((_, idx) => idx !== index);
     setInputs(newInputs);
-    setBotProfile?.((draft: BotProfile) => {
+    setBotProfile((draft: BotProfile) => {
       draft.starters = newInputs;
     });
   };

@@ -14,28 +14,24 @@ import {
 } from '@nextui-org/react';
 import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
-import type { Updater } from 'use-immer';
 import InputList from './InputList';
 import BulbIcon from '@/public/icons/BulbIcon';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import { random } from 'lodash';
 import { useBotDelete } from '@/app/hooks/useBot';
 import { ToastContainer, toast } from 'react-toastify';
+import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { AVATARS } from '@/app/constant/avatar';
 
-interface BotFormProps {
-  botProfile?: BotProfile;
-  setBotProfile?: Updater<BotProfile>;
-}
-
-const BotCreateFrom = (props: BotFormProps) => {
-  const { botProfile, setBotProfile } = props;
+const BotCreateFrom = () => {
+  const { botProfile, setBotProfile } = useBot();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
-    setBotProfile?.((draft: BotProfile) => {
+    setBotProfile((draft: BotProfile) => {
       // @ts-ignore
       draft[name] = value;
     });
@@ -46,7 +42,7 @@ const BotCreateFrom = (props: BotFormProps) => {
   useEffect(() => {
     if (isSuccess) {
       toast.success('删除成功');
-      setBotProfile?.((draft: BotProfile) => {
+      setBotProfile((draft: BotProfile) => {
         draft.id = '';
         draft.avatar = '';
         draft.gitAvatar = '';
@@ -88,8 +84,8 @@ const BotCreateFrom = (props: BotFormProps) => {
                 <Button
                   isIconOnly
                   onClick={() => {
-                    setBotProfile?.((draft: BotProfile) => {
-                      draft.avatar = `/images/avatar${random(0, 9)}.png`;
+                    setBotProfile((draft: BotProfile) => {
+                      draft.avatar = AVATARS[random(0, 9)];
                     });
                   }}
                   className="rounded-full bg-gray-700 mr-2 w-[32px] h-[32px]"
@@ -105,7 +101,7 @@ const BotCreateFrom = (props: BotFormProps) => {
                   className="rounded-full bg-gray-700 w-[32px] h-[32px]"
                   aria-label="GitHub 头像"
                   onClick={() => {
-                    setBotProfile?.((draft: BotProfile) => {
+                    setBotProfile((draft: BotProfile) => {
                       draft.avatar = botProfile?.gitAvatar;
                     });
                   }}
@@ -168,7 +164,7 @@ const BotCreateFrom = (props: BotFormProps) => {
           />
           <label className="block text-sm font-medium text-gray-700 mt-2">
             开场白预置问题
-            <InputList botProfile={botProfile} setBotProfile={setBotProfile} />
+            <InputList />
           </label>
         </Collapse>
         <Collapse title="危险操作">
