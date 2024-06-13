@@ -96,11 +96,11 @@ async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_u
       return JSONResponse(content={"success": False, "errorMessage": e})
 
 @router.put("/update/{id}", status_code=200)
-def update_bot(id: str, bot_data: BotUpdateRequest = Body(...),  user_id: str = Depends(verify_user_id)):
+def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: str = Depends(verify_user_id)):
     supabase = get_client()
     response = supabase.table("bots").update(bot_data.model_dump()).eq("id", id).eq("uid", user_id).execute()
-    if response.error:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response.error)
+    if not response.data:
+        return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，更新失败"})
     return JSONResponse(content={"success": True})
 
 @router.delete("/delete/{id}", status_code=status.HTTP_200_OK)

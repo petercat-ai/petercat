@@ -6,16 +6,14 @@ class BotCreateRequest(BaseModel):
     starters: Optional[List[str]] = None
     hello_message: Optional[str] = None
 class BotUpdateRequest(BaseModel):
+    id: str
     avatar: Optional[str] = None
     description: Optional[str] = None
     prompt: Optional[str] = None
-    files: Optional[List[str]] = None
-    enable_img_generation: Optional[bool] = None
-    label: Optional[str] = None
     name: Optional[str] = None
     starters: Optional[List[str]] = None
-    voice: Optional[str] = None
     public: Optional[bool] = None
+    hello_message: Optional[str] = None
 
 class ErrorResponse(BaseModel):
     error: str

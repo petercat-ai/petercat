@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface SearchContextProps {
   search: string;
@@ -7,7 +7,9 @@ interface SearchContextProps {
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
-export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [search, setSearch] = useState('');
 
   return (

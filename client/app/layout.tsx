@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
 import { SearchProvider } from './contexts/SearchContext';
+import { BotProvider } from './contexts/BotContext';
 
 const queryClient = new QueryClient();
 
@@ -29,10 +30,12 @@ export default function RootLayout({
         <body>
           <NextUIProvider>
             <SearchProvider>
-              <div className="flex flex-col">
-                <Navbar></Navbar>
-                {children}
-              </div>
+              <BotProvider>
+                <div className="flex flex-col">
+                  <Navbar></Navbar>
+                  {children}
+                </div>
+              </BotProvider>
             </SearchProvider>
           </NextUIProvider>
         </body>
