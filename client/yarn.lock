@@ -56,10 +56,10 @@
     classnames "^2.2.6"
     rc-util "^5.31.1"
 
-"@ant-design/pro-chat@1.12.1-beta.1":
-  version "1.12.1-beta.1"
-  resolved "https://registry.npmjs.org/@ant-design/pro-chat/-/pro-chat-1.12.1-beta.1.tgz#40932679ce5818a42b7bffce5fb1057878db450b"
-  integrity sha512-W531PaykZ3hKbpstGn4YpbZAZvfI8001gAuXndc8YZTVcW4+RsXYxOE5zn+Zqa5RvxCWjhCQV2gRtOaN+br/nA==
+"@ant-design/pro-chat@^1.9.0":
+  version "1.14.0"
+  resolved "https://registry.npmjs.org/@ant-design/pro-chat/-/pro-chat-1.14.0.tgz#0c9947099e49931ab4ec1c1a54122addd739e7e7"
+  integrity sha512-KdsBjBXKBU8xS7DXbctGxUJ9A1JGCI3eunPwpFr01RHiSrjp8xpV96MrZepQEhGdimT/tJ3/neZMIQmAHfIteg==
   dependencies:
     "@ant-design/icons" "^5.3.0"
     "@ant-design/pro-editor" latest
@@ -11701,13 +11701,13 @@ pbkdf2@^3.0.3, pbkdf2@^3.1.2:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-petercat-lui@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.0.17.tgz#5618d1fc914f0cd6f10daf67297edf2ee7bd7228"
-  integrity sha512-aUV9JNciEJptwifo4g+M/HAGdqsprrQf1EgYobQ+vWUqh+5vgwy9ut3KGZg0m0G+zBQiObYyFMiFUlVbn8raww==
+petercat-lui@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.0.18.tgz#26d8a0d3c8bc44a6032ee17a8923fca7d3bfef81"
+  integrity sha512-oUi2ZvsnpiDVchmtvQ4HGn4eERec8VkbsO4Z+iEW/XC1OCMhjfntM3fbQTZOvCwLqlPkuCUNUIP3QHi0IlLDhA==
   dependencies:
     "@ant-design/icons" "^5.3.5"
-    "@ant-design/pro-chat" "1.12.1-beta.1"
+    "@ant-design/pro-chat" "^1.9.0"
     "@ant-design/pro-editor" "^1.1.1"
     "@babel/runtime" "^7.18.0"
     antd "^5.15.3"
