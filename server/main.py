@@ -2,7 +2,7 @@ import os
 
 import uvicorn
 from fastapi import FastAPI, Cookie, Request, HTTPException
-from fastapi.responses import StreamingResponse, RedirectResponse
+from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -47,6 +47,7 @@ app.include_router(rag.router)
 app.include_router(bot.router)
 app.include_router(auth.router)
 app.include_router(chat.router)
+
 
 if __name__ == "__main__":
     if is_dev:

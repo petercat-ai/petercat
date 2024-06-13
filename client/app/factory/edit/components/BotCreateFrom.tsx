@@ -1,5 +1,17 @@
-import React from 'react';
-import { Textarea, Input, Button, Avatar, Tooltip } from '@nextui-org/react';
+import React, { useEffect } from 'react';
+import {
+  Textarea,
+  Input,
+  Button,
+  Avatar,
+  Tooltip,
+  useDisclosure,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/react';
 import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
 import type { Updater } from 'use-immer';
@@ -7,6 +19,10 @@ import InputList from './InputList';
 import BulbIcon from '@/public/icons/BulbIcon';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import { random } from 'lodash';
+import { useBotDelete } from '@/app/hooks/useBot';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 interface BotFormProps {
   botProfile?: BotProfile;
@@ -15,6 +31,7 @@ interface BotFormProps {
 
 const BotCreateFrom = (props: BotFormProps) => {
   const { botProfile, setBotProfile } = props;
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
@@ -24,14 +41,45 @@ const BotCreateFrom = (props: BotFormProps) => {
     });
   };
 
+  const { deleteBot, isLoading, isSuccess, error } = useBotDelete();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('删除成功');
+      setBotProfile?.((draft: BotProfile) => {
+        draft.id = '';
+        draft.avatar = '';
+        draft.gitAvatar = '';
+        draft.name = 'Untitled';
+        draft.description = '';
+        draft.prompt = '';
+        draft.starters = [''];
+        draft.public = false;
+        draft.repoName = '';
+        draft.helloMessage = '';
+      });
+      onClose();
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(`删除失败 ${error.message}`);
+    }
+  }, [error]);
+
+  const handelDelete = () => {
+    deleteBot(botProfile?.id!);
+  };
+
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto px-8 pt-8 pb-[45px] ">
       <form>
         <div className="flex items-center mb-6">
           <div className="mr-[48px] pl-4">
             <div>机器人头像*</div>
             <Avatar
-              className="w-[80px] h-[80px] my-2 rounded-[16px]"
+              className="w-[80px] h-[80px] my-2 rounded-[16px] bg-gray-50"
               src={botProfile?.avatar}
               alt={botProfile?.name}
             />
@@ -56,6 +104,11 @@ const BotCreateFrom = (props: BotFormProps) => {
                   isIconOnly
                   className="rounded-full bg-gray-700 w-[32px] h-[32px]"
                   aria-label="GitHub 头像"
+                  onClick={() => {
+                    setBotProfile?.((draft: BotProfile) => {
+                      draft.avatar = botProfile?.gitAvatar;
+                    });
+                  }}
                 >
                   <GitHubIcon />
                 </Button>
@@ -123,9 +176,35 @@ const BotCreateFrom = (props: BotFormProps) => {
             color="danger"
             className="bg-[url('/images/delete.png')] h-[160px] w-[160px] bg-cover"
             rounded-lg
+            onPress={onOpen}
           />
         </Collapse>
       </form>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                删除机器人
+              </ModalHeader>
+              <ModalBody>您真的忍心删除 {botProfile?.name} 吗？</ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>
+                  取消
+                </Button>
+                <Button
+                  isLoading={isLoading}
+                  color="danger"
+                  onPress={handelDelete}
+                >
+                  确认
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <ToastContainer />
     </div>
   );
 };

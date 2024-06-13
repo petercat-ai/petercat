@@ -37,15 +37,8 @@ export const useBotList = (personal?: boolean, name?: string) => {
 };
 
 export function useBotDelete() {
-  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: deleteBot,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['bot.list.true'],
-        refetchType: 'active',
-      });
-    },
   });
 
   return {
@@ -75,7 +68,7 @@ export function useBotCreate() {
   });
 
   return {
-    data: mutation?.data?.data?.data,
+    data: mutation.data?.data?.data,
     createBot: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,
