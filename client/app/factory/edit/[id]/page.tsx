@@ -97,7 +97,7 @@ export default function Edit({ params }: { params: { id: string } }) {
         draft.id = botInfo.id;
         draft.name = botInfo.name;
         draft.avatar = botInfo.avatar;
-        draft.gitAvatar = botInfo.gitAvatar;
+        draft.gitAvatar = botInfo.avatar;
         draft.prompt = botInfo.prompt;
         draft.description = botInfo.description;
         draft.starters = botInfo.starters;
@@ -204,7 +204,7 @@ export default function Edit({ params }: { params: { id: string } }) {
       <div className="relative flex w-full grow overflow-hidden">
         <div className="flex w-full justify-center md:w-1/2">
           <div className="h-full grow">
-            <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-b px-6 flex-shrink-0">
+            <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-[0.5px] border-gray-200 px-6 flex-shrink-0">
               <div className="flex items-center gap-2">
                 <a
                   className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
@@ -215,7 +215,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                 <div className="flex items-center gap-2">
                   <Avatar
                     src={botProfile?.avatar}
-                    className="mr-1 w-[32px] h-[32px] text-large"
+                    className="mr-1 w-[32px] h-[32px] text-large bg-gray-50"
                     name={botProfile?.name!}
                   />
                   <span>{botProfile?.name!}</span>
@@ -270,8 +270,8 @@ export default function Edit({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <div className="hidden w-1/2 justify-center bg-gray-200 border-l border-token-border-medium bg-token-surface-secondary md:flex relative">
-          <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-b px-6 flex-shrink-0">
+        <div className="hidden w-1/2 justify-center bg-[#FCFCFC] border-[0.5px] border-gray-200 md:flex relative">
+          <div className="relative flex h-[72px] w-full items-center justify-between gap-2 px-6 flex-shrink-0">
             <div className="flex items-center gap-2"></div>
             <div className="flex items-center">
               <div>预览与测试</div>
@@ -290,7 +290,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                   }
                 }}
               >
-                Save
+                保存
               </Button>
             </div>
           </div>
@@ -303,6 +303,9 @@ export default function Edit({ params }: { params: { id: string } }) {
                       botProfile?.avatar ||
                       'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
                     title: botProfile?.name || 'PeterCat',
+                  }}
+                  style={{
+                    backgroundColor: '#FCFCFC',
                   }}
                   apiDomain={API_HOST}
                   apiUrl="/api/chat/stream_qa"

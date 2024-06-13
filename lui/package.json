@@ -1,6 +1,6 @@
 {
   "name": "petercat-lui",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "A react library developed with dumi",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
-    "@ant-design/pro-chat": "1.12.1-beta.1",
+    "@ant-design/pro-chat": "^1.9.0",
     "@ant-design/pro-editor": "^1.1.1",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",

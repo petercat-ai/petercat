@@ -7,7 +7,7 @@ import type {
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
 
-import { isEmpty, map } from 'lodash';
+import { includes, isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
   memo,
@@ -112,7 +112,7 @@ const Chat: FC<ChatProps> = memo(
       : '100%';
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2 rounded-l-3xl border-[0.5px] border-[#E4E4E7] shadow-[0_8px_32px_-12px_rgba(0, 0, 0, 0.10)]"
+        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
         style={{
           ...style,
           height: '100%',
@@ -157,7 +157,7 @@ const Chat: FC<ChatProps> = memo(
                   </div>
                 );
 
-                if (!message || !message.includes('<TOOL>')) {
+                if (!message || !includes(message, '<TOOL>')) {
                   return defaultMessageContent;
                 }
 
