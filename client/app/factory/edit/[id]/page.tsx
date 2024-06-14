@@ -4,7 +4,7 @@ import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
-import { useBotConfig, useBotCreate, useBotEdit } from '@/app/hooks/useBot';
+import { useBotConfgGenerator, useBotConfig, useBotCreate, useBotEdit } from '@/app/hooks/useBot';
 import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
@@ -39,6 +39,15 @@ export default function Edit({ params }: { params: { id: string } }) {
     error: createError,
   } = useBotCreate();
 
+  const {
+    data: generatorResponseData,
+    getBotInfoByReponame,
+    isLoading: getBotInfoByReponameLoading,
+    isSuccess: getBotInfoByReponameSuccess,
+    error: getBotInfoByReponameError,
+  } = useBotConfgGenerator();
+  
+
   const isEdit = useMemo(
     () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
     [params?.id, botProfile?.id],
@@ -57,10 +66,25 @@ export default function Edit({ params }: { params: { id: string } }) {
         draft.description = config.description || '';
         draft.avatar = config.avatar || '';
         draft.starters = config.starters || [''];
+        draft.helloMessage = config.hello_message || '';
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
       });
   }, [config]);
+
+  useEffect(() => {
+    if (!isEmpty(generatorResponseData))
+      setBotProfile((draft) => {
+        draft.name = generatorResponseData.name || '';
+        draft.description = generatorResponseData.description || '';
+        draft.avatar = generatorResponseData.avatar || '';
+        draft.starters = generatorResponseData.starters || [''];
+        draft.prompt = generatorResponseData.prompt || '';
+        draft.public = generatorResponseData.public ?? false;
+        draft.helloMessage = generatorResponseData.hello_message || '';
+      });
+  }, [generatorResponseData]);
+
 
   const updateBot = async () => {
     const params = {
@@ -72,15 +96,21 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (createSuccess) {
-      toast.success('保存成功');
+      toast.success('生成成功');
     }
   }, [createSuccess]);
 
   useEffect(() => {
     if (createError) {
-      toast.error(`保存失败${createError.message}`);
+      toast.error(`生成失败${createError.message}`);
     }
   }, [createError]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast.success('保存成功');
+    }
+  }, [editSuccess]);
 
   useEffect(() => {
     if (editError) {
@@ -88,11 +118,18 @@ export default function Edit({ params }: { params: { id: string } }) {
     }
   }, [editError]);
 
+
+  useEffect(() => {
+    if (editError) {
+      toast.error(`生成成功${editError.message}`);
+    }
+  }, [getBotInfoByReponameSuccess]);
+
   useEffect(() => {
     if (editSuccess) {
-      toast.success('保存成功');
+      toast.success('生成失败');
     }
-  }, [editSuccess]);
+  }, [getBotInfoByReponameError]);
 
   useEffect(() => {
     const botInfo = createResponseData?.[0];
@@ -112,7 +149,7 @@ export default function Edit({ params }: { params: { id: string } }) {
     }
   }, [createResponseData]);
 
-  if (isLoading) {
+  if (isLoading || getBotInfoByReponameLoading) {
     return <FullPageSkeleton />;
   }
 
@@ -172,7 +209,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             startContent={<AIBtnIcon />}
             isLoading={createBotLoading}
             onClick={() => {
-              onCreateBot(botProfile?.repoName!);
+              getBotInfoByReponame(botProfile?.repoName!);
             }}
           >
             重新生成配置
