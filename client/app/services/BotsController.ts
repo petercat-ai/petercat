@@ -20,7 +20,7 @@ export async function getBotConfig(id: string): Promise<Bot[]> {
   return response.data.data;
 }
 
-//  Get the  bot list
+// Get the  bot list
 export async function getBotList(
   personal: boolean,
   name: string,
@@ -51,5 +51,23 @@ export async function createBot(
 
 // Update Bot
 export async function updateBot(profile: BotProfile) {
-  return axios.put(`${apiDomain}/api/bot/update/${profile.id}`, profile);
+  const parmas = {
+    ...omit(profile, ['gitAvatar', 'repoName', 'helloMessage']),
+    hello_message: profile.helloMessage,
+  }
+  return axios.put(`${apiDomain}/api/bot/update/${profile.id}`, parmas);
 }
+
+// Get Bot Info by Repo Name
+export async function getBotInfoByReponame(
+  repo_name: string,
+  starters?: string[],
+  hello_message?: string,
+) {
+  return axios.post(`${apiDomain}/api/bot/config/generator`, {
+    repo_name,
+    starters: starters ?? [],
+    hello_message,
+  });
+}
+

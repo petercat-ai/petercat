@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Body, Path
 from fastapi.responses import JSONResponse
 from db.supabase.client import get_client
-from bot.builder import bot_builder
+from bot.builder import bot_builder, bot_info_generator
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional
 
@@ -66,27 +66,26 @@ def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots 
 
 @router.get("/detail")
 def get_bot_detail(id: Optional[str] = Query(None, description="Filter bots by personal category")):
-    if not id : 
+    if not id: 
       return{
         "error": "Incomplete parameters",
         "status": 400
       }
-    else :
-      supabase = get_client()
-      data = supabase.table("bots").select('id, created_at, updated_at, avatar, description, name, starters, public, hello_message').eq('id', id).execute()
-      return { "data": data.data, "status": 200}
-    
+    else:
+      try:
+        supabase = get_client()
+        data = supabase.table("bots").select('id, created_at, updated_at, avatar, description, name, starters, public, hello_message').eq('id', id).execute()
+        return { "data": data.data, "status": 200}
+      except Exception as e:
+        return JSONResponse(content={"success": False, "errorMessage": e})
 @router.get("/config")
-def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by personal category"), user_id: str = Cookie(None)):
-    if not id or not user_id: 
-      return{
-        "error": "Auth failed",
-        "status": 401
-      }
-    else :
+def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by personal category"), user_id: str = Depends(verify_user_id)):
+    try:
       supabase = get_client()
       data = supabase.table("bots").select('*').eq('id', id).eq('uid', user_id).execute()
       return { "data": data.data, "status": 200}
+    except Exception as e:
+      return JSONResponse(content={"success": False, "errorMessage": e})
 
 @router.post("/create", status_code=200)
 async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
@@ -95,21 +94,37 @@ async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_u
     except Exception as e:
       return JSONResponse(content={"success": False, "errorMessage": e})
 
+@router.post("/config/generator", status_code=200)
+async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
+    try:
+      res =  await bot_info_generator(user_id, **bot_data.model_dump())
+      if not res:
+        return JSONResponse(content={"success": False, "errorMessage": "仓库不存在，生成失败"})
+      return JSONResponse(content={"success": True, "data": res})
+    except Exception as e:
+      return JSONResponse(content={"success": False, "errorMessage": e})
+
 @router.put("/update/{id}", status_code=200)
 def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: str = Depends(verify_user_id)):
-    supabase = get_client()
-    response = supabase.table("bots").update(bot_data.model_dump()).eq("id", id).eq("uid", user_id).execute()
-    if not response.data:
-        return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，更新失败"})
-    return JSONResponse(content={"success": True})
+    try:
+      supabase = get_client()
+      response = supabase.table("bots").update(bot_data.model_dump()).eq("id", id).eq("uid", user_id).execute()
+      if not response.data:
+          return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，更新失败"})
+      return JSONResponse(content={"success": True})
+    except Exception as e:
+      return JSONResponse(content={"success": False, "errorMessage": e})
 
 @router.delete("/delete/{id}", status_code=status.HTTP_200_OK)
 async def delete_bot(
     id: str = Path(..., description="The ID of the bot to delete"), 
     user_id: str = Depends(verify_user_id)
 ):
-    supabase = get_client()
-    response = supabase.table("bots").delete().eq("id", id).eq("uid", user_id).execute()
-    if not response.data:
-      return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，删除失败"})
-    return JSONResponse(content={"success": True})
+    try:
+      supabase = get_client()
+      response = supabase.table("bots").delete().eq("id", id).eq("uid", user_id).execute()
+      if not response.data:
+        return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，删除失败"})
+      return JSONResponse(content={"success": True})
+    except Exception as e:
+      return JSONResponse(content={"success": False, "errorMessage": e})

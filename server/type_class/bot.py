@@ -5,6 +5,7 @@ class BotCreateRequest(BaseModel):
     repo_name: str
     starters: Optional[List[str]] = None
     hello_message: Optional[str] = None
+
 class BotUpdateRequest(BaseModel):
     id: str
     avatar: Optional[str] = None

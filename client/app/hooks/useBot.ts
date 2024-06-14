@@ -3,6 +3,7 @@ import {
   deleteBot,
   getBotConfig,
   getBotDetail,
+  getBotInfoByReponame,
   getBotList,
   updateBot,
 } from '@/app/services/BotsController';
@@ -75,3 +76,18 @@ export function useBotCreate() {
     isSuccess: mutation.isSuccess,
   };
 }
+
+export function useBotConfgGenerator() {
+  const mutation = useMutation({
+    mutationFn: getBotInfoByReponame,
+  });
+  return {
+    data: mutation.data?.data?.data,
+    getBotInfoByReponame: mutation.mutate,
+    isLoading: mutation.isPending,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+  };
+}
+
+
