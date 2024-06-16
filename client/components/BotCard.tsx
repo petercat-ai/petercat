@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Image, CardBody, CardFooter } from '@nextui-org/react';
 
 declare type Bot = Tables<'bots'>;
@@ -10,22 +10,17 @@ const BotCard = (props: {
   handleCardClick?: (id: string) => void;
 }) => {
   const { bot, handleCardClick } = props;
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Card
-      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 mx-10"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 mx-10 transition-shadow hover:shadow-lg"
       isPressable
-      shadow="lg"
+      shadow="none"
       data-hover="true"
       onClick={(e) => {
         e.preventDefault();
         handleCardClick?.(bot?.id);
       }}
-      onMouseEnter={() => {
-        setIsHovered(true);
-      }}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <CardBody className="overflow-visible p-0 flex-initial">
         <Image
@@ -35,12 +30,13 @@ const BotCard = (props: {
           width="100%"
           alt={bot.name!}
           className="rounded-[8px] opacity-100 w-full object-cover h-[268px]"
-          src={
-            !isHovered
-              ? bot.avatar!
-              : 'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*4Mx7SJk91esAAAAAAAAAAAAADlDCAQ/original'
-          }
+          src={bot.avatar!}
         />
+        <div
+          className="z-10 opacity-0 hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center"
+        >
+          <Image src="./images/chat.svg" />
+        </div>
       </CardBody>
       <CardFooter className="text-small justify-between flex-col flex-1 mt-4">
         <div className="flex w-full text-small justify-between pb-2">
