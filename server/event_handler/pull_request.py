@@ -1,6 +1,6 @@
 
 from typing import Any
-from github import Github, Auth
+from github import Github, Auth, Repository, PullRequest
 from github import GithubException
 
 class PullRequestEventHandler():
@@ -19,6 +19,14 @@ class PullRequestEventHandler():
                 case 'opened':
                     repo = self.g.get_repo(self.event['repository']["full_name"])
                     pr = repo.get_pull(self.event["pull_request"]["number"])
+
+
+                    title = pr.title
+                    description = pr.body
+
+                    target_branch_diff = repo.compare(base=pr.base.sha, head=pr.head.sha)
+                    print("pullrequest_opened", title, description, target_branch_diff)
+
                     comment = pr.create_issue_comment("This is a comment from PeterCat")
 
                     print(repo, pr, comment)

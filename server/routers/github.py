@@ -58,10 +58,10 @@ async def github_app_webhook(request: Request, background_tasks: BackgroundTasks
         match x_github_event:
             case 'pull_request':
                 handler = PullRequestEventHandler(payload=payload, auth=auth)
-                await handler.execute()
+                handler.execute()
             case 'issues':
                 handler = IssueEventHandler(payload=payload, auth=auth)
-                await handler.execute()
+                handler.execute()
             case _:
                 return { "success": True }
     else:
