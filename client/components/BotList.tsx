@@ -11,7 +11,8 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter, } from '@nextui-org/react';
+  ModalFooter,
+  Spinner, } from '@nextui-org/react';
 import {StoreIcon} from "../public/icons/StoreIcon";
 import { useBotList } from '@/app/hooks/useBot';
 import BotItem from "./BotItem";
@@ -20,11 +21,11 @@ declare type Bot = Tables<'bots'>;
 
 const BotList = (props: {type : 'nav' | 'list'}) => {
   const { type } = props;
-  const { data: bots } = useBotList(true);
   const [ selectedBot , setSelectedBot] = useState('');
   const [ selectedBotName , setSelectedBotName] = useState('');
-
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { data: bots, isLoading } = useBotList(true, '', isOpen);
+
   const {
     updateBot: onUpdateBot,
   } = useBotEdit();
@@ -44,6 +45,7 @@ const BotList = (props: {type : 'nav' | 'list'}) => {
             <>
               <ModalHeader className="flex flex-col gap-1">选择机器人</ModalHeader>
               <ModalBody className='h-[500px] h-auto'>
+                {isLoading && <Spinner />}
                 {map(bots, (bot: Bot) => <BotItem bot={bot} selectedId={selectedBot} onPress={(botId: string, botName: string) => {
                   setSelectedBot(botId);
                   setSelectedBotName(botName);
