@@ -109,16 +109,23 @@ async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_u
 
 @router.put("/update/{id}", status_code=200)
 def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: str = Depends(verify_user_id)):
-    if not id: 
-        return{
+    if not id:
+        return {
             "error": "Incomplete parameters",
             "status": 400
         }
     try:
+        update_fields = {key: value for key, value in bot_data.model_dump(exclude_unset=True).items() if value is not None}
+        
+        if not update_fields:
+            return JSONResponse(content={"success": False, "errorMessage": "No fields to update"}, status_code=400)
+        
         supabase = get_client()
-        response = supabase.table("bots").update(bot_data.model_dump()).eq("id", id).eq("uid", user_id).execute()
+        response = supabase.table("bots").update(update_fields).eq("id", id).eq("uid", user_id).execute()
+        
         if not response.data:
             return JSONResponse(content={"success": False, "errorMessage": "bot 不存在，更新失败"})
+        
         return JSONResponse(content={"success": True})
     except Exception as e:
         return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)

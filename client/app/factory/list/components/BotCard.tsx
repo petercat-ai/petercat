@@ -4,14 +4,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
-  Avatar,
-  Divider,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Modal,
   ModalContent,
   ModalHeader,
@@ -20,11 +12,8 @@ import {
   Button,
   Image,
   useDisclosure,
-  Badge,
 } from '@nextui-org/react';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import SettingIcon from '@/public/icons/SettingIcon';
 import { useBotDelete } from '@/app/hooks/useBot';
 
 declare type Bot = Tables<'bots'>;
@@ -65,7 +54,11 @@ const BotCard = (props: { bot: Bot }) => {
             width="100%"
             alt={bot.name!}
             className="rounded-[8px] opacity-100 w-full object-cover h-[268px] w-[300px]"
-            src={!isHovered ? bot.avatar! : "https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*SF3YSYtzYksAAAAAAAAAAAAADlDCAQ/original"}
+            src={
+              !isHovered
+                ? bot.avatar!
+                : 'https://mdn.alipayobjects.com/huamei_yhboz9/afts/img/A*SF3YSYtzYksAAAAAAAAAAAAADlDCAQ/original'
+            }
           />
         </CardBody>
         <CardBody className="flex flex-row justify-between pt-4">
@@ -74,10 +67,11 @@ const BotCard = (props: { bot: Bot }) => {
               {bot.name}
             </div>
           </div>
-         
         </CardBody>
         <CardBody className="py-0 text-small text-default-400">
-          <p className='my-0 overflow-hidden text-ellipsis line-clamp-2'>{bot.description}</p>
+          <p className="my-0 overflow-hidden text-ellipsis line-clamp-2">
+            {bot.description}
+          </p>
         </CardBody>
       </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

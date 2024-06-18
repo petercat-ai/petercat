@@ -24,9 +24,11 @@ import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { AVATARS } from '@/app/constant/avatar';
+import { useRouter } from 'next/navigation';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
@@ -42,19 +44,10 @@ const BotCreateFrom = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success('删除成功');
-      setBotProfile((draft: BotProfile) => {
-        draft.id = '';
-        draft.avatar = '';
-        draft.gitAvatar = '';
-        draft.name = 'Untitled';
-        draft.description = '';
-        draft.prompt = '';
-        draft.starters = [''];
-        draft.public = false;
-        draft.repoName = '';
-        draft.helloMessage = '';
-      });
       onClose();
+      setTimeout(() => {
+        router.push('/factory/list');
+      }, 1000);
     }
   }, [isSuccess]);
 
@@ -162,7 +155,7 @@ const BotCreateFrom = () => {
             placeholder="输入开场文案"
             required
           />
-          <label className="block text-sm font-medium text-gray-700 mt-2">
+          <label className="block text-sm font-medium text-gray-700 mt-4">
             开场白预置问题
             <InputList />
           </label>

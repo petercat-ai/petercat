@@ -42,7 +42,7 @@ const InputList = () => {
   return (
     <>
       {inputs.map((input, index) => (
-        <div key={index} className="flex items-center mb-2">
+        <div key={index} className="flex items-center mt-2">
           <Input
             variant="bordered"
             labelPlacement="outside"
