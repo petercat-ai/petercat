@@ -4,7 +4,12 @@ import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
-import { useBotConfgGenerator, useBotConfig, useBotCreate, useBotEdit } from '@/app/hooks/useBot';
+import {
+  useBotConfgGenerator,
+  useBotConfig,
+  useBotCreate,
+  useBotEdit,
+} from '@/app/hooks/useBot';
 import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
@@ -46,7 +51,6 @@ export default function Edit({ params }: { params: { id: string } }) {
     isSuccess: getBotInfoByReponameSuccess,
     error: getBotInfoByReponameError,
   } = useBotConfgGenerator();
-  
 
   const isEdit = useMemo(
     () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
@@ -85,7 +89,6 @@ export default function Edit({ params }: { params: { id: string } }) {
       });
   }, [generatorResponseData]);
 
-
   const updateBot = async () => {
     const params = {
       ...botProfile,
@@ -117,7 +120,6 @@ export default function Edit({ params }: { params: { id: string } }) {
       toast.error(`保存失败${editError.message}`);
     }
   }, [editError]);
-
 
   useEffect(() => {
     if (editError) {

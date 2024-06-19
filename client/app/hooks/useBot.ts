@@ -29,9 +29,13 @@ export const useBotConfig = (id: string, enabled: boolean) => {
   });
 };
 
-export const useBotList = (personal: boolean = false, name: string = '', enabled: boolean = true) => {
+export const useBotList = (
+  personal: boolean = false,
+  name: string = '',
+  enabled: boolean = true,
+) => {
   return useQuery({
-    queryKey: [`bot.list.${personal}`, personal, name],
+    queryKey: [`bot.list.${personal}`],
     queryFn: async () => getBotList(personal, name),
     enabled,
     retry: false,
@@ -52,8 +56,15 @@ export function useBotDelete() {
 }
 
 export function useBotEdit() {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: updateBot,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['bot.list.false'],
+        refetchType: 'active',
+      });
+    },
   });
 
   return {
@@ -90,5 +101,3 @@ export function useBotConfgGenerator() {
     isSuccess: mutation.isSuccess,
   };
 }
-
-
