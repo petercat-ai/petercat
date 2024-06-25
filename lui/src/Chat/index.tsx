@@ -7,7 +7,7 @@ import type {
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
 
-import { includes, isEmpty, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
   memo,
@@ -42,6 +42,7 @@ export interface ChatProps extends BotInfo {
   prompt?: string;
   token?: string;
   style?: React.CSSProperties;
+  hideLogo?: boolean;
 }
 
 const Chat: FC<ChatProps> = memo(
@@ -55,6 +56,7 @@ const Chat: FC<ChatProps> = memo(
     prompt,
     token,
     style,
+    hideLogo = false,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
@@ -119,7 +121,7 @@ const Chat: FC<ChatProps> = memo(
         }}
       >
         <div className="h-full w-full flex flex-col">
-          <SignatureIcon className="mx-auto my-2 flex-none" />
+          {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
           <ProChat
             className="flex-1"
             showTitle
@@ -147,7 +149,10 @@ const Chat: FC<ChatProps> = memo(
                 if (originData?.role === Role.user) {
                   return defaultDom;
                 }
-                const message = originData.content;
+
+                const originMessage = convertChunkToJson(
+                  originData.content,
+                ) as any;
 
                 const defaultMessageContent = (
                   <div
@@ -158,55 +163,57 @@ const Chat: FC<ChatProps> = memo(
                   </div>
                 );
 
-                if (!message || !includes(message, '<TOOL>')) {
+                if (!originMessage || typeof originMessage === 'string') {
                   return defaultMessageContent;
                 }
 
-                const [toolStr, answerStr] = message.split('<ANSWER>');
-                const tools = toolStr.split('\n').filter(Boolean);
-                const lastTool = tools[tools.length - 1];
+                const { message: answerStr, tools = [] } = originMessage;
 
-                const regex = /<TOOL>(.*)/;
-                const match = lastTool.match(regex);
-
-                if (!match) {
-                  console.error('No valid JSON found in input');
-                  return defaultMessageContent;
-                }
-
-                try {
-                  const config = JSON.parse(match[1]);
-                  const { type, extra } = config;
-
-                  if (![Role.knowledge, Role.tool].includes(type)) {
-                    return defaultMessageContent;
-                  }
-
-                  const { status, source } = extra;
-
+                if (isEmpty(tools)) {
                   return (
                     <div
-                      className="p-2 bg-white rounded-md "
+                      className="leftMessageContent"
                       style={{ minWidth: messageMinWidth }}
                     >
-                      <div className="mb-1">
-                        <ThoughtChain
-                          content={extra}
-                          status={status}
-                          source={source}
-                        />
-                      </div>
                       <Markdown
+                        className="ant-pro-chat-list-item-message-content"
                         style={{ overflowX: 'hidden', overflowY: 'auto' }}
                       >
                         {answerStr}
                       </Markdown>
                     </div>
                   );
-                } catch (error) {
-                  console.error(`JSON parse error: ${error}`);
+                }
+
+                const lastTool = tools[tools.length - 1];
+                const { type, extra } = lastTool;
+
+                if (![Role.knowledge, Role.tool].includes(type)) {
                   return defaultMessageContent;
                 }
+
+                const { status, source } = extra;
+
+                return (
+                  <div
+                    className="leftMessageContent"
+                    style={{ minWidth: messageMinWidth }}
+                  >
+                    <div className="mb-1">
+                      <ThoughtChain
+                        content={extra}
+                        status={status}
+                        source={source}
+                      />
+                    </div>
+                    <Markdown
+                      className="ant-pro-chat-list-item-message-content"
+                      style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                    >
+                      {answerStr}
+                    </Markdown>
+                  </div>
+                );
               },
             }}
             assistantMeta={{
@@ -233,7 +240,9 @@ const Chat: FC<ChatProps> = memo(
                 )
                 .map((message) => ({
                   role: message.role,
-                  content: message.content as string,
+                  content: JSON.stringify(
+                    convertChunkToJson(message.content as string),
+                  ),
                 }));
 
               const response = await streamChat(

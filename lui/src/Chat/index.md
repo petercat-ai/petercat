@@ -8,6 +8,7 @@ export default () => (
   <div style={{ height: '100vh' }}>
     <Chat
       apiUrl="/api/chat/stream_builder"
+      hideLogo="true"
     />
   </div>
 );

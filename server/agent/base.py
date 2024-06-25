@@ -1,6 +1,6 @@
 import json
 from typing import AsyncIterator, Dict, Callable, Optional
-import uuid
+# import uuid
 from langchain.agents import AgentExecutor
 from data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
@@ -144,22 +144,18 @@ class AgentBuilder:
                             f"with output: {event['data'].get('output')['output']}"
                         )
                 if kind == "on_chat_model_stream":
-                    id =  str(uuid.uuid4())
+                    # id =  str(uuid.uuid4())
                     content = event["data"]["chunk"].content
                     if content:
                         json_output = json.dumps({
-                            "id": id,
                             "type": "message",
                             "content": content,
-                            "role": "assistant",
                         }, ensure_ascii=False)
                         yield f"{json_output}\n\n"
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     json_output = json.dumps({
                         "type": "tool",
-                        "role": "tool",
-                        "id": id,
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
                             "pluginName": "GitHub",
@@ -173,8 +169,6 @@ class AgentBuilder:
                     children_value = event["data"].get("output", {})
                     json_output = json.dumps({
                         "type": "tool",
-                        "role": "tool",
-                        "id": id,
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
                             "pluginName": "GitHub",
