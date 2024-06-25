@@ -36,6 +36,7 @@
     "immer": "^10.0.3",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.4.0",
     "next": "14.0.1",
     "openai": "^4.24.7",
     "petercat-lui": "^0.0.18",
