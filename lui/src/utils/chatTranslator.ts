@@ -9,33 +9,24 @@ interface Tool {
   };
 }
 
-interface Message {
-  type: string;
-  content: string;
-  role: string;
-}
-
 export const convertChunkToJson = (rawData: string) => {
   const chunks = rawData?.trim()?.split('\n\n');
   const tools: Tool[] = [];
   const messages: string[] = [];
 
-  forEach(chunks, (chunk) => {
-    const parsedChunk = JSON.parse(chunk);
-    if (parsedChunk.type === 'tool') {
-      tools.push(parsedChunk);
-    } else if (parsedChunk.type === 'message') {
-      messages.push(parsedChunk.content);
-    }
-  });
-
-  const combinedMessage: Message = {
-    type: 'message',
-    content: messages.join(''),
-    role: 'assistant',
-  };
-
-  return JSON.stringify([...tools, combinedMessage]);
+  try {
+    forEach(chunks, (chunk) => {
+      const parsedChunk = JSON.parse(chunk);
+      if (parsedChunk.type === 'tool') {
+        tools.push(parsedChunk);
+      } else if (parsedChunk.type === 'message') {
+        messages.push(parsedChunk.content);
+      }
+    });
+    return { tools, message: messages.join('') };
+  } catch (error) {
+    return rawData;
+  }
 };
 
 export const handleStream = async (response: Response) => {

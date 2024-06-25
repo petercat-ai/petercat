@@ -163,6 +163,10 @@ export default function Edit({ params }: { params: { id: string } }) {
             'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
           title: 'PeterCat',
         }}
+        style={{
+          backgroundColor: '#fff',
+        }}
+        hideLogo={true}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
         helloMessage="👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
@@ -323,6 +327,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             <div style={{ height: 'calc(100vh - 73px)' }}>
               {isEdit && (
                 <Chat
+                  hideLogo={true}
                   assistantMeta={{
                     avatar:
                       botProfile?.avatar ||
