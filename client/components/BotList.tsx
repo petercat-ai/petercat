@@ -59,7 +59,7 @@ const BotList = (props: { type: 'nav' | 'list' }) => {
           <Button
             key="public"
             onPress={onOpen}
-            className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2"
+            className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
             startContent={<StoreIcon />}
           >
             上架机器人

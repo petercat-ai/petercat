@@ -23,14 +23,10 @@ export default function List() {
   }
 
   return (
-    <div className="mx-auto ">
-      <div className="mt-8">
-        <div className="grid grid-flow-row-dense grid-cols-4 gap-4 my-8 justify-items-center px-[20px]">
-          <AddBotCard />
-          {!isEmpty(bots) &&
-            map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}
-        </div>
-      </div>
+    <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+      <AddBotCard />
+      {!isEmpty(bots) &&
+        map(bots, (bot: Bot) => <BotCard key={bot.id} bot={bot} />)}
     </div>
   );
 }

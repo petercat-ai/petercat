@@ -27,7 +27,6 @@ export default function Home() {
   if (error) {
     return <div>Error loading bots!{error.message}</div>;
   }
-
   const handleCardClick = (id: string) => {
     setVisible(true);
     setCurrentBot(id);
@@ -39,18 +38,16 @@ export default function Home() {
 
   return (
     <div>
-      <div className="mx-auto">
-        <div className="grid grid-flow-row-dense gap-8 my-8 justify-items-center px-[20px] md:grid-cols-2 lg:grid-cols-4">
-          <BotList type="list" />
-          {!isEmpty(bots) &&
-            map(bots, (bot: Bot) => (
-              <BotCard
-                key={bot.id}
-                bot={bot}
-                handleCardClick={handleCardClick}
-              />
-            ))}
-        </div>
+      <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        <BotList type="list" />
+        {!isEmpty(bots) &&
+          map(bots, (bot: Bot) => (
+            <BotCard
+              key={bot.id}
+              bot={bot}
+              handleCardClick={handleCardClick}
+            />
+          ))}
       </div>
       <Assistant
         apiDomain={ASSISTANT_API_HOST}

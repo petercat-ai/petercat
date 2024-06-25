@@ -5,7 +5,7 @@ import { AddBotIcon } from "@/public/icons/AddBotIcon";
 const BotCard = (props: {onPress: Function}) => {
   return (
     <Card
-      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 hover:shadow-lg"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 h-[384px]"
       shadow="none"
       isPressable
       onPress={() => {
