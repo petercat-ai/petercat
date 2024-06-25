@@ -12,8 +12,7 @@ const BotCard = () => {
 
   return (
     <Card
-      className="border-none w-[316px] h-[400px] bg-[#FFF] rounded-[16px] p-2"
-      shadow="sm"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 h-[384px]"
       isPressable
       onClick={() => router.push(`/factory/edit/new`)}
     >

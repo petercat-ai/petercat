@@ -35,7 +35,7 @@ export const useBotList = (
   enabled: boolean = true,
 ) => {
   return useQuery({
-    queryKey: [`bot.list.${personal}`],
+    queryKey: [`bot.list.${personal}`, name],
     queryFn: async () => getBotList(personal, name),
     enabled,
     retry: false,

@@ -12,21 +12,6 @@ def verify_user_id(user_id: Optional[str] = Cookie(None)):
             detail="Auth failed"
         )
     return user_id
-
-# 定义执行 SQL 查询的函数
-def execute_sql(sql: str):
-    try:
-        supabase = get_client()
-        response = supabase.rpc("execute_sql", {"query": sql}).execute()
-        return response
-    except Exception as e:
-        if hasattr(e, 'details'):
-            print("Error details:", e.details)
-        if hasattr(e, 'message'):
-            print("Error message:", e.message)
-        if hasattr(e, 'hint'):
-            print("Error hint:", e.hint)
-
 router = APIRouter(
     prefix="/api/bot",
     tags=["bot"],
@@ -38,20 +23,12 @@ def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots 
     try:
         supabase = get_client()
         query = supabase.table("bots").select("id, created_at, updated_at, avatar, description, name, public, starters, uid")
-        
         if personal == 'true':
             if not user_id:
                 return {"data": [], "personal": personal}
             query = query.eq('uid', user_id)
-        
         if name:
-            sql = f"""
-            SELECT * FROM bots where public = true and name like '%{name}%'
-            """
-            data = execute_sql(sql)
-            if not data or not data.data:
-                return {"data": [], "personal": personal}
-            return {"data": data.data, "personal": personal}
+            query = supabase.table("bots").select("id, created_at, updated_at, avatar, description, name, public, starters, uid").filter("name", "like", f"%{name}%")
         
         query = query.eq('public', True) if not personal or personal != 'true' else query
         
