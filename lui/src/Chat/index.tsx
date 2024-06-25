@@ -149,8 +149,6 @@ const Chat: FC<ChatProps> = memo(
                 }
                 const message = originData.content;
 
-                const jsonStr = convertChunkToJson(message);
-                console.log('jsonStr', jsonStr);
                 const defaultMessageContent = (
                   <div
                     className="leftMessageContent"

@@ -16,7 +16,6 @@ interface Message {
 }
 
 export const convertChunkToJson = (rawData: string) => {
-  console.log('rawData', rawData);
   const chunks = rawData?.trim()?.split('\n\n');
   const tools: Tool[] = [];
   const messages: string[] = [];
