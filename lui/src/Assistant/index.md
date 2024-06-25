@@ -10,7 +10,7 @@ import { Assistant } from 'petercat-lui';
 
 export default () => (
   <Assistant
-    token="2997bf16-ee7a-4d0b-94f0-e5a7d9da4054"
+    token="cfabba08-14a8-40d8-aee5-ca29d8a6ccc9"
     clearMessage={true}
   />
 );

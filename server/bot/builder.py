@@ -30,7 +30,7 @@ async def bot_info_generator(
             "label": "Assistant",
             "starters": starters if starters else [f"介绍一下 {repo.name} 这个项目", f"查看 {repo_name} 的贡献指南", "我该怎样快速上手"],
             "public": False,
-            "hello_message": hello_message if hello_message else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题，比如~"
+            "hello_message": hello_message if hello_message else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题"
         }
 
         return bot_data
@@ -48,7 +48,7 @@ async def bot_builder(
     create a bot based on the given github repository.
 
     :param uid: The user id of the bot owner
-    :param repo_name: The name of the repository, e.g., "octocat/Hello-World"
+    :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
     :param starters: The Opening Dialog, e.g.["介绍一下项目", "快速上手", "贡献指南"]
     :param hello_message: The hello message of the bot
     """

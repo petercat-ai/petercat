@@ -12,7 +12,7 @@ def create_issue(repo_name, title, body):
     """
     Create an issue in the specified GitHub repository.
 
-    :param repo_name: The name of the repository, e.g., "octocat/Hello-World"
+    :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
     :param title: The title of the issue to be created
     :param body: The content of the issue to be created
     """
@@ -39,7 +39,7 @@ def get_issues(
         """
         Fetches issues from the configured repository
         
-        :param repo_name: The name of the repository, e.g., "octocat/Hello-World"
+        :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
         :param max_num: The maximum number of issues to fetch
         :param state: The state of the issue, e.g: open, closed, all
         :param sort: The sorting method, e.g: created, updated, comments
@@ -75,7 +75,7 @@ def search_issues(
         """
         Search issues from repository by keyword
         
-        :param repo_name: The name of the repository, e.g., "octocat/Hello-World"
+        :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
         :param keyword: The keyword to search for in the issues
         :param max_num: The maximum number of issues to fetch
         :param sort: The sorting method, e.g: created, updated, comments
