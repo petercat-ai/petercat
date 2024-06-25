@@ -1,30 +1,41 @@
-import { map } from 'lodash';
-import { Role } from '../interface';
+import { forEach } from 'lodash';
+interface Tool {
+  type: string;
+  extra: {
+    source: string;
+    pluginName: string;
+    data: string;
+    status: string;
+  };
+}
+
+interface Message {
+  type: string;
+  content: string;
+  role: string;
+}
 
 export const convertChunkToJson = (rawData: string) => {
-  const regex = /data:(.*)/;
-  const match = rawData.match(regex);
-  if (match && match[1]) {
-    try {
-      const res = JSON.parse(match[1]);
-      if (res?.role === Role.assistant) {
-        return res?.content;
-      } else if (res?.role === Role.tool) {
-        return JSON.stringify(res);
-      }
-    } catch (e) {
-      console.error('Parsing error:', e);
-      return null;
-    }
-  } else {
-    console.error('No valid JSON found in input');
-    return null;
-  }
-};
+  const chunks = rawData?.trim()?.split('\n\n');
+  const tools: Tool[] = [];
+  const messages: string[] = [];
 
-export const chunkFormatter = (chunk: string) => {
-  const dataLines = chunk.split('\n');
-  return map(dataLines, (item: string) => convertChunkToJson(item));
+  forEach(chunks, (chunk) => {
+    const parsedChunk = JSON.parse(chunk);
+    if (parsedChunk.type === 'tool') {
+      tools.push(parsedChunk);
+    } else if (parsedChunk.type === 'message') {
+      messages.push(parsedChunk.content);
+    }
+  });
+
+  const combinedMessage: Message = {
+    type: 'message',
+    content: messages.join(''),
+    role: 'assistant',
+  };
+
+  return JSON.stringify([...tools, combinedMessage]);
 };
 
 export const handleStream = async (response: Response) => {

@@ -27,7 +27,9 @@ class AgentBuilder:
         tools:  Dict[str, Callable], 
         enable_tavily: Optional[bool] = True, 
         temperature: Optional[int] = 0.2,
-        max_tokens: Optional[int] = 1500
+        max_tokens: Optional[int] = 1500,
+        bot_id: Optional[str] = None,
+        uid: Optional[str] = None
     ):
         """
         @class `Builde AgentExecutor based on tools and prompt`
@@ -36,10 +38,14 @@ class AgentBuilder:
         @param enable_tavily: Optional[bool] If set True, enables the Tavily tool
         @param temperature: Optional[int]
         @param max_tokens: Optional[int]
+        @param bot_id: Optional[str]
+        @param uid: Optional[str]
         """
         self.prompt = prompt
         self.tools = tools
         self.enable_tavily = enable_tavily
+        self.bot_id = bot_id
+        self.uid = uid
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.agent_executor = self._create_agent_with_tools()
@@ -54,6 +60,11 @@ class AgentBuilder:
         llm = ChatOpenAI(model="gpt-4o", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
 
         tools =  self.init_tavily_tools() if self.enable_tavily else []
+
+        # for tool in self.tools.items():
+        #     wrapped_tool = lambda input_data: tool(input_data, self.user_id, self.bot_id)
+        #     tools.append(wrapped_tool)
+        
         for tool in self.tools.values():
             tools.append(tool)
 
@@ -133,15 +144,22 @@ class AgentBuilder:
                             f"with output: {event['data'].get('output')['output']}"
                         )
                 if kind == "on_chat_model_stream":
-                    uid =  str(uuid.uuid4())
+                    id =  str(uuid.uuid4())
                     content = event["data"]["chunk"].content
                     if content:
-                        yield f"{content}"
+                        json_output = json.dumps({
+                            "id": id,
+                            "type": "message",
+                            "content": content,
+                            "role": "assistant",
+                        }, ensure_ascii=False)
+                        yield f"{json_output}\n\n"
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     json_output = json.dumps({
                         "type": "tool",
-                        "id": uid,
+                        "role": "tool",
+                        "id": id,
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
                             "pluginName": "GitHub",
@@ -150,12 +168,13 @@ class AgentBuilder:
                         }
                     }, ensure_ascii=False)
                    
-                    yield f"<TOOL>{json_output}\n"
+                    yield f"{json_output}\n\n"
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
                     json_output = json.dumps({
                         "type": "tool",
-                        "id": uid,
+                        "role": "tool",
+                        "id": id,
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
                             "pluginName": "GitHub",
@@ -163,9 +182,9 @@ class AgentBuilder:
                             "status": "success"
                         },
                     }, ensure_ascii=False)
-                    yield f"<TOOL>{json_output}\n<ANSWER>"
+                    yield f"{json_output}\n\n"
         except Exception as e:
-            yield f"data: {str(e)}\n"
+            yield f"error: {str(e)}\n\n"
     
     async def run_chat(self, input_data: ChatData) -> str:
         try:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Body, Path
+from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Path
 from fastapi.responses import JSONResponse
 from db.supabase.client import get_client
 from bot.builder import bot_builder, bot_info_generator

@@ -1,5 +1,6 @@
 import json
-from fastapi import APIRouter, Depends
+from typing import Optional
+from fastapi import APIRouter, Cookie, Depends
 from fastapi.responses import StreamingResponse
 from data_class import ChatData
 from agent import qa_chat, bot_builder
@@ -24,7 +25,7 @@ async def run_issue_helper(input_data: ChatData):
 
 
 @router.post("/stream_builder", response_class=StreamingResponse, dependencies=[Depends(verify_rate_limit)])
-def run_bot_builder(input_data: ChatData):
-    result = bot_builder.agent_stream_chat(input_data)
+def run_bot_builder(input_data: ChatData, user_id: str = Cookie(None), bot_id: Optional[str] = None):
+    result = bot_builder.agent_stream_chat(input_data, user_id, bot_id)
     return StreamingResponse(result, media_type="text/event-stream")
 

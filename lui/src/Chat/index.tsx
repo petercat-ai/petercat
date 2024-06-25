@@ -22,7 +22,7 @@ import SignatureIcon from '../icons/SignatureIcon';
 import { Role } from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
-import { handleStream } from '../utils';
+import { convertChunkToJson, handleStream } from '../utils';
 import InputArea from './inputArea/InputArea';
 import Actions from './inputArea/actions';
 
@@ -148,6 +148,7 @@ const Chat: FC<ChatProps> = memo(
                   return defaultDom;
                 }
                 const message = originData.content;
+
                 const defaultMessageContent = (
                   <div
                     className="leftMessageContent"
