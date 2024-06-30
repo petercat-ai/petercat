@@ -319,9 +319,23 @@ export default function Edit({ params }: { params: { id: string } }) {
               </div>
             </div>
             <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
-              {activeTab === 'chatConfig'
-                ? chatConfigContent
-                : manualConfigContent}
+              <div
+                style={{
+                  visibility: activeTab === 'chatConfig' ? 'visible' : 'hidden',
+                }}
+              >
+                {chatConfigContent}
+              </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  width: '50%',
+                  height: 'calc(100vh - 73px)',
+                  visibility: activeTab !== 'chatConfig' ? 'visible' : 'hidden',
+                }}
+              >
+                {manualConfigContent}
+              </div>
             </div>
           </div>
         </div>
