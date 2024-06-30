@@ -43,6 +43,7 @@ export interface ChatProps extends BotInfo {
   token?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
+  getToolsResult?: (response: any) => void;
 }
 
 const Chat: FC<ChatProps> = memo(
@@ -57,6 +58,7 @@ const Chat: FC<ChatProps> = memo(
     token,
     style,
     hideLogo = false,
+    getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
@@ -191,13 +193,13 @@ const Chat: FC<ChatProps> = memo(
                 if (![Role.knowledge, Role.tool].includes(type)) {
                   return defaultMessageContent;
                 }
-
+                getToolsResult?.(extra);
                 const { status, source } = extra;
 
                 return (
                   <div
                     className="leftMessageContent"
-                    style={{ minWidth: messageMinWidth }}
+                    style={{ maxWidth: messageMinWidth }}
                   >
                     <div className="mb-1">
                       <ThoughtChain
