@@ -17,8 +17,6 @@ async def verify_rate_limit(petercat: str = Cookie(None)):
     if not petercat:
         raise HTTPException(status_code=403, detail="Must Login")
     user = await getUserInfoByToken(petercat)
-    user_id = user['id']
-
     supabase = get_client()
     table = supabase.table("user_token_usage")
     rows = table.select('id, user_id, last_request, request_count').eq('user_id', user_id).execute()

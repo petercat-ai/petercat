@@ -14,6 +14,7 @@ export async function streamChat(
 ): Promise<Response> {
   return fetch(`${apiDomain}${apiUrl}`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       connection: 'keep-alive',

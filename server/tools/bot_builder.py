@@ -13,7 +13,7 @@ g = Github()
 @tool
 async def create_bot(
     repo_name: str,
-    uid: str = 123456789,
+    uid: str,
     starters: Optional[List[str]] = None,
     hello_message: Optional[str] = None,
 ):
