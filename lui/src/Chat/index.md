@@ -1,15 +1,23 @@
 
 ```jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chat } from 'petercat-lui';
 
+export default () => {
+  const [res, setRes] = useState({});
 
-export default () => (
-  <div style={{ height: '100vh' }}>
-    <Chat
-      apiUrl="/api/chat/stream_builder"
-      hideLogo="true"
-    />
-  </div>
-);
+  useEffect(() => {
+    console.log('res', res);
+  }, [res]);
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <Chat
+        apiUrl="/api/chat/stream_builder"
+        hideLogo="true"
+        getToolsResult={setRes}
+      />
+    </div>
+  );
+};
 ```

@@ -54,12 +54,12 @@ export async function updateBot(profile: BotProfile) {
   const parmas = {
     ...omit(profile, ['gitAvatar', 'repoName', 'helloMessage']),
     hello_message: profile.helloMessage,
-  }
+  };
   return axios.put(`${apiDomain}/api/bot/update/${profile.id}`, parmas);
 }
 
 // Get Bot Info by Repo Name
-export async function getBotInfoByReponame(
+export async function getBotInfoByRepoName(
   repo_name: string,
   starters?: string[],
   hello_message?: string,
@@ -70,4 +70,3 @@ export async function getBotInfoByReponame(
     hello_message,
   });
 }
-

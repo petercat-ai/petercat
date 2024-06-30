@@ -1,11 +1,11 @@
 'use client';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
 import {
-  useBotConfgGenerator,
+  useBotConfigGenerator,
   useBotConfig,
   useBotCreate,
   useBotEdit,
@@ -46,11 +46,33 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   const {
     data: generatorResponseData,
-    getBotInfoByReponame,
-    isLoading: getBotInfoByReponameLoading,
-    isSuccess: getBotInfoByReponameSuccess,
-    error: getBotInfoByReponameError,
-  } = useBotConfgGenerator();
+    getBotInfoByRepoName,
+    isLoading: getBotInfoByRepoNameLoading,
+    isSuccess: getBotInfoByRepoNameSuccess,
+    error: getBotInfoByRepoNameError,
+  } = useBotConfigGenerator();
+
+  const updateConfigFromChatResult = useCallback((response: string) => {
+    try {
+      const data = JSON.parse(response)?.data?.[0];
+      console.log('data', data);
+      if (!isEmpty(data)) {
+        setBotProfile((draft) => {
+          draft.id = data.id;
+          draft.name = data.name;
+          draft.avatar = data.avatar;
+          draft.gitAvatar = data.avatar;
+          draft.prompt = data.prompt;
+          draft.description = data.description;
+          draft.starters = data.starters;
+          draft.public = data.public;
+          draft.helloMessage = data.hello_message;
+        });
+      }
+    } catch (e) {
+      console.error(JSON.stringify(e));
+    }
+  }, []);
 
   const isEdit = useMemo(
     () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
@@ -125,13 +147,13 @@ export default function Edit({ params }: { params: { id: string } }) {
     if (editError) {
       toast.error(`生成成功${editError.message}`);
     }
-  }, [getBotInfoByReponameSuccess]);
+  }, [getBotInfoByRepoNameSuccess]);
 
   useEffect(() => {
     if (editSuccess) {
       toast.success('生成失败');
     }
-  }, [getBotInfoByReponameError]);
+  }, [getBotInfoByRepoNameError]);
 
   useEffect(() => {
     const botInfo = createResponseData?.[0];
@@ -151,7 +173,7 @@ export default function Edit({ params }: { params: { id: string } }) {
     }
   }, [createResponseData]);
 
-  if (isLoading || getBotInfoByReponameLoading) {
+  if (isLoading || getBotInfoByRepoNameLoading) {
     return <FullPageSkeleton />;
   }
 
@@ -170,6 +192,10 @@ export default function Edit({ params }: { params: { id: string } }) {
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
         helloMessage="👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
+        getToolsResult={(result) => {
+          const data = result?.data;
+          updateConfigFromChatResult(data);
+        }}
       />
     </div>
   );
@@ -215,7 +241,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             startContent={<AIBtnIcon />}
             isLoading={createBotLoading}
             onClick={() => {
-              getBotInfoByReponame(botProfile?.repoName!);
+              getBotInfoByRepoName(botProfile?.repoName!);
             }}
           >
             重新生成配置
@@ -293,9 +319,23 @@ export default function Edit({ params }: { params: { id: string } }) {
               </div>
             </div>
             <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
-              {activeTab === 'chatConfig'
-                ? chatConfigContent
-                : manualConfigContent}
+              <div
+                style={{
+                  visibility: activeTab === 'chatConfig' ? 'visible' : 'hidden',
+                }}
+              >
+                {chatConfigContent}
+              </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  width: '50%',
+                  height: 'calc(100vh - 73px)',
+                  visibility: activeTab !== 'chatConfig' ? 'visible' : 'hidden',
+                }}
+              >
+                {manualConfigContent}
+              </div>
             </div>
           </div>
         </div>
