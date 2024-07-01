@@ -18,7 +18,8 @@ create table rag_docs
   -- per request info
   repo_name varchar,
   commit_id varchar,
-  file_sha varchar
+  bot_id varchar,
+  file_sha varchar,
   file_path varchar
 );
 

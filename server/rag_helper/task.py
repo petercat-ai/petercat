@@ -48,7 +48,8 @@ def add_task(config: GitDocConfig,
         "node_type": extra["node_type"],
         "from_task_id": extra["from_task_id"],
         "path": config.file_path,
-        "sha": sha
+        "sha": sha,
+        "bot_id": config.bot_id
     }
 
     return supabase.table(TABLE_NAME).insert(data).execute()
@@ -129,10 +130,14 @@ def handle_blob_task(task):
      .execute()
      )
 
-    result = retrieval.add_knowledge_by_doc(GitDocConfig(repo_name=task["repo_name"],
-                                                         file_path=task["path"],
-                                                         commit_id=task["commit_id"]
-                                                         ))
+    retrieval.add_knowledge_by_doc(
+        GitDocConfig(
+            repo_name=task["repo_name"],
+            file_path=task["path"],
+            commit_id=task["commit_id"],
+            bot_id=task["bot_id"]
+        )
+    )
 
     return (supabase.table(TABLE_NAME).update(
         {"status": TaskStatus.COMPLETED.name})

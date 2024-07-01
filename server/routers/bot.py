@@ -75,7 +75,7 @@ async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_u
         return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)
 
 @router.post("/config/generator", status_code=200)
-async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
+async def bot_generator(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
     try:
         res =  await bot_info_generator(user_id, **bot_data.model_dump())
         if not res:
