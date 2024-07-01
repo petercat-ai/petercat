@@ -3,6 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Streaming Bedrock Response with FastAPI on AWS Lambda
 
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -20,6 +21,10 @@ Parameters:
   GitHubToken:
     Type: String
     Description: Github Token
+    Default: 1
+  GithubInstallationId:
+    Type: String
+    Description: GithubInstallationId
     Default: 1
   APIIdentifier:
     Type: String
@@ -62,6 +67,7 @@ Resources:
           X_GITHUB_APP_ID: !Ref GitHubAppID
           X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
           X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          X_GITHUB_INSTALLATION_ID: !Ref GithubInstallationId
           API_IDENTIFIER: !Ref APIIdentifier
           FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
           OPENAI_API_KEY: !Ref OpenAIAPIKey
@@ -73,12 +79,12 @@ Resources:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
       Policies:
-      - Statement:
-        - Sid: BedrockInvokePolicy
-          Effect: Allow
-          Action:
-          - bedrock:InvokeModelWithResponseStream
-          Resource: '*'
+        - Statement:
+            - Sid: BedrockInvokePolicy
+              Effect: Allow
+              Action:
+                - bedrock:InvokeModelWithResponseStream
+              Resource: '*'
       Tracing: Active
     Metadata:
       DockerContext: server
@@ -87,8 +93,8 @@ Resources:
 
 Outputs:
   FastAPIFunctionUrl:
-    Description: "Function URL for FastAPI function"
+    Description: 'Function URL for FastAPI function'
     Value: !GetAtt FastAPIFunctionUrl.FunctionUrl
   FastAPIFunction:
-    Description: "FastAPI Lambda Function ARN"
+    Description: 'FastAPI Lambda Function ARN'
     Value: !GetAtt FastAPIFunction.Arn

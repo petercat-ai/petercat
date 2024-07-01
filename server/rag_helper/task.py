@@ -3,13 +3,23 @@ from typing import Optional, Dict
 
 from github import Auth, Repository
 from github import Github
-from langchain_core.utils import get_from_env
 
 from data_class import GitDocConfig
 from db.supabase.client import get_client
 from rag_helper import retrieval
+from uilts.env import get_env_variable
+from uilts.github import get_private_key
 
-g = Github(auth=Auth.Token(get_from_env("access_token", 'GITHUB_TOKEN')))
+APP_ID = get_env_variable("X_GITHUB_APP_ID")
+GITHUB_INSTALLATION_ID = get_env_variable("X_GITHUB_INSTALLATION_ID")
+
+auth = Auth.AppAuth(
+    app_id=APP_ID,
+    private_key=get_private_key(),
+    jwt_algorithm="RS256"
+).get_installation_auth(installation_id=int(GITHUB_INSTALLATION_ID))
+
+g = Github(auth)
 
 TABLE_NAME = "rag_tasks"
 

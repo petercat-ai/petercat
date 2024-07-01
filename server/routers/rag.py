@@ -18,7 +18,7 @@ router = APIRouter(
 def add_knowledge_by_doc(config: GitDocConfig):
     try:
         result = retrieval.add_knowledge_by_doc(config)
-        if (result):
+        if result:
             return json.dumps({
                 "success": True,
                 "message": "Knowledge added successfully!",
