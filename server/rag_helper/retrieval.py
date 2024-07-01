@@ -11,7 +11,6 @@ from uilts.env import get_env_variable
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
-ACCESS_TOKEN = get_env_variable("GITHUB_TOKEN")
 
 TABLE_NAME = "rag_docs"
 QUERY_NAME = "match_rag_docs"
@@ -41,25 +40,23 @@ def init_s3_Loader(config: S3Config):
     loader = S3DirectoryLoader(config.s3_bucket, prefix=config.file_path)
     return loader
 
+# TODO init_github_issue_loader
+# def init_github_issue_loader(config: GitIssueConfig):
+#     from langchain_community.document_loaders import GitHubIssuesLoader
 
-def init_github_issue_loader(config: GitIssueConfig):
-    from langchain_community.document_loaders import GitHubIssuesLoader
-
-    loader = GitHubIssuesLoader(
-        repo=config.repo_name,
-        access_token=ACCESS_TOKEN,
-        page=config.page,
-        per_page=config.per_page,
-        state=config.state
-    )
-    return loader
+#     loader = GitHubIssuesLoader(
+#         repo=config.repo_name,
+#         access_token=ACCESS_TOKEN,
+#         page=config.page,
+#         per_page=config.per_page,
+#         state=config.state
+#     )
+#     return loader
 
 
 def init_github_file_loader(config: GitDocConfig):
     loader = GithubFileLoader(
         repo=config.repo_name,
-        access_token=ACCESS_TOKEN,
-        github_api_url="https://api.github.com",
         branch=config.branch,
         file_path=config.file_path,
         file_filter=lambda file_path: file_path.endswith(".md"),
@@ -89,27 +86,27 @@ def supabase_embedding(documents, **kwargs: Any):
         print(e)
         return None
 
-
-def add_knowledge_by_issues(config: GitIssueConfig, ):
-    try:
-        loader = init_github_issue_loader(config)
-        documents = loader.load()
-        store = supabase_embedding(documents, repo_name=config.repo_name)
-        if (store):
-            return json.dumps({
-                "success": True,
-                "message": "Knowledge added successfully!",
-            })
-        else:
-            return json.dumps({
-                "success": False,
-                "message": "Knowledge not added!"
-            })
-    except Exception as e:
-        return json.dumps({
-            "success": False,
-            "message": str(e)
-        })
+# TODO this feature is not implemented yet
+# def add_knowledge_by_issues(config: GitIssueConfig):
+#     try:
+#         loader = init_github_issue_loader(config)
+#         documents = loader.load()
+#         store = supabase_embedding(documents, repo_name=config.repo_name)
+#         if (store):
+#             return json.dumps({
+#                 "success": True,
+#                 "message": "Knowledge added successfully!",
+#             })
+#         else:
+#             return json.dumps({
+#                 "success": False,
+#                 "message": "Knowledge not added!"
+#             })
+#     except Exception as e:
+#         return json.dumps({
+#             "success": False,
+#             "message": str(e)
+#         })
 
 
 def add_knowledge_by_doc(config: GitDocConfig):
@@ -121,7 +118,8 @@ def add_knowledge_by_doc(config: GitDocConfig):
         .select("id, repo_name, commit_id, file_path")
         .eq('repo_name', config.repo_name)
         .eq('commit_id', loader.commit_id)
-        .eq('file_path', config.file_path).execute()
+        .eq('file_path', config.file_path)
+        .execute()
     )
     if not is_added_query.data:
         is_equal_query = (
@@ -130,11 +128,14 @@ def add_knowledge_by_doc(config: GitDocConfig):
             .eq('file_sha', loader.file_sha)
         ).execute()
         if not is_equal_query.data:
-            store = supabase_embedding(documents,
-                                       repo_name=config.repo_name,
-                                       commit_id=loader.commit_id,
-                                       file_sha=loader.file_sha,
-                                       file_path=config.file_path)
+            store = supabase_embedding(
+                documents,
+                repo_name=config.repo_name,
+                commit_id=loader.commit_id,
+                file_sha=loader.file_sha,
+                file_path=config.file_path,
+                bot_id=config.bot_id
+            )
             return store
         else:
             new_commit_list = [

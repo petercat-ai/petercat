@@ -43,3 +43,4 @@ class GitDocConfig(BaseModel):
     file_path: str
     branch: Optional[str] = 'main'
     commit_id: Optional[str] = None
+    bot_id: Optional[str] = None
