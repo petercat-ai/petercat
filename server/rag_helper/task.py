@@ -13,11 +13,11 @@ from uilts.github import get_private_key
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 GITHUB_INSTALLATION_ID = get_env_variable("X_GITHUB_INSTALLATION_ID")
 
-auth = Auth.AppAuth(
+auth = (Auth.AppAuth(
     app_id=APP_ID,
     private_key=get_private_key(),
     jwt_algorithm="RS256"
-).get_installation_auth(installation_id=int(GITHUB_INSTALLATION_ID))
+)).token
 
 g = Github(auth)
 
