@@ -1,15 +1,14 @@
 from enum import Enum, auto
 from typing import Optional, Dict
 
-from github import Auth, Repository
 from github import Github
-from langchain_core.utils import get_from_env
+from github import Repository
 
 from data_class import GitDocConfig
 from db.supabase.client import get_client
 from rag_helper import retrieval
 
-g = Github(auth=Auth.Token(get_from_env("access_token", 'GITHUB_TOKEN')))
+g = Github()
 
 TABLE_NAME = "rag_tasks"
 
