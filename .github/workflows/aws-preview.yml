@@ -2,11 +2,11 @@ name: Deploy Backend to Preview ECS
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
     paths:
-      - "server/**"
+      - 'server/**'
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 env:
   AWS_REGION: ap-northeast-1
@@ -14,8 +14,8 @@ env:
   ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
 
 permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 jobs:
   deploy:
@@ -54,3 +54,4 @@ jobs:
                                   APIIdentifier=${{ secrets.API_IDENTIFIER }} \
                                   FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
                                   GitHubToken=${{ secrets.X_GITHUB_TOKEN }}
+                                  GithubInstallationId=${{ secrets.X_GITHUB_INSTALLATION_ID }}
