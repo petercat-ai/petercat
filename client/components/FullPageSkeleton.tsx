@@ -1,5 +1,9 @@
-import Lottie from 'lottie-react';
+'use client';
+import dynamic from 'next/dynamic';
+
 import peterCatWalkAnimation from '../public/loading.json';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 const FullPageSkeleton = () => {
   return (
