@@ -22,8 +22,8 @@ class TaskStatus(Enum):
     ERROR = auto()
 
 
-def add_task(config: GitDocConfig,
-             extra: Optional[Dict[str, Optional[str]]] = {"node_type": None, "from_task_id": None}):
+def add_task(config: GitDocConfig, 
+            extra: Optional[Dict[str, Optional[str]]] = {"node_type": None, "from_task_id": None}):
     repo = g.get_repo(config.repo_name)
     commit_id = config.commit_id if config.commit_id else repo.get_branch(config.branch).commit.sha
 

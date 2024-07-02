@@ -18,10 +18,13 @@ def init_prompt(input_data: ChatData):
     if input_data.prompt:
        prompt = input_data.prompt
     elif input_data.bot_id:
-        supabase = get_client()
-        res=supabase.table("bots").select('prompt').eq('id', input_data.bot_id).execute()
-        print('data', res.data[0]['prompt'])
-        prompt = res.data[0]['prompt']
+        try:
+            supabase = get_client()
+            res = supabase.table("bots").select('prompt').eq('id', input_data.bot_id).execute()
+            prompt = res.data[0]['prompt']
+        except Exception as e:
+            print(e)
+            prompt = generate_prompt_by_repo_name("ant-design")     
     else:
        prompt = generate_prompt_by_repo_name("ant-design")
    
