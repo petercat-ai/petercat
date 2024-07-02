@@ -15,7 +15,7 @@ supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")
 TABLE_NAME = "rag_docs"
 QUERY_NAME = "match_rag_docs"
 CHUNK_SIZE = 2000
-CHUNK_OVERLAP = 20
+CHUNK_OVERLAP = 200
 
 
 def convert_document_to_dict(document):

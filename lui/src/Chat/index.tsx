@@ -113,12 +113,13 @@ const Chat: FC<ChatProps> = memo(
 
     const messageMinWidth = drawerWidth
       ? `calc(${drawerWidth}px - 90px)`
-      : '100%';
+      : '400px';
     return (
       <div
         className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
         style={{
           ...style,
+          minWidth: drawerWidth,
           height: '100%',
         }}
       >
@@ -134,6 +135,9 @@ const Chat: FC<ChatProps> = memo(
             chatRef={proChatRef}
             helloMessage={botInfo.helloMessage}
             userMeta={{ title: 'User' }}
+            backToBottomConfig={{
+              style: { display: 'none' },
+            }}
             chatItemRenderConfig={{
               avatarRender: (props: ChatItemProps) => {
                 if (props.originData?.role === Role.user) {
@@ -157,12 +161,7 @@ const Chat: FC<ChatProps> = memo(
                 ) as any;
 
                 const defaultMessageContent = (
-                  <div
-                    className="leftMessageContent"
-                    style={{ minWidth: messageMinWidth }}
-                  >
-                    {defaultDom}
-                  </div>
+                  <div className="leftMessageContent">{defaultDom}</div>
                 );
 
                 if (!originMessage || typeof originMessage === 'string') {
