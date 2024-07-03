@@ -31,7 +31,7 @@ app.add_middleware(
     secret_key = session_secret_key,
 )
 
-cors_origins = ["http://0.0.0.0:3000", "http://localhost:3000"] + cors_origins_whitelist.split(',')
+cors_origins = ["*"] if cors_origins_whitelist is None else cors_origins_whitelist.split(',')
 
 app.add_middleware(
     CORSMiddleware,
