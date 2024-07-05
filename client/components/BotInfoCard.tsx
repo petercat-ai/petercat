@@ -1,5 +1,5 @@
-import { Tables } from '@/types/database.types';
-import { Avatar, Chip, Skeleton } from '@nextui-org/react';
+'use client';
+import { Avatar, Chip } from '@nextui-org/react';
 import { Dispatch, SetStateAction } from 'react';
 import { map } from 'lodash';
 

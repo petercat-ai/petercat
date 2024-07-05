@@ -1,15 +1,15 @@
 'use client';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Tables } from '@/types/database.types';
-import React, { useEffect, useState } from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import BotList from '../components/BotList';
+import BotList from '@/components/BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 import { Assistant } from 'petercat-lui';
-
 import 'petercat-lui/dist/style/global.css';
+import { useFingerprint } from './hooks/useFingerprint';
 
 declare type Bot = Tables<'bots'>;
 
@@ -18,23 +18,47 @@ const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 export default function Home() {
   const { search } = useSearch();
   const [visible, setVisible] = useState(false);
+  const [isComplete, setComplete] = useState(false);
   const [currentBot, setCurrentBot] = useState<string>('');
-  let { data: bots, isLoading, error } = useBotList(false, search);
+  const { data: bots, isLoading, error } = useBotList(false, search);
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const { data } = useFingerprint();
 
-  if (isLoading) {
-    return <FullPageSkeleton />;
-  }
-  if (error) {
-    return <div>Error loading bots!{error.message}</div>;
-  }
+  useEffect(() => {
+    setUserInfo(sessionStorage.getItem('userInfo'));
+  }, []);
+
+  const isOpening = useMemo(
+    () => !userInfo && (isLoading || !isComplete),
+    [isComplete, isLoading, userInfo],
+  );
+
+  useEffect(() => {
+    if (data) {
+      sessionStorage.setItem('userInfo', JSON.stringify(data?.visitorId));
+    }
+  }, [data]);
+
   const handleCardClick = (id: string) => {
     setVisible(true);
     setCurrentBot(id);
   };
 
-  const onClose = () => {
-    setVisible(false);
-  };
+  const onClose = () => setVisible(false);
+
+  if (isOpening) {
+    return (
+      <FullPageSkeleton type="OPENING" onComplete={() => setComplete(true)} />
+    );
+  }
+
+  if (isLoading) {
+    return <FullPageSkeleton />;
+  }
+
+  if (error) {
+    return <div>Error loading bots! {error.message}</div>;
+  }
 
   return (
     <div>
@@ -42,11 +66,7 @@ export default function Home() {
         <BotList type="list" />
         {!isEmpty(bots) &&
           map(bots, (bot: Bot) => (
-            <BotCard
-              key={bot.id}
-              bot={bot}
-              handleCardClick={handleCardClick}
-            />
+            <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />
           ))}
       </div>
       <Assistant

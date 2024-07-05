@@ -15,6 +15,7 @@ declare type Bot = Tables<'bots'>;
 export default function List() {
   const { search } = useSearch();
   let { data: bots, isLoading, error } = useBotList(true, search);
+
   if (isLoading) {
     return <FullPageSkeleton />;
   }
