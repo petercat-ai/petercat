@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Avatar, Button, Link } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import useUser from '../app/hooks/useUser';
 import { LoginIcon } from '@/public/icons/LoginIcon';
 
@@ -8,7 +8,7 @@ export default function Profile() {
   const router = useRouter();
   const { data: user, status } = useUser();
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
-  if (!user || status !== "success") {
+  if (!user || status !== 'success') {
     return (
       <Button
         onPress={() => router.push(`${apiDomain}/api/auth/login`)}
@@ -20,7 +20,13 @@ export default function Profile() {
     );
   }
 
-  return (<Avatar src={user.picture!} alt={user.name!} classNames={{
-    icon: "w-[40px] h-[40px]",
-  }}/>);
+  return (
+    <Avatar
+      src={user.picture!}
+      alt={user.name!}
+      classNames={{
+        icon: 'w-[40px] h-[40px]',
+      }}
+    />
+  );
 }
