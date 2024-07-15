@@ -39,18 +39,18 @@ async def bot_info_generator(
         print(f"An error occurred: {e}")
         return None
     
-async def trigger_rag_task (repo_name: str, bot_id: str):
+def trigger_rag_task (repo_name: str, bot_id: str):
     try:
         repo = g.get_repo(repo_name)
         default_branch = repo.default_branch
         config = GitDocConfig(
             repo_name=repo_name,
             branch=default_branch,
+            bot_id=bot_id,
             file_path='',
-            bot_id=bot_id
+            commit_id=''
         )
-
-        await add_task(config, bot_id)
+        add_task(config )
     except Exception as e:
         print(f"trigger_rag_task error: {e}")
     
@@ -77,7 +77,7 @@ async def bot_builder(
         response = supabase.table("bots").insert(bot_data).execute()
         if response:
             bot_id = response.data[0]["id"]
-            await trigger_rag_task(repo_name, bot_id=bot_id)
+            trigger_rag_task(repo_name, bot_id=bot_id)
         return response
     except Exception as e:
         print(f"An error occurred: {e}")
