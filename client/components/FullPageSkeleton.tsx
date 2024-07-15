@@ -24,7 +24,12 @@ const FullPageSkeleton = (props: FullPageSkeletonProps) => {
         autoplay={true}
         animationData={SKELETON_MAP[type]}
         onLoopComplete={onComplete}
-        style={{ width: '25%', height: '25%' }}
+        style={{
+          minHeight: '900px',
+          maxHeight: '1440px',
+          width: '50%',
+          height: '50%',
+        }}
       />
     </div>
   );
