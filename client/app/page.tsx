@@ -48,7 +48,11 @@ export default function Home() {
 
   if (isOpening) {
     return (
-      <FullPageSkeleton type="OPENING" onComplete={() => setComplete(true)} />
+      <FullPageSkeleton
+        type="OPENING"
+        loop={false}
+        onComplete={() => setComplete(true)}
+      />
     );
   }
 
@@ -61,7 +65,7 @@ export default function Home() {
   }
 
   return (
-    <div className="mb-[40px]">
+    <div>
       <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         <BotList type="list" />
         {!isEmpty(bots) &&
