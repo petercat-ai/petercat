@@ -33,7 +33,7 @@ export default function RootLayout({
               <BotProvider>
                 <div className="flex flex-col">
                   <Navbar></Navbar>
-                  {children}
+                  <div className="pb-[40px]">{children}</div>
                 </div>
               </BotProvider>
             </SearchProvider>
