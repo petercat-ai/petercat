@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .leftMessageContent .ant-pro-chat-list-item-message-content{
   padding: 8px 16px 8px 16px;
   gap: 0px;
