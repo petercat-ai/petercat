@@ -24,3 +24,5 @@ jose
 itsdangerous
 fastapi_auth0
 requests
+pytest
+httpx
