@@ -48,3 +48,6 @@ next-env.d.ts
 
 # IDE
 .idea
+
+# Pytest
+.pytest_cache
