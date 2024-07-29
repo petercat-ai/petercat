@@ -14,7 +14,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
 from langchain_openai import ChatOpenAI
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
 TAVILY_API_KEY =  get_env_variable("TAVILY_API_KEY")
@@ -184,4 +184,3 @@ class AgentBuilder:
                 )
         except Exception as e:
             return f"error: {str(e)}\n"
-
