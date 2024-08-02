@@ -8,6 +8,7 @@ node_modules/
 server/temp/
 
 venv
+.venv/
 
 # testing
 /coverage
@@ -52,3 +53,5 @@ next-env.d.ts
 
 # Pytest
 .pytest_cache
+
+dist/

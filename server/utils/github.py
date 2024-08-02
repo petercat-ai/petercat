@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from event_handler.pull_request import PullRequestEventHandler
 from event_handler.discussion import DiscussionEventHandler
 from event_handler.issue import IssueEventHandler
-from utils.env import get_env_variable
+from petercat_utils import get_env_variable
 from github import Auth
 
 

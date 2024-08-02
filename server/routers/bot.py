@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Path
 from fastapi.responses import JSONResponse
-from db.supabase.client import get_client
+from petercat_utils import get_client
 from bot.builder import bot_builder, bot_info_generator
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 from typing import Optional

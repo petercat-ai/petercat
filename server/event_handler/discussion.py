@@ -4,7 +4,8 @@ from typing import Any
 from github import Github, Auth
 from github import GithubException
 from agent.qa_chat import agent_chat
-from data_class import ChatData, Message, TextContentBlock
+
+from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 class DiscussionEventHandler():
     event: Any

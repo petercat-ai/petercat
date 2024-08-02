@@ -2,7 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, Header, Request
 import logging
 from github import Auth
 from utils.github import get_handler, get_private_key
-from utils.env import get_env_variable
+from petercat_utils import get_env_variable
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 

@@ -49,6 +49,10 @@ Parameters:
     Type: String
     Description: Github App Id
     Default: 1
+  SQSQueueName:
+    Type: String
+    Description: SQS Queue Name
+    Default: 1
 
 Resources:
   FastAPIFunction:
@@ -85,6 +89,39 @@ Resources:
       Dockerfile: ../docker/Dockerfile.aws.lambda
       DockerTag: v1
 
+  SQSSubscriptionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      MemorySize: 512
+      FunctionUrlConfig:
+        AuthType: NONE
+      Environment:
+        Variables:
+          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
+          SUPABASE_URL: !Ref SupabaseUrl
+          GITHUB_TOKEN: !Ref GitHubToken
+      Policies:
+      - Statement:
+        - Sid: BedrockInvokePolicy
+          Effect: Allow
+          Action:
+          - bedrock:InvokeModelWithResponseStream
+          Resource: '*'
+        - Sid: SQSInvokePolicy
+          Effect: Allow
+          Action:
+          - sqs:*
+          Resource: '*'
+      - SQSPollerPolicy:
+          QueueName: 
+            !Ref SQSQueueName
+      Tracing: Active
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: subscriber
+      DockerTag: v1
+
 Outputs:
   FastAPIFunctionUrl:
     Description: "Function URL for FastAPI function"
@@ -92,3 +129,10 @@ Outputs:
   FastAPIFunction:
     Description: "FastAPI Lambda Function ARN"
     Value: !GetAtt FastAPIFunction.Arn
+
+  SQSSubscriptionFunctionUrl:
+    Description: "Function URL for SQS Subscriptio function"
+    Value: !GetAtt SQSSubscriptionFunctionUrl.FunctionUrl
+  SQSSubscriptionFunction:
+    Description: "SQS Subscription Function Lambda Function ARN"
+    Value: !GetAtt SQSSubscriptionFunction.Arn
