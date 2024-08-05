@@ -3,7 +3,7 @@ from github import Github
 from db.supabase.client import get_client
 from prompts.bot_template import generate_prompt_by_repo_name
 from rag_helper.task import add_task
-from data_class import GitDocConfig
+from data_class import RAGGitDOCConfig
 
 g = Github()
 
@@ -38,22 +38,22 @@ async def bot_info_generator(
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-    
+
 def trigger_rag_task (repo_name: str, bot_id: str):
     try:
         repo = g.get_repo(repo_name)
         default_branch = repo.default_branch
-        config = GitDocConfig(
+        config = RAGGitDOCConfig(
             repo_name=repo_name,
             branch=default_branch,
             bot_id=bot_id,
-            file_path='',
-            commit_id=''
+            file_path="",
+            commit_id="",
         )
         add_task(config )
     except Exception as e:
         print(f"trigger_rag_task error: {e}")
-    
+
 
 async def bot_builder(
     uid: str,

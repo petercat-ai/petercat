@@ -7,6 +7,8 @@ import base64
 from typing import Callable, Dict, List, Optional
 from github import Github
 from langchain_core.documents import Document
+
+
 class GithubFileLoader:
     repo: str
     github: Github
@@ -19,13 +21,13 @@ class GithubFileLoader:
     github_api_url: str = "https://api.github.com"
 
     def __init__(self, **data: Dict):
-        self.repo = data['repo']
-        self.file_path = data['file_path']
-        self.branch = data['branch']
-        self.file_filter = data['file_filter']
+        self.repo = data["repo"]
+        self.file_path = data["file_path"]
+        self.branch = data["branch"]
+        self.file_filter = data["file_filter"]
         self.github = Github()
-        if 'commit_id' in data:
-            self.commit_id = data['commit_id']
+        if "commit_id" in data and data["commit_id"]:
+            self.commit_id = data["commit_id"]
         else:
             self.commit_id = self.get_commit_id_by_branch(self.branch)
 

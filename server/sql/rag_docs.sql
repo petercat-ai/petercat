@@ -24,18 +24,21 @@ create table rag_docs
 );
 
 -- Drop the existing function if it already exists
-drop function if exists match_rag_docs
-(vector, jsonb);
+drop function if exists match_rag_docs;
 
 -- Create a function to search for rag_docs
-create function match_rag_docs (
+create function match_rag_docs
+ (
   query_embedding vector (1536),
-  filter jsonb default '{}'
+  query_bot_id text,
+  filter jsonb default '{}',
+  query_limit integer default 4
 ) returns table
 (
   id uuid,
   content text,
   metadata jsonb,
+  embedding vector,
   similarity float
 ) language plpgsql as $$
 #variable_conflict use_column
@@ -45,10 +48,13 @@ begin
     id,
     content,
     metadata,
+    embedding,
     1 - (rag_docs.embedding <=> query_embedding
   ) as similarity
   from rag_docs
   where metadata @> filter
-  order by rag_docs.embedding <=> query_embedding;
+  and bot_id = query_bot_id
+  order by rag_docs.embedding <=> query_embedding
+  limit query_limit;
 end;
 $$;
