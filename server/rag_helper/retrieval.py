@@ -13,6 +13,12 @@ from utils.env import get_env_variable
 from urllib.parse import quote
 
 
+TABLE_NAME = "rag_docs"
+QUERY_NAME = "match_rag_docs"
+CHUNK_SIZE = 2000
+CHUNK_OVERLAP = 200
+
+
 def convert_document_to_dict(document):
     return (document.page_content,)
 
@@ -28,12 +34,6 @@ def init_retriever(search_kwargs):
     )
 
     return vector_store.as_retriever(search_kwargs=search_kwargs)
-
-
-TABLE_NAME = "rag_docs"
-QUERY_NAME = "match_rag_docs"
-CHUNK_SIZE = 2000
-CHUNK_OVERLAP = 200
 
 
 def init_s3_Loader(config: S3Config):
