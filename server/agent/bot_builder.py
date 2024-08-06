@@ -5,7 +5,6 @@ from prompts.bot_builder import generate_prompt_by_user_id
 from tools import bot_builder
 
 
-
 TOOL_MAPPING = {
     "create_bot": bot_builder.create_bot,
     "edit_bot": bot_builder.edit_bot,

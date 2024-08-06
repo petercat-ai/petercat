@@ -22,6 +22,7 @@ def run_qa_chat(input_data: ChatData):
     result = qa_chat.agent_stream_chat(input_data)
     return StreamingResponse(result, media_type="text/event-stream")
 
+
 @router.post("/qa", dependencies=[Depends(verify_rate_limit)])
 async def run_issue_helper(input_data: ChatData):
     result = await qa_chat.agent_chat(input_data)
@@ -34,4 +35,3 @@ def run_bot_builder(input_data: ChatData, user_id: str = Cookie(None), bot_id: O
         return StreamingResponse(generate_auth_failed_stream(), media_type="text/event-stream")
     result = bot_builder.agent_stream_chat(input_data, user_id, bot_id)
     return StreamingResponse(result, media_type="text/event-stream")
-

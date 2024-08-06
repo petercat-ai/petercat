@@ -3,7 +3,7 @@ from github import Github
 from db.supabase.client import get_client
 from prompts.bot_template import generate_prompt_by_repo_name
 from rag_helper.task import add_task
-from data_class import RAGGitDOCConfig
+from data_class import RAGGitDocConfig
 
 g = Github()
 
@@ -43,7 +43,7 @@ def trigger_rag_task (repo_name: str, bot_id: str):
     try:
         repo = g.get_repo(repo_name)
         default_branch = repo.default_branch
-        config = RAGGitDOCConfig(
+        config = RAGGitDocConfig(
             repo_name=repo_name,
             branch=default_branch,
             bot_id=bot_id,

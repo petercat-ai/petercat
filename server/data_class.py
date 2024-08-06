@@ -48,5 +48,5 @@ class GitDocConfig(BaseModel):
     commit_id: Optional[str] = ""
 
 
-class RAGGitDOCConfig(GitDocConfig):
+class RAGGitDocConfig(GitDocConfig):
     bot_id: str

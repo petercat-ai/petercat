@@ -6,7 +6,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
 import numpy as np
 
-from data_class import GitDocConfig, GitIssueConfig, RAGGitDOCConfig, S3Config
+from data_class import GitDocConfig, GitIssueConfig, RAGGitDocConfig, S3Config
 from db.supabase.client import get_client
 from rag_helper.github_file_loader import GithubFileLoader
 from utils.env import get_env_variable
@@ -20,7 +20,7 @@ CHUNK_OVERLAP = 200
 
 
 def convert_document_to_dict(document):
-    return (document.page_content,)
+    return document.page_content
 
 
 def init_retriever(search_kwargs):
@@ -115,7 +115,7 @@ def supabase_embedding(documents, **kwargs: Any):
 #         })
 
 
-def add_knowledge_by_doc(config: RAGGitDOCConfig):
+def add_knowledge_by_doc(config: RAGGitDocConfig):
     loader = init_github_file_loader(config)
     documents = loader.load()
     supabase = get_client()

@@ -1,5 +1,6 @@
 import json
 from typing import AsyncIterator, Dict, Callable, Optional
+
 # import uuid
 from langchain.agents import AgentExecutor
 from data_class import ChatData, Message
@@ -17,17 +18,19 @@ from langchain_openai import ChatOpenAI
 from utils.env import get_env_variable
 
 OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
-TAVILY_API_KEY =  get_env_variable("TAVILY_API_KEY")
+TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
+
 
 class AgentBuilder:
-    
+
     def __init__(
-        self, 
-        prompt: str, 
-        tools:  Dict[str, Callable], 
-        enable_tavily: Optional[bool] = True, 
+        self,
+        prompt: str,
+        tools: Dict[str, Callable],
+        enable_tavily: Optional[bool] = True,
         temperature: Optional[int] = 0.2,
-        max_tokens: Optional[int] = 1500
+        max_tokens: Optional[int] = 1500,
+        runtime_invoke_context: Optional[Dict] = {},
     ):
         """
         @class `Builde AgentExecutor based on tools and prompt`
@@ -45,25 +48,27 @@ class AgentBuilder:
         self.agent_executor = self._create_agent_with_tools()
 
     def init_tavily_tools(self):
-        # init Tavily 
+        # init Tavily
         search = TavilySearchAPIWrapper()
         tavily_tool = TavilySearchResults(api_wrapper=search)
         return [tavily_tool]
-    
-    def _create_agent_with_tools(self) -> AgentExecutor:
-        llm = ChatOpenAI(model="gpt-4o", temperature=self.temperature, streaming=True, max_tokens=self.max_tokens, openai_api_key=OPEN_API_KEY)
 
-        tools =  self.init_tavily_tools() if self.enable_tavily else []
-        
+    def _create_agent_with_tools(self) -> AgentExecutor:
+        llm = ChatOpenAI(
+            model="gpt-4o",
+            temperature=self.temperature,
+            streaming=True,
+            max_tokens=self.max_tokens,
+            openai_api_key=OPEN_API_KEY,
+        )
+
+        tools = self.init_tavily_tools() if self.enable_tavily else []
+
         for tool in self.tools.values():
             tools.append(tool)
 
         if tools:
-            llm_with_tools = llm.bind(
-                tools=[convert_to_openai_tool(tool) for tool in tools]
-            )
-        else:
-            llm_with_tools = llm
+            llm = llm.bind_tools([convert_to_openai_tool(tool) for tool in tools])
 
         self.prompt = self.get_prompt()
         agent = (
@@ -75,12 +80,18 @@ class AgentBuilder:
                 "chat_history": lambda x: x["chat_history"],
             }
             | self.prompt
-            | llm_with_tools
+            | llm
             | OpenAIToolsAgentOutputParser()
         )
 
-        return AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True, max_iterations=5)
-    
+        return AgentExecutor(
+            agent=agent,
+            tools=tools,
+            verbose=True,
+            handle_parsing_errors=True,
+            max_iterations=5,
+        )
+
     def get_prompt(self):
         return ChatPromptTemplate.from_messages(
             [
@@ -95,7 +106,7 @@ class AgentBuilder:
     def chat_history_transform(messages: list[Message]):
         transformed_messages = []
         for message in messages:
-            print('message', message)
+            print("message", message)
             if message.role == "user":
                 transformed_messages.append(HumanMessage(content=message.content))
             elif message.role == "assistant":
@@ -108,7 +119,6 @@ class AgentBuilder:
         try:
             messages = input_data.messages
             print(self.chat_history_transform(messages))
-        
             async for event in self.agent_executor.astream_events(
                 {
                     "input": messages[len(messages) - 1].content,
@@ -118,18 +128,14 @@ class AgentBuilder:
             ):
                 kind = event["event"]
                 if kind == "on_chain_start":
-                    if (
-                        event["name"] == "agent"
-                    ): 
+                    if event["name"] == "agent":
                         print(
-                        f"Starting agent: {event['name']} "
-                        f"with input: {event['data'].get('input')}"
+                            f"Starting agent: {event['name']} "
+                            f"with input: {event['data'].get('input')}"
                         )
                 elif kind == "on_chain_end":
-                    if (
-                        event["name"] == "agent"
-                    ): 
-                        print (
+                    if event["name"] == "agent":
+                        print(
                             f"Done agent: {event['name']} "
                             f"with output: {event['data'].get('output')['output']}"
                         )
@@ -137,50 +143,59 @@ class AgentBuilder:
                     # id =  str(uuid.uuid4())
                     content = event["data"]["chunk"].content
                     if content:
-                        json_output = json.dumps({
-                            "type": "message",
-                            "content": content,
-                        }, ensure_ascii=False)
+                        json_output = json.dumps(
+                            {
+                                "type": "message",
+                                "content": content,
+                            },
+                            ensure_ascii=False,
+                        )
                         yield f"{json_output}\n\n"
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
-                    json_output = json.dumps({
-                        "type": "tool",
-                        "extra": {
-                            "source": f"已调用工具: {event['name']}",
-                            "pluginName": "GitHub",
-                            "data": json.dumps(children_value, ensure_ascii=False),
-                            "status": "loading"
-                        }
-                    }, ensure_ascii=False)
-                   
+                    json_output = json.dumps(
+                        {
+                            "type": "tool",
+                            "extra": {
+                                "source": f"已调用工具: {event['name']}",
+                                "pluginName": "GitHub",
+                                "data": json.dumps(children_value, ensure_ascii=False),
+                                "status": "loading",
+                            },
+                        },
+                        ensure_ascii=False,
+                    )
+
                     yield f"{json_output}\n\n"
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
-                    json_output = json.dumps({
-                        "type": "tool",
-                        "extra": {
-                            "source": f"已调用工具: {event['name']}",
-                            "pluginName": "GitHub",
-                            "data": children_value,
-                            "status": "success"
+                    json_output = json.dumps(
+                        {
+                            "type": "tool",
+                            "extra": {
+                                "source": f"已调用工具: {event['name']}",
+                                "pluginName": "GitHub",
+                                "data": children_value,
+                                "status": "success",
+                            },
                         },
-                    }, ensure_ascii=False)
+                        ensure_ascii=False,
+                    )
                     yield f"{json_output}\n\n"
         except Exception as e:
             yield f"error: {str(e)}\n\n"
-    
+
     async def run_chat(self, input_data: ChatData) -> str:
         try:
             messages = input_data.messages
-            print('history', self.chat_history_transform(messages))
-        
+            print("history", self.chat_history_transform(messages))
+
             return self.agent_executor.invoke(
                 {
                     "input": messages[len(messages) - 1].content,
                     "chat_history": self.chat_history_transform(messages),
                 },
-                 return_only_outputs=True,
-                )
+                return_only_outputs=True,
+            )
         except Exception as e:
             return f"error: {str(e)}\n"

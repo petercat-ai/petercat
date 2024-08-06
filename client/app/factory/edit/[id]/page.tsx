@@ -18,6 +18,7 @@ import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
+import BookIcon from '@/public/icons/BookIcon';
 import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -247,6 +248,19 @@ export default function Edit({ params }: { params: { id: string } }) {
             重新生成配置
           </Button>
         )}
+        {isEdit ? (
+          <Button
+            radius="full"
+            className="bg-[#F1F1F1] text-gray-500"
+            startContent={<BookIcon />}
+            isLoading={createBotLoading}
+            onClick={() => {
+              getBotInfoByRepoName(botProfile?.repoName!);
+            }}
+          >
+            知识库
+          </Button>
+        ) : null}
       </div>
 
       {isEdit && <BotCreateFrom />}
@@ -377,6 +391,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                   style={{
                     backgroundColor: '#FCFCFC',
                   }}
+                  token={params.id}
                   apiDomain={API_HOST}
                   apiUrl="/api/chat/stream_qa"
                   prompt={botProfile?.prompt}

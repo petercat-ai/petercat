@@ -4,7 +4,7 @@ from typing import Optional, Dict
 from github import Github
 from github import Repository
 
-from data_class import GitDocConfig, RAGGitDOCConfig
+from data_class import GitDocConfig, RAGGitDocConfig
 from db.supabase.client import get_client
 from rag_helper import retrieval
 
@@ -23,7 +23,7 @@ class TaskStatus(Enum):
 
 
 def add_task(
-    config: RAGGitDOCConfig,
+    config: RAGGitDocConfig,
     extra: Optional[Dict[str, Optional[str]]] = {
         "node_type": None,
         "from_task_id": None,
@@ -136,7 +136,7 @@ def handle_blob_task(task):
      )
 
     retrieval.add_knowledge_by_doc(
-        RAGGitDOCConfig(
+        RAGGitDocConfig(
             repo_name=task["repo_name"],
             file_path=task["path"],
             commit_id=task["commit_id"],
