@@ -1,7 +1,7 @@
 <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [English](./README.md) | 简体中文
 
 # 介绍
-PeterCat 服务端，采用 FastAPI 框架开发。
+PeterCat 服务端，采用 FastAPI 框架开发。使用了 supabase 作为数据存储方案。
 
 # 功能模块
 ## 存储
@@ -85,17 +85,19 @@ create table rag_docs
 为了实现知识库的 Embedding 查询，需要创建一个 Function。
 [supabase 文档教程](https://supabase.com/docs/guides/ai/vector-columns#querying-a-vector--embedding)
 
-> 如果 Function 的入参发生了变化，需要将该function 进行删除后重新创建。事实上建议在项目上线后创建新版本的函数，保留历史函数。
+> 建议：
+> 1. 如果 Function 的入参发生了变化，需要将该function 进行删除后重新创建。事实上建议在项目上线后创建新版本的函数，保留历史函数。
+> 2. 将函数备份在本项目中 server/sql/rag_docs.sql
+#### 示例
+这些 sql 可以在 SQL Editor 中执行。
 ```sql
 -- 删除函数
 drop function if exists match_rag_docs_v1;
 -- 新建函数
-create or replace function match_rag_docs_v1
+create function match_rag_docs_v1
  (
   query_embedding vector (1536),
-  query_bot_id text,
-  filter jsonb default '{}',
-  query_limit integer default 4
+  filter jsonb default '{}'
 ) returns table
 (
   id uuid,
@@ -115,11 +117,9 @@ begin
     1 - (rag_docs.embedding <=> query_embedding
   ) as similarity
   from rag_docs
-  where metadata @> filter
-  and bot_id = query_bot_id
-  -- <=> 为 embedding 比较函数
-  order by rag_docs.embedding <=> query_embedding
-  limit query_limit;
+  where metadata @> jsonb_extract_path(filter, 'metadata')
+  and bot_id = jsonb_extract_path_text(filter, 'bot_id')
+  order by rag_docs.embedding <=> query_embedding;
 end;
 $$;
 ```

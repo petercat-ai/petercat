@@ -26,13 +26,10 @@ create table rag_docs
 -- Drop the existing function if it already exists
 drop function if exists match_rag_docs;
 
--- Create a function to search for rag_docs
 create function match_rag_docs
  (
   query_embedding vector (1536),
-  query_bot_id text,
-  filter jsonb default '{}',
-  query_limit integer default 4
+  filter jsonb default '{}'
 ) returns table
 (
   id uuid,
@@ -52,9 +49,8 @@ begin
     1 - (rag_docs.embedding <=> query_embedding
   ) as similarity
   from rag_docs
-  where metadata @> filter
-  and bot_id = query_bot_id
-  order by rag_docs.embedding <=> query_embedding
-  limit query_limit;
+  where metadata @> jsonb_extract_path(filter, 'metadata')
+  and bot_id = jsonb_extract_path_text(filter, 'bot_id')
+  order by rag_docs.embedding <=> query_embedding;
 end;
 $$;

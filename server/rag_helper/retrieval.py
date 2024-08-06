@@ -12,6 +12,24 @@ from rag_helper.github_file_loader import GithubFileLoader
 from utils.env import get_env_variable
 from urllib.parse import quote
 
+
+def convert_document_to_dict(document):
+    return (document.page_content,)
+
+
+def init_retriever(search_kwargs):
+    embeddings = OpenAIEmbeddings()
+    vector_store = SupabaseVectorStore(
+        embedding=embeddings,
+        client=get_client(),
+        table_name=TABLE_NAME,
+        query_name=QUERY_NAME,
+        chunk_size=CHUNK_SIZE,
+    )
+
+    return vector_store.as_retriever(search_kwargs=search_kwargs)
+
+
 TABLE_NAME = "rag_docs"
 QUERY_NAME = "match_rag_docs"
 CHUNK_SIZE = 2000
@@ -145,38 +163,10 @@ def add_knowledge_by_doc(config: RAGGitDOCConfig):
 def search_knowledge(
     query: str,
     bot_id: str,
-    meta_filter={},
+    meta_filter: Dict[str, Any] = {},
 ):
-    """
-    use supabase vector store to search knowledge
-    https://supabase.com/docs/guides/ai/vector-columns#querying-a-vector--embedding
-    """
-    embeddings = OpenAIEmbeddings().embed_query(query)
-    client = get_client()
-    query_builder = client.rpc(
-        QUERY_NAME,
-        {
-            "query_embedding": embeddings,
-            "filter": meta_filter,
-            "query_bot_id": bot_id,
-            "query_limit": 10,
-        },
-    )
-    res = query_builder.execute()
-    docs = [
-        (
-            Document(
-                metadata=search.get("metadata", {}),  # type: ignore
-                page_content=search.get("content", ""),
-            ),
-            search.get("similarity", 0.0),
-            # Supabase returns a vector type as its string represation (!).
-            # This is a hack to convert the string to numpy array.
-            np.fromstring(search.get("embedding", "").strip("[]"), np.float32, sep=","),
-        )
-        for search in res.data
-        if search.get("content")
-    ]
-    documents_as_dicts = [doc[0].page_content for doc in docs]
+    retriever = init_retriever({"filter": {"metadata": meta_filter, "bot_id": bot_id}})
+    docs = retriever.invoke(query)
+    documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
     return json_output
