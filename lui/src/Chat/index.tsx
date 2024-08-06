@@ -6,7 +6,6 @@ import type {
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
-
 import { isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
@@ -16,6 +15,7 @@ import React, {
   useState,
   type FC,
 } from 'react';
+import useSWR from 'swr';
 import StopBtn from '../StopBtn';
 import ThoughtChain from '../ThoughtChain';
 import SignatureIcon from '../icons/SignatureIcon';
@@ -26,7 +26,6 @@ import { convertChunkToJson, handleStream } from '../utils';
 import InputArea from './inputArea/InputArea';
 import Actions from './inputArea/actions';
 
-import useSWR from 'swr';
 import '../style/global.css';
 
 export interface BotInfo {

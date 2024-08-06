@@ -7,7 +7,7 @@ from langchain_openai import OpenAIEmbeddings
 from data_class import GitDocConfig, GitIssueConfig, S3Config
 from db.supabase.client import get_client
 from rag_helper.github_file_loader import GithubFileLoader
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 supabase_url = get_env_variable("SUPABASE_URL")
 supabase_key = get_env_variable("SUPABASE_SERVICE_KEY")

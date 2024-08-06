@@ -1,10 +1,9 @@
-
 from fastapi import Cookie, HTTPException
 from datetime import datetime, timedelta
 
 from auth.get_user_info import getUserInfoByToken
 from db.supabase.client import get_client
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED")
 RATE_LIMIT_REQUESTS = get_env_variable("RATE_LIMIT_REQUESTS") or 100

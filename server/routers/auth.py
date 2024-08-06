@@ -5,7 +5,7 @@ import httpx
 
 from db.supabase.client import get_client
 from auth.get_user_info import generateAnonymousUser, getAnonymousUserInfoByToken, getUserInfoByToken
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 

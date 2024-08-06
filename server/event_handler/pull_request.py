@@ -15,16 +15,15 @@ class PullRequestEventHandler():
 
     def execute(self):
         try:
-            match self.event['action']:
-                case 'opened':
-                    repo = self.g.get_repo(self.event['repository']["full_name"])
-                    pr = repo.get_pull(self.event["pull_request"]["number"])
-                    comment = pr.create_issue_comment("This is a comment from PeterCat")
+            if self.event['action'] == 'opened':
+                repo = self.g.get_repo(self.event['repository']["full_name"])
+                pr = repo.get_pull(self.event["pull_request"]["number"])
+                comment = pr.create_issue_comment("This is a comment from PeterCat")
 
-                    print(repo, pr, comment)
-                    return { "success": True }
-                case _:
-                    return { "success": True }
+                print(repo, pr, comment)
+                return { "success": True }
+            else:
+                return { "success": True }
         except GithubException as e:
             print(f"处理 GitHub 请求时出错：{e}")
             return {"success": False, "error": str(e)}

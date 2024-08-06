@@ -18,8 +18,7 @@ class IssueEventHandler():
     async def execute(self):
         try:
             print('actions:', self.event['action'])
-            match self.event['action']:
-              case 'opened':
+            if self.event['action'] == "opened":
                     repo_name = self.event['repository']["full_name"]
                     issue_number = self.event["issue"]["number"]
                     repo = self.g.get_repo(repo_name)

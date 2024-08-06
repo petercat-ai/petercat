@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 
 # Import fastapi routers
@@ -25,7 +25,7 @@ app = FastAPI(
     version="1.0",
     description="Agent Chat APIs"
 )
-    
+
 app.add_middleware(
     SessionMiddleware,
     secret_key = session_secret_key,
@@ -40,6 +40,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"], 
 )
+
 
 app.include_router(health_checker.router)
 app.include_router(github.router)

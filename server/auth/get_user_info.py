@@ -5,7 +5,7 @@ import random
 import string
 
 from db.supabase.client import get_client
-from uilts.env import get_env_variable
+from utils.env import get_env_variable
 
 random_str = lambda N: ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
 

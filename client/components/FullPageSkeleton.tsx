@@ -12,18 +12,19 @@ export const SKELETON_MAP = {
 
 export interface FullPageSkeletonProps {
   type?: 'LOADING' | 'OPENING';
+  loop?: boolean;
   onComplete?: () => void;
 }
 
 const FullPageSkeleton = (props: FullPageSkeletonProps) => {
-  const { type = 'LOADING', onComplete } = props;
+  const { type = 'LOADING', onComplete, loop = true } = props;
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-white bg-opacity-75">
       <Lottie
-        loop={true}
+        loop={loop}
         autoplay={true}
         animationData={SKELETON_MAP[type]}
-        onLoopComplete={onComplete}
+        onComplete={onComplete}
         style={{
           minHeight: '900px',
           maxHeight: '1440px',
