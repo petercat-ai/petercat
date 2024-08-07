@@ -19,7 +19,7 @@ import useSWR from 'swr';
 import StopBtn from '../StopBtn';
 import ThoughtChain from '../ThoughtChain';
 import SignatureIcon from '../icons/SignatureIcon';
-import { Role } from '../interface';
+import { Message, Role } from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
@@ -134,9 +134,6 @@ const Chat: FC<ChatProps> = memo(
             chatRef={proChatRef}
             helloMessage={botInfo.helloMessage}
             userMeta={{ title: 'User' }}
-            backToBottomConfig={{
-              style: { display: 'none' },
-            }}
             chatItemRenderConfig={{
               avatarRender: (props: ChatItemProps) => {
                 if (props.originData?.role === Role.user) {
@@ -154,6 +151,7 @@ const Chat: FC<ChatProps> = memo(
                 if (originData?.role === Role.user) {
                   return defaultDom;
                 }
+                console.log('originData', originData);
 
                 const originMessage = convertChunkToJson(
                   originData.content,
@@ -240,10 +238,13 @@ const Chat: FC<ChatProps> = memo(
                 )
                 .map((message) => ({
                   role: message.role,
-                  content: JSON.stringify(
-                    convertChunkToJson(message.content as string),
-                  ),
-                }));
+                  content: [
+                    {
+                      type: 'text',
+                      text: message.content,
+                    },
+                  ],
+                })) as Message[];
 
               const response = await streamChat(
                 newMessages,

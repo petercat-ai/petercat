@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { IPrompt } from '../interface';
+import { Message } from '../interface';
 
 /**
  * Chat api
- * @param message IPrompt
+ * @param message
  */
 export async function streamChat(
-  messages: IPrompt[],
+  messages: Message[],
   apiDomain: string,
   apiUrl = '/api/chat/stream_qa',
   prompt = '',

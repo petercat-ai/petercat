@@ -1,6 +1,5 @@
 import json
 from typing import AsyncIterator, Dict, Callable, Optional
-# import uuid
 from langchain.agents import AgentExecutor
 from data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
@@ -107,8 +106,6 @@ class AgentBuilder:
     async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[str]:
         try:
             messages = input_data.messages
-            print(self.chat_history_transform(messages))
-        
             async for event in self.agent_executor.astream_events(
                 {
                     "input": messages[len(messages) - 1].content,
@@ -117,34 +114,20 @@ class AgentBuilder:
                 version="v1",
             ):
                 kind = event["event"]
-                if kind == "on_chain_start":
-                    if (
-                        event["name"] == "agent"
-                    ): 
-                        print(
-                        f"Starting agent: {event['name']} "
-                        f"with input: {event['data'].get('input')}"
-                        )
-                elif kind == "on_chain_end":
-                    if (
-                        event["name"] == "agent"
-                    ): 
-                        print (
-                            f"Done agent: {event['name']} "
-                            f"with output: {event['data'].get('output')['output']}"
-                        )
-                if kind == "on_chat_model_stream":
-                    # id =  str(uuid.uuid4())
+                print("event", kind, event)
+                if kind == "on_llm_stream" or kind == "on_chat_model_stream":
                     content = event["data"]["chunk"].content
                     if content:
                         json_output = json.dumps({
+                            "id": event["run_id"],
                             "type": "message",
                             "content": content,
                         }, ensure_ascii=False)
-                        yield f"{json_output}\n\n"
+                        yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     json_output = json.dumps({
+                        "id": event["run_id"],
                         "type": "tool",
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
@@ -154,10 +137,11 @@ class AgentBuilder:
                         }
                     }, ensure_ascii=False)
                    
-                    yield f"{json_output}\n\n"
+                    yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
                     json_output = json.dumps({
+                        "id": event["run_id"],
                         "type": "tool",
                         "extra": {
                             "source": f"已调用工具: {event['name']}",
@@ -166,15 +150,17 @@ class AgentBuilder:
                             "status": "success"
                         },
                     }, ensure_ascii=False)
-                    yield f"{json_output}\n\n"
+                    yield f"data: {json_output}\n\n"
         except Exception as e:
-            yield f"error: {str(e)}\n\n"
+            res = {
+                "status": "error",
+                "message": str(e)
+            }
+            yield f"data: {json.dumps(res, ensure_ascii=False)}\n\n"
     
     async def run_chat(self, input_data: ChatData) -> str:
         try:
-            messages = input_data.messages
-            print('history', self.chat_history_transform(messages))
-        
+            messages = input_data.messages        
             return self.agent_executor.invoke(
                 {
                     "input": messages[len(messages) - 1].content,

@@ -4,7 +4,7 @@ from typing import Any
 from github import Github, Auth
 from github import GithubException
 from agent.qa_chat import agent_chat
-from data_class import ChatData, Message
+from data_class import ChatData, Message, TextContentBlock
 
 class DiscussionEventHandler():
     event: Any
@@ -93,8 +93,12 @@ class DiscussionEventHandler():
         repo = self.event['repository']["name"]
         discussion = self.event["discussion"]
         discussion_content = f"{discussion['title']}: {discussion['body']}"
+        text_block = TextContentBlock(
+            type="text",
+            text=discussion_content
+        )
         discussion_number = discussion["number"]
-        message = Message(role="user", content=discussion_content)
+        message = Message(role="user", content=[text_block])
 
         analysis_result = await agent_chat(ChatData(messages=[message]))
         discussion_id = await self.get_discussion_id(owner, repo, discussion_number)
