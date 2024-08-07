@@ -4,7 +4,7 @@ from typing import Optional, Dict
 from github import Github
 from github import Repository
 
-from data_class import GitDocConfig
+from data_class import GitDocConfig, RAGGitDocConfig
 from db.supabase.client import get_client
 from rag_helper import retrieval
 
@@ -22,8 +22,13 @@ class TaskStatus(Enum):
     ERROR = auto()
 
 
-def add_task(config: GitDocConfig, 
-            extra: Optional[Dict[str, Optional[str]]] = {"node_type": None, "from_task_id": None}):
+def add_task(
+    config: RAGGitDocConfig,
+    extra: Optional[Dict[str, Optional[str]]] = {
+        "node_type": None,
+        "from_task_id": None,
+    },
+):
     repo = g.get_repo(config.repo_name)
     commit_id = config.commit_id if config.commit_id else repo.get_branch(config.branch).commit.sha
 
@@ -131,19 +136,17 @@ def handle_blob_task(task):
      )
 
     retrieval.add_knowledge_by_doc(
-        GitDocConfig(
+        RAGGitDocConfig(
             repo_name=task["repo_name"],
             file_path=task["path"],
             commit_id=task["commit_id"],
-            bot_id=task["bot_id"]
+            bot_id=task["bot_id"],
         )
     )
-
     return (supabase.table(TABLE_NAME).update(
         {"status": TaskStatus.COMPLETED.name})
             .eq("id", task["id"])
             .execute())
-
 
 def trigger_task(task_id: Optional[str]):
     task = get_task_by_id(task_id) if task_id else get_oldest_task()
