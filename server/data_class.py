@@ -1,18 +1,38 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, List, TypeAlias, Union
 from pydantic import BaseModel
+from typing import Union
 
+class ImageURL(BaseModel):
+    url: str
+    """
+    The external URL of the image, must be a supported image types: jpeg, jpg, png,
+    gif, webp.
+    """
 
-class DalleData(BaseModel):
+    detail: Optional[Literal["auto", "low", "high"]] = None
+    """Specifies the detail level of the image.
+
+    `low` uses fewer tokens, you can opt in to high resolution using `high`. Default
+    value is `auto`
+    """
+
+class ImageURLContentBlock(BaseModel):
+    image_url: ImageURL
+    type: Literal["image_url"]
+    
+class TextContentBlock(BaseModel):
     text: str
 
+    type: Literal["text"]
+    """Always `text`."""
 
+MessageContent: TypeAlias =  Union[ImageURLContentBlock, TextContentBlock]
 class Message(BaseModel):
     role: str
-    content: str
-
+    content: List[MessageContent] = []
 
 class ChatData(BaseModel):
-    messages: list[Message] = []
+    messages: List[Message] = []
     prompt: Optional[str] = None
     bot_id: Optional[str] = None
 

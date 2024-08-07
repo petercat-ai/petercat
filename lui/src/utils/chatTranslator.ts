@@ -16,11 +16,17 @@ export const convertChunkToJson = (rawData: string) => {
 
   try {
     forEach(chunks, (chunk) => {
-      const parsedChunk = JSON.parse(chunk);
-      if (parsedChunk.type === 'tool') {
-        tools.push(parsedChunk);
-      } else if (parsedChunk.type === 'message') {
-        messages.push(parsedChunk.content);
+      const regex = /data: (.*?})\s*$/;
+      const match = chunk.match(regex);
+      if (match && match[1]) {
+        const parsedChunk = JSON.parse(match[1]);
+        if (parsedChunk.type === 'tool') {
+          tools.push(parsedChunk);
+        } else if (parsedChunk.type === 'message') {
+          messages.push(parsedChunk.content);
+        }
+      } else {
+        messages.push(chunk);
       }
     });
     return { tools, message: messages.join('') };

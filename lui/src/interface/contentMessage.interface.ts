@@ -36,9 +36,26 @@ export interface IParticipant {
   avatar: string;
 }
 
-export interface IPrompt {
-  content: string;
+interface ImageURL {
+  url: string;
+  detail?: 'auto' | 'low' | 'high';
+}
+
+interface ImageURLContentBlock {
+  image_url: ImageURL;
+  type: 'image_url';
+}
+
+interface TextContentBlock {
+  text: string;
+  type: 'text';
+}
+
+type MessageContent = ImageURLContentBlock | TextContentBlock;
+
+export interface Message {
   role: string;
+  content: MessageContent[];
 }
 
 export interface IMessage {
