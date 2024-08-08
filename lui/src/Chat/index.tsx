@@ -6,6 +6,7 @@ import type {
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
+import { Image } from 'antd';
 import { isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
@@ -19,12 +20,16 @@ import useSWR from 'swr';
 import StopBtn from '../StopBtn';
 import ThoughtChain from '../ThoughtChain';
 import SignatureIcon from '../icons/SignatureIcon';
-import { Message, Role } from '../interface';
+import {
+  ImageURLContentBlock,
+  Message,
+  MessageContent,
+  Role,
+} from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
-import InputArea from './inputArea/InputArea';
-import Actions from './inputArea/actions';
+import InputArea from './components/InputAreaRender';
 
 import '../style/global.css';
 
@@ -148,10 +153,57 @@ const Chat: FC<ChatProps> = memo(
               },
               contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
                 const originData = props.originData || {};
+
                 if (originData?.role === Role.user) {
-                  return defaultDom;
+                  try {
+                    const content = JSON.parse(
+                      originData.content,
+                    ) as MessageContent[];
+
+                    const { images, text } = content.reduce(
+                      (acc, item) => {
+                        if (item.type === 'image_url') {
+                          acc.images.push(item);
+                        } else if (item.type === 'text') {
+                          acc.text += item.text;
+                        }
+                        return acc;
+                      },
+                      { images: [] as ImageURLContentBlock[], text: '' },
+                    );
+
+                    return (
+                      <div className="ant-pro-chat-list-item-message-content">
+                        {images.map((image, index) => (
+                          <Image
+                            key={index}
+                            src={image.image_url?.url}
+                            alt="img"
+                            style={{
+                              maxWidth: '300px',
+                              maxHeight: '400px',
+                              borderRadius: '10px',
+                            }}
+                          />
+                        ))}
+                        {text && (
+                          <Markdown
+                            style={{
+                              overflowX: 'hidden',
+                              overflowY: 'auto',
+                              marginTop: '8px',
+                            }}
+                          >
+                            {text}
+                          </Markdown>
+                        )}
+                      </div>
+                    );
+                  } catch (err) {
+                    console.error(err);
+                    return defaultDom;
+                  }
                 }
-                console.log('originData', originData);
 
                 const originMessage = convertChunkToJson(
                   originData.content,
@@ -236,15 +288,29 @@ const Chat: FC<ChatProps> = memo(
                   (item) =>
                     item.role !== Role.tool && item.role !== Role.knowledge,
                 )
-                .map((message) => ({
-                  role: message.role,
-                  content: [
-                    {
-                      type: 'text',
-                      text: message.content,
-                    },
-                  ],
-                })) as Message[];
+                .map((message) => {
+                  if (message.role === Role.user) {
+                    try {
+                      return {
+                        role: message.role,
+                        // @ts-ignore
+                        content: JSON.parse(message?.content),
+                      };
+                    } catch (e) {
+                      return message;
+                    }
+                  } else {
+                    return {
+                      role: message.role,
+                      content: [
+                        {
+                          type: 'text',
+                          text: message.content,
+                        },
+                      ],
+                    };
+                  }
+                }) as Message[];
 
               const response = await streamChat(
                 newMessages,
@@ -277,7 +343,6 @@ const Chat: FC<ChatProps> = memo(
                   visible={!!proChatRef?.current?.getChatLoadingId()}
                   action={() => proChatRef?.current?.stopGenerateMessage()}
                 />,
-                <Actions key="Actions"></Actions>,
               ],
               flexConfig: {
                 gap: 24,

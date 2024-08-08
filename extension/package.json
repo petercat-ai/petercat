@@ -15,7 +15,7 @@
     "mini-css-extract-plugin": "^2.9.0",
     "next": "14.2.5",
     "next-compose-plugins": "^2.2.1",
-    "petercat-lui": "^0.1.0",
+    "petercat-lui": "^0.1.2",
     "postcss-loader": "^8.1.1",
     "react": "^18",
     "react-dom": "^18",
