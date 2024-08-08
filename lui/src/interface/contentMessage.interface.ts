@@ -41,17 +41,17 @@ interface ImageURL {
   detail?: 'auto' | 'low' | 'high';
 }
 
-interface ImageURLContentBlock {
+export interface ImageURLContentBlock {
   image_url: ImageURL;
   type: 'image_url';
 }
 
-interface TextContentBlock {
+export interface TextContentBlock {
   text: string;
   type: 'text';
 }
 
-type MessageContent = ImageURLContentBlock | TextContentBlock;
+export type MessageContent = ImageURLContentBlock | TextContentBlock;
 
 export interface Message {
   role: string;
