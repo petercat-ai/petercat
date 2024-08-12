@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       bots: {
@@ -116,6 +141,8 @@ export type Database = {
       }
       rag_docs: {
         Row: {
+          update_timestamp: string | null
+          bot_id: string | null
           commit_id: string | null
           content: string | null
           embedding: string | null
@@ -126,6 +153,8 @@ export type Database = {
           repo_name: string | null
         }
         Insert: {
+          update_timestamp?: string | null
+          bot_id?: string | null
           commit_id?: string | null
           content?: string | null
           embedding?: string | null
@@ -136,6 +165,8 @@ export type Database = {
           repo_name?: string | null
         }
         Update: {
+          update_timestamp?: string | null
+          bot_id?: string | null
           commit_id?: string | null
           content?: string | null
           embedding?: string | null
@@ -149,6 +180,7 @@ export type Database = {
       }
       rag_tasks: {
         Row: {
+          bot_id: string | null
           commit_id: string | null
           created_at: string
           from_task_id: string | null
@@ -157,9 +189,11 @@ export type Database = {
           node_type: string | null
           path: string | null
           repo_name: string | null
+          sha: string | null
           status: string | null
         }
         Insert: {
+          bot_id?: string | null
           commit_id?: string | null
           created_at?: string
           from_task_id?: string | null
@@ -168,9 +202,11 @@ export type Database = {
           node_type?: string | null
           path?: string | null
           repo_name?: string | null
+          sha?: string | null
           status?: string | null
         }
         Update: {
+          bot_id?: string | null
           commit_id?: string | null
           created_at?: string
           from_task_id?: string | null
@@ -179,6 +215,7 @@ export type Database = {
           node_type?: string | null
           path?: string | null
           repo_name?: string | null
+          sha?: string | null
           status?: string | null
         }
         Relationships: []
@@ -212,6 +249,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      binary_quantize:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
       execute_sql: {
         Args: {
           query: string
@@ -233,7 +283,61 @@ export type Database = {
           hello_message: string
         }[]
       }
+      halfvec_avg: {
+        Args: {
+          "": number[]
+        }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: {
+          "": unknown
+        }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: {
+          "": unknown[]
+        }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
       hnswhandler: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
         Args: {
           "": unknown
         }
@@ -245,6 +349,38 @@ export type Database = {
         }
         Returns: unknown
       }
+      l2_norm:
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
+      l2_normalize:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
       match_antd_doc: {
         Args: {
           query_embedding: string
@@ -332,18 +468,43 @@ export type Database = {
           similarity: number
         }[]
       }
+      sparsevec_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: {
+          "": unknown
+        }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: {
+          "": unknown[]
+        }
+        Returns: number
+      }
       vector_avg: {
         Args: {
           "": number[]
         }
         Returns: string
       }
-      vector_dims: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
+      vector_dims:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
       vector_norm: {
         Args: {
           "": string

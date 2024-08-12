@@ -116,10 +116,16 @@ def supabase_embedding(documents, **kwargs: Any):
 
 
 def add_knowledge_by_doc(config: RAGGitDocConfig):
+    # TODO: 检查是否存在重复入库的情况；思考如何不对相同 file_sha 的文件重复 embedding 的情况下重新导入到 bot 下。如何更新
+    # 1. 检查是否已经入库
+    # 2. 如果存在该文件，检查当前 bot_id 是否已经在该列表中
+    # 2.1 如果在列表中，无需操作，如果不在，则将其他信息写入该 bot ，但不进行 embedding 操作
+    # 3. 如果不存在该文件， embedding 该文件并写入 sdk 中
     loader = init_github_file_loader(config)
     documents = loader.load()
     supabase = get_client()
-    is_added_query = (
+    # 查询当前需要添加的文件是否在库中了
+    is_doc_added_query = (
         supabase.table(TABLE_NAME)
         .select("id, repo_name, commit_id, file_path, bot_id")
         .eq("repo_name", config.repo_name)
@@ -128,11 +134,12 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
         .eq("bot_id", config.bot_id)
         .execute()
     )
-    if not is_added_query.data:
-        is_equal_query = (
+    # 如果文件已经入库了
+    if not is_doc_added_query.data:
+        is_doc_equal_query = (
             supabase.table(TABLE_NAME).select("*").eq("file_sha", loader.file_sha)
         ).execute()
-        if not is_equal_query.data:
+        if not is_doc_equal_query.data:
             # If there is no file with the same file_sha, perform embedding.
             store = supabase_embedding(
                 documents,
@@ -152,12 +159,27 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                     "file_path": config.file_path,
                     "bot_id": config.bot_id,
                 }
-                for item in is_equal_query.data
+                for item in is_doc_equal_query.data
             ]
             insert_result = supabase.table(TABLE_NAME).insert(new_commit_list).execute()
             return insert_result
     else:
         return True
+
+
+def reload_knowledge(config: RAGGitDocConfig):
+    loader = init_github_file_loader(config)
+    documents = loader.load()
+    # TODO:检查历史的文件会如何处理？是否需要手动删除？
+    store = supabase_embedding(
+        documents,
+        repo_name=config.repo_name,
+        commit_id=loader.commit_id,
+        file_sha=loader.file_sha,
+        file_path=config.file_path,
+        bot_id=config.bot_id,
+    )
+    return store
 
 
 def search_knowledge(
@@ -170,3 +192,16 @@ def search_knowledge(
     documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
     return json_output
+
+
+def get_chunk_list(bot_id: str, page_size: int, page_number: int):
+    client = get_client()
+    query = (
+        client.table(TABLE_NAME)
+        .select("id, content, file_path,update_timestamp")
+        .eq("bot_id", bot_id)
+        .limit(page_size)
+        .offset((page_number - 1) * page_size)
+        .execute()
+    )
+    return query.data
