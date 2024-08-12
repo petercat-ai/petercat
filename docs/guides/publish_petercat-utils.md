@@ -1,5 +1,12 @@
 # Maunally
 
+## Debug locally
+
+On project root (where `pyproject.toml` located). 
+```bash
+pip install -e $PWD
+```
+
 Generating distribution archives
 The next step is to generate distribution packages for the package. These are archives that are uploaded to the Python Package Index and can be installed by pip.
 
