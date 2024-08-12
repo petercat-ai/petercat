@@ -53,6 +53,10 @@ Parameters:
     Type: String
     Description: SQS Queue Name
     Default: 1
+  SQSQueueUrl:
+    Type: String
+    Description: SQS Queue Url
+    Default: 1
 
 Resources:
   FastAPIFunction:
@@ -73,6 +77,7 @@ Resources:
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
           TAVILY_API_KEY: !Ref TavilyAPIKey
+          SQS_QUEUE_URL: !Ref SQSQueueUrl
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM

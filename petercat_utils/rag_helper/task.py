@@ -1,9 +1,15 @@
+import json
 from enum import Enum, auto
 from typing import Optional, Dict
+import boto3
+
+# Create SQS client
+sqs = boto3.client('sqs')
 
 from github import Github
 from github import Repository
 
+from ..utils.env import get_env_variable
 from ..data_class import RAGGitDocConfig
 from ..db.client.supabase import get_client
 from ..rag_helper import retrieval
@@ -12,6 +18,7 @@ g = Github()
 
 TABLE_NAME = "rag_tasks"
 
+SQS_QUEUE_URL = get_env_variable("SQS_QUEUE_URL")
 
 class TaskStatus(Enum):
     NOT_STARTED = auto()
@@ -21,6 +28,9 @@ class TaskStatus(Enum):
     CANCELLED = auto()
     ERROR = auto()
 
+def send_task_message(task_id: str):
+    response = sqs.send_message(QueueUrl=SQS_QUEUE_URL, DelaySeconds=10, MessageBody=(json.dumps({ "task_id": task_id })))
+    return response['MessageId']
 
 def add_task(
     config: RAGGitDocConfig,
@@ -57,7 +67,16 @@ def add_task(
         "bot_id": config.bot_id
     }
 
-    return supabase.table(TABLE_NAME).insert(data).execute()
+    res = supabase.table(TABLE_NAME)\
+        .insert(data)\
+        .execute()
+
+    record = res.data[0]
+    task_id = record["id"]
+
+    message_id = send_task_message(task_id=task_id)
+    print(f"record={record}, task_id={task_id}, message_id={message_id}")
+    return res
 
 
 def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):

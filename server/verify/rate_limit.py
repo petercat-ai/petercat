@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from auth.get_user_info import getUserInfoByToken
 from petercat_utils import get_client, get_env_variable
 
-RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED")
+RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED", "False") == 'True'
 RATE_LIMIT_REQUESTS = get_env_variable("RATE_LIMIT_REQUESTS") or 100
 RATE_LIMIT_DURATION = timedelta(minutes=int(get_env_variable("RATE_LIMIT_DURATION") or 1))
 
@@ -15,6 +15,7 @@ async def verify_rate_limit(petercat: str = Cookie(None)):
     if not petercat:
         raise HTTPException(status_code=403, detail="Must Login")
     user = await getUserInfoByToken(petercat)
+    user_id = user["id"]
     supabase = get_client()
     table = supabase.table("user_token_usage")
     rows = table.select('id, user_id, last_request, request_count').eq('user_id', user_id).execute()
