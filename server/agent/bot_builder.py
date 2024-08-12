@@ -1,5 +1,5 @@
 from typing import AsyncIterator, Optional
-from data_class import ChatData
+from petercat_utils.data_class import ChatData
 from agent.base import AgentBuilder
 from prompts.bot_builder import generate_prompt_by_user_id
 from tools import bot_builder

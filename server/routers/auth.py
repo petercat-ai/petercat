@@ -3,9 +3,8 @@ from fastapi import APIRouter,Cookie, Request, HTTPException, status, Response
 from fastapi.responses import RedirectResponse
 import httpx
 
-from db.supabase.client import get_client
+from petercat_utils import get_client, get_env_variable
 from auth.get_user_info import generateAnonymousUser, getAnonymousUserInfoByToken, getUserInfoByToken
-from utils.env import get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 

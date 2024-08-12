@@ -1,8 +1,8 @@
 from typing import AsyncIterator
-from data_class import ChatData
 from agent.base import AgentBuilder
 from prompts.bot_template import generate_prompt_by_repo_name
-from db.supabase.client import get_client
+from petercat_utils import get_client
+from petercat_utils.data_class import ChatData
 from tools import issue, sourcecode, knowledge
 
 

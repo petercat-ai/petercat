@@ -3,8 +3,8 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends
 
-from data_class import GitIssueConfig, RAGGitDocConfig
-from rag_helper import retrieval, task
+from petercat_utils.data_class import RAGGitDocConfig
+from petercat_utils.rag_helper import retrieval, task
 from verify.rate_limit import verify_rate_limit
 
 router = APIRouter(

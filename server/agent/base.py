@@ -1,7 +1,7 @@
 import json
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
-from data_class import ChatData, Message
+from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
@@ -13,7 +13,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
 from langchain_openai import ChatOpenAI
-from utils.env import get_env_variable
+from petercat_utils import get_env_variable
 
 OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
 TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")

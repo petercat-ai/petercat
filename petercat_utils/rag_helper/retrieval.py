@@ -1,16 +1,13 @@
 import json
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
-from langchain_core.documents import Document
-import numpy as np
 
-from data_class import GitDocConfig, GitIssueConfig, RAGGitDocConfig, S3Config
-from db.supabase.client import get_client
-from rag_helper.github_file_loader import GithubFileLoader
-from utils.env import get_env_variable
-from urllib.parse import quote
+from .github_file_loader import GithubFileLoader
+
+from ..data_class import GitDocConfig, RAGGitDocConfig, S3Config
+from ..db.client.supabase import get_client
 
 
 TABLE_NAME = "rag_docs"

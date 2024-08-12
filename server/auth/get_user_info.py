@@ -4,8 +4,7 @@ import secrets
 import random
 import string
 
-from db.supabase.client import get_client
-from utils.env import get_env_variable
+from petercat_utils import get_client, get_env_variable
 
 random_str = lambda N: ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
 

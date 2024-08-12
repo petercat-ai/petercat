@@ -26,3 +26,4 @@ fastapi_auth0
 requests
 pytest
 httpx
+petercat_utils>=0.1.19

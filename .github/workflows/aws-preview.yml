@@ -53,4 +53,5 @@ jobs:
                                   TavilyAPIKey=${{ secrets.TAVILY_API_KEY }} \
                                   APIIdentifier=${{ secrets.API_IDENTIFIER }} \
                                   FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
+                                  SQSQueueName=${{ secrets.SQS_QUEUE_NAME }}
                                   GitHubToken=${{ secrets.X_GITHUB_TOKEN }}

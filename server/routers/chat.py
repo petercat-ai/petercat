@@ -2,7 +2,7 @@ import asyncio
 from typing import Optional
 from fastapi import APIRouter, Cookie, Depends
 from fastapi.responses import StreamingResponse
-from data_class import ChatData
+from petercat_utils.data_class import ChatData
 from agent import qa_chat, bot_builder
 from verify.rate_limit import verify_rate_limit
 

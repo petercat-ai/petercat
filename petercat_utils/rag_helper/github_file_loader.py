@@ -8,7 +8,6 @@ from typing import Callable, Dict, List, Optional
 from github import Github
 from langchain_core.documents import Document
 
-
 class GithubFileLoader:
     repo: str
     github: Github

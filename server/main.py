@@ -2,11 +2,10 @@ import os
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from utils.env import get_env_variable
+from petercat_utils import get_env_variable
 
 
 # Import fastapi routers

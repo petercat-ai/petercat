@@ -1,9 +1,9 @@
 from typing import List, Optional
 from github import Github
-from db.supabase.client import get_client
+from petercat_utils import get_client
 from prompts.bot_template import generate_prompt_by_repo_name
-from rag_helper.task import add_task
-from data_class import RAGGitDocConfig
+from petercat_utils.rag_helper.task import add_task
+from petercat_utils.data_class import RAGGitDocConfig
 
 g = Github()
 

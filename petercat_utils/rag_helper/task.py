@@ -4,9 +4,9 @@ from typing import Optional, Dict
 from github import Github
 from github import Repository
 
-from data_class import GitDocConfig, RAGGitDocConfig
-from db.supabase.client import get_client
-from rag_helper import retrieval
+from ..data_class import RAGGitDocConfig
+from ..db.client.supabase import get_client
+from ..rag_helper import retrieval
 
 g = Github()
 
