@@ -1,7 +1,8 @@
 from typing import Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from petercat_utils import get_client
+from petercat_utils.rag_helper.task import TaskStatus
 
 TABLE_NAME = "rag_tasks"
 
@@ -12,7 +13,7 @@ router = APIRouter(
 )
 
 @router.get("/tasks")
-def get_tasks(page_size = '10', page_number = '1', status: Optional[str] = None):
+def get_tasks(page_size = '10', page_number = '1', status: Optional[TaskStatus] = None):
   start = (int(page_number) - 1) * int(page_size)
   end = int(page_number) * int(page_size)
   supabase = get_client()
