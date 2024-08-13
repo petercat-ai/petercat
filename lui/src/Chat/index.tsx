@@ -19,6 +19,7 @@ import React, {
 import useSWR from 'swr';
 import StopBtn from '../StopBtn';
 import ThoughtChain from '../ThoughtChain';
+
 import SignatureIcon from '../icons/SignatureIcon';
 import {
   ImageURLContentBlock,
@@ -30,6 +31,7 @@ import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
 import InputArea from './components/InputAreaRender';
+import Loading from './components/Loading';
 
 import '../style/global.css';
 
@@ -66,6 +68,7 @@ const Chat: FC<ChatProps> = memo(
   }) => {
     const proChatRef = useRef<ProChatInstance>();
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
+    const [complete, setComplete] = useState(false);
     const { data: detail } = useSWR<BotInfo>(
       token ? [`${apiDomain}/api/bot/detail?id=${token}`] : null,
       fetcher,
@@ -154,51 +157,54 @@ const Chat: FC<ChatProps> = memo(
               contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
                 const originData = props.originData || {};
 
+                // Function to render images and text content
+                const renderContent = (
+                  images: ImageURLContentBlock[],
+                  text: string,
+                ) => (
+                  <div className="ant-pro-chat-list-item-message-content">
+                    {images.map((image, index) => (
+                      <Image
+                        key={index}
+                        src={image.image_url?.url}
+                        alt="img"
+                        style={{
+                          maxWidth: '300px',
+                          maxHeight: '400px',
+                          borderRadius: '10px',
+                        }}
+                      />
+                    ))}
+                    {text && (
+                      <Markdown
+                        style={{
+                          overflowX: 'hidden',
+                          overflowY: 'auto',
+                          marginTop: '8px',
+                        }}
+                      >
+                        {text}
+                      </Markdown>
+                    )}
+                  </div>
+                );
+
+                // If user role, try to parse and render content
                 if (originData?.role === Role.user) {
                   try {
                     const content = JSON.parse(
                       originData.content,
                     ) as MessageContent[];
-
                     const { images, text } = content.reduce(
                       (acc, item) => {
-                        if (item.type === 'image_url') {
-                          acc.images.push(item);
-                        } else if (item.type === 'text') {
-                          acc.text += item.text;
-                        }
+                        if (item.type === 'image_url') acc.images.push(item);
+                        else if (item.type === 'text') acc.text += item.text;
                         return acc;
                       },
                       { images: [] as ImageURLContentBlock[], text: '' },
                     );
 
-                    return (
-                      <div className="ant-pro-chat-list-item-message-content">
-                        {images.map((image, index) => (
-                          <Image
-                            key={index}
-                            src={image.image_url?.url}
-                            alt="img"
-                            style={{
-                              maxWidth: '300px',
-                              maxHeight: '400px',
-                              borderRadius: '10px',
-                            }}
-                          />
-                        ))}
-                        {text && (
-                          <Markdown
-                            style={{
-                              overflowX: 'hidden',
-                              overflowY: 'auto',
-                              marginTop: '8px',
-                            }}
-                          >
-                            {text}
-                          </Markdown>
-                        )}
-                      </div>
-                    );
+                    return renderContent(images, text);
                   } catch (err) {
                     console.error(err);
                     return defaultDom;
@@ -209,16 +215,38 @@ const Chat: FC<ChatProps> = memo(
                   originData.content,
                 ) as any;
 
+                // Default message content
                 const defaultMessageContent = (
                   <div className="leftMessageContent">{defaultDom}</div>
                 );
 
-                if (!originMessage || typeof originMessage === 'string') {
+                // If originMessage is invalid, return default message content
+                if (
+                  (!originMessage || typeof originMessage === 'string') &&
+                  !!proChatRef?.current?.getChatLoadingId()
+                ) {
                   return defaultMessageContent;
                 }
 
                 const { message: answerStr, tools = [] } = originMessage;
+                console.log(answerStr);
+                // Handle chat loading state
+                if (
+                  !!proChatRef?.current?.getChatLoadingId() &&
+                  answerStr === '...' &&
+                  isEmpty(tools)
+                ) {
+                  return (
+                    <div className="leftMessageContent">
+                      <Loading
+                        loop={!complete}
+                        onComplete={() => setComplete(true)}
+                      />
+                    </div>
+                  );
+                }
 
+                // If no tools, render the markdown content
                 if (isEmpty(tools)) {
                   return (
                     <div
@@ -235,12 +263,12 @@ const Chat: FC<ChatProps> = memo(
                   );
                 }
 
-                const lastTool = tools[tools.length - 1];
-                const { type, extra } = lastTool;
-
+                // Handle tool or knowledge role
+                const { type, extra } = tools[tools.length - 1];
                 if (![Role.knowledge, Role.tool].includes(type)) {
                   return defaultMessageContent;
                 }
+
                 getToolsResult?.(extra);
                 const { status, source } = extra;
 

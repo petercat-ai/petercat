@@ -40,7 +40,9 @@ def init_prompt(input_data: ChatData):
 
 def agent_stream_chat(input_data: ChatData) -> AsyncIterator[str]:
     agent = AgentBuilder(
-        prompt=init_prompt(input_data), tools=get_tools(bot_id=input_data.bot_id)
+        prompt=init_prompt(input_data),
+        tools=get_tools(bot_id=input_data.bot_id),
+        streaming=True,
     )
     return agent.run_stream_chat(input_data)
 

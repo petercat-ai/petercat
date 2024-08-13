@@ -55,7 +55,7 @@ const InputAreaRender = (props: {
             type: 'image_url',
             image_url: {
               url: file.url,
-              detail: 'auto',
+              detail: 'low',
             },
           } as ImageURLContentBlock;
         });
@@ -161,7 +161,10 @@ const InputAreaRender = (props: {
               // @ts-ignore
               customRequest={handleUpload}
             >
-              <Tooltip title={disabled ? '上传图片不能超过 4 张' : ''}>
+              <Tooltip
+                title={disabled ? '上传图片不能超过 4 张' : ''}
+                trigger="hover"
+              >
                 <Button
                   type="primary"
                   className={
@@ -187,7 +190,7 @@ const InputAreaRender = (props: {
                   width={32}
                   height={32}
                   alt="uploaded"
-                  className="object-cover rounded-lg shadow-sm"
+                  className="object-cover rounded-lg shadow-md"
                 />
                 <div
                   className="absolute w-[16px] h-[16px] bg-gray-800 top-[-8px] right-[-8px] text-white rounded-full cursor-pointer"

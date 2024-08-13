@@ -28,7 +28,7 @@ class AgentBuilder:
         enable_tavily: Optional[bool] = True,
         temperature: Optional[int] = 0.2,
         max_tokens: Optional[int] = 1500,
-        runtime_invoke_context: Optional[Dict] = {},
+        streaming: Optional[bool] = False,
     ):
         """
         @class `Builde AgentExecutor based on tools and prompt`
@@ -37,12 +37,14 @@ class AgentBuilder:
         @param enable_tavily: Optional[bool] If set True, enables the Tavily tool
         @param temperature: Optional[int]
         @param max_tokens: Optional[int]
+        @param streaming: Optional[bool]
         """
         self.prompt = prompt
         self.tools = tools
         self.enable_tavily = enable_tavily
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.streaming = streaming
         self.agent_executor = self._create_agent_with_tools()
 
     def init_tavily_tools(self):
@@ -53,9 +55,9 @@ class AgentBuilder:
 
     def _create_agent_with_tools(self) -> AgentExecutor:
         llm = ChatOpenAI(
-            model="gpt-4o",
+            model_name="gpt-4o",
             temperature=self.temperature,
-            streaming=True,
+            streaming=self.streaming,
             max_tokens=self.max_tokens,
             openai_api_key=OPEN_API_KEY,
         )

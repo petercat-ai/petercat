@@ -10,7 +10,12 @@ TOOL_MAPPING = {
     "edit_bot": bot_builder.edit_bot,
 }
 
-def agent_stream_chat(input_data: ChatData, user_id: str, bot_id: Optional[str] = None) -> AsyncIterator[str]:
+
+def agent_stream_chat(
+    input_data: ChatData, user_id: str, bot_id: Optional[str] = None
+) -> AsyncIterator[str]:
     prompt = generate_prompt_by_user_id(user_id, bot_id)
-    agent = AgentBuilder(prompt=prompt, tools=TOOL_MAPPING, enable_tavily=False)
+    agent = AgentBuilder(
+        prompt=prompt, tools=TOOL_MAPPING, enable_tavily=False, streaming=True
+    )
     return agent.run_stream_chat(input_data)
