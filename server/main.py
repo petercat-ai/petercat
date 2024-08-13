@@ -9,7 +9,7 @@ from petercat_utils import get_env_variable
 
 
 # Import fastapi routers
-from routers import bot, health_checker, github, rag, auth, chat
+from routers import bot, health_checker, github, rag, auth, chat, task
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
@@ -47,6 +47,7 @@ app.include_router(rag.router)
 app.include_router(bot.router)
 app.include_router(auth.router)
 app.include_router(chat.router)
+app.include_router(task.router)
 
 
 if __name__ == "__main__":
