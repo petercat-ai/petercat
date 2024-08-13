@@ -123,7 +123,7 @@ Resources:
             !Ref SQSQueueName
       Tracing: Active
     Metadata:
-      Dockerfile: Dockerfile
+      Dockerfile: ../docker/Dockerfile.subscriber
       DockerContext: subscriber
       DockerTag: v1
 
