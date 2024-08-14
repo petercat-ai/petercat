@@ -119,9 +119,6 @@ const Chat: FC<ChatProps> = memo(
       });
     }, [detail]);
 
-    const messageMinWidth = drawerWidth
-      ? `calc(${drawerWidth}px - 90px)`
-      : '400px';
     return (
       <div
         className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
@@ -181,7 +178,6 @@ const Chat: FC<ChatProps> = memo(
                         style={{
                           overflowX: 'hidden',
                           overflowY: 'auto',
-                          marginTop: '8px',
                         }}
                       >
                         {text}
@@ -230,7 +226,6 @@ const Chat: FC<ChatProps> = memo(
                 }
 
                 const { message: answerStr, tools = [] } = originMessage;
-                console.log(answerStr);
                 // Handle chat loading state
                 if (
                   !!proChatRef?.current?.getChatLoadingId() &&
@@ -250,10 +245,7 @@ const Chat: FC<ChatProps> = memo(
                 // If no tools, render the markdown content
                 if (isEmpty(tools)) {
                   return (
-                    <div
-                      className="leftMessageContent"
-                      style={{ minWidth: messageMinWidth }}
-                    >
+                    <div  className="leftMessageContent">
                       <OnceLoading>
                         <Markdown
                           className="ant-pro-chat-list-item-message-content"
@@ -278,7 +270,6 @@ const Chat: FC<ChatProps> = memo(
                 return (
                   <div
                     className="leftMessageContent"
-                    style={{ maxWidth: messageMinWidth }}
                   >
                     <div className="mb-1">
                       <ThoughtChain
@@ -295,7 +286,7 @@ const Chat: FC<ChatProps> = memo(
                     </Markdown>
                   </div>
                 );
-              },
+              }
             }}
             assistantMeta={{
               avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,

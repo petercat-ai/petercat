@@ -8,7 +8,10 @@
 
 .leftMessageContent .loading {
   width: 74px;
-  height: 38px;
+  height: 50px;
+  margin-bottom: -10px;
+  margin-top: -2px;
+  transform: translate(-8px, 0);
 }
 
 .leftMessageContent .ant-pro-chat-list-item-message-content{
@@ -16,6 +19,8 @@
   gap: 0px;
   border-radius: 18px 18px 18px 0px;
   background: rgba(241, 241, 241, 1);
+  /* very important! DO NOT REMOVE */
+  transform: translate(1px, 0); 
 }
 
 .leftMessageContent .ant-pro-chat-list-item-message-content p {
@@ -27,13 +32,13 @@
 }
 
 .ant-pro-chat-list-item.ant-pro-chat-list-item-left{
+  overflow-x: visible !important;
   align-items: flex-end;
 }
 .ant-pro-chat-list-item.ant-pro-chat-list-item-left .ant-pro-chat-list-item-actions{
   display: none;
 }
 .ant-pro-chat-list-item.ant-pro-chat-list-item-right .ant-pro-chat-list-item-message-content{
-
   padding: 8px 16px 8px 16px;
   gap: 0px;
   border-radius: 18px 18px 4px 18px;

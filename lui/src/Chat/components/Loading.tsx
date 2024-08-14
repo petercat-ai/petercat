@@ -11,7 +11,7 @@ const Loading: React.FC<LoadingProps> = (props) => {
   const { onComplete, loop = true } = props;
 
   return (
-    <div className="loading" style={{ transform: 'translate(0, -10px)'}}>
+    <div className="loading">
       <Lottie
         animationData={LoadingAnimation1}
         loop={loop}

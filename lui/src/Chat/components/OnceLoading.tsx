@@ -19,7 +19,7 @@ const OnceLoading: React.FC<OnceLoadingProps> = (props) => {
 
   return (
     <>
-      <div className="loading" style={{ transform: 'translate(-10px, 0)'}}>
+      <div className="loading">
         <Lottie
           animationData={LoadingAnimation2}
           autoplay={true}
