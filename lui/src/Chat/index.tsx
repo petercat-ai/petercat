@@ -32,6 +32,7 @@ import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
 import InputArea from './components/InputAreaRender';
 import Loading from './components/Loading';
+import OnceLoading from './components/OnceLoading';
 
 import '../style/global.css';
 
@@ -253,12 +254,14 @@ const Chat: FC<ChatProps> = memo(
                       className="leftMessageContent"
                       style={{ minWidth: messageMinWidth }}
                     >
-                      <Markdown
-                        className="ant-pro-chat-list-item-message-content"
-                        style={{ overflowX: 'hidden', overflowY: 'auto' }}
-                      >
-                        {answerStr}
-                      </Markdown>
+                      <OnceLoading>
+                        <Markdown
+                          className="ant-pro-chat-list-item-message-content"
+                          style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                        >
+                          {answerStr}
+                        </Markdown>
+                      </OnceLoading>
                     </div>
                   );
                 }

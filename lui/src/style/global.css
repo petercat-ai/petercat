@@ -2,12 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.leftMessageContent {
+  position: relative;
+}
+
+.leftMessageContent .loading {
+  width: 74px;
+  height: 38px;
+}
+
 .leftMessageContent .ant-pro-chat-list-item-message-content{
   padding: 8px 16px 8px 16px;
   gap: 0px;
   border-radius: 18px 18px 18px 0px;
   background: rgba(241, 241, 241, 1);
 }
+
+.leftMessageContent .ant-pro-chat-list-item-message-content p {
+  line-height: 22px;
+}
+
 .ant-pro-chat-chat-list-container {
   overflow-y: auto !important;
 }
