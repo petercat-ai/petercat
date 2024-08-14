@@ -57,3 +57,11 @@ def add_task(config: RAGGitDocConfig):
 def trigger_task(task_id: Optional[str] = None):
     data = task.trigger_task(task_id)
     return data
+
+
+@router.get("/rag/chunk/list", dependencies=[Depends(verify_rate_limit)])
+def get_chunk_list(bot_id: str = None, page_size: int = 10, page_number: int = 1):
+    try:
+        return retrieval.get_chunk_list(bot_id, page_size, page_number)
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})

@@ -13,6 +13,14 @@ PeterCat 服务端，采用 FastAPI 框架开发。使用了 supabase 作为数�
   - SQL Editor 是一个可以在线编写 SQL 并执行的可视化客户端；你可以在其中创建表、删除表、创建函数、删除函数等操作。
   - Database 中提供了数据库的的综合管理；
 
+### Table Typescript 类型支持 
+要想获得表内字段的类型支持，需要先安装 supabse CLI 工具 : https://supabase.com/docs/guides/cli/getting-started
+```bash
+cd migrations
+supabase start
+supabase gen types typescript --local > database.types.ts
+```
+
 ## github
 ### webhook
 代码目录

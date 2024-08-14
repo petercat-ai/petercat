@@ -5,6 +5,7 @@ import {
   getBotDetail,
   getBotInfoByRepoName,
   getBotList,
+  getChunkList,
   updateBot,
 } from '@/app/services/BotsController';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -101,3 +102,18 @@ export function useBotConfigGenerator() {
     isSuccess: mutation.isSuccess,
   };
 }
+
+export const useBotRAGChunkList = (
+  botId: string,
+  page_size: number,
+  page_number: number,
+  enabled: boolean = true,
+) => {
+  return useQuery({
+    queryKey: [`rag.chunk.list`, botId],
+    queryFn: async () => getChunkList(botId, page_size, page_number),
+    select: (data) => data,
+    enabled,
+    retry: true,
+  });
+};
