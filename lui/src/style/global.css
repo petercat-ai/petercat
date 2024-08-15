@@ -38,6 +38,11 @@
 .ant-pro-chat-list-item.ant-pro-chat-list-item-left .ant-pro-chat-list-item-actions{
   display: none;
 }
+
+.ant-pro-chat-list-item.ant-pro-chat-list-item-left .ant-pro-chat-message-content {
+  overflow: visible !important;
+}
+
 .ant-pro-chat-list-item.ant-pro-chat-list-item-right .ant-pro-chat-list-item-message-content{
   padding: 8px 16px 8px 16px;
   gap: 0px;

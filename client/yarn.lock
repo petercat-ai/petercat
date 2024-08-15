@@ -11824,10 +11824,10 @@ pbkdf2@^3.0.3, pbkdf2@^3.1.2:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-petercat-lui@0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/petercat-lui/-/petercat-lui-0.1.5.tgz#b3d1859b795fda36fe6068d0bd366e938220d1c6"
-  integrity sha512-mEUUctCk+YYpWh+WAUuOv+EjPv0aN765K5+12aczImCKd3sc6jAcyt0/eJjBsztc2Fj8Q7m5zoCB4m3E0tkARA==
+petercat-lui@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/petercat-lui/-/petercat-lui-0.1.6.tgz#308ec2a00d8b4a619666c7179a58558c42c5b7c6"
+  integrity sha512-rLFE1wowDDg+Gdwxv0JgAhsbzmhWYXtNJg8mrROtcTKPgQEhnNYzrdr8OVST+UfiNzM1n4trnqmJEIYSPVzR8Q==
   dependencies:
     "@ant-design/icons" "^5.3.5"
     "@ant-design/pro-chat" "^1.9.0"
