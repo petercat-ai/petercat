@@ -113,15 +113,9 @@ def supabase_embedding(documents, **kwargs: Any):
 
 
 def add_knowledge_by_doc(config: RAGGitDocConfig):
-    # TODO: 检查是否存在重复入库的情况；思考如何不对相同 file_sha 的文件重复 embedding 的情况下重新导入到 bot 下。如何更新
-    # 1. 检查是否已经入库
-    # 2. 如果存在该文件，检查当前 bot_id 是否已经在该列表中
-    # 2.1 如果在列表中，无需操作，如果不在，则将其他信息写入该 bot ，但不进行 embedding 操作
-    # 3. 如果不存在该文件， embedding 该文件并写入 sdk 中
     loader = init_github_file_loader(config)
     documents = loader.load()
     supabase = get_client()
-    # 查询当前需要添加的文件是否在库中了
     is_doc_added_query = (
         supabase.table(TABLE_NAME)
         .select("id, repo_name, commit_id, file_path, bot_id")
@@ -131,7 +125,6 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
         .eq("bot_id", config.bot_id)
         .execute()
     )
-    # 如果文件已经入库了
     if not is_doc_added_query.data:
         is_doc_equal_query = (
             supabase.table(TABLE_NAME).select("*").eq("file_sha", loader.file_sha)
@@ -201,4 +194,6 @@ def get_chunk_list(bot_id: str, page_size: int, page_number: int):
         .offset((page_number - 1) * page_size)
         .execute()
     )
-    return query.data
+    count_response = client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+    total_count = len(count_response.data)
+    return {"rows": query.data, "total": total_count}

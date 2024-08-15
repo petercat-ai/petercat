@@ -1,16 +1,14 @@
 'use client';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { ToastContainer } from 'react-toastify';
+import React from 'react';
 import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from '@nextui-org/react';
 import HomeIcon from '@/public/icons/HomeIcon';
-import SaveIcon from '@/public/icons/SaveIcon';
 import { useBotRAGChunkList } from '@/app/hooks/useBot';
 import { RAGDoc } from '@/app/services/BotsController';
+import RefreshIcon from '@/public/icons/RefreshIcon';
 
-const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 type IProps = {
   botId: string;
   goBack: () => void;
@@ -45,10 +43,10 @@ const CardList = ({ data }: { data: RAGDoc[] }) => {
 };
 
 export default function Knowledge({ botId, goBack }: IProps) {
-  const { botProfile, setBotProfile } = useBot();
+  const { botProfile } = useBot();
   const [pageSize, setPageSize] = React.useState(10);
   const [pageNumber, setPageNumber] = React.useState(1);
-  const { data, isLoading: isListLoading } = useBotRAGChunkList(
+  const { data: RagDocData, isLoading: isListLoading } = useBotRAGChunkList(
     botId,
     pageSize,
     pageNumber,
@@ -76,7 +74,7 @@ export default function Knowledge({ botId, goBack }: IProps) {
             size="sm"
             isLoading={isListLoading}
             variant="flat"
-            startContent={<SaveIcon />}
+            startContent={<RefreshIcon />}
             onClick={(e) => {
               e.preventDefault();
             }}
@@ -86,7 +84,11 @@ export default function Knowledge({ botId, goBack }: IProps) {
         </div>
       </div>
       <div className="p-10">
-        {data ? <CardList data={data}></CardList> : <div>loading</div>}
+        {RagDocData ? (
+          <CardList data={RagDocData.rows}></CardList>
+        ) : (
+          <div>loading</div>
+        )}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import {
   getBotInfoByRepoName,
   getBotList,
   getChunkList,
+  getRagTask,
   updateBot,
 } from '@/app/services/BotsController';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -115,5 +116,19 @@ export const useBotRAGChunkList = (
     select: (data) => data,
     enabled,
     retry: true,
+  });
+};
+
+export const useGetRagTask = (
+  botId: string,
+  enabled: boolean = true,
+) => {
+  return useQuery({
+    queryKey: [`rag.task`, botId],
+    queryFn: async () => getRagTask(botId),
+    select: (data) => data,
+    enabled,
+    retry: true,
+    refetchInterval:5*1000
   });
 };

@@ -65,3 +65,11 @@ def get_chunk_list(bot_id: str = None, page_size: int = 10, page_number: int = 1
         return retrieval.get_chunk_list(bot_id, page_size, page_number)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
+
+
+@router.get("/rag/task", dependencies=[Depends(verify_rate_limit)])
+def get_rag_task(bot_id: str):
+    try:
+        return task.get_latest_task_by_bot_id(bot_id)
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})

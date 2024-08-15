@@ -1,6 +1,5 @@
 'use client';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -19,21 +18,27 @@ import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
-import BookIcon from '@/public/icons/BookIcon';
 import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Knowledge from '../components/Knowledge';
+import KnowledgeBtn from '../components/KnowledgeBtn';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
   BOT_CONFIG = 'BOT_CONFIG',
   KNOWLEDGE_DETAIL = 'KNOWLEDGE_DETAIL',
 }
+enum ConfigTypeEnum {
+  CHAT_CONFIG = 'CHAT_CONFIG',
+  MANUAL_CONFIG = 'MANUAL_CONFIG',
+}
 export default function Edit({ params }: { params: { id: string } }) {
   const { botProfile, setBotProfile } = useBot();
 
-  const [activeTab, setActiveTab] = React.useState<string>('chatConfig');
+  const [activeTab, setActiveTab] = React.useState<ConfigTypeEnum>(
+    ConfigTypeEnum.CHAT_CONFIG,
+  );
   const [visibleType, setVisibleType] = React.useState<VisibleTypeEnum>(
     VisibleTypeEnum.BOT_CONFIG,
   );
@@ -64,7 +69,6 @@ export default function Edit({ params }: { params: { id: string } }) {
   const updateConfigFromChatResult = useCallback((response: string) => {
     try {
       const data = JSON.parse(response)?.data?.[0];
-      console.log('data', data);
       if (!isEmpty(data)) {
         setBotProfile((draft) => {
           draft.id = data.id;
@@ -257,19 +261,14 @@ export default function Edit({ params }: { params: { id: string } }) {
               重新生成配置
             </Button>
           )}
-          {isEdit ? (
-            <Button
-              radius="full"
-              className="bg-[#F1F1F1] text-gray-500"
-              startContent={<BookIcon />}
-              isLoading={createBotLoading}
+          {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
+            <KnowledgeBtn
+              botId={params.id}
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}
-            >
-              查看知识库
-            </Button>
-          ) : null}
+            />
+          )}
         </div>
       </div>
 
@@ -303,11 +302,13 @@ export default function Edit({ params }: { params: { id: string } }) {
                 </div>
                 <div className="flex items-center">
                   <Tabs
-                    defaultSelectedKey="chatConfig"
+                    defaultSelectedKey={ConfigTypeEnum.CHAT_CONFIG}
                     variant="light"
                     selectedKey={activeTab}
                     aria-label="Options"
-                    onSelectionChange={(key) => setActiveTab(`${key}`)}
+                    onSelectionChange={(key) =>
+                      setActiveTab(`${key}` as ConfigTypeEnum)
+                    }
                     classNames={{
                       base: 'w-[230px] h-[36px]',
                       tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
@@ -317,7 +318,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                     }}
                   >
                     <Tab
-                      key="chatConfig"
+                      key={ConfigTypeEnum.CHAT_CONFIG}
                       title={
                         <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
                           <ChatIcon /> <span className="ml-2">对话调试</span>
@@ -326,7 +327,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                     />
 
                     <Tab
-                      key="manualConfig"
+                      key={ConfigTypeEnum.MANUAL_CONFIG}
                       title={
                         <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
                           <ConfigIcon />
@@ -347,7 +348,9 @@ export default function Edit({ params }: { params: { id: string } }) {
                 <div
                   style={{
                     visibility:
-                      activeTab === 'chatConfig' ? 'visible' : 'hidden',
+                      activeTab === ConfigTypeEnum.CHAT_CONFIG
+                        ? 'visible'
+                        : 'hidden',
                   }}
                 >
                   {chatConfigContent}
@@ -358,7 +361,9 @@ export default function Edit({ params }: { params: { id: string } }) {
                     width: '50%',
                     height: 'calc(100vh - 73px)',
                     visibility:
-                      activeTab !== 'chatConfig' ? 'visible' : 'hidden',
+                      activeTab !== ConfigTypeEnum.CHAT_CONFIG
+                        ? 'visible'
+                        : 'hidden',
                   }}
                 >
                   {manualConfigContent}
