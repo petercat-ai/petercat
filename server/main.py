@@ -34,7 +34,7 @@ cors_origins = ["*"] if cors_origins_whitelist is None else cors_origins_whiteli
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=cors_origins, 
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"], 
