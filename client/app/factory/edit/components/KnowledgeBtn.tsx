@@ -25,7 +25,7 @@ const KnowledgeBtn = (props: IProps) => {
     if (
       [
         TaskStatus.ON_HOLD,
-        // TaskStatus.NOT_STARTED,
+        TaskStatus.NOT_STARTED,
         TaskStatus.IN_PROGRESS,
       ].includes(taskInfo.status as TaskStatus)
     ) {
@@ -59,6 +59,7 @@ const KnowledgeBtn = (props: IProps) => {
           startContent={<RefreshIcon />}
           onClick={(e) => {
             e.preventDefault();
+            // TODO: reload knowledge
           }}
         >
           更新知识库
