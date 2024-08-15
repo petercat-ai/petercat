@@ -267,6 +267,7 @@ export default function Edit({ params }: { params: { id: string } }) {
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}
+              mode={'configItem'}
             />
           )}
         </div>

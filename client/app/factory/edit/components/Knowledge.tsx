@@ -3,11 +3,11 @@ import React from 'react';
 import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { Button } from '@nextui-org/react';
 import HomeIcon from '@/public/icons/HomeIcon';
 import { useBotRAGChunkList } from '@/app/hooks/useBot';
 import { RAGDoc } from '@/app/services/BotsController';
-import RefreshIcon from '@/public/icons/RefreshIcon';
+import FullPageSkeleton from '@/components/FullPageSkeleton';
+import KnowledgeBtn from './KnowledgeBtn';
 
 type IProps = {
   botId: string;
@@ -69,25 +69,14 @@ export default function Knowledge({ botId, goBack }: IProps) {
           <span>知识库分段</span>
         </div>
         <div className="flex items-center gap-2">
-          <Button
-            className="rounded-full bg-gray-700 text-white"
-            size="sm"
-            isLoading={isListLoading}
-            variant="flat"
-            startContent={<RefreshIcon />}
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            更新知识库
-          </Button>
+          <KnowledgeBtn botId={botId} onClick={() => {}} mode={'pageHeader'} />
         </div>
       </div>
       <div className="p-10">
         {RagDocData ? (
           <CardList data={RagDocData.rows}></CardList>
         ) : (
-          <div>loading</div>
+          <FullPageSkeleton />
         )}
       </div>
     </div>

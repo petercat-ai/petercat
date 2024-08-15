@@ -88,7 +88,7 @@ export async function getRagTask(
   bot_id: string
 ) :Promise<RagTask>{
   const response = await axios.get(
-    `${apiDomain}/api/rag/task?bot_id=${bot_id}`,
+    `${apiDomain}/api/rag/task/latest?bot_id=${bot_id}`,
   );
   return response.data;
 }
