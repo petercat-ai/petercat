@@ -18,7 +18,7 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
 session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
-cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or ''
+cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI( 
     title="Bo-meta Server",
     version="1.0",
