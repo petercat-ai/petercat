@@ -62,6 +62,7 @@ def login():
 
 @router.get("/callback")
 async def callback(request: Request, response: Response):
+    print(f"auth_callback: {request.query_params}")
     code = request.query_params.get("code")
     if not code:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization code")
@@ -71,9 +72,8 @@ async def callback(request: Request, response: Response):
     data = await getUserInfoByToken(token)
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
-    response = RedirectResponse(url=f'{WEB_URL}', status_code=302)
     response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
-    return response
+    return RedirectResponse(url=f'{WEB_URL}', status_code=302)
 
 @router.get("/userinfo")
 async def userinfo(request: Request, response: Response, petercat_user_token: str = Cookie(None)):
