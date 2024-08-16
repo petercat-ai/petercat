@@ -40,7 +40,7 @@ jobs:
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
             --config-file .aws/petercat-prod.toml \
-            --parameter-overrides API_URL=https://api.petercat.chat \
+            --parameter-overrides API_URL="https://api.petercat.chat" \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
