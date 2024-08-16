@@ -21,6 +21,10 @@ Parameters:
     Type: String
     Description: Github Token
     Default: 1
+  APIUrl:
+    Type: String
+    Description: API URL
+    Default: 1
   APIIdentifier:
     Type: String
     Description: APIIdentifier
@@ -78,6 +82,7 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          API_URL: !Ref APIUrl
           X_GITHUB_APP_ID: !Ref GitHubAppID
           X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
           X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
