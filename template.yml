@@ -57,7 +57,18 @@ Parameters:
     Type: String
     Description: SQS Queue Url
     Default: 1
-
+  Auth0Domain: 
+    Type: String
+    Description: Auth0 Domain
+    Default: 1
+  Auth0ClientId:
+    Type: String
+    Description: Auth0 ClientId
+    Default: 1
+  Auth0ClientSecret:
+    Type: String
+    Description: Auth0 Clientt Secret
+    Default: 1
 Resources:
   FastAPIFunction:
     Type: AWS::Serverless::Function
@@ -78,6 +89,9 @@ Resources:
           GITHUB_TOKEN: !Ref GitHubToken
           TAVILY_API_KEY: !Ref TavilyAPIKey
           SQS_QUEUE_URL: !Ref SQSQueueUrl
+          AUTH0_DOMAIN: !Ref Auth0Domain
+          AUTH0_CLIENT_ID: !Ref Auth0ClientId
+          AUTH0_CLIENT_SECRET: !Ref Auth0ClientSecret
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
