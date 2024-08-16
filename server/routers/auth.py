@@ -26,7 +26,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-
 async def getTokenByCode(code):
     token_url = f"https://{AUTH0_DOMAIN}/oauth/token"
     headers = {"content-type": "application/x-www-form-urlencoded"}
@@ -40,6 +39,7 @@ async def getTokenByCode(code):
     async with httpx.AsyncClient() as client:
         response = await client.post(token_url, headers=headers, data=data)
         token_response = response.json()
+        print(f"token_response={token_response}")
 
     if "access_token" not in token_response:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token")
@@ -58,7 +58,7 @@ async def getAnonymousUser(request: Request, response: Response):
 
 @router.get("/login")
 def login():
-    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid+profile+email+read%3Ausers+read%3Auser_idp_tokens&state=STATE"
+    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid%20profile%20email%20read%3Ausers%20read%3Auser_idp_tokens&state=STATE"
     return RedirectResponse(redirect_uri)
 
 @router.get("/callback")
@@ -73,7 +73,7 @@ async def callback(request: Request, response: Response):
     data = await getUserInfoByToken(token)
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
-    print(f"auth_callback: {data}")
+    print(f"auth_callback: {data}, token={token}")
     response = RedirectResponse(url=f'{WEB_URL}', status_code=302)
     response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=False, samesite='Lax')
 
@@ -88,18 +88,6 @@ async def userinfo(request: Request, response: Response, petercat_user_token: An
     if data is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token") 
     if data :
-        response.set_cookie(key="user_id", value=data['id'], httponly=True, secure=True, samesite='Lax')
         return { "data": data, "status": 200}
     else:
         return RedirectResponse(url=LOGIN_URL, status_code=303)
-
-@router.get("/user_access_token")
-async def userinfo(petercat_user_token: Annotated[str | None, Cookie()] = None):
-    print(f"petercat_user_token: {petercat_user_token}")
-    return await getUserAccessToken(petercat_user_token)
-
-@router.get("/get_user_id")
-async def get_user_id(user_id: str = Cookie(None)):
-    if user_id is None:
-        raise HTTPException(status_code=403, detail="Cookie not found")
-    return {"user_id": user_id}

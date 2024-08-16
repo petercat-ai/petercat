@@ -6,12 +6,13 @@ from petercat_utils.data_class import ChatData
 from tools import issue, sourcecode, knowledge
 
 
-def get_tools(bot_id):
+def get_tools(bot_id, token):
+    issue_tools = issue.factory(access_token=token)
     return {
         "search_knowledge": knowledge.factory(bot_id=bot_id),
-        "create_issue": issue.create_issue,
-        "get_issues": issue.get_issues,
-        "search_issues": issue.search_issues,
+        "create_issue": issue_tools['create_issue'],
+        "get_issues": issue_tools['get_issues'],
+        "search_issues": issue_tools['search_issues'],
         "search_code": sourcecode.search_code,
     }
 
@@ -38,10 +39,11 @@ def init_prompt(input_data: ChatData):
     return prompt
 
 
-def agent_stream_chat(input_data: ChatData) -> AsyncIterator[str]:
+def agent_stream_chat(input_data: ChatData, user_token: str) -> AsyncIterator[str]:
+    print(f"agent_stream_chat: user_token={user_token}")
     agent = AgentBuilder(
         prompt=init_prompt(input_data),
-        tools=get_tools(bot_id=input_data.bot_id),
+        tools=get_tools(bot_id=input_data.bot_id, token=user_token),
         streaming=True,
     )
     return agent.run_stream_chat(input_data)
