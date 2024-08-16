@@ -3,7 +3,9 @@ import { Tables } from '@/types/database.types';
 import axios from 'axios';
 import { BotProfile } from '@/app/interface';
 
-declare type Bot = Tables<'bots'>;
+export declare type Bot = Tables<'bots'>;
+export declare type RAGDoc = Tables<'rag_docs'>;
+export declare type RagTask = Tables<'rag_tasks'>;
 
 axios.defaults.withCredentials = true;
 
@@ -69,4 +71,24 @@ export async function getBotInfoByRepoName(
     starters: starters ?? [],
     hello_message,
   });
+}
+
+export async function getChunkList(
+  bot_id: string,
+  page_size: number,
+  page_number: number,
+): Promise<{rows:RAGDoc[],total:number}> {
+  const response = await axios.get(
+    `${apiDomain}/api/rag/chunk/list?bot_id=${bot_id}&page_size=${page_size}&page_number=${page_number}`,
+  );
+  return response.data;
+}
+
+export async function getRagTask(
+  bot_id: string
+) :Promise<RagTask>{
+  const response = await axios.get(
+    `${apiDomain}/api/rag/task/latest?bot_id=${bot_id}`,
+  );
+  return response.data;
 }

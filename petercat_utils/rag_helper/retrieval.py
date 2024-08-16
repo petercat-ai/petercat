@@ -116,7 +116,7 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
     loader = init_github_file_loader(config)
     documents = loader.load()
     supabase = get_client()
-    is_added_query = (
+    is_doc_added_query = (
         supabase.table(TABLE_NAME)
         .select("id, repo_name, commit_id, file_path, bot_id")
         .eq("repo_name", config.repo_name)
@@ -125,11 +125,11 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
         .eq("bot_id", config.bot_id)
         .execute()
     )
-    if not is_added_query.data:
-        is_equal_query = (
+    if not is_doc_added_query.data:
+        is_doc_equal_query = (
             supabase.table(TABLE_NAME).select("*").eq("file_sha", loader.file_sha)
         ).execute()
-        if not is_equal_query.data:
+        if not is_doc_equal_query.data:
             # If there is no file with the same file_sha, perform embedding.
             store = supabase_embedding(
                 documents,
@@ -149,12 +149,27 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                     "file_path": config.file_path,
                     "bot_id": config.bot_id,
                 }
-                for item in is_equal_query.data
+                for item in is_doc_equal_query.data
             ]
             insert_result = supabase.table(TABLE_NAME).insert(new_commit_list).execute()
             return insert_result
     else:
         return True
+
+
+def reload_knowledge(config: RAGGitDocConfig):
+    loader = init_github_file_loader(config)
+    documents = loader.load()
+    # TODO:检查历史的文件会如何处理？是否需要手动删除？
+    store = supabase_embedding(
+        documents,
+        repo_name=config.repo_name,
+        commit_id=loader.commit_id,
+        file_sha=loader.file_sha,
+        file_path=config.file_path,
+        bot_id=config.bot_id,
+    )
+    return store
 
 
 def search_knowledge(
@@ -167,3 +182,18 @@ def search_knowledge(
     documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
     return json_output
+
+
+def get_chunk_list(bot_id: str, page_size: int, page_number: int):
+    client = get_client()
+    query = (
+        client.table(TABLE_NAME)
+        .select("id, content, file_path,update_timestamp")
+        .eq("bot_id", bot_id)
+        .limit(page_size)
+        .offset((page_number - 1) * page_size)
+        .execute()
+    )
+    count_response = client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+    total_count = len(count_response.data)
+    return {"rows": query.data, "total": total_count}

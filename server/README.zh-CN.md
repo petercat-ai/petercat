@@ -13,6 +13,14 @@ PeterCat 服务端，采用 FastAPI 框架开发。使用了 supabase 作为数�
   - SQL Editor 是一个可以在线编写 SQL 并执行的可视化客户端；你可以在其中创建表、删除表、创建函数、删除函数等操作。
   - Database 中提供了数据库的的综合管理；
 
+### Table Typescript 类型支持 
+要想获得表内字段的类型支持，需要先安装 supabse CLI 工具 : https://supabase.com/docs/guides/cli/getting-started
+```bash
+cd migrations
+supabase start
+supabase gen types typescript --local > database.types.ts
+```
+
 ## github
 ### webhook
 代码目录
@@ -122,4 +130,39 @@ begin
   order by rag_docs.embedding <=> query_embedding;
 end;
 $$;
+```
+
+### sqs
+先执行命令行检查环境是否正确
+`aws ecr get-login-password --region ap-northeast-1`
+
+如果不正确，按照以下步骤进行检查。
+1. 安装 aws cli 工具
+
+2. 访问 配置文档，并进行配置 [https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
+2.1 
+```bash
+# 新建文件
+touch ~/.aws/credentials
+# 利用 vscode 打开并编辑文件
+code ~/.aws/credentials
+# 文件中写入
+[profile 你的profile]
+sso_start_url=https://d-956758b93a.awsapps.com/start
+sso_region = ap-northeast-1
+sso_account_id = 你的 Id
+sso_role_name = AdministratorAccess
+region = ap-northeast-1
+output = json
+
+# 保存并关闭文件
+source  ~/.aws/credentials
+
+#打开 并编辑 ～/.zshrc
+code ~/.zshrc
+# 在文件末尾加入并保存
+export AWS_PROFILE=my-profile
+export AWS_REGION=ap-northeast-1
+# 生效
+source ～/.zshrc
 ```
