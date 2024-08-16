@@ -83,6 +83,7 @@ Resources:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
           API_URL: !Ref APIUrl
+          WEB_URL: !Ref WebUrl
           X_GITHUB_APP_ID: !Ref GitHubAppID
           X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
           X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
