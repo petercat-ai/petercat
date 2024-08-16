@@ -73,7 +73,7 @@ async def callback(request: Request, response: Response):
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
     response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
-    print(f"callback={WEB_URL}")
+
     return RedirectResponse(url=f'{WEB_URL}', status_code=302)
 
 @router.get("/userinfo")
