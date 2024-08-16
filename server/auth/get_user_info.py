@@ -1,9 +1,11 @@
-from fastapi import HTTPException
+from typing import Annotated
+from fastapi import Cookie, HTTPException
 import httpx
 import secrets
 import random
 import string
 
+from .get_oauth_token import get_oauth_token
 from petercat_utils import get_client, get_env_variable
 
 random_str = lambda N: ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
@@ -30,17 +32,16 @@ async def getUserInfoByToken(token):
         else :
             return {}
 
-async def getUserAccessToken(token):
-    user_info = await getUserInfoByToken(token)
-    if user_info["id"]:
-        user_accesstoken_url = f"https://{AUTH0_DOMAIN}/api/v2/users/{user_info['id']}"
-        print(f"user_accesstoken_url={user_accesstoken_url}")
-        async with httpx.AsyncClient() as client:
-            headers = {"authorization": f"Bearer {token}"}
-            user_info_response = await client.get(user_accesstoken_url, headers=headers)
-            return user_info_response.json()
-    else:
-        return {}
+async def getUserAccessToken(user_id: str, provider = 'github'):
+    token = await get_oauth_token()
+    user_accesstoken_url = f"https://{AUTH0_DOMAIN}/api/v2/users/{user_id}"
+
+    async with httpx.AsyncClient() as client:
+        headers = {"authorization": f"Bearer {token}"}
+        user_info_response = await client.get(user_accesstoken_url, headers=headers)
+        user = user_info_response.json()
+        identity = next((identity for identity in user['identities'] if identity['provider'] == provider), None)
+        return identity['access_token']
 
 async def generateAnonymousUser(clientId: str):
     token = f"client|{clientId}"
@@ -61,3 +62,9 @@ async def getAnonymousUserInfoByToken(token: str):
     supabase = get_client()
     rows = supabase.table("profiles").select("*").eq("id", token).execute()
     return rows.data[0] if (len(rows.data) > 0) else None
+
+async def get_user_access_token(petercat_user_token: Annotated[str | None, Cookie()] = None):
+    user_info = await getUserInfoByToken(petercat_user_token)
+    access_token = await getUserAccessToken(user_id=user_info['id'])
+    print(f"get_user_access_token: user_info={user_info}, access_token={access_token}")
+    return access_token
