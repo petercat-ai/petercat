@@ -5,7 +5,7 @@ from fastapi.responses import RedirectResponse
 import httpx
 
 from petercat_utils import get_client, get_env_variable
-from auth.get_user_info import generateAnonymousUser, getAnonymousUserInfoByToken, getUserInfoByToken
+from auth.get_user_info import generateAnonymousUser, getAnonymousUserInfoByToken, getUserAccessToken, getUserInfoByToken
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -58,7 +58,7 @@ async def getAnonymousUser(request: Request, response: Response):
 
 @router.get("/login")
 def login():
-    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email&state=STATE"
+    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email read:users read:user_idp_tokens&state=STATE"
     return RedirectResponse(redirect_uri)
 
 @router.get("/callback")
@@ -75,7 +75,7 @@ async def callback(request: Request, response: Response):
     supabase.table("profiles").upsert(data).execute()
     print(f"auth_callback: {data}")
     response = RedirectResponse(url=f'{WEB_URL}', status_code=302)
-    response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
+    response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=False, samesite='Lax')
 
     return response
 
@@ -93,6 +93,10 @@ async def userinfo(request: Request, response: Response, petercat_user_token: An
     else:
         return RedirectResponse(url=LOGIN_URL, status_code=303)
 
+@router.get("/user_access_token")
+async def userinfo(petercat_user_token: Annotated[str | None, Cookie()] = None):
+    print(f"petercat_user_token: {petercat_user_token}")
+    return await getUserAccessToken(petercat_user_token)
 
 @router.get("/get_user_id")
 async def get_user_id(user_id: str = Cookie(None)):
