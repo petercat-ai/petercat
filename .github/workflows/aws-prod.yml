@@ -41,6 +41,7 @@ jobs:
             --no-fail-on-empty-changeset \
             --config-file .aws/petercat-prod.toml \
             --parameter-overrides APIUrl="https://api.petercat.chat" \
+                                  WebUrl="https://www.petercat.chat" \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
