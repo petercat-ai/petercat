@@ -135,6 +135,7 @@ def handle_tree_task(task):
                     "from_task_id": task["id"],
                     "path": "/".join(filter(lambda s: s, [task["path"], item.path])),
                     "sha": item.sha,
+                    "bot_id": task["bot_id"],
                 },
                 tree_data.tree,
             ),

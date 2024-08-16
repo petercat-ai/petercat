@@ -50,7 +50,7 @@ def trigger_rag_task (repo_name: str, bot_id: str):
             file_path="",
             commit_id="",
         )
-        add_task(config )
+        add_task(config)
     except Exception as e:
         print(f"trigger_rag_task error: {e}")
 

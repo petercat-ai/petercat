@@ -131,3 +131,37 @@ begin
 end;
 $$;
 ```
+
+### sqs
+先执行命令行检查环境是否正确
+`aws ecr get-login-password --region ap-northeast-1`
+
+如果不正确，按照以下步骤进行检查。
+1. 安装 aws cli 工具
+
+2. 访问 配置文档，并进行配置 [https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html)
+2.1 
+```bash
+# 新建文件
+touch ~/.aws/credentials
+# 利用 vscode 打开并编辑文件
+code ~/.aws/credentials
+# 文件中写入
+[profile 你的profile]
+sso_start_url=https://d-956758b93a.awsapps.com/start
+sso_region = ap-northeast-1
+sso_account_id = 你的 Id
+sso_role_name = AdministratorAccess
+region = ap-northeast-1
+output = json
+
+# 保存并关闭文件
+source  ~/.aws/credentials
+
+#打开 并编辑 ～/.zshrc
+code ~/.zshrc
+# 在文件末尾加入并保存
+export AWS_PROFILE=my-profile
+export AWS_REGION=ap-northeast-1
+# 生效
+source ～/.zshrc
