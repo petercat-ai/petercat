@@ -1,4 +1,5 @@
-from fastapi import APIRouter,Cookie, Request, HTTPException, status, Response
+from typing import Annotated
+from fastapi import APIRouter, Cookie, Request, HTTPException, status, Response
 
 from fastapi.responses import RedirectResponse
 import httpx
@@ -72,12 +73,15 @@ async def callback(request: Request, response: Response):
     data = await getUserInfoByToken(token)
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
+    print(f"auth_callback: {data}")
+    response = RedirectResponse(url=f'{WEB_URL}', status_code=302)
     response.set_cookie(key="petercat_user_token", value=token, httponly=True, secure=True, samesite='Lax')
 
-    return RedirectResponse(url=f'{WEB_URL}', status_code=302)
+    return response
 
 @router.get("/userinfo")
-async def userinfo(request: Request, response: Response, petercat_user_token: str = Cookie(None)):
+async def userinfo(request: Request, response: Response, petercat_user_token: Annotated[str | None, Cookie()] = None):
+    print(f"petercat_user_token: {petercat_user_token}")
     if not petercat_user_token:
         return await getAnonymousUser(request, response)
     data = await getAnonymousUserInfoByToken(petercat_user_token) if petercat_user_token.startswith("client|") else await getUserInfoByToken(petercat_user_token)
