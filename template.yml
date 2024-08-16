@@ -21,6 +21,10 @@ Parameters:
     Type: String
     Description: Github Token
     Default: 1
+  WebUrl:
+    Type: String
+    Description: Web URL
+    Default: 1
   APIUrl:
     Type: String
     Description: API URL
