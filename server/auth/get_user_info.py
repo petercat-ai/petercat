@@ -29,7 +29,19 @@ async def getUserInfoByToken(token):
             return data
         else :
             return {}
-        
+
+async def getUserAccessToken(token):
+    user_info = await getUserInfoByToken(token)
+    if user_info["id"]:
+        user_accesstoken_url = f"https://{AUTH0_DOMAIN}/api/v2/users/{user_info['id']}"
+        print(f"user_accesstoken_url={user_accesstoken_url}")
+        async with httpx.AsyncClient() as client:
+            headers = {"authorization": f"Bearer {token}"}
+            user_info_response = await client.get(user_accesstoken_url, headers=headers)
+            return user_info_response.json()
+    else:
+        return {}
+
 async def generateAnonymousUser(clientId: str):
     token = f"client|{clientId}"
     seed = clientId[:4]
