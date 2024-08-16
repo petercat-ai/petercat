@@ -58,7 +58,7 @@ async def getAnonymousUser(request: Request, response: Response):
 
 @router.get("/login")
 def login():
-    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid profile email read:users read:user_idp_tokens&state=STATE"
+    redirect_uri = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=code&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}&scope=openid+profile+email+read%3Ausers+read%3Auser_idp_tokens&state=STATE"
     return RedirectResponse(redirect_uri)
 
 @router.get("/callback")
