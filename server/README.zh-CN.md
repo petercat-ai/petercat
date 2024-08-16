@@ -165,3 +165,4 @@ export AWS_PROFILE=my-profile
 export AWS_REGION=ap-northeast-1
 # 生效
 source ～/.zshrc
+```
