@@ -44,7 +44,8 @@ jobs:
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
             --config-file .aws/petercat-preview.toml \
-            --parameter-overrides GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
+            --parameter-overrides APIUrl="https://api-pre.petercat.chat" \
+                                  GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
                                   OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
@@ -55,4 +56,7 @@ jobs:
                                   FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
                                   SQSQueueName=${{ secrets.SQS_QUEUE_NAME }} \
                                   SQSQueueUrl=${{ secrets.SQS_QUEUE_URL }} \
-                                  GitHubToken=${{ secrets.X_GITHUB_TOKEN }}
+                                  GitHubToken=${{ secrets.X_GITHUB_TOKEN }} \
+                                  Auth0Domain=${{ secrets.AUTH0_DOMAIN }} \
+                                  Auth0ClientId=${{ secrets.AUTH0_CLIENT_ID }} \
+                                  Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}

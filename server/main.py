@@ -18,7 +18,7 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
 session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
-cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or ''
+cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI( 
     title="Bo-meta Server",
     version="1.0",
@@ -34,7 +34,7 @@ cors_origins = ["*"] if cors_origins_whitelist is None else cors_origins_whiteli
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=cors_origins, 
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"], 

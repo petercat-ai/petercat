@@ -143,20 +143,18 @@ def handle_tree_task(task):
     )
 
     if len(task_list) > 0:
-        supabase.table(TABLE_NAME).insert(task_list).execute()
-    return (
-        supabase.table(TABLE_NAME)
-        .update(
-            {
-                "metadata": {
-                    "tree": list(map(lambda item: item.raw_data, tree_data.tree))
-                },
-                "status": TaskStatus.COMPLETED.name,
-            }
-        )
-        .eq("id", task["id"])
-        .execute()
-    )
+        result = supabase.table(TABLE_NAME).insert(task_list).execute()
+
+        for record in result.data:
+            task_id = record["id"]
+            message_id = send_task_message(task_id=task_id)
+            print(f"record={record}, task_id={task_id}, message_id={message_id}")
+
+    return (supabase.table(TABLE_NAME).update(
+        {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
+         "status": TaskStatus.COMPLETED.name})
+            .eq("id", task["id"])
+            .execute())
 
 
 def handle_blob_task(task):
