@@ -6,7 +6,7 @@ from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from petercat_utils import get_client
-from petercat_utils.data_class import RAGIssueDocConfig
+from petercat_utils.data_class import RAGGitIssueConfig
 
 g = Github()
 
@@ -76,7 +76,7 @@ def get_issue_document_list(issue: Issue):
     return document_list
 
 
-def add_knowledge_by_issue(config: RAGIssueDocConfig):
+def add_knowledge_by_issue(config: RAGGitIssueConfig):
     supabase = get_client()
     is_added_query = (
         supabase.table(TABLE_NAME)

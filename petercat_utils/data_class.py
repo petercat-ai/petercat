@@ -90,9 +90,12 @@ class TaskStatus(Enum):
     CANCELLED = auto()
     ERROR = auto()
 
+class TaskType(Enum):
+    GitDoc = auto()
+
 class GitIssueConfig(BaseModel):
     repo_name: str
     issue_id: str
 
-class RAGIssueDocConfig(GitIssueConfig):
+class RAGGitIssueConfig(GitIssueConfig):
     bot_id: str
