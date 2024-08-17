@@ -1,0 +1,8 @@
+.chat_item_container{
+  position: relative;
+    width: 100%;
+    max-width: 100vw;
+    padding: 16px;
+    content-visibility: auto;
+    contain-intrinsic-size: 100px;
+}
