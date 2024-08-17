@@ -23,6 +23,21 @@ create table rag_docs
   file_path varchar
 );
 
+create table issue_docs
+(
+  id uuid primary key,
+  content text,
+  -- corresponds to Document.pageContent
+  metadata jsonb,
+  -- corresponds to Document.metadata
+  embedding vector (1536),
+  -- 1536 works for OpenAI embeddings, change if needed
+  -- per request info
+  repo_name varchar,
+  issue_id varchar,
+  bot_id varchar
+);
+
 -- Drop the existing function if it already exists
 drop function if exists match_rag_docs;
 
@@ -52,5 +67,38 @@ begin
   where metadata @> jsonb_extract_path(filter, 'metadata')
   and bot_id = jsonb_extract_path_text(filter, 'bot_id')
   order by rag_docs.embedding <=> query_embedding;
+end;
+$$;
+
+
+-- Drop the existing function if it already exists
+drop function if exists match_issue_docs;
+
+create function match_issue_docs
+ (
+  query_embedding vector (1536),
+  filter jsonb default '{}'
+) returns table
+(
+  id uuid,
+  content text,
+  metadata jsonb,
+  embedding vector,
+  similarity float
+) language plpgsql as $$
+#variable_conflict use_column
+begin
+  return query
+  select
+    id,
+    content,
+    metadata,
+    embedding,
+    1 - (issue_docs.embedding <=> query_embedding
+  ) as similarity
+  from issue_docs
+  where metadata @> jsonb_extract_path(filter, 'metadata')
+  and bot_id = jsonb_extract_path_text(filter, 'bot_id')
+  order by issue_docs.embedding <=> query_embedding;
 end;
 $$;
