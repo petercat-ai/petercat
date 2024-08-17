@@ -1,19 +1,19 @@
 import Lottie from 'lottie-react';
 import React from 'react';
-const LoadingAnimation1 = require('../../assets/bubble-1.json');
+const LoadingAnimationStart = require('../../assets/bubble-start.json');
 
-interface LoadingProps {
+interface LoadingStartProps {
   loop?: boolean;
   onComplete?: () => void;
 }
 
-const Loading: React.FC<LoadingProps> = (props) => {
+const LoadingStart: React.FC<LoadingStartProps> = (props) => {
   const { onComplete, loop = true } = props;
 
   return (
     <div className="loading">
       <Lottie
-        animationData={LoadingAnimation1}
+        animationData={LoadingAnimationStart}
         loop={loop}
         autoplay={true}
         onComplete={onComplete}
@@ -22,4 +22,4 @@ const Loading: React.FC<LoadingProps> = (props) => {
   );
 };
 
-export default Loading;
+export default LoadingStart;

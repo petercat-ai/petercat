@@ -17,7 +17,6 @@ import React, {
   type FC,
 } from 'react';
 import useSWR from 'swr';
-import StopBtn from '../StopBtn';
 import ThoughtChain from '../ThoughtChain';
 
 import SignatureIcon from '../icons/SignatureIcon';
@@ -31,8 +30,8 @@ import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
 import InputArea from './components/InputAreaRender';
-import Loading from './components/Loading';
-import OnceLoading from './components/OnceLoading';
+import LoadingEnd from './components/LoadingEnd';
+import LoadingStart from './components/LoadingStart';
 
 import '../style/global.css';
 
@@ -119,6 +118,9 @@ const Chat: FC<ChatProps> = memo(
       });
     }, [detail]);
 
+    const messageMinWidth = drawerWidth
+      ? `calc(${drawerWidth}px - 90px)`
+      : '400px';
     return (
       <div
         className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
@@ -234,7 +236,7 @@ const Chat: FC<ChatProps> = memo(
                 ) {
                   return (
                     <div className="leftMessageContent">
-                      <Loading
+                      <LoadingStart
                         loop={!complete}
                         onComplete={() => setComplete(true)}
                       />
@@ -245,15 +247,18 @@ const Chat: FC<ChatProps> = memo(
                 // If no tools, render the markdown content
                 if (isEmpty(tools)) {
                   return (
-                    <div  className="leftMessageContent">
-                      <OnceLoading>
+                    <div
+                      className="leftMessageContent"
+                      style={{ minWidth: messageMinWidth }}
+                    >
+                      <LoadingEnd>
                         <Markdown
                           className="ant-pro-chat-list-item-message-content"
                           style={{ overflowX: 'hidden', overflowY: 'auto' }}
                         >
                           {answerStr}
                         </Markdown>
-                      </OnceLoading>
+                      </LoadingEnd>
                     </div>
                   );
                 }
@@ -270,6 +275,7 @@ const Chat: FC<ChatProps> = memo(
                 return (
                   <div
                     className="leftMessageContent"
+                    style={{ maxWidth: messageMinWidth }}
                   >
                     <div className="mb-1">
                       <ThoughtChain
@@ -286,7 +292,7 @@ const Chat: FC<ChatProps> = memo(
                     </Markdown>
                   </div>
                 );
-              }
+              },
             }}
             assistantMeta={{
               avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,
@@ -358,20 +364,6 @@ const Chat: FC<ChatProps> = memo(
               );
             }}
             inputAreaProps={{ className: 'userInputBox h-24 !important' }}
-            actions={{
-              render: () => [
-                <StopBtn
-                  key="StopBtn"
-                  visible={!!proChatRef?.current?.getChatLoadingId()}
-                  action={() => proChatRef?.current?.stopGenerateMessage()}
-                />,
-              ],
-              flexConfig: {
-                gap: 24,
-                direction: 'vertical',
-                justify: 'space-between',
-              },
-            }}
           />
         </div>
       </div>
