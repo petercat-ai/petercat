@@ -3,8 +3,8 @@ from typing import Optional
 
 import boto3
 
-from petercat_utils.rag_helper.git_task import GitTask
 from .git_doc_task import GitDocTask
+from .git_task import GitTask
 
 # Create SQS client
 sqs = boto3.client("sqs")
@@ -12,7 +12,7 @@ sqs = boto3.client("sqs")
 from github import Github
 
 from ..utils.env import get_env_variable
-from ..data_class import TaskStatus, TaskType, GitDocTaskNodeType
+from ..data_class import TaskStatus, TaskType
 from ..db.client.supabase import get_client
 
 g = Github()
@@ -53,7 +53,7 @@ def get_task_by_id(task_id):
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def get_task( task_type: TaskType, task_id: str) -> GitTask:
+def get_task(task_type: TaskType, task_id: str) -> GitTask:
     supabase = get_client()
     response = (supabase.table(GitTask.get_table_name(task_type))
                 .select("*")
@@ -79,6 +79,7 @@ def trigger_task(task_type: TaskType, task_id: Optional[str]):
     if task is None:
         return task
     return task.handle()
+
 
 def get_latest_task_by_bot_id(bot_id: str):
     supabase = get_client()
