@@ -10,8 +10,8 @@ from petercat_utils.data_class import RAGIssueDocConfig
 
 g = Github()
 
-TABLE_NAME = "issue_docs"
-QUERY_NAME = "match_issue_docs"
+TABLE_NAME = "rag_issues"
+QUERY_NAME = "match_rag_issues"
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 200
 
