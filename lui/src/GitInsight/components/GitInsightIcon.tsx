@@ -24,7 +24,7 @@ const GitInsightIcon: React.FC<GitInsightIconProps> = (props) => {
 
   return (
     <>
-      <div className="loading">
+      <div>
         <Lottie
           style={{
             width: 'auto',

@@ -67,7 +67,7 @@ const Assistant = (props: AssistantProps) => {
           height: '100vh',
           zIndex: 9999,
           borderBottomLeftRadius: '20px!important',
-          boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.2)',
         }}
       >
         {chatVisible && (

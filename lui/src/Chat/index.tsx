@@ -16,7 +16,7 @@ import React, {
   type FC,
 } from 'react';
 import useSWR from 'swr';
-import ThoughtChain from '../ThoughtChain';
+import { UITemplateRender } from './template/index';
 
 import SignatureIcon from '../icons/SignatureIcon';
 import {
@@ -276,10 +276,7 @@ const Chat: FC<ChatProps> = memo(
                       avatar={domsMap.avatar}
                       title={domsMap.title}
                       content={
-                        <div
-                          className="leftMessageContent"
-                          style={{ minWidth: messageMinWidth }}
-                        >
+                        <div className="leftMessageContent">
                           <LoadingEnd>
                             <Markdown
                               className="ant-pro-chat-list-item-message-content"
@@ -308,7 +305,7 @@ const Chat: FC<ChatProps> = memo(
                 }
 
                 getToolsResult?.(extra);
-                const { status, source } = extra;
+                const { status, source, template_id, data } = extra;
                 return (
                   <ChatItemRender
                     direction={'start'}
@@ -326,6 +323,17 @@ const Chat: FC<ChatProps> = memo(
                             source={source}
                           />
                         </div>
+                        {template_id && (
+                          <div
+                            className="mb-2 ant-pro-chat-list-item-message-content"
+                            style={{ maxWidth: messageMinWidth }}
+                          >
+                            {UITemplateRender({
+                              templateId: template_id,
+                              cardData: data,
+                            })}
+                          </div>
+                        )}
                         <Markdown
                           className="ant-pro-chat-list-item-message-content"
                           style={{ overflowX: 'hidden', overflowY: 'auto' }}

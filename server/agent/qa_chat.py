@@ -3,17 +3,18 @@ from agent.base import AgentBuilder
 from prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils import get_client
 from petercat_utils.data_class import ChatData
-from tools import issue, sourcecode, knowledge
+from tools import issue, sourcecode, knowledge, git_info
 
 
 def get_tools(bot_id, token):
     issue_tools = issue.factory(access_token=token)
     return {
         "search_knowledge": knowledge.factory(bot_id=bot_id),
-        "create_issue": issue_tools['create_issue'],
-        "get_issues": issue_tools['get_issues'],
-        "search_issues": issue_tools['search_issues'],
+        "create_issue": issue_tools["create_issue"],
+        "get_issues": issue_tools["get_issues"],
+        "search_issues": issue_tools["search_issues"],
         "search_code": sourcecode.search_code,
+        "search_repo": git_info.search_repo,
     }
 
 
@@ -40,7 +41,6 @@ def init_prompt(input_data: ChatData):
 
 
 def agent_stream_chat(input_data: ChatData, user_token: str) -> AsyncIterator[str]:
-    print(f"agent_stream_chat: user_token={user_token}")
     agent = AgentBuilder(
         prompt=init_prompt(input_data),
         tools=get_tools(bot_id=input_data.bot_id, token=user_token),
