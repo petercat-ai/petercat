@@ -2,9 +2,10 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends
+from verify.rate_limit import verify_rate_limit
+
 from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
 from petercat_utils.rag_helper import retrieval, task, issue_retrieval, git_doc_task
-from verify.rate_limit import verify_rate_limit
 
 router = APIRouter(
     prefix="/api",
@@ -64,8 +65,10 @@ def add_task(config: RAGGitDocConfig):
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
 def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
-    data = task.trigger_task(task_type, task_id)
-    return data
+    try:
+        task.trigger_task(task_type, task_id)
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
 
 
 @router.get("/rag/chunk/list", dependencies=[Depends(verify_rate_limit)])

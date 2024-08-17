@@ -86,6 +86,7 @@ class TaskStatus(AutoNameEnum):
 class TaskType(AutoNameEnum):
     GIT_DOC = auto()
 
+
 class GitDocTaskNodeType(AutoNameEnum):
     TREE = auto()
     BLOB = auto()

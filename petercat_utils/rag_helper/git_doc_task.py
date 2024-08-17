@@ -1,12 +1,60 @@
-from typing import Optional, Dict
+from typing import Optional
 
 from github import Github, Repository
 
-import retrieval
-from petercat_utils.rag_helper.git_task import GitTask
+from .git_task import GitTask
 from ..data_class import RAGGitDocConfig, TaskStatus, TaskType, GitDocTaskNodeType
+from ..rag_helper import retrieval
 
 g = Github()
+
+
+def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):
+    if not path:
+        return sha
+    else:
+        tree_data = repo.get_git_tree(sha)
+        for item in tree_data.tree:
+            if path.split("/")[0] == item.path:
+                return get_path_sha(repo, item.sha, "/".join(path.split("/")[1:]))
+
+
+def add_rag_git_doc_task(config: RAGGitDocConfig,
+                         extra=None
+                         ):
+    if extra is None:
+        extra = {
+            "node_type": None,
+            "from_task_id": None,
+        }
+    repo = g.get_repo(config.repo_name)
+
+    commit_id = (
+        config.commit_id
+        if config.commit_id
+        else repo.get_branch(config.branch).commit.sha
+    )
+    if config.file_path == "" or config.file_path is None:
+        extra["node_type"] = GitDocTaskNodeType.TREE.value
+
+    if not extra.get("node_type"):
+        content = repo.get_contents(config.file_path, ref=commit_id)
+        if isinstance(content, list):
+            extra["node_type"] = GitDocTaskNodeType.TREE.value
+        else:
+            extra["node_type"] = GitDocTaskNodeType.BLOB.value
+
+    sha = get_path_sha(repo, commit_id, config.file_path)
+
+    doc_task = GitDocTask(commit_id=commit_id,
+                          sha=sha,
+                          repo_name=config.repo_name,
+                          node_type=extra["node_type"],
+                          bot_id=config.bot_id,
+                          path=config.file_path)
+    res = doc_task.save()
+    doc_task.send()
+    return res
 
 
 class GitDocTask(GitTask):
@@ -49,7 +97,7 @@ class GitDocTask(GitTask):
                         "repo_name": self.repo_name,
                         "commit_id": self.commit_id,
                         "status": TaskStatus.NOT_STARTED.name,
-                        "node_type": item.type,
+                        "node_type": (item.type + '').upper(),
                         "from_task_id": self.id,
                         "path": "/".join(filter(lambda s: s, [self.path, item.path])),
                         "sha": item.sha,
@@ -79,9 +127,7 @@ class GitDocTask(GitTask):
                 .eq("id", self.id)
                 .execute())
 
-    def handle_blob_task(self):
-        self.update_status(TaskStatus.IN_PROGRESS)
-
+    def handle_blob_node(self):
         retrieval.add_knowledge_by_doc(
             RAGGitDocConfig(
                 repo_name=self.repo_name,
@@ -96,49 +142,7 @@ class GitDocTask(GitTask):
         self.update_status(TaskStatus.IN_PROGRESS)
         if self.node_type == GitDocTaskNodeType.TREE.value:
             return self.handle_tree_node()
-
-
-def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):
-    if not path:
-        return sha
-    else:
-        tree_data = repo.get_git_tree(sha)
-        for item in tree_data.tree:
-            if path.split("/")[0] == item.path:
-                return get_path_sha(repo, item.sha, "/".join(path.split("/")[1:]))
-
-
-def add_rag_git_doc_task(config: RAGGitDocConfig,
-                         extra: Optional[Dict[str, Optional[str]]] = {
-                             "node_type": None,
-                             "from_task_id": None,
-                         }
-                         ):
-    repo = g.get_repo(config.repo_name)
-
-    commit_id = (
-        config.commit_id
-        if config.commit_id
-        else repo.get_branch(config.branch).commit.sha
-    )
-    if config.file_path == "" or config.file_path is None:
-        extra["node_type"] = "tree"
-
-    if not extra.get("node_type"):
-        content = repo.get_contents(config.file_path, ref=commit_id)
-        if isinstance(content, list):
-            extra["node_type"] = "tree"
+        elif self.node_type == GitDocTaskNodeType.BLOB.value:
+            return self.handle_blob_node()
         else:
-            extra["node_type"] = "blob"
-
-    sha = get_path_sha(repo, commit_id, config.file_path)
-
-    doc_task = GitDocTask(commit_id=commit_id,
-                          sha=sha,
-                          repo_name=config.repo_name,
-                          node_type=extra["node_type"],
-                          bot_id=config.bot_id,
-                          path=config.file_path)
-    res = doc_task.save()
-    doc_task.send()
-    return res
+            raise ValueError(f"Unsupported node type [{self.node_type}]")

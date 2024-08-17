@@ -53,7 +53,7 @@ def get_task_by_id(task_id):
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def get_task( task_type: TaskType, task_id: str):
+def get_task( task_type: TaskType, task_id: str) -> GitTask:
     supabase = get_client()
     response = (supabase.table(GitTask.get_table_name(task_type))
                 .select("*")

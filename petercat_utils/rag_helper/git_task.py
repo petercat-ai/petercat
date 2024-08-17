@@ -76,7 +76,7 @@ class GitTask(ABC):
         response = sqs.send_message(
             QueueUrl=SQS_QUEUE_URL,
             DelaySeconds=10,
-            MessageBody=(json.dumps({"task_id": self.id, "task_type": self.type})),
+            MessageBody=(json.dumps({"task_id": self.id, "task_type": self.type.value})),
         )
         message_id = response["MessageId"]
         print(f"task_id={self.id}, task_type={self.type.value}, message_id={message_id}")
