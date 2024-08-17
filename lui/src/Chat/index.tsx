@@ -329,8 +329,6 @@ const Chat: FC<ChatProps> = memo(
               return [];
             }}
             request={async (messages) => {
-              console.log('+++++messages', messages);
-              debugger;
               const newMessages = messages
                 .filter(
                   (item) =>
@@ -359,7 +357,6 @@ const Chat: FC<ChatProps> = memo(
                     };
                   }
                 }) as Message[];
-              console.log('+++++newMessages', newMessages);
               const response = await streamChat(
                 newMessages,
                 apiDomain,
