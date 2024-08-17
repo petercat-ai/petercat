@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import CountCard from './components/CountCard';
 
 export interface GitInsightProps {
@@ -7,43 +7,44 @@ export interface GitInsightProps {
   starCount: number;
 }
 
+const MemoizedCountCard = memo(CountCard);
+
 const GitInsight = (props: GitInsightProps) => {
   const { forkCount = 0, commitCount = 0, starCount = 0 } = props;
-  const [showNumber2, setShowNumber2] = useState<boolean>(false);
-  const [showNumber3, setShowNumber3] = useState<boolean>(false);
-
+  const [num0End, setNum0End] = useState<boolean>(false);
+  const [num1End, setNum1End] = useState<boolean>(false);
   const DELAY = 333;
 
   useEffect(() => {
-    const timer2 = setTimeout(() => {
-      setShowNumber2(true);
+    const timer0 = setTimeout(() => {
+      setNum0End(true);
     }, DELAY);
 
-    const timer3 = setTimeout(() => {
-      setShowNumber3(true);
+    const timer1 = setTimeout(() => {
+      setNum1End(true);
     }, DELAY * 2);
 
     return () => {
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      clearTimeout(timer0);
+      clearTimeout(timer1);
     };
   }, []);
 
   return (
     <div className="flex justify-start items-center gap-x-[13px]">
       <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
-        <CountCard type="star" count={starCount} play={true} />
+        <MemoizedCountCard type="star" count={starCount} />
       </div>
 
-      {showNumber2 && (
-        <div className="opacity-0 transform transition-opacity duration-500 delay-200  animate-fade-in">
-          <CountCard type="fork" count={forkCount} play={showNumber2} />
+      {num0End && (
+        <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
+          <MemoizedCountCard type="fork" count={forkCount} />
         </div>
       )}
 
-      {showNumber3 && (
-        <div className="opacity-0 transform transition-opacity duration-500 delay-200  animate-fade-in">
-          <CountCard type="commit" count={commitCount} play={showNumber3} />
+      {num1End && (
+        <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
+          <MemoizedCountCard type="commit" count={commitCount} />
         </div>
       )}
     </div>

@@ -1,21 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface NumberScrollProps {
   count: number;
-  play: boolean;
 }
 
-const NumberScroll: React.FC<NumberScrollProps> = ({ count, play }) => {
-  const [currNum, setCurrNum] = useState<number>(count);
+const NumberScroll: React.FC<NumberScrollProps> = ({
+  count,
+}) => {
   const numberRef = useRef<HTMLDivElement>(null);
 
   const scrollNumber = (digits: string[]) => {
     const number = numberRef.current;
     if (number) {
-      number.querySelectorAll('span[data-value]').forEach((tick, i) => {
-        const tickElement = tick as HTMLElement;
-        tickElement.style.transform = `translateY(-${
-          100 * parseInt(digits[i])
+      number.querySelectorAll('span[data-value]').forEach((element, index) => {
+        const numElement = element as HTMLElement;
+        numElement.style.transform = `translateY(-${
+          100 * parseInt(digits[index])
         }%)`;
       });
       number.style.width = `${digits.length * 12}px`;
@@ -45,11 +45,11 @@ const NumberScroll: React.FC<NumberScrollProps> = ({ count, play }) => {
 
   const setup = (startNum: number) => {
     const digits = startNum.toString().split('');
-    digits.forEach(() => addDigit('0'));
+    digits.forEach(() => {
+      return addDigit('0');
+    });
     scrollNumber(['0']);
-
-    setTimeout(() => scrollNumber(digits), 0);
-    setCurrNum(startNum);
+    setTimeout(() => scrollNumber(digits), 100);
   };
 
   const baseSpanStyle = `
@@ -74,9 +74,8 @@ const NumberScroll: React.FC<NumberScrollProps> = ({ count, play }) => {
   };
 
   useEffect(() => {
-    if (!play) return;
-    setup(currNum);
-  }, [count, play]);
+    setup(count);
+  }, [count]);
 
   return (
     <div
