@@ -427,7 +427,7 @@ export default function Edit({ params }: { params: { id: string } }) {
       )}
       {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
         <Knowledge
-          botId={params.id}
+          botId={botProfile.id}
           goBack={() => {
             setVisibleType(VisibleTypeEnum.BOT_CONFIG);
           }}
