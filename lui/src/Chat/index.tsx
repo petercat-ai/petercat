@@ -143,7 +143,7 @@ const Chat: FC<ChatProps> = memo(
             }}
             chatRef={proChatRef}
             helloMessage={botInfo.helloMessage}
-            userMeta={{ title: 'User' }}
+            userMeta={{ title: ' ' }}
             chatItemRenderConfig={{
               render: (
                 props: ChatItemProps,

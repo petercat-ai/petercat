@@ -50,7 +50,7 @@ const Assistant = (props: AssistantProps) => {
   }, [isVisible]);
 
   const cls = classnames(
-    'fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]',
+    'fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)] border-[0.5px] border-solid border-[#e4e4e7]',
     {
       [`right-[-400px]`]: !chatVisible,
       [`right-0`]: chatVisible,
