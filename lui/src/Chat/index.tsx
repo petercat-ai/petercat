@@ -158,18 +158,35 @@ const Chat: FC<ChatProps> = memo(
                 // default message content
                 if (isDefault) {
                   return (
-                    <div className="leftMessageContent">
-                      {defaultDom}
-                      <StarterList
-                        starters={starters ?? []}
-                        onClick={(msg: string) => {
-                          proChatRef?.current?.sendMessage(
-                            JSON.stringify([{ type: 'text', text: msg }]),
-                          );
-                        }}
-                        className="ml-[72px]"
-                      ></StarterList>
-                    </div>
+                    <ChatItemRender
+                      direction={'start'}
+                      title={domsMap.title}
+                      avatar={domsMap.avatar}
+                      content={
+                        <div className="leftMessageContent">
+                          <div className="ant-pro-chat-list-item-message-content">
+                            <div className="text-left text-[20px] font-[510] leading-[28px] font-sf">
+                              👋🏻 你好，我是{' '}
+                              {botInfo.assistantMeta?.title || BOT_INFO.name}
+                            </div>
+                            <div className="text-left text-[14px] font-[510] leading-[28px] font-sf">
+                              {props.message}
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      starter={
+                        <StarterList
+                          starters={starters ?? []}
+                          onClick={(msg: string) => {
+                            proChatRef?.current?.sendMessage(
+                              JSON.stringify([{ type: 'text', text: msg }]),
+                            );
+                          }}
+                          className="ml-[72px]"
+                        ></StarterList>
+                      }
+                    />
                   );
                 }
 
