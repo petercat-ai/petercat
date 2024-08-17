@@ -1,12 +1,13 @@
 from typing import Any
 
 from github import Github, IssueComment
+from github.Issue import Issue
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from petercat_utils import get_client
 
-from .data_class import RAGIssueDocConfig, GitIssueConfig
+from .data_class import RAGIssueDocConfig
 
 g = Github()
 
@@ -59,16 +60,14 @@ def get_reactions_score(comment: IssueComment):
     return score
 
 
-def get_issue_document_list(config: GitIssueConfig):
-    content = g.get_repo(config.repo_name).get_issue(int(config.issue_id))
-
+def get_issue_document_list(issue: Issue):
     all_comments = sorted([{
         "id": comment.id,
         "url": comment.url,
         "html_url": comment.html_url,
         "content": comment.body,
         "reaction_score": get_reactions_score(comment)
-    } for comment in content.get_comments()],
+    } for comment in issue.get_comments()],
         key=lambda x: x['reaction_score'],
         reverse=True)
     document_list = [Document(page_content=comment["content"],
@@ -86,20 +85,31 @@ def add_knowledge_by_issue(config: RAGIssueDocConfig):
         .eq("repo_name", config.repo_name)
         .eq("issue_id", config.issue_id)
         .eq("bot_id", config.bot_id)
+        .eq("comment_id", None)
         .execute()
     )
 
     if not is_added_query.data:
-        document_list = get_issue_document_list(config)
-        stores = [
+        issue = g.get_repo(config.repo_name).get_issue(int(config.issue_id))
+        document_list = get_issue_document_list(issue)
+
+        issue_store = supabase_embedding(
+            documents=[Document(page_content=issue.body,
+                                metadata={"id": config.issue_id, "url": issue.url, "html_url": issue.html_url})],
+            repo_name=config.repo_name,
+            issue_id=config.issue_id,
+            bot_id=config.bot_id,
+        )
+        comment_stores = [
             supabase_embedding(
                 documents=[document],
                 repo_name=config.repo_name,
                 issue_id=config.issue_id,
                 bot_id=config.bot_id,
+                comment_id=document.metadata["id"]
             )
             for document in document_list
         ]
-        return stores
+        return issue_store + comment_stores
     else:
         return True
