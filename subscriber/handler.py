@@ -14,12 +14,12 @@ def lambda_handler(event, context):
                 
                 message_dict = json.loads(body)
                 task_id = message_dict["task_id"]
-                task = task_helper.get_task_by_id(task_id)
-                if not (task is None):
-                    if task['node_type'] == 'tree':
-                        task_helper.handle_tree_task(task)
-                    else:
-                        task_helper.handle_blob_task(task)
+                task_type = message_dict["task_type"]
+                task = task_helper.get_task(task_type, task_id)
+                if task is None:
+                    return task
+                return task.handle()
+
                 # process message
                 print(f"message content: message={message_dict}, task_id={task_id}, task={task}")
             except Exception as e:

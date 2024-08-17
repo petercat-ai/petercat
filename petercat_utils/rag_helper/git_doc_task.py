@@ -1,21 +1,18 @@
 from typing import Optional, Dict
 
 from github import Github, Repository
-from petercat_utils.data_class import TaskType
 
-from .task import GitTask
-from ..data_class import RAGGitDocConfig, TaskStatus, TaskType
-from ..db.client.supabase import get_client
+import retrieval
+from petercat_utils.rag_helper.git_task import GitTask
+from ..data_class import RAGGitDocConfig, TaskStatus, TaskType, GitDocTaskNodeType
 
 g = Github()
-
-TABLE_NAME = "rag_tasks"
 
 
 class GitDocTask(GitTask):
     def __init__(self,
                  commit_id,
-                 node_type,
+                 node_type: GitDocTaskNodeType,
                  sha,
                  bot_id,
                  path,
@@ -24,7 +21,7 @@ class GitDocTask(GitTask):
                  from_id=None,
                  id=None
                  ):
-        super().__init__(bot_id=bot_id, type=TaskType.GitDoc, from_id=from_id, id=id, status=status,
+        super().__init__(bot_id=bot_id, type=TaskType.GIT_DOC, from_id=from_id, id=id, status=status,
                          repo_name=repo_name)
         self.commit_id = commit_id
         self.node_type = node_type
@@ -39,6 +36,66 @@ class GitDocTask(GitTask):
             "sha": self.sha,
         }
         return data
+
+    def handle_tree_node(self):
+        repo = g.get_repo(self.repo_name)
+        tree_data = repo.get_git_tree(self.sha)
+
+        task_list = list(
+            filter(
+                lambda item: item["path"].endswith(".md") or item["node_type"] == "tree",
+                map(
+                    lambda item: {
+                        "repo_name": self.repo_name,
+                        "commit_id": self.commit_id,
+                        "status": TaskStatus.NOT_STARTED.name,
+                        "node_type": item.type,
+                        "from_task_id": self.id,
+                        "path": "/".join(filter(lambda s: s, [self.path, item.path])),
+                        "sha": item.sha,
+                        "bot_id": self.bot_id,
+                    },
+                    tree_data.tree,
+                ),
+            )
+        )
+
+        if len(task_list) > 0:
+            result = self.get_table().insert(task_list).execute()
+
+            for record in result.data:
+                doc_task = GitDocTask(id=record["id"],
+                                      commit_id=record["commit_id"],
+                                      sha=record["sha"],
+                                      repo_name=record["repo_name"],
+                                      node_type=record["node_type"],
+                                      bot_id=record["bot_id"],
+                                      path=record["path"])
+                doc_task.send()
+
+        return (self.get_table().update(
+            {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
+             "status": TaskStatus.COMPLETED.name})
+                .eq("id", self.id)
+                .execute())
+
+    def handle_blob_task(self):
+        self.update_status(TaskStatus.IN_PROGRESS)
+
+        retrieval.add_knowledge_by_doc(
+            RAGGitDocConfig(
+                repo_name=self.repo_name,
+                file_path=self.path,
+                commit_id=self.commit_id,
+                bot_id=self.bot_id,
+            )
+        )
+        return self.update_status(TaskStatus.COMPLETED)
+
+    def handle(self):
+        self.update_status(TaskStatus.IN_PROGRESS)
+        if self.node_type == GitDocTaskNodeType.TREE.value:
+            return self.handle_tree_node()
 
 
 def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):
@@ -85,73 +142,3 @@ def add_rag_git_doc_task(config: RAGGitDocConfig,
     res = doc_task.save()
     doc_task.send()
     return res
-
-def handle_tree_task(task):
-    supabase = get_client()
-    (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.IN_PROGRESS.name})
-        .eq("id", task["id"])
-        .execute()
-    )
-
-    repo = g.get_repo(task["repo_name"])
-    tree_data = repo.get_git_tree(task["sha"])
-
-    task_list = list(
-        filter(
-            lambda item: item["path"].endswith(".md") or item["node_type"] == "tree",
-            map(
-                lambda item: {
-                    "repo_name": task["repo_name"],
-                    "commit_id": task["commit_id"],
-                    "status": TaskStatus.NOT_STARTED.name,
-                    "node_type": item.type,
-                    "from_task_id": task["id"],
-                    "path": "/".join(filter(lambda s: s, [task["path"], item.path])),
-                    "sha": item.sha,
-                    "bot_id": task["bot_id"],
-                },
-                tree_data.tree,
-            ),
-        )
-    )
-
-    if len(task_list) > 0:
-        result = supabase.table(TABLE_NAME).insert(task_list).execute()
-
-        for record in result.data:
-            task_id = record["id"]
-            message_id = send_task_message(task_id=task_id)
-            print(f"record={record}, task_id={task_id}, message_id={message_id}")
-
-    return (supabase.table(TABLE_NAME).update(
-        {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
-         "status": TaskStatus.COMPLETED.name})
-            .eq("id", task["id"])
-            .execute())
-
-
-def handle_blob_task(task):
-    supabase = get_client()
-    (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.IN_PROGRESS.name})
-        .eq("id", task["id"])
-        .execute()
-    )
-
-    retrieval.add_knowledge_by_doc(
-        RAGGitDocConfig(
-            repo_name=task["repo_name"],
-            file_path=task["path"],
-            commit_id=task["commit_id"],
-            bot_id=task["bot_id"],
-        )
-    )
-    return (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.COMPLETED.name})
-        .eq("id", task["id"])
-        .execute()
-    )
