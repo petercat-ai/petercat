@@ -2,11 +2,8 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends
-from petercat_utils.data_class import RAGGitDocConfig
-from petercat_utils.rag_helper import retrieval, task
-
-from cats import issue_retrieval
-from cats.data_class import RAGIssueDocConfig
+from petercat_utils.data_class import RAGGitDocConfig, RAGIssueDocConfig
+from petercat_utils.rag_helper import retrieval, task, issue_retrieval
 from verify.rate_limit import verify_rate_limit
 
 router = APIRouter(

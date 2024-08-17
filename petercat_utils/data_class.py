@@ -82,7 +82,6 @@ class GitDocConfig(BaseModel):
 class RAGGitDocConfig(GitDocConfig):
     bot_id: str
 
-
 class TaskStatus(Enum):
     NOT_STARTED = auto()
     IN_PROGRESS = auto()
@@ -90,3 +89,10 @@ class TaskStatus(Enum):
     ON_HOLD = auto()
     CANCELLED = auto()
     ERROR = auto()
+
+class GitIssueConfig(BaseModel):
+    repo_name: str
+    issue_id: str
+
+class RAGIssueDocConfig(GitIssueConfig):
+    bot_id: str

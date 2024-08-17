@@ -6,8 +6,7 @@ from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from petercat_utils import get_client
-
-from .data_class import RAGIssueDocConfig
+from petercat_utils.data_class import RAGIssueDocConfig
 
 g = Github()
 
