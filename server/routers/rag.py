@@ -2,9 +2,11 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends
-
 from petercat_utils.data_class import RAGGitDocConfig
 from petercat_utils.rag_helper import retrieval, task
+
+from cats import issue_retrieval
+from cats.data_class import RAGIssueDocConfig
 from verify.rate_limit import verify_rate_limit
 
 router = APIRouter(
@@ -31,11 +33,21 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
         return json.dumps({"success": False, "message": str(e)})
 
 
-# TODO this feature is not implemented yet
-# @router.post("/rag/add_knowledge_by_issues", dependencies=[Depends(verify_rate_limit)])
-# def add_knowledge_by_issues(config: GitIssueConfig):
-#     data = retrieval.add_knowledge_by_issues(config)
-#     return data
+@router.post("/rag/add_knowledge_by_issue", dependencies=[Depends(verify_rate_limit)])
+def add_knowledge_by_issue(config: RAGIssueDocConfig):
+    try:
+        result = issue_retrieval.add_knowledge_by_issue(config)
+        if result:
+            return json.dumps(
+                {
+                    "success": True,
+                    "message": "Issue added successfully!",
+                }
+            )
+        else:
+            return json.dumps({"success": False, "message": "Issue not added!"})
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
 
 
 @router.post("/rag/search_knowledge", dependencies=[Depends(verify_rate_limit)])

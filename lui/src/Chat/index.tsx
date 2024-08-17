@@ -6,7 +6,6 @@ import type {
 } from '@ant-design/pro-chat';
 import { ProChat } from '@ant-design/pro-chat';
 import { Markdown } from '@ant-design/pro-editor';
-import { Image } from 'antd';
 import { isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
@@ -28,10 +27,13 @@ import {
 } from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
+import StarterList from '../StarterList';
 import { convertChunkToJson, handleStream } from '../utils';
+import ChatItemRender from './components/ChatItemRender';
 import InputArea from './components/InputAreaRender';
 import LoadingEnd from './components/LoadingEnd';
 import LoadingStart from './components/LoadingStart';
+import UserContent from './components/UserContent';
 
 import '../style/global.css';
 
@@ -143,50 +145,53 @@ const Chat: FC<ChatProps> = memo(
             helloMessage={botInfo.helloMessage}
             userMeta={{ title: 'User' }}
             chatItemRenderConfig={{
-              avatarRender: (props: ChatItemProps) => {
-                if (props.originData?.role === Role.user) {
-                  return <></>;
-                }
-                if (
-                  props.originData?.role === Role.tool ||
-                  props.originData?.role === Role.knowledge
-                ) {
-                  return <div className="w-[40px] h-[40px]" />;
-                }
-              },
-              contentRender: (props: ChatItemProps, defaultDom: ReactNode) => {
+              render: (
+                props: ChatItemProps,
+                domsMap: {
+                  avatar: ReactNode;
+                  title: ReactNode;
+                  messageContent: ReactNode;
+                  actions: ReactNode;
+                  itemDom: ReactNode;
+                },
+                defaultDom: ReactNode,
+              ) => {
                 const originData = props.originData || {};
-
-                // Function to render images and text content
-                const renderContent = (
-                  images: ImageURLContentBlock[],
-                  text: string,
-                ) => (
-                  <div className="ant-pro-chat-list-item-message-content">
-                    {images.map((image, index) => (
-                      <Image
-                        key={index}
-                        src={image.image_url?.url}
-                        alt="img"
-                        style={{
-                          maxWidth: '300px',
-                          maxHeight: '400px',
-                          borderRadius: '10px',
-                        }}
-                      />
-                    ))}
-                    {text && (
-                      <Markdown
-                        style={{
-                          overflowX: 'hidden',
-                          overflowY: 'auto',
-                        }}
-                      >
-                        {text}
-                      </Markdown>
-                    )}
-                  </div>
-                );
+                const isDefault = originData.role === 'hello';
+                // default message content
+                if (isDefault) {
+                  return (
+                    <ChatItemRender
+                      direction={'start'}
+                      title={domsMap.title}
+                      avatar={domsMap.avatar}
+                      content={
+                        <div className="leftMessageContent">
+                          <div className="ant-pro-chat-list-item-message-content">
+                            <div className="text-left text-[20px] font-[510] leading-[28px] font-sf">
+                              👋🏻 你好，我是{' '}
+                              {botInfo.assistantMeta?.title || BOT_INFO.name}
+                            </div>
+                            <div className="text-left text-[14px] font-[510] leading-[28px] font-sf">
+                              {props.message}
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      starter={
+                        <StarterList
+                          starters={starters ?? []}
+                          onClick={(msg: string) => {
+                            proChatRef?.current?.sendMessage(
+                              JSON.stringify([{ type: 'text', text: msg }]),
+                            );
+                          }}
+                          className="ml-[72px]"
+                        ></StarterList>
+                      }
+                    />
+                  );
+                }
 
                 // If user role, try to parse and render content
                 if (originData?.role === Role.user) {
@@ -202,8 +207,13 @@ const Chat: FC<ChatProps> = memo(
                       },
                       { images: [] as ImageURLContentBlock[], text: '' },
                     );
-
-                    return renderContent(images, text);
+                    return (
+                      <ChatItemRender
+                        direction={'end'}
+                        title={domsMap.title}
+                        content={<UserContent images={images} text={text} />}
+                      />
+                    );
                   } catch (err) {
                     console.error(err);
                     return defaultDom;
@@ -224,7 +234,14 @@ const Chat: FC<ChatProps> = memo(
                   (!originMessage || typeof originMessage === 'string') &&
                   !!proChatRef?.current?.getChatLoadingId()
                 ) {
-                  return defaultMessageContent;
+                  return (
+                    <ChatItemRender
+                      direction={'start'}
+                      avatar={domsMap.avatar}
+                      title={domsMap.title}
+                      content={defaultMessageContent}
+                    />
+                  );
                 }
 
                 const { message: answerStr, tools = [] } = originMessage;
@@ -235,62 +252,89 @@ const Chat: FC<ChatProps> = memo(
                   isEmpty(tools)
                 ) {
                   return (
-                    <div className="leftMessageContent">
-                      <LoadingStart
-                        loop={!complete}
-                        onComplete={() => setComplete(true)}
-                      />
-                    </div>
+                    <ChatItemRender
+                      direction={'start'}
+                      avatar={domsMap.avatar}
+                      title={domsMap.title}
+                      content={
+                        <div className="leftMessageContent">
+                          <LoadingStart
+                            loop={!complete}
+                            onComplete={() => setComplete(true)}
+                          />
+                        </div>
+                      }
+                    />
                   );
                 }
 
                 // If no tools, render the markdown content
                 if (isEmpty(tools)) {
                   return (
-                    <div
-                      className="leftMessageContent"
-                      style={{ minWidth: messageMinWidth }}
-                    >
-                      <LoadingEnd>
-                        <Markdown
-                          className="ant-pro-chat-list-item-message-content"
-                          style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                    <ChatItemRender
+                      direction={'start'}
+                      avatar={domsMap.avatar}
+                      title={domsMap.title}
+                      content={
+                        <div
+                          className="leftMessageContent"
+                          style={{ minWidth: messageMinWidth }}
                         >
-                          {answerStr}
-                        </Markdown>
-                      </LoadingEnd>
-                    </div>
+                          <LoadingEnd>
+                            <Markdown
+                              className="ant-pro-chat-list-item-message-content"
+                              style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                            >
+                              {answerStr}
+                            </Markdown>
+                          </LoadingEnd>
+                        </div>
+                      }
+                    />
                   );
                 }
 
                 // Handle tool or knowledge role
                 const { type, extra } = tools[tools.length - 1];
                 if (![Role.knowledge, Role.tool].includes(type)) {
-                  return defaultMessageContent;
+                  return (
+                    <ChatItemRender
+                      direction={'start'}
+                      avatar={domsMap.avatar}
+                      title={domsMap.title}
+                      content={defaultMessageContent}
+                    />
+                  );
                 }
 
                 getToolsResult?.(extra);
                 const { status, source } = extra;
-
                 return (
-                  <div
-                    className="leftMessageContent"
-                    style={{ maxWidth: messageMinWidth }}
-                  >
-                    <div className="mb-1">
-                      <ThoughtChain
-                        content={extra}
-                        status={status}
-                        source={source}
-                      />
-                    </div>
-                    <Markdown
-                      className="ant-pro-chat-list-item-message-content"
-                      style={{ overflowX: 'hidden', overflowY: 'auto' }}
-                    >
-                      {answerStr}
-                    </Markdown>
-                  </div>
+                  <ChatItemRender
+                    direction={'start'}
+                    avatar={domsMap.avatar}
+                    title={domsMap.title}
+                    content={
+                      <div
+                        className="leftMessageContent"
+                        style={{ maxWidth: messageMinWidth }}
+                      >
+                        <div className="mb-1">
+                          <ThoughtChain
+                            content={extra}
+                            status={status}
+                            source={source}
+                          />
+                        </div>
+                        <Markdown
+                          className="ant-pro-chat-list-item-message-content"
+                          style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                        >
+                          {answerStr}
+                        </Markdown>
+                      </div>
+                    }
+                  />
                 );
               },
             }}
@@ -339,7 +383,6 @@ const Chat: FC<ChatProps> = memo(
                     };
                   }
                 }) as Message[];
-
               const response = await streamChat(
                 newMessages,
                 apiDomain,
