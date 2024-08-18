@@ -38,4 +38,4 @@ class AuthorizationDAO(BaseDAO):
                 return False, {"message": "User creation failed"}
         except Exception as e:
             print("Error: ", e)
-            return {"message": "User creation failed"}
+            return False, {"message": "User creation failed"}
