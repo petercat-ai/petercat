@@ -1,6 +1,7 @@
 import json
 
 from petercat_utils import task as task_helper
+from petercat_utils.data_class import TaskType
 
 
 def lambda_handler(event, context):
@@ -16,7 +17,7 @@ def lambda_handler(event, context):
                 message_dict = json.loads(body)
                 task_id = message_dict["task_id"]
                 task_type = message_dict["task_type"]
-                task = task_helper.get_task(task_type, task_id)
+                task = task_helper.get_task(TaskType(task_type), task_id)
                 if task is None:
                     return task
                 task.handle()
@@ -24,6 +25,7 @@ def lambda_handler(event, context):
                 # process message
                 print(f"message content: message={message_dict}, task_id={task_id}, task={task}")
             except Exception as e:
+                print(f"message handle error: ${e}")
                 batch_item_failures.append({"itemIdentifier": record['messageId']})
 
         sqs_batch_response["batchItemFailures"] = batch_item_failures
