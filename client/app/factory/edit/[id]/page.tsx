@@ -204,7 +204,8 @@ export default function Edit({ params }: { params: { id: string } }) {
         hideLogo={true}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
-        helloMessage="👋🏻 你好，我是 Peter Cat， 初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
+        helloMessage="初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
+        starters={['帮我配置一个答疑机器人']}
         getToolsResult={(result) => {
           const data = result?.data;
           updateConfigFromChatResult(data);

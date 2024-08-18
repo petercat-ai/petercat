@@ -57,9 +57,7 @@ const BotCard = (props: { bot: Bot }) => {
             className="rounded-[8px] opacity-100 w-full object-cover h-[268px]"
             src={bot.avatar!}
           />
-          <div
-            className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center"
-          >
+          <div className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center">
             <Image src="./images/chat.svg" />
           </div>
         </CardBody>
