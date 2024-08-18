@@ -70,8 +70,9 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
         )
 
         success, message = authorizationDAO.create(authorization)
+        print(f"github_app_callback: success={success}, message={message}")
 
-        return RedirectResponse(url=f'{WEB_URL}/app/installed', status_code=302)
+        return RedirectResponse(url=f'{WEB_URL}/github/installed?message={message}', status_code=302)
 
 @router.post("/app/webhook")
 async def github_app_webhook(
