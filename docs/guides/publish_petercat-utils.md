@@ -19,8 +19,7 @@ python3 -m pip install --upgrade build
 Build petercat_utils:
 
 ```bash
-cd petercat_utils
-python3 -m build
+npm run build:pypi
 ```
 
 Make sure your have the latest version of twine installed:
