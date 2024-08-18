@@ -71,6 +71,8 @@ async def callback(request: Request, response: Response):
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization token")
     data = await getUserInfoByToken(token)
+    if data is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing authorization token")
     supabase = get_client()
     supabase.table("profiles").upsert(data).execute()
     print(f"auth_callback: {data}, token={token}")

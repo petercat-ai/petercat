@@ -15,6 +15,12 @@ async def verify_rate_limit(petercat: str = Cookie(None)):
     if not petercat:
         raise HTTPException(status_code=403, detail="Must Login")
     user = await getUserInfoByToken(petercat)
+    if user is None:
+        raise HTTPException(
+            status_code=429, 
+            detail="Rate Limit Exceeded, Try It Later",
+            headers={"Retry-After": "60"}
+        )
     user_id = user["id"]
     supabase = get_client()
     table = supabase.table("user_token_usage")
