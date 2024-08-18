@@ -38,7 +38,7 @@ class GitIssueTask(GitTask):
         super().__init__(bot_id=bot_id, type=TaskType.GIT_ISSUE, from_id=from_id, id=id, status=status,
                          repo_name=repo_name)
         self.issue_id = issue_id
-        self.node_type = node_type
+        self.node_type = GitIssueTaskNodeType(node_type)
 
     def extra_save_data(self):
         return {

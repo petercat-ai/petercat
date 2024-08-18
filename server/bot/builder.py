@@ -80,7 +80,7 @@ async def bot_builder(
         response = supabase.table("bots").insert(bot_data).execute()
         if response:
             bot_id = response.data[0]["id"]
-            trigger_rag_task(repo_name, bot_id=bot_id)
+            trigger_rag_task(repo_name=repo_name, bot_id=bot_id)
         return response
     except Exception as e:
         print(f"An error occurred: {e}")
