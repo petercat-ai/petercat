@@ -1,6 +1,6 @@
+import json
 
-from langchain.tools import tool
-
-@tool
 def need_github_login():
-  return "你必须先使用 GitHub 登录才能使用此功能。[去登录](https://api.petercat.chat/api/auth/login)"
+  return json.dumps({
+    "error_info": "你必须先使用 GitHub 登录 petercat 才能使用此功能。 [登录地址](https://api.petercat.chat/api/auth/login)"
+  })

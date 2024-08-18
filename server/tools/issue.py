@@ -11,7 +11,9 @@ def factory(access_token: Optional[str]):
     @tool
     def create_issue(repo_name, title, body):
         """
-        Create an issue in the specified GitHub repository.
+        Create an issue in the specified GitHub repository.If an error occurs during processing,
+        If user not login, it will return error mesesage and login url
+        Please invite user to login if got error
 
         :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
         :param title: The title of the issue to be created
@@ -19,7 +21,7 @@ def factory(access_token: Optional[str]):
         """
     
         if access_token is None:
-            return need_github_login
+            return need_github_login()
         auth = Auth.Token(token=access_token)
         g = Github(auth=auth)
         try:
