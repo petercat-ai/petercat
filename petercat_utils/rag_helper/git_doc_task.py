@@ -72,7 +72,7 @@ class GitDocTask(GitTask):
         super().__init__(bot_id=bot_id, type=TaskType.GIT_DOC, from_id=from_id, id=id, status=status,
                          repo_name=repo_name)
         self.commit_id = commit_id
-        self.node_type = node_type
+        self.node_type = GitDocTaskNodeType(node_type)
         self.sha = sha
         self.path = path
 
