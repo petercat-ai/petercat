@@ -28,6 +28,7 @@ import {
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import StarterList from '../StarterList';
+import ThoughtChain from '../ThoughtChain';
 import { convertChunkToJson, handleStream } from '../utils';
 import ChatItemRender from './components/ChatItemRender';
 import InputArea from './components/InputAreaRender';
@@ -323,23 +324,29 @@ const Chat: FC<ChatProps> = memo(
                             source={source}
                           />
                         </div>
-                        {template_id && (
-                          <div
-                            className="mb-2 ant-pro-chat-list-item-message-content"
-                            style={{ maxWidth: messageMinWidth }}
-                          >
-                            {UITemplateRender({
-                              templateId: template_id,
-                              cardData: data,
-                            })}
-                          </div>
-                        )}
                         <Markdown
-                          className="ant-pro-chat-list-item-message-content"
+                          className={`${
+                            template_id
+                              ? 'mt-2 rounded-[20px] p-3 bg-[#F1F1F1]'
+                              : 'ant-pro-chat-list-item-message-content'
+                          }`}
                           style={{ overflowX: 'hidden', overflowY: 'auto' }}
                         >
                           {answerStr}
                         </Markdown>
+                        {template_id &&
+                          proChatRef?.current?.getChatLoadingId() ===
+                            undefined && (
+                            <div
+                              style={{ maxWidth: messageMinWidth }}
+                              className="transition-all duration-300 ease-in-out"
+                            >
+                              {UITemplateRender({
+                                templateId: template_id,
+                                cardData: data,
+                              })}
+                            </div>
+                          )}
                       </div>
                     }
                   />
