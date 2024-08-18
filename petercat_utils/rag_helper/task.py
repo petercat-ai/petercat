@@ -1,18 +1,19 @@
 import json
-from enum import Enum
-from typing import Optional, Dict
+from typing import Optional
+
 import boto3
+
+from .git_doc_task import GitDocTask
+from .git_task import GitTask
 
 # Create SQS client
 sqs = boto3.client("sqs")
 
 from github import Github
-from github import Repository
 
 from ..utils.env import get_env_variable
-from ..data_class import RAGGitDocConfig, TaskStatus
+from ..data_class import TaskStatus, TaskType
 from ..db.client.supabase import get_client
-from ..rag_helper import retrieval
 
 g = Github()
 
@@ -28,65 +29,6 @@ def send_task_message(task_id: str):
         MessageBody=(json.dumps({"task_id": task_id})),
     )
     return response["MessageId"]
-
-
-def add_task(
-    config: RAGGitDocConfig,
-    extra: Optional[Dict[str, Optional[str]]] = {
-        "node_type": None,
-        "from_task_id": None,
-    },
-):
-    repo = g.get_repo(config.repo_name)
-    commit_id = (
-        config.commit_id
-        if config.commit_id
-        else repo.get_branch(config.branch).commit.sha
-    )
-
-    if config.file_path == "" or config.file_path is None:
-        extra["node_type"] = "tree"
-
-    if not extra.get("node_type"):
-        content = repo.get_contents(config.file_path, ref=commit_id)
-        if isinstance(content, list):
-            extra["node_type"] = "tree"
-        else:
-            extra["node_type"] = "blob"
-
-    sha = get_path_sha(repo, commit_id, config.file_path)
-
-    supabase = get_client()
-
-    data = {
-        "repo_name": config.repo_name,
-        "commit_id": commit_id,
-        "status": TaskStatus.NOT_STARTED.name,
-        "node_type": extra["node_type"],
-        "from_task_id": extra["from_task_id"],
-        "path": config.file_path,
-        "sha": sha,
-        "bot_id": config.bot_id,
-    }
-
-    res = supabase.table(TABLE_NAME).insert(data).execute()
-
-    record = res.data[0]
-    task_id = record["id"]
-
-    message_id = send_task_message(task_id=task_id)
-    print(f"record={record}, task_id={task_id}, message_id={message_id}")
-    return res
-
-
-def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = None):
-    if not path:
-        return sha
-    else:
-        tree_data = repo.get_git_tree(sha)
-        for item in tree_data.tree:
-            if path.split("/")[0] == item.path:
-                return get_path_sha(repo, item.sha, "/".join(path.split("/")[1:]))
 
 
 def get_oldest_task():
@@ -111,85 +53,32 @@ def get_task_by_id(task_id):
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def handle_tree_task(task):
+def get_task(task_type: TaskType, task_id: str) -> GitTask:
     supabase = get_client()
-    (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.IN_PROGRESS.name})
-        .eq("id", task["id"])
-        .execute()
-    )
-
-    repo = g.get_repo(task["repo_name"])
-    tree_data = repo.get_git_tree(task["sha"])
-
-    task_list = list(
-        filter(
-            lambda item: item["path"].endswith(".md") or item["node_type"] == "tree",
-            map(
-                lambda item: {
-                    "repo_name": task["repo_name"],
-                    "commit_id": task["commit_id"],
-                    "status": TaskStatus.NOT_STARTED.name,
-                    "node_type": item.type,
-                    "from_task_id": task["id"],
-                    "path": "/".join(filter(lambda s: s, [task["path"], item.path])),
-                    "sha": item.sha,
-                    "bot_id": task["bot_id"],
-                },
-                tree_data.tree,
-            ),
-        )
-    )
-
-    if len(task_list) > 0:
-        result = supabase.table(TABLE_NAME).insert(task_list).execute()
-
-        for record in result.data:
-            task_id = record["id"]
-            message_id = send_task_message(task_id=task_id)
-            print(f"record={record}, task_id={task_id}, message_id={message_id}")
-
-    return (supabase.table(TABLE_NAME).update(
-        {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
-         "status": TaskStatus.COMPLETED.name})
-            .eq("id", task["id"])
-            .execute())
+    response = (supabase.table(GitTask.get_table_name(task_type))
+                .select("*")
+                .eq("id", task_id)
+                .execute())
+    if len(response.data) > 0:
+        data = response.data[0]
+        if task_type is TaskType.GIT_DOC:
+            return GitDocTask(
+                id=data["id"],
+                commit_id=data["commit_id"],
+                sha=data["sha"],
+                repo_name=data["repo_name"],
+                node_type=data["node_type"],
+                bot_id=data["bot_id"],
+                path=data["path"],
+                status=data["status"]
+            )
 
 
-def handle_blob_task(task):
-    supabase = get_client()
-    (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.IN_PROGRESS.name})
-        .eq("id", task["id"])
-        .execute()
-    )
-
-    retrieval.add_knowledge_by_doc(
-        RAGGitDocConfig(
-            repo_name=task["repo_name"],
-            file_path=task["path"],
-            commit_id=task["commit_id"],
-            bot_id=task["bot_id"],
-        )
-    )
-    return (
-        supabase.table(TABLE_NAME)
-        .update({"status": TaskStatus.COMPLETED.name})
-        .eq("id", task["id"])
-        .execute()
-    )
-
-
-def trigger_task(task_id: Optional[str]):
-    task = get_task_by_id(task_id) if task_id else get_oldest_task()
+def trigger_task(task_type: TaskType, task_id: Optional[str]):
+    task = get_task(task_type, task_id) if task_id else get_oldest_task()
     if task is None:
         return task
-    if task["node_type"] == "tree":
-        return handle_tree_task(task)
-    else:
-        return handle_blob_task(task)
+    return task.handle()
 
 
 def get_latest_task_by_bot_id(bot_id: str):

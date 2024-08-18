@@ -2,12 +2,10 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends
-from petercat_utils.data_class import RAGGitDocConfig
-from petercat_utils.rag_helper import retrieval, task
-
-from cats import issue_retrieval
-from cats.data_class import RAGIssueDocConfig
 from verify.rate_limit import verify_rate_limit
+
+from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
+from petercat_utils.rag_helper import retrieval, task, issue_retrieval, git_doc_task
 
 router = APIRouter(
     prefix="/api",
@@ -34,7 +32,7 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
 
 
 @router.post("/rag/add_knowledge_by_issue", dependencies=[Depends(verify_rate_limit)])
-def add_knowledge_by_issue(config: RAGIssueDocConfig):
+def add_knowledge_by_issue(config: RAGGitIssueConfig):
     try:
         result = issue_retrieval.add_knowledge_by_issue(config)
         if result:
@@ -59,16 +57,18 @@ def search_knowledge(query: str, bot_id: str, filter: dict = {}):
 @router.post("/rag/add_task", dependencies=[Depends(verify_rate_limit)])
 def add_task(config: RAGGitDocConfig):
     try:
-        data = task.add_task(config)
+        data = git_doc_task.add_rag_git_doc_task(config)
         return data
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_id: Optional[str] = None):
-    data = task.trigger_task(task_id)
-    return data
+def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
+    try:
+        task.trigger_task(task_type, task_id)
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
 
 
 @router.get("/rag/chunk/list", dependencies=[Depends(verify_rate_limit)])

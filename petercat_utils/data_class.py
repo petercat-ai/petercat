@@ -1,10 +1,8 @@
 from enum import Enum, auto
-from dataclasses import dataclass
-from typing import List, Optional
-from datetime import datetime
-from typing import Literal, Optional, List, TypeAlias, Union
-from pydantic import BaseModel
+from typing import Literal, Optional, List, TypeAlias
 from typing import Union
+
+from pydantic import BaseModel
 
 
 class ImageURL(BaseModel):
@@ -59,18 +57,6 @@ class S3Config(BaseModel):
     file_path: Optional[str] = None
 
 
-class GitIssueConfig(BaseModel):
-    repo_name: str
-    page: Optional[int] = None
-    """The page number for paginated results.
-        Defaults to 1 in the GitHub API."""
-    per_page: Optional[int] = 30
-    """Number of items per page.
-        Defaults to 30 in the GitHub API."""
-    state: Optional[Literal["open", "closed", "all"]] = "all"
-    """Filter on issue state. Can be one of: 'open', 'closed', 'all'."""
-
-
 class GitDocConfig(BaseModel):
     repo_name: str
     """File path of the documentation file. eg:'docs/blog/build-ghost.zh-CN.md'"""
@@ -83,10 +69,33 @@ class RAGGitDocConfig(GitDocConfig):
     bot_id: str
 
 
-class TaskStatus(Enum):
+class AutoNameEnum(Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return name
+
+
+class TaskStatus(AutoNameEnum):
     NOT_STARTED = auto()
     IN_PROGRESS = auto()
     COMPLETED = auto()
     ON_HOLD = auto()
     CANCELLED = auto()
     ERROR = auto()
+
+
+class TaskType(AutoNameEnum):
+    GIT_DOC = auto()
+
+
+class GitDocTaskNodeType(AutoNameEnum):
+    TREE = auto()
+    BLOB = auto()
+
+
+class GitIssueConfig(BaseModel):
+    repo_name: str
+    issue_id: str
+
+
+class RAGGitIssueConfig(GitIssueConfig):
+    bot_id: str

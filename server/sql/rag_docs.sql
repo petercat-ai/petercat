@@ -23,7 +23,7 @@ create table rag_docs
   file_path varchar
 );
 
-create table issue_docs
+create table rag_issues
 (
   id uuid primary key,
   content text,
@@ -72,9 +72,9 @@ $$;
 
 
 -- Drop the existing function if it already exists
-drop function if exists match_issue_docs;
+drop function if exists match_rag_issues;
 
-create function match_issue_docs
+create function match_rag_issues
  (
   query_embedding vector (1536),
   filter jsonb default '{}'
@@ -94,11 +94,11 @@ begin
     content,
     metadata,
     embedding,
-    1 - (issue_docs.embedding <=> query_embedding
+    1 - (rag_issues.embedding <=> query_embedding
   ) as similarity
-  from issue_docs
+  from rag_issues
   where metadata @> jsonb_extract_path(filter, 'metadata')
   and bot_id = jsonb_extract_path_text(filter, 'bot_id')
-  order by issue_docs.embedding <=> query_embedding;
+  order by rag_issues.embedding <=> query_embedding;
 end;
 $$;

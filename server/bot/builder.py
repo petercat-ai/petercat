@@ -1,18 +1,19 @@
 from typing import List, Optional
+
 from github import Github
 from petercat_utils import get_client
-from prompts.bot_template import generate_prompt_by_repo_name
-from petercat_utils.rag_helper.task import add_task
 from petercat_utils.data_class import RAGGitDocConfig
+from petercat_utils.rag_helper.git_doc_task import add_rag_git_doc_task
+from prompts.bot_template import generate_prompt_by_repo_name
 
 g = Github()
 
 
 async def bot_info_generator(
-    uid: str,
-    repo_name: str,
-    starters: Optional[List[str]] = None,
-    hello_message: Optional[str] = None
+        uid: str,
+        repo_name: str,
+        starters: Optional[List[str]] = None,
+        hello_message: Optional[str] = None
 ):
     try:
         # Step1:Get the repository object
@@ -20,16 +21,17 @@ async def bot_info_generator(
 
         # Step2: Generate the prompt
         prompt = generate_prompt_by_repo_name(repo_name)
-            
+
         # Step3: Generate the bot data
         bot_data = {
-            "name":  repo.name,
+            "name": repo.name,
             "description": repo.description,
             "avatar": repo.organization.avatar_url if repo.organization else None,
             "prompt": prompt,
             "uid": uid,
             "label": "Assistant",
-            "starters": starters if starters else [f"介绍一下 {repo.name} 这个项目", f"查看 {repo_name} 的贡献指南", "我该怎样快速上手"],
+            "starters": starters if starters else [f"介绍一下 {repo.name} 这个项目", f"查看 {repo_name} 的贡献指南",
+                                                   "我该怎样快速上手"],
             "public": False,
             "hello_message": hello_message if hello_message else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题~"
         }
@@ -39,7 +41,8 @@ async def bot_info_generator(
         print(f"An error occurred: {e}")
         return None
 
-def trigger_rag_task (repo_name: str, bot_id: str):
+
+def trigger_rag_task(repo_name: str, bot_id: str):
     try:
         repo = g.get_repo(repo_name)
         default_branch = repo.default_branch
@@ -50,16 +53,16 @@ def trigger_rag_task (repo_name: str, bot_id: str):
             file_path="",
             commit_id="",
         )
-        add_task(config)
+        add_rag_git_doc_task(config)
     except Exception as e:
         print(f"trigger_rag_task error: {e}")
 
 
 async def bot_builder(
-    uid: str,
-    repo_name: str,
-    starters: Optional[List[str]] = None,
-    hello_message: Optional[str] = None
+        uid: str,
+        repo_name: str,
+        starters: Optional[List[str]] = None,
+        hello_message: Optional[str] = None
 ):
     """
     create a bot based on the given github repository.
