@@ -48,9 +48,9 @@ class GitIssueTask(GitTask):
 
     def handle(self):
         self.update_status(TaskStatus.IN_PROGRESS)
-        if self.node_type == GitIssueTaskNodeType.REPO.value:
+        if self.node_type is GitIssueTaskNodeType.REPO:
             return self.handle_repo_node()
-        elif self.node_type == GitIssueTaskNodeType.ISSUE.value:
+        elif self.node_type is GitIssueTaskNodeType.ISSUE:
             return self.handle_issue_node()
         else:
             raise ValueError(f"Unsupported node type [{self.node_type}]")

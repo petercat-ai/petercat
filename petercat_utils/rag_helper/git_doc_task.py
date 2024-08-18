@@ -58,6 +58,8 @@ def add_rag_git_doc_task(config: RAGGitDocConfig,
 
 
 class GitDocTask(GitTask):
+    node_type: GitDocTaskNodeType
+
     def __init__(self,
                  commit_id,
                  node_type: GitDocTaskNodeType,
@@ -140,9 +142,9 @@ class GitDocTask(GitTask):
 
     def handle(self):
         self.update_status(TaskStatus.IN_PROGRESS)
-        if self.node_type == GitDocTaskNodeType.TREE.value:
+        if self.node_type is GitDocTaskNodeType.TREE:
             return self.handle_tree_node()
-        elif self.node_type == GitDocTaskNodeType.BLOB.value:
+        elif self.node_type is GitDocTaskNodeType.BLOB:
             return self.handle_blob_node()
         else:
             raise ValueError(f"Unsupported node type [{self.node_type}]")
