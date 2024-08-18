@@ -30,7 +30,7 @@ async def getUserInfoByToken(token):
             }
             return data
         else :
-            return {}
+            return None
 
 async def getUserAccessToken(user_id: str, provider = 'github'):
     token = await get_oauth_token()
@@ -64,11 +64,14 @@ async def getAnonymousUserInfoByToken(token: str):
     return rows.data[0] if (len(rows.data) > 0) else None
 
 async def get_user_access_token(petercat_user_token: Annotated[str | None, Cookie()] = None):
-    if petercat_user_token is None:
+    try:
+        if petercat_user_token is None:
+            return None
+        user_info = await getUserInfoByToken(petercat_user_token)
+        if user_info is None:
+            return None
+        access_token = await getUserAccessToken(user_id=user_info['id'])
+        print(f"get_user_access_token: user_info={user_info}, access_token={access_token}")
+        return access_token
+    except Exception as e:
         return None
-    user_info = await getUserInfoByToken(petercat_user_token)
-    if user_info is None:
-        return None
-    access_token = await getUserAccessToken(user_id=user_info['id'])
-    print(f"get_user_access_token: user_info={user_info}, access_token={access_token}")
-    return access_token
