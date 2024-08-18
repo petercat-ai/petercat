@@ -2,7 +2,7 @@ import asyncio
 from typing import Annotated, Optional
 from fastapi import APIRouter, Cookie, Depends
 from fastapi.responses import StreamingResponse
-from auth.get_user_info import get_user_access_token
+from auth.get_user_info import get_user_access_token, get_user_id
 from petercat_utils.data_class import ChatData
 from agent import qa_chat, bot_builder
 from verify.rate_limit import verify_rate_limit
@@ -32,7 +32,7 @@ async def run_issue_helper(input_data: ChatData):
 
 
 @router.post("/stream_builder", response_class=StreamingResponse, dependencies=[Depends(verify_rate_limit)])
-def run_bot_builder(input_data: ChatData, user_id: str = Cookie(None), bot_id: Optional[str] = None):
+def run_bot_builder(input_data: ChatData, bot_id: Optional[str] = None, user_id: Annotated[str | None, Depends(get_user_id)] = None):
     if not user_id:
         return StreamingResponse(generate_auth_failed_stream(), media_type="text/event-stream")
     result = bot_builder.agent_stream_chat(input_data, user_id, bot_id)

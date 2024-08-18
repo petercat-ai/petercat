@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import Cookie, HTTPException
 from datetime import datetime, timedelta
 
@@ -8,13 +9,14 @@ RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED", "False") == 'True'
 RATE_LIMIT_REQUESTS = get_env_variable("RATE_LIMIT_REQUESTS") or 100
 RATE_LIMIT_DURATION = timedelta(minutes=int(get_env_variable("RATE_LIMIT_DURATION") or 1))
 
-async def verify_rate_limit(petercat: str = Cookie(None)):
+async def verify_rate_limit(petercat_user_token: Annotated[str | None, Cookie()] = None):
     if not RATE_LIMIT_ENABLED:
         return
 
-    if not petercat:
+    if not petercat_user_token:
         raise HTTPException(status_code=403, detail="Must Login")
-    user = await getUserInfoByToken(petercat)
+    user = await getUserInfoByToken(petercat_user_token)
+
     if user is None:
         raise HTTPException(
             status_code=429, 
