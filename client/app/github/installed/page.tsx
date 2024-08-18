@@ -9,7 +9,7 @@ export default function GithubAppInstalled() {
         Installation Approved
       </p>
       <p>
-        Thank you for installing PeterCat's GitHub App!
+        Thank you for installing PeterCat&#x27;s GitHub App!
       </p>
       <p>
         Your Team will now be able to use robots for your GitHub organization!
