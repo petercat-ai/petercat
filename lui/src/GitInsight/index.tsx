@@ -31,7 +31,7 @@ const GitInsight = (props: GitInsightProps) => {
   }, []);
 
   return (
-    <div className="flex justify-start items-center gap-x-[13px]">
+    <div className="flex justify-start items-center">
       <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
         <MemoizedCountCard type="star" count={starCount} />
       </div>

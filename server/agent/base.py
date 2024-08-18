@@ -159,8 +159,12 @@ class AgentBuilder:
                     children_value = event["data"].get("output", {})
 
                     parsed_children_value = json.loads(children_value)
-                    template_id = parsed_children_value.get("template_id")
-                    card_data = parsed_children_value.get("card_data")
+                    if isinstance(parsed_children_value, dict):
+                        template_id = parsed_children_value.get("template_id", None)
+                        card_data = parsed_children_value.get("card_data", None)
+                    else:
+                        template_id = None
+                        card_data = None
 
                     extra_data = {
                         "source": f"已调用工具: {event['name']}",

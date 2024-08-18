@@ -18,7 +18,7 @@ const getColorClass = (status: Status) => {
     [Status.loading]: 'text-blue-600',
     [Status.success]: 'text-green-600',
     [Status.end]: 'text-gray-500',
-    [Status.failed]: 'text-red-600',
+    [Status.error]: 'text-red-600',
   };
 
   // Return the class, or a default value if the status is undefined
@@ -111,7 +111,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
                   className={`text-xs ${getColorClass(status!)}`}
                 />
               );
-            case Status.failed:
+            case Status.error:
               return (
                 <CloseCircleOutlined
                   className={`text-xs ${getColorClass(status!)}`}

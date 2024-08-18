@@ -36,6 +36,10 @@ module.exports = {
           '0%': { opacity: 0, transform: 'translateY(10px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' },
         },
+        fadeInLeft: {
+          '0%': { opacity: 0, transform: 'translateX(-50%)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
       },
       fontFamily: {
         sf: ['SF Pro'],
@@ -43,7 +47,9 @@ module.exports = {
       animation: {
         shake: 'shake 15s infinite',
         'fade-in': 'fadeIn 0.5s ease-in forwards',
-      }
+        'fade-in-left': 'fadeInLeft 1s ease-out forwards',
+      },
+      
     },
   },
   plugins: [
