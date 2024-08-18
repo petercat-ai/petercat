@@ -24,6 +24,7 @@ def lambda_handler(event, context):
                 # process message
                 print(f"message content: message={message_dict}, task_id={task_id}, task={task}")
             except Exception as e:
+                print(f"message handle error: ${e}")
                 batch_item_failures.append({"itemIdentifier": record['messageId']})
 
         sqs_batch_response["batchItemFailures"] = batch_item_failures
