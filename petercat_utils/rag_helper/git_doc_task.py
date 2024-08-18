@@ -142,9 +142,9 @@ class GitDocTask(GitTask):
 
     def handle(self):
         self.update_status(TaskStatus.IN_PROGRESS)
-        if self.node_type is GitDocTaskNodeType.TREE:
+        if self.node_type == GitDocTaskNodeType.TREE:
             return self.handle_tree_node()
-        elif self.node_type is GitDocTaskNodeType.BLOB:
+        elif self.node_type == GitDocTaskNodeType.BLOB:
             return self.handle_blob_node()
         else:
             raise ValueError(f"Unsupported node type [{self.node_type}]")
