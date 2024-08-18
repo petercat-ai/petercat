@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "petercat_utils"
-version = "0.1.27"
+version = "0.1.28"
 description = ""
 authors = ["raoha.rh <raohai.rh@antgroup.com>"]
 readme = "README.md"

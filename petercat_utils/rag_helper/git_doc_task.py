@@ -93,7 +93,7 @@ class GitDocTask(GitTask):
 
         task_list = list(
             filter(
-                lambda item: item["path"].endswith(".md") or item["node_type"] == "tree",
+                lambda item: item["path"].endswith(".md") or item["node_type"] == GitDocTaskNodeType.TREE.value,
                 map(
                     lambda item: {
                         "repo_name": self.repo_name,
