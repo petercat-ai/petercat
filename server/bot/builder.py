@@ -3,7 +3,7 @@ from typing import List, Optional
 from github import Github
 from petercat_utils import get_client
 from petercat_utils.data_class import RAGGitDocConfig
-from petercat_utils.rag_helper.git_doc_task import add_rag_git_doc_task
+from petercat_utils import git_doc_task
 from prompts.bot_template import generate_prompt_by_repo_name
 
 g = Github()
@@ -53,7 +53,7 @@ def trigger_rag_task(repo_name: str, bot_id: str):
             file_path="",
             commit_id="",
         )
-        add_rag_git_doc_task(config)
+        git_doc_task.add_rag_git_doc_task(config)
     except Exception as e:
         print(f"trigger_rag_task error: {e}")
 

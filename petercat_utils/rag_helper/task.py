@@ -4,6 +4,7 @@ from typing import Optional
 import boto3
 
 from .git_doc_task import GitDocTask
+from .git_issue_task import GitIssueTask
 from .git_task import GitTask
 
 # Create SQS client
@@ -37,7 +38,7 @@ def get_oldest_task():
     response = (
         supabase.table(TABLE_NAME)
         .select("*")
-        .eq("status", TaskStatus.NOT_STARTED.name)
+        .eq("status", TaskStatus.NOT_STARTED.value)
         .order("created_at", desc=False)
         .limit(1)
         .execute()
@@ -70,7 +71,18 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 node_type=data["node_type"],
                 bot_id=data["bot_id"],
                 path=data["path"],
-                status=data["status"]
+                status=data["status"],
+                from_id=data["from_task_id"]
+            )
+        if task_type is TaskType.GIT_ISSUE:
+            return GitIssueTask(
+                id=data["id"],
+                issue_id=data["issue_id"],
+                repo_name=data["repo_name"],
+                node_type=data["node_type"],
+                bot_id=data["bot_id"],
+                status=data["status"],
+                from_id=data["from_task_id"]
             )
 
 
