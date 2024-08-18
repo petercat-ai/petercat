@@ -10,7 +10,7 @@
     "client:server": "concurrently \"yarn run server\" \"yarn run client\"",
     "lui:server": "concurrently \"yarn run server\" \"yarn run lui\"",
     "build:docker": "docker build -t petercat .",
-    "build:pip": "rm -rf dist && python3 -m build",
+    "build:pypi": "rm -rf dist && python3 -m build",
     "publish:test": "python3 -m twine upload --repository petercat-utils dist/* ",
     "publish:pypi": "python3 -m twine upload --repository pypi dist/* "
   },

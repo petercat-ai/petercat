@@ -4,9 +4,13 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "server/**"
+      - server/**
   pull_request:
     branches: [ "main" ]
+    paths:
+      - server/**
+      - petercat_utils/**
+      - subscriber/**
 
 env:
   AWS_REGION: ap-northeast-1
