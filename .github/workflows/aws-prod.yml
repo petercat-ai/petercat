@@ -3,6 +3,10 @@ name: Deploy Backend to Product ECS
 on:
   push:
     branches: ["main"]
+    paths:
+      - server/**
+      - petercat_utils/**
+      - subscriber/**
 
 env:
   AWS_REGION: ap-northeast-1
