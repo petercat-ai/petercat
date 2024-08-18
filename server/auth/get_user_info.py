@@ -63,6 +63,16 @@ async def getAnonymousUserInfoByToken(token: str):
     rows = supabase.table("profiles").select("*").eq("id", token).execute()
     return rows.data[0] if (len(rows.data) > 0) else None
 
+async def get_user_id(petercat_user_token: Annotated[str | None, Cookie()] = None):
+    try:
+        if petercat_user_token is None:
+            return None
+        user_info = await getUserInfoByToken(petercat_user_token)
+        return user_info['id']
+
+    except Exception as e:
+        return None
+
 async def get_user_access_token(petercat_user_token: Annotated[str | None, Cookie()] = None):
     try:
         if petercat_user_token is None:
