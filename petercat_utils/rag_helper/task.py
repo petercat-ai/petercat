@@ -62,7 +62,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 .execute())
     if len(response.data) > 0:
         data = response.data[0]
-        if task_type is TaskType.GIT_DOC:
+        if task_type == TaskType.GIT_DOC:
             return GitDocTask(
                 id=data["id"],
                 commit_id=data["commit_id"],
@@ -74,7 +74,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 status=data["status"],
                 from_id=data["from_task_id"]
             )
-        if task_type is TaskType.GIT_ISSUE:
+        if task_type == TaskType.GIT_ISSUE:
             return GitIssueTask(
                 id=data["id"],
                 issue_id=data["issue_id"],
