@@ -324,16 +324,18 @@ const Chat: FC<ChatProps> = memo(
                             source={source}
                           />
                         </div>
-                        <Markdown
-                          className={`${
-                            template_id
-                              ? 'mt-2 rounded-[20px] p-3 bg-[#F1F1F1]'
-                              : 'ant-pro-chat-list-item-message-content'
-                          }`}
-                          style={{ overflowX: 'hidden', overflowY: 'auto' }}
-                        >
-                          {answerStr}
-                        </Markdown>
+                        {answerStr && (
+                          <Markdown
+                            className={`${
+                              template_id
+                                ? 'mt-2 rounded-[20px] p-3 bg-[#F1F1F1]'
+                                : 'ant-pro-chat-list-item-message-content'
+                            }`}
+                            style={{ overflowX: 'hidden', overflowY: 'auto' }}
+                          >
+                            {answerStr}
+                          </Markdown>
+                        )}
                         {template_id &&
                           proChatRef?.current?.getChatLoadingId() ===
                             undefined && (
