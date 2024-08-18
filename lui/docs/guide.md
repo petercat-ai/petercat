@@ -11,8 +11,7 @@ export default {
     'react-dom': 'ReactDOM',
     antd: 'antd',
     dayjs: 'dayjs',
-    'lottie-web': 'Lottie',
-    'lottie-react': 'LottiePlayer',
+    'lottie-web': 'lottie',
   },
 };
 ```
@@ -27,7 +26,6 @@ Step 2, add the following script tag to your entry HTML file:
 + <script src="https://example.cdn.com/dayjs/dayjs.min.js"></script>
 + <script src="https://example.cdn.com/antd/dist/antd.js"></script>
 + <script src="https://example.cdn.com/lottie-web/build/player/lottie.js"></script>
-+ <script src="https://example.cdn.com/lottie-react/build/index.umd.js"></script>
 + <script src="https://example.cdn.com/petercat-lui/dist/umd/petercat-lui.min.js"></script>
 + <link rel="stylesheet" href="https://example.cdn.com/petercat-lui/dist/umd/petercat-lui.min.css">
 </head>
@@ -41,7 +39,8 @@ Step 3, render Assistant component in your project:
   ...
 +  <script>
 +    PetercatLUI.initAssistant({
-+      token: 'cfabba08-14a8-40d8-aee5-ca29d8a6ccc9',
++      apiDomain: 'https://api.petercat.chat',
++      token: 'your-token',
 +      starters: ['介绍下这个项目', '查看贡献指南', '我该怎样快速上手'],
 +      clearMessage: true
 +    });

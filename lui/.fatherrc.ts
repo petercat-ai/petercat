@@ -9,7 +9,7 @@ export default defineConfig({
       react: 'React',
       'react-dom/client': 'ReactDOM',
       antd: 'antd',
-      'lottie-react': 'LottiePlayer',
+      'lottie-web': 'lottie',
     },
     // 该项目借助 Umi 应用的能力来应用 tailwindcss，但该方案无法用于组件库
     // 所以此处先用黑科技绕一下，后续需要改成 tailwindcss 生成与框架解耦的方案
