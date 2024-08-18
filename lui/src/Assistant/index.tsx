@@ -2,6 +2,7 @@ import { CloseCircleFilled } from '@ant-design/icons';
 import { ActionIcon } from '@ant-design/pro-editor';
 import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import Chat, { ChatProps } from '../Chat';
 import BubbleIcon from '../icons/BubbleIcon';
 
@@ -114,5 +115,15 @@ const Assistant = (props: AssistantProps) => {
     </div>
   );
 };
+
+/**
+ * 命令式初始化 Assistant 组件
+ */
+export function initAssistant(props: AssistantProps) {
+  const elm = document.createElement('div');
+
+  document.body.appendChild(elm);
+  createRoot(elm).render(<Assistant {...props} />);
+}
 
 export default Assistant;
