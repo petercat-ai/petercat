@@ -10,7 +10,8 @@ from ..utils.env import get_env_variable
 sqs = boto3.client("sqs")
 
 TABLE_NAME_MAP = {
-    TaskType.GIT_DOC: 'rag_tasks'
+    TaskType.GIT_DOC: 'rag_tasks',
+    TaskType.GIT_ISSUE: 'git_issue_tasks'
 }
 SQS_QUEUE_URL = get_env_variable("SQS_QUEUE_URL")
 
@@ -42,7 +43,7 @@ class GitTask(ABC):
             "repo_name": self.repo_name,
             "bot_id": self.bot_id,
             "from_task_id": self.from_id,
-            "status": self.status.name,
+            "status": self.status.value,
         }
         return data
 
@@ -52,7 +53,7 @@ class GitTask(ABC):
 
     def update_status(self, status: TaskStatus):
         return (self.get_table()
-                .update({"status": status.name})
+                .update({"status": status.value})
                 .eq("id", self.id)
                 .execute())
 

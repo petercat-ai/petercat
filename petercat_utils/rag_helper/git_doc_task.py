@@ -79,7 +79,7 @@ class GitDocTask(GitTask):
     def extra_save_data(self):
         data = {
             "commit_id": self.commit_id,
-            "node_type": self.node_type,
+            "node_type": self.node_type.value,
             "path": self.path,
             "sha": self.sha,
         }
@@ -96,7 +96,7 @@ class GitDocTask(GitTask):
                     lambda item: {
                         "repo_name": self.repo_name,
                         "commit_id": self.commit_id,
-                        "status": TaskStatus.NOT_STARTED.name,
+                        "status": TaskStatus.NOT_STARTED.value,
                         "node_type": (item.type + '').upper(),
                         "from_task_id": self.id,
                         "path": "/".join(filter(lambda s: s, [self.path, item.path])),
@@ -123,7 +123,7 @@ class GitDocTask(GitTask):
 
         return (self.get_table().update(
             {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
-             "status": TaskStatus.COMPLETED.name})
+             "status": TaskStatus.COMPLETED.value})
                 .eq("id", self.id)
                 .execute())
 

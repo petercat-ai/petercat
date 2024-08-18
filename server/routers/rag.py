@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from verify.rate_limit import verify_rate_limit
 
 from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
-from petercat_utils.rag_helper import retrieval, task, issue_retrieval, git_doc_task
+from petercat_utils.rag_helper import retrieval, task, issue_retrieval, git_doc_task, git_issue_task
 
 router = APIRouter(
     prefix="/api",
@@ -54,10 +54,18 @@ def search_knowledge(query: str, bot_id: str, filter: dict = {}):
     return data
 
 
-@router.post("/rag/add_task", dependencies=[Depends(verify_rate_limit)])
-def add_task(config: RAGGitDocConfig):
+@router.post("/rag/add_git_doc_task", dependencies=[Depends(verify_rate_limit)])
+def add_git_doc_task(config: RAGGitDocConfig):
     try:
         data = git_doc_task.add_rag_git_doc_task(config)
+        return data
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+@router.post("/rag/add_git_issue_task", dependencies=[Depends(verify_rate_limit)])
+def add_git_issue_task(config: RAGGitIssueConfig):
+    try:
+        data = git_issue_task.add_rag_git_issue_task(config)
         return data
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})

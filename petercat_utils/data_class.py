@@ -69,6 +69,15 @@ class RAGGitDocConfig(GitDocConfig):
     bot_id: str
 
 
+class GitIssueConfig(BaseModel):
+    repo_name: str
+    issue_id: str
+
+
+class RAGGitIssueConfig(GitIssueConfig):
+    bot_id: str
+
+
 class AutoNameEnum(Enum):
     def _generate_next_value_(name, start, count, last_values):
         return name
@@ -85,6 +94,7 @@ class TaskStatus(AutoNameEnum):
 
 class TaskType(AutoNameEnum):
     GIT_DOC = auto()
+    GIT_ISSUE = auto()
 
 
 class GitDocTaskNodeType(AutoNameEnum):
@@ -92,10 +102,6 @@ class GitDocTaskNodeType(AutoNameEnum):
     BLOB = auto()
 
 
-class GitIssueConfig(BaseModel):
-    repo_name: str
-    issue_id: str
-
-
-class RAGGitIssueConfig(GitIssueConfig):
-    bot_id: str
+class GitIssueTaskNodeType(AutoNameEnum):
+    REPO = auto()
+    ISSUE = auto()
