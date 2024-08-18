@@ -126,7 +126,6 @@ class AgentBuilder:
                 version="v1",
             ):
                 kind = event["event"]
-                print("event", kind, event)
                 if kind == "on_llm_stream" or kind == "on_chat_model_stream":
                     content = event["data"]["chunk"].content
                     if content:
@@ -158,19 +157,36 @@ class AgentBuilder:
                     yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
+
+                    parsed_children_value = json.loads(children_value)
+                    template_id = parsed_children_value.get("template_id")
+                    card_data = parsed_children_value.get("card_data")
+
+                    extra_data = {
+                        "source": f"已调用工具: {event['name']}",
+                        "pluginName": "GitHub",
+                        "status": "success",
+                    }
+
+                    if template_id is None:
+                        extra_data["data"] = children_value
+                    else:
+                        extra_data.update(
+                            {
+                                "data": card_data,
+                                "template_id": template_id,
+                            }
+                        )
+
                     json_output = json.dumps(
                         {
                             "id": event["run_id"],
                             "type": "tool",
-                            "extra": {
-                                "source": f"已调用工具: {event['name']}",
-                                "pluginName": "GitHub",
-                                "data": children_value,
-                                "status": "success",
-                            },
+                            "extra": extra_data,
                         },
                         ensure_ascii=False,
                     )
+
                     yield f"data: {json_output}\n\n"
         except Exception as e:
             res = {"status": "error", "message": str(e)}

@@ -16,8 +16,7 @@ import React, {
   type FC,
 } from 'react';
 import useSWR from 'swr';
-import StopBtn from '../StopBtn';
-import ThoughtChain from '../ThoughtChain';
+import { UITemplateRender } from './template/index';
 
 import SignatureIcon from '../icons/SignatureIcon';
 import {
@@ -29,13 +28,15 @@ import {
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import StarterList from '../StarterList';
-import '../style/global.css';
+import ThoughtChain from '../ThoughtChain';
 import { convertChunkToJson, handleStream } from '../utils';
 import ChatItemRender from './components/ChatItemRender';
 import InputArea from './components/InputAreaRender';
-import Loading from './components/Loading';
-import OnceLoading from './components/OnceLoading';
+import LoadingEnd from './components/LoadingEnd';
+import LoadingStart from './components/LoadingStart';
 import UserContent from './components/UserContent';
+
+import '../style/global.css';
 
 export interface BotInfo {
   assistantMeta?: MetaData;
@@ -120,6 +121,9 @@ const Chat: FC<ChatProps> = memo(
       });
     }, [detail]);
 
+    const messageMinWidth = drawerWidth
+      ? `calc(${drawerWidth}px - 90px)`
+      : '400px';
     return (
       <div
         className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
@@ -140,7 +144,7 @@ const Chat: FC<ChatProps> = memo(
             }}
             chatRef={proChatRef}
             helloMessage={botInfo.helloMessage}
-            userMeta={{ title: 'User' }}
+            userMeta={{ title: ' ' }}
             chatItemRenderConfig={{
               render: (
                 props: ChatItemProps,
@@ -255,7 +259,7 @@ const Chat: FC<ChatProps> = memo(
                       title={domsMap.title}
                       content={
                         <div className="leftMessageContent">
-                          <Loading
+                          <LoadingStart
                             loop={!complete}
                             onComplete={() => setComplete(true)}
                           />
@@ -274,14 +278,14 @@ const Chat: FC<ChatProps> = memo(
                       title={domsMap.title}
                       content={
                         <div className="leftMessageContent">
-                          <OnceLoading>
+                          <LoadingEnd>
                             <Markdown
                               className="ant-pro-chat-list-item-message-content"
                               style={{ overflowX: 'hidden', overflowY: 'auto' }}
                             >
                               {answerStr}
                             </Markdown>
-                          </OnceLoading>
+                          </LoadingEnd>
                         </div>
                       }
                     />
@@ -302,14 +306,17 @@ const Chat: FC<ChatProps> = memo(
                 }
 
                 getToolsResult?.(extra);
-                const { status, source } = extra;
+                const { status, source, template_id, data } = extra;
                 return (
                   <ChatItemRender
                     direction={'start'}
                     avatar={domsMap.avatar}
                     title={domsMap.title}
                     content={
-                      <div className="leftMessageContent">
+                      <div
+                        className="leftMessageContent"
+                        style={{ maxWidth: messageMinWidth }}
+                      >
                         <div className="mb-1">
                           <ThoughtChain
                             content={extra}
@@ -318,11 +325,28 @@ const Chat: FC<ChatProps> = memo(
                           />
                         </div>
                         <Markdown
-                          className="ant-pro-chat-list-item-message-content"
+                          className={`${
+                            template_id
+                              ? 'mt-2 rounded-[20px] p-3 bg-[#F1F1F1]'
+                              : 'ant-pro-chat-list-item-message-content'
+                          }`}
                           style={{ overflowX: 'hidden', overflowY: 'auto' }}
                         >
                           {answerStr}
                         </Markdown>
+                        {template_id &&
+                          proChatRef?.current?.getChatLoadingId() ===
+                            undefined && (
+                            <div
+                              style={{ maxWidth: messageMinWidth }}
+                              className="transition-all duration-300 ease-in-out"
+                            >
+                              {UITemplateRender({
+                                templateId: template_id,
+                                cardData: data,
+                              })}
+                            </div>
+                          )}
                       </div>
                     }
                   />
@@ -398,20 +422,6 @@ const Chat: FC<ChatProps> = memo(
               );
             }}
             inputAreaProps={{ className: 'userInputBox h-24 !important' }}
-            actions={{
-              render: () => [
-                <StopBtn
-                  key="StopBtn"
-                  visible={!!proChatRef?.current?.getChatLoadingId()}
-                  action={() => proChatRef?.current?.stopGenerateMessage()}
-                />,
-              ],
-              flexConfig: {
-                gap: 24,
-                direction: 'vertical',
-                justify: 'space-between',
-              },
-            }}
           />
         </div>
       </div>

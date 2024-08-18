@@ -1,14 +1,14 @@
 import Lottie from 'lottie-react';
 import React, { useState } from 'react';
 
-const LoadingAnimation2 = require('../../assets/bubble-2.json');
+const LoadingAnimationEnd = require('../../assets/bubble-end.json');
 
-interface OnceLoadingProps {
+interface LoadingEndProps {
   children?: React.ReactNode;
   onComplete?: () => void;
 }
 
-const OnceLoading: React.FC<OnceLoadingProps> = (props) => {
+const LoadingEnd: React.FC<LoadingEndProps> = (props) => {
   const { children } = props;
 
   const [complete, setComplete] = useState(false);
@@ -21,7 +21,7 @@ const OnceLoading: React.FC<OnceLoadingProps> = (props) => {
     <>
       <div className="loading">
         <Lottie
-          animationData={LoadingAnimation2}
+          animationData={LoadingAnimationEnd}
           autoplay={true}
           loop={false}
           onComplete={() => setComplete(true)}
@@ -31,4 +31,4 @@ const OnceLoading: React.FC<OnceLoadingProps> = (props) => {
   );
 };
 
-export default OnceLoading;
+export default LoadingEnd;

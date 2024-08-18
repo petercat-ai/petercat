@@ -11,7 +11,7 @@ export interface AssistantProps extends ChatProps {
   onClose?: () => void;
 }
 
-const drawerWidth = 400;
+const drawerWidth = 500;
 
 const Assistant = (props: AssistantProps) => {
   const { showBubble = true, isVisible, onClose } = props;
@@ -50,9 +50,9 @@ const Assistant = (props: AssistantProps) => {
   }, [isVisible]);
 
   const cls = classnames(
-    'fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] border-[0.5px] border-[#E4E4E7] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)]',
+    'fixed top-0 h-full ease-in flex flex-row z-[999] overflow-hidden text-left text-black rounded-l-[20px] shadow-[0px_8px_32px_-12px_rgba(0,0,0,0.1)] border-[0.5px] solid  border-[#e4e4e7]',
     {
-      [`right-[-400px]`]: !chatVisible,
+      [`right-[-500px]`]: !chatVisible,
       [`right-0`]: chatVisible,
       [`transition-[right]`]: chatVisible,
     },
@@ -67,7 +67,7 @@ const Assistant = (props: AssistantProps) => {
           height: '100vh',
           zIndex: 9999,
           borderBottomLeftRadius: '20px!important',
-          boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0px 8px 32px -12px rgba(0, 0, 0, 0.2)',
         }}
       >
         {chatVisible && (
