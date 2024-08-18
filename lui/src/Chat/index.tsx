@@ -181,14 +181,14 @@ const Chat: FC<ChatProps> = memo(
                       }
                       starter={
                         <StarterList
-                          starters={starters ?? []}
+                          starters={botInfo?.starters ?? starters ?? []}
                           onClick={(msg: string) => {
                             proChatRef?.current?.sendMessage(
                               JSON.stringify([{ type: 'text', text: msg }]),
                             );
                           }}
                           className="ml-[72px]"
-                        ></StarterList>
+                        />
                       }
                     />
                   );

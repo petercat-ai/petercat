@@ -10,8 +10,7 @@ import { Assistant } from 'petercat-lui';
 
 export default () => (
   <Assistant
-    token="cfabba08-14a8-40d8-aee5-ca29d8a6ccc9"
-    starters={['介绍下这个项目', '查看贡献指南', '我该怎样快速上手']}
+    token="45cb2003-98f5-46b4-b299-b60c42f69fbf"
     clearMessage={true}
   />
 );
