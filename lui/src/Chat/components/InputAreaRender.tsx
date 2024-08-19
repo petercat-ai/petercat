@@ -24,12 +24,11 @@ const InputAreaRender = (props: {
   isShowStop: boolean;
   disabled?: boolean;
   disabledPlaceholder?: string;
-  drawerWidth: number;
   onMessageSend: (message: string) => void | Promise<any>;
   onClear: () => void;
   onStop: () => void;
 }) => {
-  const { disabled, disabledPlaceholder, drawerWidth = 500 } = props;
+  const { disabled, disabledPlaceholder } = props;
   const [form] = Form.useForm();
   const [message, setMessage] = useState('');
   const [fileList, setFileList] = useState<
@@ -137,9 +136,9 @@ const InputAreaRender = (props: {
       {disabled && disabledPlaceholder && (
         <div
           className="absolute top-[-14px] left-0 flex items-center justify-center h-[198px]"
-          style={{ width: `${drawerWidth - 24}px` }}
+          style={{ width: '100%' }}
         >
-          <div className="text-gray-400 w-[182px] text-center z-[999]">
+          <div className="text-gray-400 w-[182px] text-center z-[999] whitespace-pre-wrap">
             {disabledPlaceholder}
           </div>
         </div>

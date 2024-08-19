@@ -32,7 +32,7 @@ const ChatItemRender: FC<IProps> = ({
               backgroundColor: `${avatar?.props?.avatar?.backgroundColor}`,
               backgroundImage: `url(${avatar?.props?.avatar?.avatar})`,
               backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat,
+              backgroundRepeat: 'no-repeat',
             }}
           />
         )}

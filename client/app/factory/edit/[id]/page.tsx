@@ -416,7 +416,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                   prompt={botProfile?.prompt}
                   starters={botProfile?.starters}
                   helloMessage={botProfile?.helloMessage}
-                  disabledPlaceholder="机器人尚未配置任何内容\n请在完成配置后进行对话测试"
+                  disabledPlaceholder="机器人尚未配置任何内容    请在完成配置后进行对话测试"
                   disabled={!isEdit}
                 />
               </div>

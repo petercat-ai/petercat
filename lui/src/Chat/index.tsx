@@ -137,8 +137,11 @@ const Chat: FC<ChatProps> = memo(
           height: '100%',
         }}
       >
-        <div className="h-full w-full flex flex-col">
+        <div className="h-full w-full flex flex-col relative">
           {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
+          {disabled && (
+            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[999]" />
+          )}
           <ProChat
             className="flex-1"
             showTitle
@@ -161,6 +164,9 @@ const Chat: FC<ChatProps> = memo(
                 },
                 defaultDom: ReactNode,
               ) => {
+                if (disabled) {
+                  return;
+                }
                 const originData = props.originData || {};
                 const isDefault = originData.role === 'hello';
                 // default message content
@@ -419,7 +425,6 @@ const Chat: FC<ChatProps> = memo(
             ) => {
               return (
                 <InputArea
-                  drawerWidth={drawerWidth}
                   disabled={disabled}
                   disabledPlaceholder={disabledPlaceholder}
                   isShowStop={!!proChatRef?.current?.getChatLoadingId()}
