@@ -9,7 +9,7 @@ import {
   getRagTask,
   updateBot,
 } from '@/app/services/BotsController';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useBotDetail = (id: string) => {
   return useQuery({
@@ -111,11 +111,12 @@ export const useBotRAGChunkList = (
   enabled: boolean = true,
 ) => {
   return useQuery({
-    queryKey: [`rag.chunk.list`, botId],
+    queryKey: [`rag.chunk.list`,page_number, botId],
     queryFn: async () => getChunkList(botId, page_size, page_number),
     select: (data) => data,
     enabled,
     retry: true,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -129,6 +130,6 @@ export const useGetRagTask = (
     select: (data) => data,
     enabled,
     retry: true,
-    refetchInterval:5*1000
+    refetchInterval:3*1000
   });
 };

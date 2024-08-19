@@ -17,7 +17,7 @@ type IProps = {
 const KnowledgeBtn = (props: IProps) => {
   const { onClick, botId, mode } = props;
   const [isPolling, setIsPolling] = React.useState<boolean>(true);
-  const [taskLoading, setTaskLoading] = React.useState<boolean>(false);
+  const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
   const { data: taskInfo } = useGetRagTask(botId, isPolling);
 
   useEffect(() => {
@@ -30,6 +30,13 @@ const KnowledgeBtn = (props: IProps) => {
       ].includes(taskInfo.status as TaskStatus)
     ) {
       setTaskLoading(true);
+    }
+    if (
+      [TaskStatus.COMPLETED, TaskStatus.ERROR, TaskStatus.CANCELLED].includes(
+        taskInfo.status as TaskStatus,
+      )
+    ) {
+      setTaskLoading(false);
     }
   }, [taskInfo]);
 

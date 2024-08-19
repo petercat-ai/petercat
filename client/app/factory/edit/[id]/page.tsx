@@ -264,7 +264,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           )}
           {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
             <KnowledgeBtn
-              botId={params.id}
+              botId={botProfile.id}
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}
