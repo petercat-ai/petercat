@@ -22,8 +22,8 @@ import {
 
 const InputAreaRender = (props: {
   isShowStop: boolean;
-  disabled: boolean;
-  disabledPlaceholder: string;
+  disabled?: boolean;
+  disabledPlaceholder?: string;
   drawerWidth: number;
   onMessageSend: (message: string) => void | Promise<any>;
   onClear: () => void;

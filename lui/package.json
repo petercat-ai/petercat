@@ -1,6 +1,6 @@
 {
   "name": "petercat-lui",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "description": "A react library developed with dumi",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",

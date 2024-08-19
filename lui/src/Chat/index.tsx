@@ -52,8 +52,8 @@ export interface ChatProps extends BotInfo {
   token?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
-  disabled: boolean;
-  disabledPlaceholder: string;
+  disabled?: boolean;
+  disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
 

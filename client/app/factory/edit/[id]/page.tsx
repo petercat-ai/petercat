@@ -13,7 +13,7 @@ import {
 import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
-import { Chat } from 'petercat-lui';
+import { Chat } from 'petercat-lui/dist/esm';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
@@ -399,26 +399,26 @@ export default function Edit({ params }: { params: { id: string } }) {
             </div>
             <div className="position absolute top-[73px] left-0 w-full">
               <div style={{ height: 'calc(100vh - 73px)' }}>
-                {isEdit && (
-                  <Chat
-                    hideLogo={true}
-                    assistantMeta={{
-                      avatar:
-                        botProfile?.avatar ||
-                        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
-                      title: botProfile?.name || 'PeterCat',
-                    }}
-                    style={{
-                      backgroundColor: '#FCFCFC',
-                    }}
-                    token={params.id}
-                    apiDomain={API_HOST}
-                    apiUrl="/api/chat/stream_qa"
-                    prompt={botProfile?.prompt}
-                    starters={botProfile?.starters}
-                    helloMessage={botProfile?.helloMessage}
-                  />
-                )}
+                <Chat
+                  hideLogo={true}
+                  assistantMeta={{
+                    avatar:
+                      botProfile?.avatar ||
+                      'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+                    title: botProfile?.name || 'PeterCat',
+                  }}
+                  style={{
+                    backgroundColor: '#FCFCFC',
+                  }}
+                  token={params.id}
+                  apiDomain={API_HOST}
+                  apiUrl="/api/chat/stream_qa"
+                  prompt={botProfile?.prompt}
+                  starters={botProfile?.starters}
+                  helloMessage={botProfile?.helloMessage}
+                  disabledPlaceholder="机器人尚未配置任何内容\n请在完成配置后进行对话测试"
+                  disabled={!isEdit}
+                />
               </div>
             </div>
           </div>
