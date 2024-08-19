@@ -72,7 +72,7 @@ const BotCard = (props: { bot: Bot }) => {
             className="relative overflow-hidden w-full h-full bg-cover bg-center"
             style={{ backgroundImage: `url(${bot.avatar})` }}
           >
-            <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-[150px]"></div>
+            <div className="absolute inset-0 bg-white bg-opacity-50 backdrop-blur-[70px]"></div>
             <div className="flex justify-center items-center h-full">
               {isHovered ? (
                 <div className="flex items-center gap-10">
