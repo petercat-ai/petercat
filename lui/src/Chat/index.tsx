@@ -62,7 +62,7 @@ const Chat: FC<ChatProps> = memo(
     helloMessage,
     apiDomain = 'http://127.0.0.1:8000',
     apiUrl,
-    drawerWidth,
+    drawerWidth = 500,
     assistantMeta,
     starters,
     prompt,
