@@ -21,7 +21,7 @@ const StarterList: FC<IProps> = ({ starters, onClick, style, className }) => {
             className="px-4 py-2 rounded-[20px] bg-[#3F3F46] shadow-md align-content-start cursor-pointer"
           >
             <span
-              className="text-[14px] font-[510] leading-[22px] text-white flex items-center gap-1 "
+              className="text-[14px] font-[500] leading-[22px] text-white flex items-center gap-1 "
               onClick={() => {
                 onClick?.(starterStr);
               }}

@@ -52,6 +52,7 @@ export interface ChatProps extends BotInfo {
   token?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
+  disabled: boolean;
   getToolsResult?: (response: any) => void;
 }
 
@@ -66,6 +67,7 @@ const Chat: FC<ChatProps> = memo(
     prompt,
     token,
     style,
+    disabled = false,
     hideLogo = false,
     getToolsResult,
   }) => {
@@ -126,7 +128,7 @@ const Chat: FC<ChatProps> = memo(
       : '400px';
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
+        className="petercat-lui bg-[#FCFCFC] pt-2"
         style={{
           ...style,
           minWidth: drawerWidth,
@@ -169,11 +171,11 @@ const Chat: FC<ChatProps> = memo(
                       content={
                         <div className="leftMessageContent">
                           <div className="ant-pro-chat-list-item-message-content">
-                            <div className="text-left text-[20px] font-[510] leading-[28px] font-sf">
+                            <div className="text-left text-[20px] font-[500] leading-[28px] font-sf">
                               👋🏻 你好，我是{' '}
                               {botInfo.assistantMeta?.title || BOT_INFO.name}
                             </div>
-                            <div className="text-left text-[14px] font-[510] leading-[28px] font-sf">
+                            <div className="text-left text-[14px] font-[500] leading-[28px] font-sf">
                               {props.message}
                             </div>
                           </div>
@@ -358,8 +360,7 @@ const Chat: FC<ChatProps> = memo(
             assistantMeta={{
               avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,
               title: botInfo.assistantMeta?.title || BOT_INFO.name,
-              backgroundColor:
-                botInfo.assistantMeta?.backgroundColor || '#FAE4CB',
+              backgroundColor: botInfo.assistantMeta?.backgroundColor,
             }}
             autocompleteRequest={async (value) => {
               if (value === '/') {
@@ -416,6 +417,7 @@ const Chat: FC<ChatProps> = memo(
             ) => {
               return (
                 <InputArea
+                  disabled={disabled}
                   isShowStop={!!proChatRef?.current?.getChatLoadingId()}
                   onMessageSend={onMessageSend}
                   onClear={onClear}
