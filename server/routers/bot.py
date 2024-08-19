@@ -120,4 +120,3 @@ async def delete_bot(
         return JSONResponse(content={"success": True})
     except Exception as e:
         return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)
-
