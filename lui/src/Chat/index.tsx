@@ -53,6 +53,7 @@ export interface ChatProps extends BotInfo {
   style?: React.CSSProperties;
   hideLogo?: boolean;
   disabled: boolean;
+  disabledPlaceholder: string;
   getToolsResult?: (response: any) => void;
 }
 
@@ -69,6 +70,7 @@ const Chat: FC<ChatProps> = memo(
     style,
     disabled = false,
     hideLogo = false,
+    disabledPlaceholder,
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
@@ -417,7 +419,9 @@ const Chat: FC<ChatProps> = memo(
             ) => {
               return (
                 <InputArea
+                  drawerWidth={drawerWidth}
                   disabled={disabled}
+                  disabledPlaceholder={disabledPlaceholder}
                   isShowStop={!!proChatRef?.current?.getChatLoadingId()}
                   onMessageSend={onMessageSend}
                   onClear={onClear}

@@ -13,6 +13,8 @@ export default () => {
   return (
     <div style={{ height: '100vh' }}>
       <Chat
+        disabled={true}
+        disabledPlaceholder="机器人尚未配置任何内容请在完成配置后进行对话测试"
         helloMessage="让我们开始对话吧～"
         starters={['介绍下xxx这个项目', '查看xxx的贡献指南', '我该怎样快速上手']}
         apiUrl="/api/chat/stream_builder"

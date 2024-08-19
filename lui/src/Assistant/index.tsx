@@ -12,10 +12,8 @@ export interface AssistantProps extends ChatProps {
   onClose?: () => void;
 }
 
-const drawerWidth = 500;
-
 const Assistant = (props: AssistantProps) => {
-  const { showBubble = true, isVisible, onClose } = props;
+  const { showBubble = true, isVisible, onClose, drawerWidth = 500 } = props;
   const [chatVisible, setChatVisible] = useState(isVisible);
   const [position, setPosition] = useState({ bottom: 120 });
 
