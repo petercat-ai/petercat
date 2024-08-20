@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.utils.function_calling import convert_to_openai_tool
 
 from agent.llm.base import BaseLLMClient
+from petercat_utils.data_class import MessageContent
 from petercat_utils.utils.env import get_env_variable
 
 
@@ -25,3 +26,7 @@ class OpenAIClient(BaseLLMClient):
   
   def get_tools(self, tools: List[Any]):
     return [convert_to_openai_tool(tool) for tool in tools]
+  
+  def parse_content(self, content: List[MessageContent]):
+    print(f"parse_content: {content}")
+    return content

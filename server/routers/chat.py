@@ -27,7 +27,7 @@ async def generate_auth_failed_stream():
 )
 def run_qa_chat(
     input_data: ChatData,
-    llm: str,
+    llm: Optional[str] = "openai",
     user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None,
 ):
     print(

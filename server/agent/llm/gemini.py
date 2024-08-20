@@ -1,13 +1,20 @@
-from typing import Any, List, Optional
+from typing import Any, List, Literal, Optional
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai.chat_models import convert_to_genai_function_declarations
 from langchain_openai import ChatOpenAI
-from langchain_core.utils.function_calling import convert_to_openai_tool
 
 from agent.llm.base import BaseLLMClient
+from petercat_utils.data_class import ImageRawURLContentBlock, MessageContent
 from petercat_utils.utils.env import get_env_variable
 
 GEMINI_API_KEY = get_env_variable("GEMINI_API_KEY")
+
+def parse_gemini_input(message: MessageContent):
+  match message.type:
+    case "image_url": 
+      return ImageRawURLContentBlock(image_url=message.image_url.url, type="image_url")
+    case _:
+      return message
 
 class GeminiClient(BaseLLMClient):
   _client: ChatOpenAI
@@ -26,3 +33,8 @@ class GeminiClient(BaseLLMClient):
   
   def get_tools(self, tools: List[Any]):
     return [convert_to_genai_function_declarations(tool) for tool in tools]
+  
+  def parse_content(self, content: List[MessageContent]):
+    result = [parse_gemini_input(message=message) for message in content]
+    print(f"parse_content, content={content}, result={result}")
+    return result

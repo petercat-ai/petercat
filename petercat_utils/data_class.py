@@ -24,6 +24,10 @@ class ImageURLContentBlock(BaseModel):
     image_url: ImageURL
     type: Literal["image_url"]
 
+class ImageRawURLContentBlock(BaseModel):
+    image_url: str
+    type: Literal["image_url"]
+
 
 class TextContentBlock(BaseModel):
     text: str

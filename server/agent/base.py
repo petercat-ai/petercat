@@ -89,13 +89,11 @@ class AgentBuilder:
             ]
         )
 
-    @staticmethod
-    def chat_history_transform(messages: list[Message]):
+    def chat_history_transform(self, messages: list[Message]):
         transformed_messages = []
         for message in messages:
-            print("message", message)
             if message.role == "user":
-                transformed_messages.append(HumanMessage(content=message.content))
+                transformed_messages.append(HumanMessage(self.chat_model.parse_content(content=message.content)))
             elif message.role == "assistant":
                 transformed_messages.append(AIMessage(content=message.content))
             else:
@@ -107,7 +105,7 @@ class AgentBuilder:
             messages = input_data.messages
             async for event in self.agent_executor.astream_events(
                 {
-                    "input": messages[len(messages) - 1].content,
+                    "input": self.chat_model.parse_content(messages[len(messages) - 1].content),
                     "chat_history": self.chat_history_transform(messages),
                 },
                 version="v1",
