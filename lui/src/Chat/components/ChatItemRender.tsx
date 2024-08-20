@@ -27,7 +27,7 @@ const ChatItemRender: FC<IProps> = ({
       >
         {direction === 'start' && (
           <div
-            className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden animate-fade-in-left"
+            className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden"
             style={{
               backgroundColor: `${avatar?.props?.avatar?.backgroundColor}`,
               backgroundImage: `url(${avatar?.props?.avatar?.avatar})`,

@@ -1,3 +1,3 @@
 module.exports = (content) => {
-  return `import '../.dumi/tmp/tailwind.css';\n${content}`;
+  return `import '../.dumi/tmp/style.css';\n${content}`;
 }
