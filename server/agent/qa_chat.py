@@ -44,7 +44,6 @@ def init_prompt(input_data: ChatData):
 
 def agent_stream_chat(input_data: ChatData, user_token: str, llm: Optional[str] = "openai") -> AsyncIterator[str]:
     agent = AgentBuilder(
-        chat_model=get_llm(llm=llm),
         prompt=init_prompt(input_data),
         tools=get_tools(bot_id=input_data.bot_id, token=user_token),
     )
@@ -53,7 +52,6 @@ def agent_stream_chat(input_data: ChatData, user_token: str, llm: Optional[str] 
 
 def agent_chat(input_data: ChatData, user_token: Optional[str], llm: Optional[str] = "openai") -> AsyncIterator[str]:
     agent = AgentBuilder(
-        chat_model=get_llm(llm=llm),
         prompt=init_prompt(input_data),
         tools=get_tools(input_data.bot_id, token=user_token),
     )
