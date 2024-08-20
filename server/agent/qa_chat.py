@@ -1,9 +1,10 @@
 from typing import AsyncIterator, Optional
+from agent.base import AgentBuilder
+from agent.llm import get_llm
+from prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils import get_client
 from petercat_utils.data_class import ChatData
 
-from agent.base import AgentBuilder
-from prompts.bot_template import generate_prompt_by_repo_name
 from tools import issue, sourcecode, knowledge, git_info
 
 
@@ -41,17 +42,18 @@ def init_prompt(input_data: ChatData):
     return prompt
 
 
-def agent_stream_chat(input_data: ChatData, user_token: str) -> AsyncIterator[str]:
+def agent_stream_chat(input_data: ChatData, user_token: str, llm: Optional[str] = "openai") -> AsyncIterator[str]:
     agent = AgentBuilder(
+        chat_model=get_llm(llm=llm),
         prompt=init_prompt(input_data),
         tools=get_tools(bot_id=input_data.bot_id, token=user_token),
-        streaming=True,
     )
     return agent.run_stream_chat(input_data)
 
 
-def agent_chat(input_data: ChatData, user_token: Optional[str]) -> AsyncIterator[str]:
+def agent_chat(input_data: ChatData, user_token: Optional[str], llm: Optional[str] = "openai") -> AsyncIterator[str]:
     agent = AgentBuilder(
+        chat_model=get_llm(llm=llm),
         prompt=init_prompt(input_data),
         tools=get_tools(input_data.bot_id, token=user_token),
     )

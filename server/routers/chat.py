@@ -27,13 +27,14 @@ async def generate_auth_failed_stream():
 )
 def run_qa_chat(
     input_data: ChatData,
+    llm: str,
     user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None,
 ):
     print(
         f"run_qa_chat: input_data={input_data}, user_access_token={user_access_token}"
     )
     result = qa_chat.agent_stream_chat(
-        input_data=input_data, user_token=user_access_token
+        input_data=input_data, user_token=user_access_token, llm=llm
     )
     return StreamingResponse(result, media_type="text/event-stream")
 

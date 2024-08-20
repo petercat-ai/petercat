@@ -42,6 +42,7 @@ class Message(BaseModel):
 
 class ChatData(BaseModel):
     messages: List[Message] = []
+    llm: Optional[str] = "openai"
     prompt: Optional[str] = None
     bot_id: Optional[str] = None
 

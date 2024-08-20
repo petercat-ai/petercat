@@ -9,7 +9,7 @@ DEFAULT_REPO_NAME = "ant-design/ant-design"
 
 def factory(access_token: Optional[str]):
     @tool
-    def create_issue(repo_name, title, body):
+    def create_issue(repo_name: str, title: str, body: str):
         """
         Create an issue in the specified GitHub repository.If an error occurs during processing,
         If user not login, it will return error mesesage and login url

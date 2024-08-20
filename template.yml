@@ -45,6 +45,10 @@ Parameters:
     Type: String
     Description: Github App Id
     Default: 1
+  GeminiAPIKey:
+    Type: String
+    Description: Gemini API Key
+    Default: 1
   SupabaseServiceKey:
     Type: String
     Description: Github App Id
@@ -94,6 +98,7 @@ Resources:
           API_IDENTIFIER: !Ref APIIdentifier
           FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
           OPENAI_API_KEY: !Ref OpenAIAPIKey
+          GEMINI_API_KEY: !Ref GeminiAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
