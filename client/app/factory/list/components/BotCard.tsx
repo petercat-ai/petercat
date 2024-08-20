@@ -16,13 +16,14 @@ import {
   Tooltip,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { useBotDelete, useGetRagTask } from '@/app/hooks/useBot';
+import { useBotDelete, useGetBotRagTask } from '@/app/hooks/useBot';
 import CloudIcon from '@/public/icons/CloudIcon';
 import MinusCircleIcon from '@/public/icons/MinusCircleIcon';
 import { TaskStatus } from '@/types/task';
 import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
 import CheckBadgeIcon from '@/public/icons/CheckBadgeIcon';
 import LoadingIcon from '@/public/icons/LoadingIcon';
+import { RagTask } from '@/app/services/BotsController';
 
 declare type Bot = Tables<'bots'>;
 
@@ -30,9 +31,8 @@ const BotCard = (props: { bot: Bot }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { bot } = props;
   const router = useRouter();
-  const [isHovered, setIsHovered] = useState(false);
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
-  const { data: taskInfo } = useGetRagTask(bot.id);
+  const { data: taskInfo } = useGetBotRagTask(bot.id, true, false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -43,7 +43,18 @@ const BotCard = (props: { bot: Bot }) => {
   const onDelete = (id: string) => {
     deleteBot(id);
   };
-  const renderTaskStatusIcon = (status: TaskStatus) => {
+  const renderTaskStatusIcon = (taskList: RagTask[]) => {
+    const status = taskList.find((task) => task.status === TaskStatus.ERROR)
+      ? TaskStatus.ERROR
+      : taskList.every((task) =>
+          [
+            TaskStatus.CANCELLED,
+            TaskStatus.COMPLETED,
+            TaskStatus.ERROR,
+          ].includes(task.status as TaskStatus),
+        )
+      ? TaskStatus.COMPLETED
+      : 'others';
     if (status === TaskStatus.COMPLETED) {
       return <CheckBadgeIcon />;
     }
@@ -64,8 +75,6 @@ const BotCard = (props: { bot: Bot }) => {
         isPressable={false}
         shadow="none"
         data-hover="true"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         <CardBody className="overflow-visible flex-initial p-0 flex-1">
           <div
@@ -74,61 +83,62 @@ const BotCard = (props: { bot: Bot }) => {
           >
             <div className="absolute inset-0 bg-white bg-opacity-50 backdrop-blur-[70px]"></div>
             <div className="flex justify-center items-center h-full">
-              {isHovered ? (
-                <div className="flex items-center gap-10">
-                  <Tooltip
-                    showArrow
-                    placement="top"
-                    content="调试"
-                    classNames={{
-                      base: [
-                        // arrow color
-                        'before:bg-[#3F3F46] dark:before:bg-white',
-                      ],
-                      content: [
-                        'py-2 px-4 rounded-lg  shadow-xl text-white',
-                        'bg-[#3F3F46]',
-                      ],
-                    }}
-                  >
-                    <Image
-                      src="../images/debug.svg"
-                      alt={'调试'}
-                      onClick={() => router.push(`/factory/edit/${bot.id}`)}
-                      className="z-10 cursor-pointer"
-                    />
-                  </Tooltip>
-                  <Tooltip
-                    showArrow
-                    placement="top"
-                    content="更新知识库"
-                    classNames={{
-                      base: [
-                        // arrow color
-                        'before:bg-[#3F3F46] dark:before:bg-white',
-                      ],
-                      content: [
-                        'py-2 px-4 rounded-lg  shadow-xl text-white',
-                        'bg-[#3F3F46]',
-                      ],
-                    }}
-                  >
-                    <Image
-                      src="../images/refresh.svg"
-                      alt={'更新知识'}
-                      className="z-10 cursor-pointer"
-                    />
-                  </Tooltip>
-                </div>
-              ) : (
+              <Image
+                shadow="none"
+                loading="eager"
+                radius="lg"
+                width="100px"
+                alt={bot.name!}
+                className="w-24 h-24"
+                src={bot.avatar!}
+              />
+            </div>
+          </div>
+          <div className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center">
+            <div className="flex items-center gap-10">
+              <Tooltip
+                showArrow
+                placement="top"
+                content="调试"
+                classNames={{
+                  base: [
+                    // arrow color
+                    'before:bg-[#3F3F46] dark:before:bg-white',
+                  ],
+                  content: [
+                    'py-2 px-4 rounded-lg  shadow-xl text-white',
+                    'bg-[#3F3F46]',
+                  ],
+                }}
+              >
                 <Image
-                  src={bot.avatar!}
-                  shadow="none"
-                  loading="eager"
-                  alt={bot.name}
-                  className="w-24 h-24"
+                  src="../images/debug.svg"
+                  alt={'调试'}
+                  onClick={() => router.push(`/factory/edit/${bot.id}`)}
+                  className="z-10 cursor-pointer"
                 />
-              )}
+              </Tooltip>
+              <Tooltip
+                showArrow
+                placement="top"
+                content="更新知识库"
+                classNames={{
+                  base: [
+                    // arrow color
+                    'before:bg-[#3F3F46] dark:before:bg-white',
+                  ],
+                  content: [
+                    'py-2 px-4 rounded-lg shadow-xl text-white',
+                    'bg-[#3F3F46]',
+                  ],
+                }}
+              >
+                <Image
+                  src="../images/refresh.svg"
+                  alt={'更新知识'}
+                  className="z-10 cursor-pointer"
+                />
+              </Tooltip>
             </div>
           </div>
         </CardBody>
@@ -142,7 +152,7 @@ const BotCard = (props: { bot: Bot }) => {
                 {bot.public ? <CloudIcon /> : <MinusCircleIcon />}
               </div>
               <div className="w-[32px] h-[32px] p-[7px] flex items-center rounded-[16px] bg-[#F4F4F5]">
-                {renderTaskStatusIcon(taskInfo?.status as TaskStatus)}
+                {renderTaskStatusIcon(taskInfo ?? [])}
               </div>
             </div>
           </div>

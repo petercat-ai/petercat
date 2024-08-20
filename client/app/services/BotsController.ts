@@ -86,9 +86,9 @@ export async function getChunkList(
 
 export async function getRagTask(
   bot_id: string
-) :Promise<RagTask>{
+) :Promise<RagTask[]>{
   const response = await axios.get(
     `${apiDomain}/api/rag/task/latest?bot_id=${bot_id}`,
   );
-  return response.data;
+  return response.data.data;
 }

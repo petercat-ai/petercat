@@ -2,11 +2,12 @@
 import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from '@nextui-org/react';
-import { useGetRagTask } from '@/app/hooks/useBot';
+import { useGetBotRagTask } from '@/app/hooks/useBot';
 import { convertToLocalTime } from '@/app/utils/time';
 import BookIcon from '@/public/icons/BookIcon';
 import { TaskStatus } from '@/types/task';
 import RefreshIcon from '@/public/icons/RefreshIcon';
+import { useBotTask } from './TaskContext';
 
 type IProps = {
   botId: string;
@@ -16,29 +17,32 @@ type IProps = {
 
 const KnowledgeBtn = (props: IProps) => {
   const { onClick, botId, mode } = props;
+  const { setTaskProfile } = useBotTask();
   const [isPolling, setIsPolling] = React.useState<boolean>(true);
   const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
-  const { data: taskInfo } = useGetRagTask(botId, isPolling);
-
+  const { data: taskList } = useGetBotRagTask(botId, isPolling, true);
+  const taskCnt = taskList?.length ?? 0;
+  const [allowShowChunkList, setAllowShowChunkList] =
+    React.useState<boolean>(false);
   useEffect(() => {
-    if (!taskInfo) return;
-    if (
-      [
-        TaskStatus.ON_HOLD,
-        TaskStatus.NOT_STARTED,
-        TaskStatus.IN_PROGRESS,
-      ].includes(taskInfo.status as TaskStatus)
-    ) {
-      setTaskLoading(true);
+    if (!taskList) return;
+    let completeTaskCnt = 0;
+    taskList.forEach((item) => {
+      if (
+        [TaskStatus.CANCELLED, TaskStatus.COMPLETED, TaskStatus.ERROR].includes(
+          item.status as TaskStatus,
+        )
+      ) {
+        completeTaskCnt++;
+      }
+    });
+    if (completeTaskCnt > 0) {
+      setAllowShowChunkList(true);
     }
-    if (
-      [TaskStatus.COMPLETED, TaskStatus.ERROR, TaskStatus.CANCELLED].includes(
-        taskInfo.status as TaskStatus,
-      )
-    ) {
-      setTaskLoading(false);
-    }
-  }, [taskInfo]);
+    const taskRunning = taskCnt === completeTaskCnt ? false : true;
+    setTaskLoading(taskRunning);
+    setTaskProfile({ running: taskRunning });
+  }, [taskList]);
 
   useEffect(() => {
     setIsPolling(true);
@@ -49,13 +53,13 @@ const KnowledgeBtn = (props: IProps) => {
   if (mode === 'pageHeader') {
     return (
       <>
-        {taskInfo?.created_at ? (
+        {taskList && taskList?.length > 0 ? (
           <span
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
             最近更新于
-            {convertToLocalTime(taskInfo?.created_at ?? '')}
+            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
         <Button
@@ -63,13 +67,13 @@ const KnowledgeBtn = (props: IProps) => {
           size="sm"
           isLoading={taskLoading}
           variant="flat"
-          startContent={<RefreshIcon />}
+          startContent={taskLoading ? null : <RefreshIcon />}
           onClick={(e) => {
             e.preventDefault();
             // TODO: reload knowledge
           }}
         >
-          更新知识库
+          {taskLoading ? '知识库更新中' : '更新知识库'}
         </Button>
       </>
     );
@@ -80,21 +84,21 @@ const KnowledgeBtn = (props: IProps) => {
         <Button
           radius="full"
           className="bg-[#F1F1F1] text-gray-500"
-          startContent={<BookIcon />}
-          isLoading={taskLoading}
+          startContent={allowShowChunkList ? <BookIcon /> : null}
+          isLoading={!allowShowChunkList}
           onClick={() => {
             onClick();
           }}
         >
           {taskLoading ? '知识库更新中' : '查看知识库'}
         </Button>
-        {taskInfo?.created_at ? (
+        {taskList && taskList?.length > 0 ? (
           <span
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
             最近更新于
-            {convertToLocalTime(taskInfo?.created_at ?? '')}
+            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
       </>

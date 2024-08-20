@@ -23,6 +23,7 @@ import { useBot } from '@/app/contexts/BotContext';
 import 'react-toastify/dist/ReactToastify.css';
 import Knowledge from '../components/Knowledge';
 import KnowledgeBtn from '../components/KnowledgeBtn';
+import { BotTaskProvider } from '../components/TaskContext';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -279,163 +280,165 @@ export default function Edit({ params }: { params: { id: string } }) {
   );
 
   return (
-    <div className="flex h-screen w-full flex-col items-center bg-white">
-      <ToastContainer />
-      {visibleType === VisibleTypeEnum.BOT_CONFIG ? (
-        <div className="relative flex w-full grow overflow-hidden">
-          <div className="flex w-full justify-center md:w-1/2">
-            <div className="h-full grow">
-              <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-[0.5px] border-gray-200 px-6 flex-shrink-0">
-                <div className="flex items-center gap-2">
-                  <a
-                    className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
-                    href="/factory/list"
-                  >
-                    <BackIcon />
-                  </a>
+    <BotTaskProvider>
+      <div className="flex h-full w-full flex-col items-center bg-white">
+        <ToastContainer />
+        {visibleType === VisibleTypeEnum.BOT_CONFIG ? (
+          <div className="relative flex w-full grow overflow-hidden">
+            <div className="flex w-full justify-center md:w-1/2">
+              <div className="h-full grow">
+                <div className="relative flex h-[72px] w-full items-center justify-between gap-2 border-[0.5px] border-gray-200 px-6 flex-shrink-0">
                   <div className="flex items-center gap-2">
-                    <Avatar
-                      src={botProfile?.avatar}
-                      className="mr-1 w-[32px] h-[32px] text-large bg-gray-50"
-                      name={botProfile?.name!}
+                    <a
+                      className="text-slate-500 hover:text-blue-600 flex items-center gap-2"
+                      href="/factory/list"
+                    >
+                      <BackIcon />
+                    </a>
+                    <div className="flex items-center gap-2">
+                      <Avatar
+                        src={botProfile?.avatar}
+                        className="mr-1 w-[32px] h-[32px] text-large bg-gray-50"
+                        name={botProfile?.name!}
+                      />
+                      <span>{botProfile?.name!}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <Tabs
+                      defaultSelectedKey={ConfigTypeEnum.CHAT_CONFIG}
+                      variant="light"
+                      selectedKey={activeTab}
+                      aria-label="Options"
+                      onSelectionChange={(key) =>
+                        setActiveTab(`${key}` as ConfigTypeEnum)
+                      }
+                      classNames={{
+                        base: 'w-[230px] h-[36px]',
+                        tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
+                        tabContent:
+                          'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2 w-[108px] h-[36px]',
+                        cursor: 'shadow-none rounded-full w-[108px]',
+                      }}
+                    >
+                      <Tab
+                        key={ConfigTypeEnum.CHAT_CONFIG}
+                        title={
+                          <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
+                            <ChatIcon /> <span className="ml-2">对话调试</span>
+                          </div>
+                        }
+                      />
+
+                      <Tab
+                        key={ConfigTypeEnum.MANUAL_CONFIG}
+                        title={
+                          <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
+                            <ConfigIcon />
+                            <span className="ml-2">手动配置</span>
+                          </div>
+                        }
+                      />
+                    </Tabs>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <PublicSwitcher
+                      isSelected={!!botProfile?.public}
+                      setBotProfile={setBotProfile}
                     />
-                    <span>{botProfile?.name!}</span>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <Tabs
-                    defaultSelectedKey={ConfigTypeEnum.CHAT_CONFIG}
-                    variant="light"
-                    selectedKey={activeTab}
-                    aria-label="Options"
-                    onSelectionChange={(key) =>
-                      setActiveTab(`${key}` as ConfigTypeEnum)
-                    }
-                    classNames={{
-                      base: 'w-[230px] h-[36px]',
-                      tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
-                      tabContent:
-                        'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2 w-[108px] h-[36px]',
-                      cursor: 'shadow-none rounded-full w-[108px]',
+                <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
+                  <div
+                    style={{
+                      visibility:
+                        activeTab === ConfigTypeEnum.CHAT_CONFIG
+                          ? 'visible'
+                          : 'hidden',
                     }}
                   >
-                    <Tab
-                      key={ConfigTypeEnum.CHAT_CONFIG}
-                      title={
-                        <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
-                          <ChatIcon /> <span className="ml-2">对话调试</span>
-                        </div>
-                      }
-                    />
-
-                    <Tab
-                      key={ConfigTypeEnum.MANUAL_CONFIG}
-                      title={
-                        <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
-                          <ConfigIcon />
-                          <span className="ml-2">手动配置</span>
-                        </div>
-                      }
-                    />
-                  </Tabs>
+                    {chatConfigContent}
+                  </div>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      width: '50%',
+                      height: 'calc(100vh - 73px)',
+                      visibility:
+                        activeTab !== ConfigTypeEnum.CHAT_CONFIG
+                          ? 'visible'
+                          : 'hidden',
+                    }}
+                  >
+                    {manualConfigContent}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="hidden w-1/2 justify-center bg-[#FCFCFC] border-[0.5px] border-gray-200 md:flex relative">
+              <div className="relative flex h-[72px] w-full items-center justify-between gap-2 px-6 flex-shrink-0">
+                <div className="flex items-center gap-2"></div>
+                <div className="flex items-center">
+                  <div>预览与测试</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <PublicSwitcher
-                    isSelected={!!botProfile?.public}
-                    setBotProfile={setBotProfile}
-                  />
+                  <Button
+                    className="rounded-full bg-gray-700 text-white"
+                    size="sm"
+                    isLoading={createBotLoading || updateBotLoading}
+                    variant="flat"
+                    startContent={<SaveIcon />}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (botProfile?.id) {
+                        updateBot();
+                      }
+                    }}
+                  >
+                    保存
+                  </Button>
                 </div>
               </div>
-              <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
-                <div
-                  style={{
-                    visibility:
-                      activeTab === ConfigTypeEnum.CHAT_CONFIG
-                        ? 'visible'
-                        : 'hidden',
-                  }}
-                >
-                  {chatConfigContent}
-                </div>
-                <div
-                  style={{
-                    position: 'absolute',
-                    width: '50%',
-                    height: 'calc(100vh - 73px)',
-                    visibility:
-                      activeTab !== ConfigTypeEnum.CHAT_CONFIG
-                        ? 'visible'
-                        : 'hidden',
-                  }}
-                >
-                  {manualConfigContent}
+              <div className="position absolute top-[73px] left-0 w-full">
+                <div style={{ height: 'calc(100vh - 73px)' }}>
+                  {isEdit && (
+                    <Chat
+                      hideLogo={true}
+                      assistantMeta={{
+                        avatar:
+                          botProfile?.avatar ||
+                          'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+                        title: botProfile?.name || 'PeterCat',
+                      }}
+                      style={{
+                        backgroundColor: '#FCFCFC',
+                      }}
+                      token={params.id}
+                      apiDomain={API_HOST}
+                      apiUrl="/api/chat/stream_qa"
+                      prompt={botProfile?.prompt}
+                      starters={botProfile?.starters}
+                      helloMessage={botProfile?.helloMessage}
+                    />
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          <div className="hidden w-1/2 justify-center bg-[#FCFCFC] border-[0.5px] border-gray-200 md:flex relative">
-            <div className="relative flex h-[72px] w-full items-center justify-between gap-2 px-6 flex-shrink-0">
-              <div className="flex items-center gap-2"></div>
-              <div className="flex items-center">
-                <div>预览与测试</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  className="rounded-full bg-gray-700 text-white"
-                  size="sm"
-                  isLoading={createBotLoading || updateBotLoading}
-                  variant="flat"
-                  startContent={<SaveIcon />}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (botProfile?.id) {
-                      updateBot();
-                    }
-                  }}
-                >
-                  保存
-                </Button>
-              </div>
-            </div>
-            <div className="position absolute top-[73px] left-0 w-full">
-              <div style={{ height: 'calc(100vh - 73px)' }}>
-                {isEdit && (
-                  <Chat
-                    hideLogo={true}
-                    assistantMeta={{
-                      avatar:
-                        botProfile?.avatar ||
-                        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
-                      title: botProfile?.name || 'PeterCat',
-                    }}
-                    style={{
-                      backgroundColor: '#FCFCFC',
-                    }}
-                    token={params.id}
-                    apiDomain={API_HOST}
-                    apiUrl="/api/chat/stream_qa"
-                    prompt={botProfile?.prompt}
-                    starters={botProfile?.starters}
-                    helloMessage={botProfile?.helloMessage}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
-        <Knowledge
-          botId={botProfile.id}
-          goBack={() => {
-            setVisibleType(VisibleTypeEnum.BOT_CONFIG);
-          }}
-        ></Knowledge>
-      ) : (
-        <></>
-      )}
-    </div>
+        ) : (
+          <></>
+        )}
+        {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
+          <Knowledge
+            botId={botProfile.id}
+            goBack={() => {
+              setVisibleType(VisibleTypeEnum.BOT_CONFIG);
+            }}
+          ></Knowledge>
+        ) : (
+          <></>
+        )}
+      </div>
+    </BotTaskProvider>
   );
 }

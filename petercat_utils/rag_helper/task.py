@@ -56,10 +56,12 @@ def get_task_by_id(task_id):
 
 def get_task(task_type: TaskType, task_id: str) -> GitTask:
     supabase = get_client()
-    response = (supabase.table(GitTask.get_table_name(task_type))
-                .select("*")
-                .eq("id", task_id)
-                .execute())
+    response = (
+        supabase.table(GitTask.get_table_name(task_type))
+        .select("*")
+        .eq("id", task_id)
+        .execute()
+    )
     if len(response.data) > 0:
         data = response.data[0]
         if task_type == TaskType.GIT_DOC:
@@ -72,7 +74,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 bot_id=data["bot_id"],
                 path=data["path"],
                 status=data["status"],
-                from_id=data["from_task_id"]
+                from_id=data["from_task_id"],
             )
         if task_type == TaskType.GIT_ISSUE:
             return GitIssueTask(
@@ -82,7 +84,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 node_type=data["node_type"],
                 bot_id=data["bot_id"],
                 status=data["status"],
-                from_id=data["from_task_id"]
+                from_id=data["from_task_id"],
             )
 
 
@@ -91,16 +93,3 @@ def trigger_task(task_type: TaskType, task_id: Optional[str]):
     if task is None:
         return task
     return task.handle()
-
-
-def get_latest_task_by_bot_id(bot_id: str):
-    supabase = get_client()
-    response = (
-        supabase.table(TABLE_NAME)
-        .select("*")
-        .eq("bot_id", bot_id)
-        .order("created_at", desc=True)
-        .limit(1)
-        .execute()
-    )
-    return response.data[0] if (len(response.data) > 0) else None
