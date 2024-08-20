@@ -7,8 +7,8 @@ import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import BotList from '@/components/BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
-import { Assistant } from 'petercat-lui';
-import 'petercat-lui/dist/style/global.css';
+import { Assistant } from 'petercat-lui/dist/esm';
+import 'petercat-lui/dist/esm/style/global.css';
 import { useFingerprint } from './hooks/useFingerprint';
 
 declare type Bot = Tables<'bots'>;

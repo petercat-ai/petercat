@@ -5,7 +5,7 @@ import {
 
 module.exports = {
   mode: 'jit',
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: ['./src/**/*.{html,js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       keyframes: {
@@ -52,6 +52,11 @@ module.exports = {
       
     },
   },
+  safelist: [
+    'animate-shake',
+    'animate-fade-in',
+    'animate-fade-in-left',
+  ],
   plugins: [
     scopedPreflightStyles({
       isolationStrategy: isolateInsideOfContainer('.petercat-lui'),

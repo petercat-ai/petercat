@@ -29,16 +29,12 @@ const ChatItemRender: FC<IProps> = ({
           <div
             className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden animate-fade-in-left"
             style={{
-              backgroundColor: `${
-                avatar?.props?.avatar?.backgroundColor ?? '#FAE4CB'
-              }`,
+              backgroundColor: `${avatar?.props?.avatar?.backgroundColor}`,
+              backgroundImage: `url(${avatar?.props?.avatar?.avatar})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
             }}
-          >
-            <img
-              src={avatar?.props?.avatar?.avatar}
-              alt={avatar?.props?.avatar?.title}
-            />
-          </div>
+          />
         )}
         <div className="ant-pro-chat-list-item-message-container">
           {title}
