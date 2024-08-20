@@ -55,7 +55,6 @@ class AgentBuilder:
 
         if tools:
             parsed_tools = self.chat_model.get_tools(tools)
-            print(f"parsed_tools={parsed_tools}")
             llm = llm.bind_tools(parsed_tools)
 
         self.prompt = self.get_prompt()
