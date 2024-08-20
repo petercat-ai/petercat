@@ -1,17 +1,11 @@
 from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Path
 from fastapi.responses import JSONResponse
+from auth.get_user_info import get_user_id
 from petercat_utils import get_client
 from bot.builder import bot_builder, bot_info_generator
 from type_class.bot import BotUpdateRequest, BotCreateRequest
-from typing import Optional
+from typing import Annotated, Optional
 
-def verify_user_id(user_id: Optional[str] = Cookie(None)):
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Auth failed"
-        )
-    return user_id
 router = APIRouter(
     prefix="/api/bot",
     tags=["bot"],
@@ -56,7 +50,7 @@ def get_bot_detail(id: Optional[str] = Query(None, description="Filter bots by p
             return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)
 
 @router.get("/config")
-def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by personal category"), user_id: str = Depends(verify_user_id)):
+def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by personal category"), user_id: Annotated[str | None, Depends(get_user_id)] = None):
     try:
         supabase = get_client()
         data = supabase.table("bots").select('*').eq('id', id).eq('uid', user_id).execute()
@@ -65,7 +59,7 @@ def get_bot_config(id: Optional[str] = Query(None, description="Filter bots by p
         return JSONResponse(content={"success": False, "errorMessage": e})
 
 @router.post("/create", status_code=200)
-async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
+async def create_bot(bot_data: BotCreateRequest, user_id: Annotated[str | None, Depends(get_user_id)] = None):
     try:
         res = await bot_builder(user_id, **bot_data.model_dump())
         if not res:
@@ -75,7 +69,7 @@ async def create_bot(bot_data: BotCreateRequest, user_id: str = Depends(verify_u
         return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)
 
 @router.post("/config/generator", status_code=200)
-async def bot_generator(bot_data: BotCreateRequest, user_id: str = Depends(verify_user_id)):
+async def bot_generator(bot_data: BotCreateRequest, user_id: Annotated[str | None, Depends(get_user_id)] = None):
     try:
         res =  await bot_info_generator(user_id, **bot_data.model_dump())
         if not res:
@@ -85,7 +79,7 @@ async def bot_generator(bot_data: BotCreateRequest, user_id: str = Depends(verif
         return JSONResponse(content={"success": False, "errorMessage": str(e)}, status_code=500)
 
 @router.put("/update/{id}", status_code=200)
-def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: str = Depends(verify_user_id)):
+def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: Annotated[str | None, Depends(get_user_id)] = None):
     if not id:
         return {
             "error": "Incomplete parameters",
@@ -110,7 +104,7 @@ def update_bot(id: str, bot_data: BotUpdateRequest,  user_id: str = Depends(veri
 @router.delete("/delete/{id}", status_code=status.HTTP_200_OK)
 async def delete_bot(
     id: str = Path(..., description="The ID of the bot to delete"), 
-    user_id: str = Depends(verify_user_id)
+    user_id: Annotated[str | None, Depends(get_user_id)] = None
 ):
     try:
         supabase = get_client()
