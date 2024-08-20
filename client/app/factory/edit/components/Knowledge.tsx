@@ -16,6 +16,7 @@ import KnowledgeBtn from './KnowledgeBtn';
 import { Pagination } from '@nextui-org/react';
 import MySpinner from '@/components/Spinner';
 import { convertToLocalTime } from '@/app/utils/time';
+import { useBotTask } from './TaskContext';
 
 type IProps = {
   botId: string;
@@ -79,12 +80,19 @@ export default function Knowledge({ botId, goBack }: IProps) {
   const { botProfile } = useBot();
   const [pageSize, setPageSize] = React.useState(12);
   const [pageNumber, setPageNumber] = React.useState(1);
+  const { taskProfile } = useBotTask();
   const {
     data: RagDocData,
     isPending,
     isFetching,
     isLoading: isListLoading,
-  } = useBotRAGChunkList(botId, pageSize, pageNumber);
+  } = useBotRAGChunkList(
+    botId,
+    pageSize,
+    pageNumber,
+    true,
+    taskProfile.running,
+  );
   const list = React.useMemo(() => {
     return RagDocData?.rows ?? [];
   }, [RagDocData]);
@@ -109,7 +117,7 @@ export default function Knowledge({ botId, goBack }: IProps) {
           <KnowledgeBtn botId={botId} onClick={() => {}} mode={'pageHeader'} />
         </div>
       </div>
-      <div className="pt-[40px] py-[40px] h-full overflow-y-auto">
+      <div className="pt-[40px] py-[40px] overflow-y-auto">
         <MySpinner loading={isFetching || isPending || isListLoading}>
           {list.length > 0 || isPending ? (
             <ChunkList data={list}></ChunkList>
@@ -120,7 +128,7 @@ export default function Knowledge({ botId, goBack }: IProps) {
           )}
         </MySpinner>
         <Pagination
-          className="flex justify-center items-center mt-[40px]"
+          className="flex justify-center items-center mt-[60px] p-[0] w-full"
           total={Math.ceil((RagDocData?.total ?? 0) / 12)}
           initialPage={1}
           page={pageNumber}

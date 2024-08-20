@@ -109,6 +109,7 @@ export const useBotRAGChunkList = (
   page_size: number,
   page_number: number,
   enabled: boolean = true,
+  refetchInterval:boolean = false,
 ) => {
   return useQuery({
     queryKey: [`rag.chunk.list`,page_number, botId],
@@ -117,12 +118,14 @@ export const useBotRAGChunkList = (
     enabled,
     retry: true,
     placeholderData: keepPreviousData,
+    refetchInterval: refetchInterval? 5*1000:undefined
   });
 };
 
-export const useGetRagTask = (
+export const useGetBotRagTask = (
   botId: string,
   enabled: boolean = true,
+  refetchInterval:boolean = true
 ) => {
   return useQuery({
     queryKey: [`rag.task`, botId],
@@ -130,6 +133,6 @@ export const useGetRagTask = (
     select: (data) => data,
     enabled,
     retry: true,
-    refetchInterval:3*1000
+    refetchInterval:refetchInterval?3*1000:undefined,
   });
 };

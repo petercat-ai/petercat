@@ -2,10 +2,17 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends
+from petercat_utils.db.client.supabase import get_client
 from verify.rate_limit import verify_rate_limit
 
 from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
-from petercat_utils.rag_helper import retrieval, task, issue_retrieval, git_doc_task, git_issue_task
+from petercat_utils.rag_helper import (
+    retrieval,
+    task,
+    issue_retrieval,
+    git_doc_task,
+    git_issue_task,
+)
 
 router = APIRouter(
     prefix="/api",
@@ -62,6 +69,7 @@ def add_git_doc_task(config: RAGGitDocConfig):
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
+
 @router.post("/rag/add_git_issue_task", dependencies=[Depends(verify_rate_limit)])
 def add_git_issue_task(config: RAGGitIssueConfig):
     try:
@@ -89,7 +97,16 @@ def get_chunk_list(bot_id: str = None, page_size: int = 10, page_number: int = 1
 
 @router.get("/rag/task/latest", dependencies=[Depends(verify_rate_limit)])
 def get_rag_task(bot_id: str):
+    # TODO: Think about hot to get correct when reload knowledge task was triggered
     try:
-        return task.get_latest_task_by_bot_id(bot_id)
+        supabase = get_client()
+        response = (
+            supabase.table("rag_tasks")
+            .select("id,status,node_type,path,from_task_id,created_at", count="exact")
+            .eq("bot_id", bot_id)
+            .order("created_at", desc=True)
+            .execute()
+        )
+        return response
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
