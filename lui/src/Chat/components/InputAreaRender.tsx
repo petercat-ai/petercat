@@ -22,21 +22,29 @@ import {
 
 const InputAreaRender = (props: {
   isShowStop: boolean;
+  disabled?: boolean;
+  disabledPlaceholder?: string;
   onMessageSend: (message: string) => void | Promise<any>;
   onClear: () => void;
   onStop: () => void;
 }) => {
+  const { disabled, disabledPlaceholder } = props;
   const [form] = Form.useForm();
   const [message, setMessage] = useState('');
   const [fileList, setFileList] = useState<
     { url: string | ArrayBuffer | null; uid: any }[]
   >([]);
 
-  const disabled = useMemo(() => fileList?.length >= 4, [fileList]);
+  const uploadDisabled = useMemo(() => fileList?.length >= 4, [fileList]);
 
   const handleMessage = useCallback(
     (text?: string) => {
-      if (!props || !props?.onMessageSend || (!text && !fileList.length)) {
+      if (
+        !props ||
+        !props?.onMessageSend ||
+        (!text && !fileList.length) ||
+        disabled
+      ) {
         return;
       }
       setMessage('');
@@ -68,6 +76,9 @@ const InputAreaRender = (props: {
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (disabled) {
+      return;
+    }
     if (
       event.key === 'Enter' &&
       !event.shiftKey &&
@@ -77,11 +88,14 @@ const InputAreaRender = (props: {
     }
   };
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (disabled) {
+      return;
+    }
     setMessage(event.target.value);
   };
 
   const handleUpload = ({ file, uid }: { file: File | null; uid: string }) => {
-    if (!file || disabled) {
+    if (!file || uploadDisabled || disabled) {
       return;
     }
     if (fileList.length >= 4) {
@@ -100,6 +114,9 @@ const InputAreaRender = (props: {
   };
 
   const handlePaste = (event: React.ClipboardEvent) => {
+    if (disabled) {
+      return;
+    }
     const clipboardItems = event.clipboardData.items;
     for (let i = 0; i < clipboardItems.length; i++) {
       const item = clipboardItems[i];
@@ -113,11 +130,23 @@ const InputAreaRender = (props: {
   return (
     <Form
       form={form}
-      className="px-[12px] py-[10px] m-[12px] rounded-[10px] lui-input-area bg-[#f1f1f1]"
+      className="relative px-[12px] py-[10px] m-[12px] rounded-[10px] lui-input-area bg-[#f1f1f1]"
+      style={{ opacity: disabled ? 0.6 : 1 }}
     >
+      {disabled && disabledPlaceholder && (
+        <div
+          className="absolute top-[-14px] left-0 flex items-center justify-center h-[198px]"
+          style={{ width: '100%' }}
+        >
+          <div className="text-gray-400 w-[182px] text-center z-[999] whitespace-pre-wrap">
+            {disabledPlaceholder}
+          </div>
+        </div>
+      )}
       <Form.Item name="question">
         <Input.TextArea
           value={message}
+          disabled={disabled}
           onChange={handleChange}
           onPaste={handlePaste}
           style={{
@@ -134,6 +163,7 @@ const InputAreaRender = (props: {
           <Space>
             {props && props.isShowStop && (
               <Button
+                disabled={disabled}
                 type="primary"
                 className="bg-white hover:!bg-white shadow-md"
                 icon={<StopMessageIcon />}
@@ -146,6 +176,7 @@ const InputAreaRender = (props: {
             )}
             <Button
               type="primary"
+              disabled={disabled}
               className="bg-white hover:!bg-white shadow-md"
               onClick={() => {
                 if (props && props.onClear) {
@@ -157,23 +188,25 @@ const InputAreaRender = (props: {
             <Upload
               accept="image/*"
               disabled={disabled}
+              uploadDisabled={uploadDisabled}
               showUploadList={false}
               // @ts-ignore
               customRequest={handleUpload}
             >
               <Tooltip
-                title={disabled ? '上传图片不能超过 4 张' : ''}
+                title={uploadDisabled ? '上传图片不能超过 4 张' : ''}
                 trigger="hover"
               >
                 <Button
+                  disabled={disabled}
                   type="primary"
                   className={
-                    disabled
+                    uploadDisabled
                       ? 'cu🤪rsor-not-allowed bg-white hover:!bg-white shadow-md'
                       : 'bg-white hover:!bg-white shadow-md'
                   }
                   icon={
-                    <div style={disabled ? { opacity: 0.6 } : {}}>
+                    <div style={uploadDisabled ? { opacity: 0.6 } : {}}>
                       <UploadImageIcon />
                     </div>
                   }

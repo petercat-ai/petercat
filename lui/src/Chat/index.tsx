@@ -52,6 +52,8 @@ export interface ChatProps extends BotInfo {
   token?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
+  disabled?: boolean;
+  disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
 
@@ -60,13 +62,15 @@ const Chat: FC<ChatProps> = memo(
     helloMessage,
     apiDomain = 'http://127.0.0.1:8000',
     apiUrl,
-    drawerWidth,
+    drawerWidth = 500,
     assistantMeta,
     starters,
     prompt,
     token,
     style,
+    disabled = false,
     hideLogo = false,
+    disabledPlaceholder,
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
@@ -126,15 +130,18 @@ const Chat: FC<ChatProps> = memo(
       : '400px';
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pb-6 pt-2"
+        className="petercat-lui bg-[#FCFCFC] pt-2"
         style={{
           ...style,
           minWidth: drawerWidth,
           height: '100%',
         }}
       >
-        <div className="h-full w-full flex flex-col">
+        <div className="h-full w-full flex flex-col relative">
           {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
+          {disabled && (
+            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[999]" />
+          )}
           <ProChat
             className="flex-1"
             showTitle
@@ -157,6 +164,9 @@ const Chat: FC<ChatProps> = memo(
                 },
                 defaultDom: ReactNode,
               ) => {
+                if (disabled) {
+                  return;
+                }
                 const originData = props.originData || {};
                 const isDefault = originData.role === 'hello';
                 // default message content
@@ -169,11 +179,11 @@ const Chat: FC<ChatProps> = memo(
                       content={
                         <div className="leftMessageContent">
                           <div className="ant-pro-chat-list-item-message-content">
-                            <div className="text-left text-[20px] font-[510] leading-[28px] font-sf">
+                            <div className="text-left text-[20px] font-[500] leading-[28px] font-sf">
                               👋🏻 你好，我是{' '}
                               {botInfo.assistantMeta?.title || BOT_INFO.name}
                             </div>
-                            <div className="text-left text-[14px] font-[510] leading-[28px] font-sf">
+                            <div className="text-left text-[14px] font-[500] leading-[28px] font-sf">
                               {props.message}
                             </div>
                           </div>
@@ -358,8 +368,7 @@ const Chat: FC<ChatProps> = memo(
             assistantMeta={{
               avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,
               title: botInfo.assistantMeta?.title || BOT_INFO.name,
-              backgroundColor:
-                botInfo.assistantMeta?.backgroundColor || '#FAE4CB',
+              backgroundColor: botInfo.assistantMeta?.backgroundColor,
             }}
             autocompleteRequest={async (value) => {
               if (value === '/') {
@@ -416,6 +425,8 @@ const Chat: FC<ChatProps> = memo(
             ) => {
               return (
                 <InputArea
+                  disabled={disabled}
+                  disabledPlaceholder={disabledPlaceholder}
                   isShowStop={!!proChatRef?.current?.getChatLoadingId()}
                   onMessageSend={onMessageSend}
                   onClear={onClear}
