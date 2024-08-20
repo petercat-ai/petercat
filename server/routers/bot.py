@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Cookie, Depends, status, HTTPException, Query, Path
+from fastapi import APIRouter, Depends, status, Query, Path
 from fastapi.responses import JSONResponse
 from auth.get_user_info import get_user_id
 from petercat_utils import get_client
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 @router.get("/list")
-def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots by personal category"), name: Optional[str] = Query(None, description="Filter bots by name"), user_id: str = Cookie(None)):
+def get_bot_list(personal: Optional[str] = Query(None, description="Filter bots by personal category"), name: Optional[str] = Query(None, description="Filter bots by name"), user_id: Annotated[str | None, Depends(get_user_id)] = None):
     try:
         supabase = get_client()
         query = supabase.table("bots").select("id, created_at, updated_at, avatar, description, name, public, starters, uid")
