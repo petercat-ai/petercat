@@ -18,7 +18,7 @@ def get_llm(
     max_tokens: Optional[int] = 1500,
     streaming: Optional[bool] = False
   ) -> BaseLLMClient:
-  print(f"get_llm: {llm}")
+
   match llm:
     case "openai":
       return OpenAIClient(temperature=temperature, streaming=streaming, max_tokens=max_tokens)
