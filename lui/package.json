@@ -1,26 +1,27 @@
 {
   "name": "petercat-lui",
-  "version": "0.1.16",
+  "version": "0.1.18",
   "description": "A react library developed with dumi",
-  "module": "dist/es/index.js",
-  "style": "dist/es/style.css",
-  "types": "dist/es/index.d.ts",
   "main": "./dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "style": "dist/esm/style.css",
   "browser": "dist/umd/petercat-lui.min.js",
   "exports": {
     ".": {
-      "import": "./dist/es/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/index.js"
     },
     "./style": {
-      "import": "./dist/es/tailwind.css"
+      "import": "./dist/esm/style.css",
+      "require": "./dist/esm/style.css"
     }
   },
   "scripts": {
     "start": "npm run dev",
     "dev": "dumi dev",
-    "build:css": "tailwind -i tailwind.css -o ./dist/esm/style.css --minify && cp ./dist/esm/style.css  ./.dumi/tmp/style.css",
-    "build": "npm run build:css && father build",
+    "build:css": "tailwindcss -i tailwind.css -o ./.dumi/tmp/style.css",
+    "build": "npm run build:css && father build && cp ./.dumi/tmp/style.css ./dist/esm/style.css",
     "build:watch": "father dev",
     "docs:build": "dumi build",
     "prepare": "dumi setup",
@@ -61,8 +62,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "react": ">=16.9.0 <19.0.0",
+    "react-dom": ">=16.9.0 <19.0.0"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",

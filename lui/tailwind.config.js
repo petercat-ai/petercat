@@ -52,11 +52,6 @@ module.exports = {
       
     },
   },
-  safelist: [
-    'animate-shake',
-    'animate-fade-in',
-    'animate-fade-in-left',
-  ],
   plugins: [
     scopedPreflightStyles({
       isolationStrategy: isolateInsideOfContainer('.petercat-lui'),

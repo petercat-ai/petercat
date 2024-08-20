@@ -8504,10 +8504,10 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-petercat-lui@^0.1.16:
-  version "0.1.16"
-  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.1.16.tgz#afc7f411d841be40cc7cbf46a2d8569d0cae1ea3"
-  integrity sha512-Sg3UfGb8KnzXtVBuHOcOaR5uKl/dTRSeEU9Kb4npBKXRV41ueapRI5mnzvvI56f8HeH0n2gm91BP1okI9/uRJg==
+petercat-lui@^0.1.18:
+  version "0.1.18"
+  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-0.1.18.tgz#63e754dbeaf19d75999df1d6927bbe9ef11c7231"
+  integrity sha512-8dnpLIOnySxbJNrW3oWQH2DI69bgvsWnonTGLI5RpCrjfdtwSZAw136rPVpXDEn6L9e850URJ0puFc6Y/ryBsw==
   dependencies:
     "@ant-design/icons" "^5.3.5"
     "@ant-design/pro-chat" "^1.9.0"

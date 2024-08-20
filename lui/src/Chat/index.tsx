@@ -35,6 +35,7 @@ import InputArea from './components/InputAreaRender';
 import LoadingEnd from './components/LoadingEnd';
 import LoadingStart from './components/LoadingStart';
 import UserContent from './components/UserContent';
+
 export interface BotInfo {
   assistantMeta?: MetaData;
   helloMessage?: string;

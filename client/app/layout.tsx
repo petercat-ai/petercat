@@ -1,10 +1,12 @@
 'use client';
-import './globals.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
 import { SearchProvider } from './contexts/SearchContext';
 import { BotProvider } from './contexts/BotContext';
+
+import 'petercat-lui/style';
+import './globals.css';
 
 const queryClient = new QueryClient();
 
