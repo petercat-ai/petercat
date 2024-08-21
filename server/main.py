@@ -9,7 +9,8 @@ from petercat_utils import get_env_variable
 
 
 # Import fastapi routers
-from routers import bot, health_checker, github, rag, auth, chat, task
+from .routers import bot, health_checker, github, rag, auth, chat, task
+
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
@@ -50,8 +51,8 @@ app.include_router(chat.router)
 app.include_router(task.router)
 
 
-if __name__ == "__main__":
-    if is_dev:
-        uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", "8080")), reload=True)
-    else:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+# if __name__ == "__main__":
+#     if is_dev:
+#         uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", "8080")), reload=True)
+#     else:
+#         uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))

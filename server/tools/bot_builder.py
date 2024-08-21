@@ -4,7 +4,8 @@ from fastapi.responses import JSONResponse
 from langchain.tools import tool
 from github import Github
 from petercat_utils import get_client
-from bot.builder import bot_builder
+
+from ..bot.builder import bot_builder
 
 g = Github()
 

@@ -1,10 +1,9 @@
-
-import json
-from dao.BaseDAO import BaseDAO
-from models.authorization import Authorization
-from supabase.client import Client, create_client
+from supabase.client import Client
 
 from petercat_utils.db.client.supabase import get_client
+
+from ..dao.BaseDAO import BaseDAO
+from ..models.authorization import Authorization
 
 class AuthorizationDAO(BaseDAO):
     client: Client
