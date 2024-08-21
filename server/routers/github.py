@@ -4,7 +4,7 @@ import logging
 from fastapi.responses import RedirectResponse
 import requests
 import time
-from github import Auth, Github, Organization
+from github import Auth, Github
 from auth.get_user_info import get_user_access_token
 from dao.authorizationDAO import AuthorizationDAO
 from dao.repositoryConfigDAO import RepositoryConfigDAO
@@ -12,7 +12,10 @@ from models.repository import RepositoryConfig
 from models.authorization import Authorization
 from utils.github import get_handler, get_private_key
 from petercat_utils import get_env_variable
-from jwt import JWT, jwk_from_pem
+
+import jwt
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 WEB_URL =  get_env_variable("WEB_URL")
@@ -37,11 +40,10 @@ def get_jwt():
     }
 
     pem = get_private_key()
-    signing_key = jwk_from_pem(pem.encode("utf-8"))
-
-    print(pem)
-    jwt_instance = JWT()
-    return jwt_instance.encode(payload, signing_key, alg='RS256')
+    private_key = serialization.load_pem_private_key(
+        pem.encode("utf-8"), password=None, backend=default_backend()
+    )
+    return jwt.encode(payload, private_key, algorithm='RS256')
 
 def get_app_installations_access_token(installation_id: str, jwt: str):
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
@@ -65,6 +67,7 @@ def get_installation_repositories(access_token: str):
         'Authorization': f"Bearer {access_token}"
     })
     return resp.json()
+    
 
 # https://github.com/login/oauth/authorize?client_id=Iv1.c2e88b429e541264
 @router.get("/app/installation/callback")
@@ -78,6 +81,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
     else:
         jwt = get_jwt()
         access_token = get_app_installations_access_token(installation_id=installation_id, jwt=jwt)
+        print(f"get_app_installations_access_token: {access_token}")
         authorization = Authorization(
             **access_token,
             code=code,
