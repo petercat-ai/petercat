@@ -5,7 +5,7 @@ from github import GithubException
 
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
-from ..agent.qa_chat import agent_chat
+from agent.qa_chat import agent_chat
 
 
 class DiscussionEventHandler:

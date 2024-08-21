@@ -1,6 +1,4 @@
-import os
 
-import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +7,7 @@ from petercat_utils import get_env_variable
 
 
 # Import fastapi routers
-from .routers import bot, health_checker, github, rag, auth, chat, task
+from routers import bot, health_checker, github, rag, auth, chat, task
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")

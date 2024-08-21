@@ -5,7 +5,7 @@ from petercat_utils import get_client
 from petercat_utils.data_class import RAGGitDocConfig
 from petercat_utils import git_doc_task
 
-from ..prompts.bot_template import generate_prompt_by_repo_name
+from prompts.bot_template import generate_prompt_by_repo_name
 
 g = Github()
 
