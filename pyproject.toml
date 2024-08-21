@@ -6,26 +6,11 @@ authors = ["raoha.rh <raohai.rh@antgroup.com>"]
 readme = "README.md"
 packages = [{include = "petercat_utils"}]
 
-[tool.ruff]
-builtins = ["_"]
-
-[pytest]
-testpaths = ["tests"]
-pythonpath = "."
-consider_namespace_packages = "True"
-python_files = "test_*.py"
-cov="com"
-cov-report=["xml","html"]
-md_report = true
-md_report_verbose = 0
-md_report_color = "auto"
-
 [tool.poetry.dependencies]
 python = "^3.8"
 langchain_community = "^0.2.11"
 langchain_openai = "^0.1.20"
 langchain_core = "0.2.28"
-langchain = "^0.2.12"
 supabase = "2.6.0"
 pydantic = "2.7.0"
 PyGithub = "2.3.0"

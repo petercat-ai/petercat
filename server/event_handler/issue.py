@@ -1,10 +1,9 @@
 from typing import Any
 from github import Github, Auth
 from github import GithubException
+from agent.qa_chat import agent_chat
 
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
-
-from agent.qa_chat import agent_chat
 
 
 class IssueEventHandler:

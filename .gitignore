@@ -17,7 +17,6 @@ venv
 .next/
 out/
 
-.ruff_cache/
 
 # production
 build

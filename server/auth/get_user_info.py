@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import Cookie
+from fastapi import Cookie, HTTPException
 import httpx
 import secrets
 import random
@@ -8,8 +8,7 @@ import string
 from .get_oauth_token import get_oauth_token
 from petercat_utils import get_client, get_env_variable
 
-def random_str(N):
-    return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
+random_str = lambda N: ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -71,7 +70,7 @@ async def get_user_id(petercat_user_token: Annotated[str | None, Cookie()] = Non
         user_info = await getUserInfoByToken(petercat_user_token)
         return user_info['id']
 
-    except Exception:
+    except Exception as e:
         return None
 
 async def get_user_access_token(petercat_user_token: Annotated[str | None, Cookie()] = None):
@@ -84,5 +83,5 @@ async def get_user_access_token(petercat_user_token: Annotated[str | None, Cooki
         access_token = await getUserAccessToken(user_id=user_info['id'])
         print(f"get_user_access_token: user_info={user_info}, access_token={access_token}")
         return access_token
-    except Exception:
+    except Exception as e:
         return None

@@ -59,7 +59,7 @@ def get_app_installations_access_token(installation_id: str, jwt: str):
     return resp.json()
 
 def get_installation_repositories(access_token: str):
-    url = "https://api.github.com/installation/repositories"
+    url = f"https://api.github.com/installation/repositories"
     print("get_installation_repositories", url)
     resp = requests.get(url, headers={
         'X-GitHub-Api-Version': '2022-11-28',

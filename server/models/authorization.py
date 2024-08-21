@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 from pydantic import BaseModel, field_serializer
-from typing import Dict
+from typing import Any, Dict
 
 class Authorization(BaseModel):
     token: str

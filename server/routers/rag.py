@@ -3,6 +3,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends
 from petercat_utils.db.client.supabase import get_client
+from verify.rate_limit import verify_rate_limit
 
 from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
 from petercat_utils.rag_helper import (
@@ -12,9 +13,6 @@ from petercat_utils.rag_helper import (
     git_doc_task,
     git_issue_task,
 )
-
-from verify.rate_limit import verify_rate_limit
-
 
 router = APIRouter(
     prefix="/api",

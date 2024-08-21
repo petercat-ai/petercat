@@ -1,6 +1,5 @@
 import json
 from typing import Optional
-from github import Github
 
 import boto3
 
@@ -8,13 +7,14 @@ from .git_doc_task import GitDocTask
 from .git_issue_task import GitIssueTask
 from .git_task import GitTask
 
-from ..utils.env import get_env_variable
-from ..data_class import TaskStatus, TaskType
-from ..db.client.supabase import get_client
-
 # Create SQS client
 sqs = boto3.client("sqs")
 
+from github import Github
+
+from ..utils.env import get_env_variable
+from ..data_class import TaskStatus, TaskType
+from ..db.client.supabase import get_client
 
 g = Github()
 
