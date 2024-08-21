@@ -24,10 +24,10 @@ const BotCard = (props: {
     >
       <CardBody className="overflow-visible flex-initial p-0 flex-1">
         <div
-          className="relative overflow-hidden w-full h-full bg-cover bg-center"
+          className="relative overflow-hidden w-full h-full bg-cover bg-center rounded-[8px]"
           style={{ backgroundImage: `url(${bot.avatar})` }}
         >
-          <div className="absolute inset-0 bg-white bg-opacity-50 backdrop-blur-[70px]"></div>
+          <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-[70px] rounded-[8px]"></div>
           <div className="flex justify-center items-center h-full">
             <Image
               shadow="none"

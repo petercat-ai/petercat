@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Image, Link, Tabs, Tab, Input, Button } from '@nextui-org/react';
+import { Link, Tabs, Tab, Input, Button } from '@nextui-org/react';
 import { usePathname } from 'next/navigation';
 import Profile from './User';
 import { ShopIcon } from '@/public/icons/ShopIcon';
@@ -56,12 +56,7 @@ export function Navbar() {
     <div className="flex bg-[#F3F4F6] py-[20px] px-[24px] min-w-[900px] mb-[16px]">
       <div className="w-[320px] flex mr-[0px]">
         <Link href="/">
-          <Image
-            src="/images/logo.svg"
-            alt="petercat"
-            width={115}
-            height={32}
-          />
+          <img src="/images/logo.svg" alt="petercat" width={115} height={32} />
         </Link>
         <Tabs
           items={navs}
@@ -98,7 +93,7 @@ export function Navbar() {
           radius="lg"
           onKeyDown={handleKeyDown}
           onClear={handleClear}
-          placeholder="请输入卡片名称" 
+          placeholder="请输入卡片名称"
           classNames={{
             input: ['bg-transparent', 'h-10'],
             inputWrapper: [
@@ -118,18 +113,18 @@ export function Navbar() {
         />
       </div>
       <div className="w-[200px] ml-[48px] flex items-center">
-          {!pathname.includes('/factory/list') && <BotList type="nav" />}
-          {pathname.includes('/factory/list') && (
-            <Button
-              onPress={() => router.push(`/factory/edit/new`)}
-              className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
-              startContent={<AddIcon />}
-            >
-              创建机器人
-            </Button>
-          )}
+        {!pathname.includes('/factory/list') && <BotList type="nav" />}
+        {pathname.includes('/factory/list') && (
+          <Button
+            onPress={() => router.push(`/factory/edit/new`)}
+            className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
+            startContent={<AddIcon />}
+          >
+            创建机器人
+          </Button>
+        )}
 
-          <Profile />
+        <Profile />
       </div>
     </div>
   );
