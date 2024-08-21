@@ -4,9 +4,8 @@ python-dotenv==1.0.0
 openai
 mangum
 langserve
-langchain_community
-langchain
-langchain-openai
+langchain_community>=0.2.11
+langchain>=0.2.12
 PyGithub
 GitPython
 python-multipart

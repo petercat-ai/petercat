@@ -1,5 +1,10 @@
 name: Deploy Backend to Preview ECS
 
+# on:
+#   workflow_run:
+#     workflows: ["PR Tests"]
+#     types:
+#       - completed
 on:
   pull_request:
     branches: [ "main" ]
@@ -17,11 +22,12 @@ env:
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
+  actions: write 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: Preview
     strategy:
       fail-fast: true
 

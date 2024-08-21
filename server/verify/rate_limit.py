@@ -2,8 +2,9 @@ from typing import Annotated
 from fastapi import Cookie, HTTPException
 from datetime import datetime, timedelta
 
-from auth.get_user_info import getUserInfoByToken
 from petercat_utils import get_client, get_env_variable
+
+from auth.get_user_info import getUserInfoByToken
 
 RATE_LIMIT_ENABLED = get_env_variable("RATE_LIMIT_ENABLED", "False") == 'True'
 RATE_LIMIT_REQUESTS = get_env_variable("RATE_LIMIT_REQUESTS") or 100
