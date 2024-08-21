@@ -19,14 +19,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        run: |
-          cd server
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       
+      - name: Setup Server
+        run: |
+          cd server
+          
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
