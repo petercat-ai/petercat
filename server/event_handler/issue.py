@@ -11,7 +11,7 @@ class IssueEventHandler:
     auth: Auth.AppAuth
     g: Github
 
-    def __init__(self, payload: Any, auth: Auth.AppAuth) -> None:
+    def __init__(self, payload: Any, auth: Auth.AppAuth, installation_id: int) -> None:
         self.event: Any = payload
         self.auth: Auth.AppAuth = auth
         self.g: Github = Github(auth=auth)
