@@ -7,6 +7,9 @@ For this guide, we'll create a table called employees and see how we can make ch
 > Link your project
 $ supabase link --project-ref {{YOUR_SUPBASE_PROJECT_ID}} 
 
+> Sync schema diffs from remote project to local
+$ supabase db pull
+
 > Run all migrations against this project
 $ supabase db push 
 
