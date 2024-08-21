@@ -1,4 +1,4 @@
-from typing import AsyncIterator
+from typing import AsyncIterator, Optional
 from agent.base import AgentBuilder
 from prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils import get_client
@@ -6,7 +6,7 @@ from petercat_utils.data_class import ChatData
 from tools import issue, sourcecode, knowledge, git_info
 
 
-def get_tools(bot_id, token):
+def get_tools(bot_id: str, token: Optional[str]):
     issue_tools = issue.factory(access_token=token)
     return {
         "search_knowledge": knowledge.factory(bot_id=bot_id),
@@ -49,8 +49,9 @@ def agent_stream_chat(input_data: ChatData, user_token: str) -> AsyncIterator[st
     return agent.run_stream_chat(input_data)
 
 
-def agent_chat(input_data: ChatData) -> AsyncIterator[str]:
+def agent_chat(input_data: ChatData, user_token: Optional[str]) -> AsyncIterator[str]:
     agent = AgentBuilder(
-        prompt=init_prompt(input_data), tools=get_tools(input_data.bot_id)
+        prompt=init_prompt(input_data),
+        tools=get_tools(input_data.bot_id, token=user_token),
     )
     return agent.run_chat(input_data)
