@@ -2,6 +2,7 @@ from typing import Any
 from github import Github, Auth
 from github import GithubException
 
+from dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 from agent.qa_chat import agent_chat
@@ -18,6 +19,7 @@ class IssueEventHandler:
         self.g: Github = Github(auth=auth)
 
     async def execute(self):
+        repository_config = RepositoryConfigDAO()
         try:
             print("actions:", self.event["action"])
             if self.event["action"] == "opened":
@@ -29,7 +31,9 @@ class IssueEventHandler:
                 text_block = TextContentBlock(type="text", text=issue_content)
                 issue_content = issue.body
                 message = Message(role="user", content=[text_block])
-                analysis_result = await agent_chat(ChatData(messages=[message]), None)
+
+                repo_config = repository_config.get_by_repo_name(repo_name)
+                analysis_result = await agent_chat(ChatData(messages=[message], bot_id=repo_config.robot_id), None)
                 issue.create_comment(analysis_result["output"])
 
                 return {"success": True}
