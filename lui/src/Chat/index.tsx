@@ -36,8 +36,6 @@ import LoadingEnd from './components/LoadingEnd';
 import LoadingStart from './components/LoadingStart';
 import UserContent from './components/UserContent';
 
-import '../style/global.css';
-
 export interface BotInfo {
   assistantMeta?: MetaData;
   helloMessage?: string;

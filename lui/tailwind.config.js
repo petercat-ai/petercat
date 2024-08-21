@@ -5,7 +5,7 @@ import {
 
 module.exports = {
   mode: 'jit',
-  content: ['./src/**/*.{html,js,ts,jsx,tsx,mdx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       keyframes: {
@@ -47,16 +47,11 @@ module.exports = {
       animation: {
         shake: 'shake 15s infinite',
         'fade-in': 'fadeIn 0.5s ease-in forwards',
-        'fade-in-left': 'fadeInLeft 1s ease-out forwards',
+        'fade-in-left': 'fadeInLeft 0.5s ease-out forwards',
       },
       
     },
   },
-  safelist: [
-    'animate-shake',
-    'animate-fade-in',
-    'animate-fade-in-left',
-  ],
   plugins: [
     scopedPreflightStyles({
       isolationStrategy: isolateInsideOfContainer('.petercat-lui'),
