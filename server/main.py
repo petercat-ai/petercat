@@ -1,3 +1,6 @@
+import os
+
+import uvicorn
 
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
@@ -49,8 +52,8 @@ app.include_router(chat.router)
 app.include_router(task.router)
 
 
-# if __name__ == "__main__":
-#     if is_dev:
-#         uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", "8080")), reload=True)
-#     else:
-#         uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+if __name__ == "__main__":
+    if is_dev:
+        uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", "8080")), reload=True)
+    else:
+        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
