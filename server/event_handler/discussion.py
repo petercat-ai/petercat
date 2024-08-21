@@ -88,7 +88,7 @@ class DiscussionEventHandler:
         discussion_number = discussion["number"]
         message = Message(role="user", content=[text_block])
 
-        analysis_result = await agent_chat(ChatData(messages=[message]))
+        analysis_result = await agent_chat(ChatData(messages=[message]), None)
         discussion_id = await self.get_discussion_id(owner, repo, discussion_number)
         await self.create_discussion_comment(discussion_id, analysis_result["output"])
 
