@@ -1,27 +1,24 @@
 {
   "name": "petercat-lui",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "A react library developed with dumi",
-  "main": "./dist/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "style": "dist/esm/style.css",
   "browser": "dist/umd/petercat-lui.min.js",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/esm/index.js"
     },
     "./style": {
-      "import": "./dist/esm/style.css",
-      "require": "./dist/esm/style.css"
+      "import": "./dist/esm/style.css"
     }
   },
   "scripts": {
     "start": "npm run dev",
-    "dev": "dumi dev",
-    "build:css": "tailwindcss -i tailwind.css -o ./.dumi/tmp/style.css",
-    "build": "npm run build:css && father build && cp ./.dumi/tmp/style.css ./dist/esm/style.css",
+    "dev": "npm run build:css & dumi dev",
+    "build:css": "tailwindcss -i tailwind.css -o ./src/style.css",
+    "build": "npm run build:css && cp ./src/style.css ./.dumi/tmp/style.css && father build",
     "build:watch": "father dev",
     "docs:build": "dumi build",
     "prepare": "dumi setup",
@@ -35,6 +32,9 @@
   "license": "MIT",
   "files": [
     "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
   ],
   "commitlint": {
     "extends": [
