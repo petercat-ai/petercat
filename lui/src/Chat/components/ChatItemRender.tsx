@@ -36,7 +36,7 @@ const ChatItemRender: FC<IProps> = ({
             }}
           />
         )}
-        <div className="ant-pro-chat-list-item-message-container">
+        <div className="ant-pro-chat-list-item-message-container flex-1">
           {title}
           {content}
         </div>
