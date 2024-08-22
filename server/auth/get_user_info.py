@@ -25,6 +25,7 @@ async def getUserInfoByToken(token):
                 "nickname": user_info.get("nickname"),
                 "name": user_info.get("name"),
                 "picture": user_info.get("picture"),
+                "avatar": user_info.get("picture"),
                 "sub": user_info["sub"],
                 "sid": secrets.token_urlsafe(32)
             }
