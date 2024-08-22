@@ -48,7 +48,6 @@ async def generateAnonymousUser(clientId: str):
     seed = clientId[:4]
     random_name = f"{seed}_{random_str(4)}"
     data = {
-        "anonymous": True,
         "id": token,
         "sub": token,
         "nickname": random_name,
