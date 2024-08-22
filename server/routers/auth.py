@@ -5,7 +5,7 @@ from petercat_utils import get_client, get_env_variable
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
 
-from auth.get_user_info import generateAnonymousUser
+from auth.get_user_info import generateAnonymousUser, getUserInfoByToken
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -63,7 +63,8 @@ async def logout(request: Request):
 async def callback(request: Request):
     print(f"auth_callback: {request.query_params}")
     auth0_token = await oauth.auth0.authorize_access_token(request)
-    user_info = auth0_token.get('userinfo')
+    user_info = await getUserInfoByToken(token=auth0_token['access_token'])
+
     if user_info:
         request.session['user'] = dict(user_info)
         data = {
