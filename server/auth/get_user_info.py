@@ -1,5 +1,4 @@
-from typing import Annotated
-from fastapi import Cookie
+from fastapi import Request
 import httpx
 import secrets
 import random
@@ -49,11 +48,12 @@ async def generateAnonymousUser(clientId: str):
     seed = clientId[:4]
     random_name = f"{seed}_{random_str(4)}"
     data = {
+        "anonymous": True,
         "id": token,
+        "sub": token,
         "nickname": random_name,
         "name": random_name,
         "picture": f"https://picsum.photos/seed/{seed}/100/100",
-        "sub": seed,
         "sid": secrets.token_urlsafe(32)
     }
 
@@ -64,25 +64,24 @@ async def getAnonymousUserInfoByToken(token: str):
     rows = supabase.table("profiles").select("*").eq("id", token).execute()
     return rows.data[0] if (len(rows.data) > 0) else None
 
-async def get_user_id(petercat_user_token: Annotated[str | None, Cookie()] = None):
+async def get_user_id(request: Request):
+    user_info = request.session.get('user')
     try:
-        if petercat_user_token is None:
+        if user_info is None:
             return None
-        user_info = await getUserInfoByToken(petercat_user_token)
-        return user_info['id']
+        return user_info['sub'] 
 
     except Exception:
         return None
 
-async def get_user_access_token(petercat_user_token: Annotated[str | None, Cookie()] = None):
+async def get_user_access_token(request: Request):
     try:
-        if petercat_user_token is None:
-            return None
-        user_info = await getUserInfoByToken(petercat_user_token)
+        user_info = request.session.get('user')
         if user_info is None:
             return None
-        access_token = await getUserAccessToken(user_id=user_info['id'])
-        print(f"get_user_access_token: user_info={user_info}, access_token={access_token}")
+        
+        access_token = await getUserAccessToken(user_id=user_info['sub'])
         return access_token
     except Exception:
         return None
+ 
