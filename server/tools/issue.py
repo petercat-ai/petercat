@@ -19,7 +19,6 @@ def factory(access_token: Optional[str]):
         :param title: The title of the issue to be created
         :param body: The content of the issue to be created
         """
-    
         if access_token is None:
             return need_github_login()
         auth = Auth.Token(token=access_token)
@@ -31,10 +30,13 @@ def factory(access_token: Optional[str]):
             
             # Create an issue
             issue = repo.create_issue(title=title, body=body)
-            return issue.html_url
+            return json.dumps({
+                "url": issue.html_url,
+                "title": issue.title,
+            })
         except Exception as e:
             print(f"An error occurred: {e}")
-            return None
+            return json.dumps([])  
         
     @tool
     def get_issues(
