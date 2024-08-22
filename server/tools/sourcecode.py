@@ -2,16 +2,18 @@ from typing import List, Optional
 from github import Github
 from github.ContentFile import ContentFile
 from langchain.tools import tool
+import json
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
 g = Github()
 
+
 @tool
 def search_code(
-      keyword: str,
-      repo_name: Optional[str] = DEFAULT_REPO_NAME, 
-      max_num: Optional[int] = 5, 
+    keyword: str,
+    repo_name: Optional[str] = DEFAULT_REPO_NAME,
+    max_num: Optional[int] = 5,
 ) -> List[ContentFile]:
     """
     Searches for code files on GitHub that contain the given keyword.
@@ -23,13 +25,19 @@ def search_code(
     :return: A list of ContentFile objects representing the matching code files.
     """
     try:
-        query = f'repo:{repo_name} {keyword}'
-        
+        query = f"repo:{repo_name} {keyword}"
+
         # Perform the search for code files containing the keyword
         code_files = g.search_code(query=query)[:max_num]
-        
-        return code_files
+        code_list = [
+            {
+                "content": file.content,
+                "html_url": file.html_url,
+                "text_matches": file.text_matches,
+            }
+            for file in code_files
+        ]
+        return json.dumps(code_list)
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-  
