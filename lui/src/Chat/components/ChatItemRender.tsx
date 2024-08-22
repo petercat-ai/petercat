@@ -27,7 +27,7 @@ const ChatItemRender: FC<IProps> = ({
       >
         {direction === 'start' && (
           <div
-            className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden"
+            className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden flex-shrink-0"
             style={{
               backgroundColor: `${avatar?.props?.avatar?.backgroundColor}`,
               backgroundImage: `url(${avatar?.props?.avatar?.avatar})`,
@@ -36,7 +36,7 @@ const ChatItemRender: FC<IProps> = ({
             }}
           />
         )}
-        <div className="ant-pro-chat-list-item-message-container flex-1">
+        <div className="ant-pro-chat-list-item-message-container">
           {title}
           {content}
         </div>
