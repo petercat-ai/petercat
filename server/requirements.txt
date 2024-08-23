@@ -6,6 +6,7 @@ mangum
 langserve
 langchain_community>=0.2.11
 langchain>=0.2.12
+langchain_google_genai
 PyGithub
 GitPython
 python-multipart
