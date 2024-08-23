@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status, Query, Path
 from fastapi.responses import JSONResponse
+from auth.get_user_info import get_user_id
 from petercat_utils import get_client
 from typing import Annotated, Optional
 
-from auth.get_user_info import get_user_id
 from bot.builder import bot_builder, bot_info_generator
 from type_class.bot import BotUpdateRequest, BotCreateRequest
 

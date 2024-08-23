@@ -24,6 +24,10 @@ class ImageURLContentBlock(BaseModel):
     image_url: ImageURL
     type: Literal["image_url"]
 
+class ImageRawURLContentBlock(BaseModel):
+    image_url: str
+    type: Literal["image_url"]
+
 
 class TextContentBlock(BaseModel):
     text: str
@@ -42,6 +46,7 @@ class Message(BaseModel):
 
 class ChatData(BaseModel):
     messages: List[Message] = []
+    llm: Optional[str] = "openai"
     prompt: Optional[str] = None
     bot_id: Optional[str] = None
 

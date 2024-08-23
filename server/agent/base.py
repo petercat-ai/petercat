@@ -1,6 +1,7 @@
 import json
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
+from agent.llm.base import BaseLLMClient
 from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
@@ -8,14 +9,12 @@ from langchain.agents.format_scratchpad.openai_tools import (
 from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain.prompts import MessagesPlaceholder
-from langchain_core.utils.function_calling import convert_to_openai_tool
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
-from langchain_openai import ChatOpenAI
 from petercat_utils import get_env_variable
 
-OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
+
 TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
 
@@ -23,28 +22,21 @@ class AgentBuilder:
 
     def __init__(
         self,
+        chat_model: BaseLLMClient,
         prompt: str,
         tools: Dict[str, Callable],
         enable_tavily: Optional[bool] = True,
-        temperature: Optional[int] = 0.2,
-        max_tokens: Optional[int] = 1500,
-        streaming: Optional[bool] = False,
     ):
         """
         @class `Builde AgentExecutor based on tools and prompt`
         @param prompt: str
         @param tools: Dict[str, Callable]
         @param enable_tavily: Optional[bool] If set True, enables the Tavily tool
-        @param temperature: Optional[int]
-        @param max_tokens: Optional[int]
-        @param streaming: Optional[bool]
         """
         self.prompt = prompt
         self.tools = tools
         self.enable_tavily = enable_tavily
-        self.temperature = temperature
-        self.max_tokens = max_tokens
-        self.streaming = streaming
+        self.chat_model = chat_model
         self.agent_executor = self._create_agent_with_tools()
 
     def init_tavily_tools(self):
@@ -54,13 +46,7 @@ class AgentBuilder:
         return [tavily_tool]
 
     def _create_agent_with_tools(self) -> AgentExecutor:
-        llm = ChatOpenAI(
-            model_name="gpt-4o",
-            temperature=self.temperature,
-            streaming=self.streaming,
-            max_tokens=self.max_tokens,
-            openai_api_key=OPEN_API_KEY,
-        )
+        llm = self.chat_model.get_client()
 
         tools = self.init_tavily_tools() if self.enable_tavily else []
 
@@ -68,7 +54,8 @@ class AgentBuilder:
             tools.append(tool)
 
         if tools:
-            llm = llm.bind_tools([convert_to_openai_tool(tool) for tool in tools])
+            parsed_tools = self.chat_model.get_tools(tools)
+            llm = llm.bind_tools(parsed_tools)
 
         self.prompt = self.get_prompt()
         agent = (
@@ -102,13 +89,11 @@ class AgentBuilder:
             ]
         )
 
-    @staticmethod
-    def chat_history_transform(messages: list[Message]):
+    def chat_history_transform(self, messages: list[Message]):
         transformed_messages = []
         for message in messages:
-            print("message", message)
             if message.role == "user":
-                transformed_messages.append(HumanMessage(content=message.content))
+                transformed_messages.append(HumanMessage(self.chat_model.parse_content(content=message.content)))
             elif message.role == "assistant":
                 transformed_messages.append(AIMessage(content=message.content))
             else:
@@ -120,7 +105,7 @@ class AgentBuilder:
             messages = input_data.messages
             async for event in self.agent_executor.astream_events(
                 {
-                    "input": messages[len(messages) - 1].content,
+                    "input": self.chat_model.parse_content(messages[len(messages) - 1].content),
                     "chat_history": self.chat_history_transform(messages),
                 },
                 version="v1",
