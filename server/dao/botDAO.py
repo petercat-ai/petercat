@@ -1,8 +1,5 @@
-
-import json
 from dao.BaseDAO import BaseDAO
-from models.authorization import Authorization
-from supabase.client import Client, create_client
+from supabase.client import Client
 
 from models.bot import Bot
 from petercat_utils.db.client.supabase import get_client
