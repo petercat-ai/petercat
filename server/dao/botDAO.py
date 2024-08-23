@@ -17,4 +17,4 @@ class BotDAO(BaseDAO):
       .eq("id", bot_id) \
       .execute()
     bot = resp.data[0]
-    return Bot(**resp.data[0])
+    return Bot(**bot)
