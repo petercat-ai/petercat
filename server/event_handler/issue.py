@@ -33,6 +33,9 @@ class IssueEventHandler:
     async def execute(self):
         try:
             print("actions:", self.event["action"])
+            if self.event['sender']['type'] == "Bot":
+                return {"success": True}
+
             if self.event["action"] == "opened":
                 issue, repo = self.get_issue()
 
