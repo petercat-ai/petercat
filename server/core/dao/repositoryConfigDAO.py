@@ -1,6 +1,6 @@
 
-from dao.BaseDAO import BaseDAO
-from models.repository import RepositoryConfig
+from core.dao.BaseDAO import BaseDAO
+from core.models.repository import RepositoryConfig
 from supabase.client import Client
 
 from petercat_utils.db.client.supabase import get_client

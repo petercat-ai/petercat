@@ -1,7 +1,7 @@
-from dao.BaseDAO import BaseDAO
+from core.dao.BaseDAO import BaseDAO
 from supabase.client import Client
 
-from models.bot import Bot
+from core.models.bot import Bot
 from petercat_utils.db.client.supabase import get_client
 
 class BotDAO(BaseDAO):

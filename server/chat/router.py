@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 from petercat_utils.data_class import ChatData
 
 from agent import qa_chat, bot_builder
-from verify.rate_limit import verify_rate_limit
+from auth.rate_limit import verify_rate_limit
 from auth.get_user_info import get_user_access_token, get_user_id
 
 

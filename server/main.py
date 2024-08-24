@@ -10,7 +10,12 @@ from petercat_utils import get_env_variable
 
 
 # Import fastapi routers
-from routers import bot, health_checker, github, rag, auth, chat, task
+from auth import router as auth_router
+from bot import router as bot_router
+from chat import router as chat_router
+from rag import router as rag_router
+from task import router as task_router
+from github_app import router as github_app_router
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
@@ -43,13 +48,17 @@ app.add_middleware(
 )
 
 
-app.include_router(health_checker.router)
-app.include_router(github.router)
-app.include_router(rag.router)
-app.include_router(bot.router)
-app.include_router(auth.router)
-app.include_router(chat.router)
-app.include_router(task.router)
+app.include_router(rag_router.router)
+app.include_router(bot_router.router)
+app.include_router(auth_router.router)
+app.include_router(chat_router.router)
+app.include_router(task_router.router)
+app.include_router(github_app_router.router)
+
+
+@app.get("/api/health_checker")
+def health_checker():
+    return { "Hello": "World" }
 
 
 if __name__ == "__main__":
