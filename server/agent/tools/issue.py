@@ -7,7 +7,7 @@ from agent.tools.helper import need_github_login
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
-def factory(access_token: Optional[str]):
+def factory(token: Optional[Auth.Token]):
     @tool
     def create_issue(repo_name: str, title: str, body: str):
         """
@@ -19,10 +19,9 @@ def factory(access_token: Optional[str]):
         :param title: The title of the issue to be created
         :param body: The content of the issue to be created
         """
-        if access_token is None:
+        if token is None:
             return need_github_login()
-        auth = Auth.Token(token=access_token)
-        g = Github(auth=auth)
+        g = Github(auth=token)
         try:
             # Get the repository object
             repo = g.get_repo(repo_name)
@@ -93,7 +92,11 @@ def factory(access_token: Optional[str]):
             :param order: The order of the sorting, e.g: asc, desc
             :param state: The state of the issue, e.g: open, closed, all
             """
-            g = Github()
+            if token is None:
+                g = Github()
+            else:
+                g = Github(auth=token)
+
             try:
                 search_query = f"{keyword} in:title,body,comments repo:{repo_name}"
                 # Retrieve a list of open issues from the repository
