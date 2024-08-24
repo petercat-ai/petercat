@@ -1,12 +1,13 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 class Bot(BaseModel):
     id: str
     uid: str
-    avatar: str
-    description: str
-    prompt: str
+    avatar: Optional[str] = ""
+    description: Optional[str]
+    prompt: Optional[str] = ""
     name: str
-    llm: str
+    llm: Optional[str] = "openai"
     created_at: datetime 
