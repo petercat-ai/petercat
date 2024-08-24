@@ -5,7 +5,7 @@ from petercat_utils import get_client
 from typing import Annotated, Optional
 
 from bot.builder import bot_builder, bot_info_generator
-from type_class.bot import BotUpdateRequest, BotCreateRequest
+from core.type_class.bot import BotUpdateRequest, BotCreateRequest
 
 router = APIRouter(
     prefix="/api/bot",

@@ -13,7 +13,7 @@ from petercat_utils.rag_helper import (
     git_issue_task,
 )
 
-from verify.rate_limit import verify_rate_limit
+from auth.rate_limit import verify_rate_limit
 
 
 router = APIRouter(
