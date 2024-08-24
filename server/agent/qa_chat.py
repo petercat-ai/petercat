@@ -6,7 +6,7 @@ from core.models.bot import Bot
 from agent.prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils.data_class import ChatData
 
-from tools import issue, sourcecode, knowledge, git_info
+from agent.tools import issue, sourcecode, knowledge, git_info
 
 
 def get_tools(bot: Bot, token: Optional[str]):

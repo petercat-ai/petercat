@@ -3,7 +3,7 @@ from typing import Optional
 from github import Auth, Github
 from langchain.tools import tool
 
-from tools.helper import need_github_login
+from agent.tools.helper import need_github_login
 
 DEFAULT_REPO_NAME = "ant-design/ant-design"
 
