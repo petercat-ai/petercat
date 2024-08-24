@@ -1,4 +1,5 @@
 from typing import Annotated, Optional
+from github import Auth
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from petercat_utils.data_class import ChatData
@@ -32,8 +33,10 @@ def run_qa_chat(
     print(
         f"run_qa_chat: input_data={input_data}, user_access_token={user_access_token}"
     )
+
+    token = Auth.Token(user_access_token) if user_access_token is not None else None
     result = qa_chat.agent_stream_chat(
-        input_data=input_data, user_token=user_access_token
+        input_data=input_data, token=token
     )
     return StreamingResponse(result, media_type="text/event-stream")
 
@@ -43,7 +46,8 @@ async def run_issue_helper(
     input_data: ChatData,
     user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None,
 ):
-    result = await qa_chat.agent_chat(input_data, user_access_token)
+    token = Auth.Token(user_access_token) if user_access_token is not None else None
+    result = await qa_chat.agent_chat(input_data, token)
     return result
 
 
