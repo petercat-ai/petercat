@@ -53,15 +53,21 @@ class PullRequestEventHandler():
         ])
 
     async def execute(self):
+        repo_full_name = self.event['repository']["full_name"]
+        repository_config = RepositoryConfigDAO()
+        repo_config = repository_config.get_by_repo_name(repo_full_name)
+
+        # 用户尚未为仓库配置承接的 CR 机器人，不做任何事情
+        if repo_config is None:
+            return { "success": True }
+
         try:
             if self.event['action'] == 'opened':
                 pr, diff, repo = self.get_pull_request()
-            
+
                 file_diff = self.get_file_diff(diff)
                 prompt = get_pr_summary(file_diff)
 
-                repository_config = RepositoryConfigDAO()
-                repo_config = repository_config.get_by_repo_name(repo.full_name)
                 pr_content = f"{pr.title}:{pr.body}"
 
                 analysis_result = await agent_chat(
