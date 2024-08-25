@@ -1,5 +1,6 @@
 import yaml
 import fnmatch
+from urllib.parse import urlparse, parse_qs
 
 from typing import Any, List
 from github import Github, Auth, GithubException
@@ -8,9 +9,11 @@ from github.File import File
 from github.PullRequest import PullRequest
 from github.Repository import Repository
 
-from agent.prompts.pull_request import get_pr_summary
+from utils.random_str import random_str
+from agent.prompts.pull_request import get_pr_summary, get_role_prompt
 from agent.qa_chat import agent_chat
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
+from core.models.bot import Bot
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 def file_match(filename: str, patterns: List[str]): 
@@ -40,6 +43,12 @@ class PullRequestEventHandler():
             return f"adds: {file.additions}, deletions: {file.deletions}, changes: {file.changes}"
         return file.patch
 
+    @staticmethod
+    def get_file_ref(file: File):
+        parsed_url = urlparse(file.contents_url)
+        query_params = parse_qs(parsed_url.query)
+        return query_params.get("ref", [None])[0]
+
     def get_pull_request(self) -> tuple[PullRequest, PaginatedList[File], Repository]:
         repo = self.g.get_repo(self.event['repository']["full_name"])
         pr = repo.get_pull(self.event["pull_request"]["number"])
@@ -48,7 +57,7 @@ class PullRequestEventHandler():
 
     def get_file_diff(self, diff: PaginatedList[File]) -> str:
         return "\n\n".join([
-            f"{file.filename}:\n{PullRequestEventHandler.get_file_hunk(file)}" 
+            f"{file.filename}(sha: `{PullRequestEventHandler.get_file_ref(file)}`):\n{PullRequestEventHandler.get_file_hunk(file)}" 
             for file in diff
         ])
 
@@ -66,9 +75,18 @@ class PullRequestEventHandler():
                 pr, diff, repo = self.get_pull_request()
 
                 file_diff = self.get_file_diff(diff)
-                prompt = get_pr_summary(file_diff)
+                role_prompt = get_role_prompt(repo.full_name, pr.head.ref)
+                prompt = get_pr_summary(repo.full_name, pr.number, file_diff)
 
                 pr_content = f"{pr.title}:{pr.body}"
+
+                bot = Bot(
+                    id=random_str(),
+                    uid="mock_pull_requst",
+                    description="A Robot for Pull Requst Review",
+                    name="pull_request_bot",
+                    prompt=role_prompt,
+                )
 
                 analysis_result = await agent_chat(
                     ChatData(
@@ -79,11 +97,13 @@ class PullRequestEventHandler():
                             ),
                             Message(
                                 role="user",
-                                content=[TextContentBlock(type="text", text=pr_content)],
+                                content=[TextContentBlock(type="text", text=pr_content)]
                             )
                         ],
-                        bot_id=repo_config.robot_id
-                    ), self.auth)
+                    ),
+                    self.auth,
+                    bot=bot
+                )
                 print(f"analysis_result={analysis_result}")
                 pr.create_issue_comment(analysis_result["output"])
                 return { "success": True }
