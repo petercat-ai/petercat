@@ -21,7 +21,7 @@ md_report_verbose = 0
 md_report_color = "auto"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 langchain_community = "^0.2.11"
 langchain_openai = "^0.1.20"
 langchain_core = "^0.2.28"
