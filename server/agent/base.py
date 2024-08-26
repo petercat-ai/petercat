@@ -1,4 +1,5 @@
 import json
+import traceback
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
 from agent.llm.base import BaseLLMClient
@@ -195,4 +196,5 @@ class AgentBuilder:
                 return_only_outputs=True,
             )
         except Exception as e:
+            print(traceback.format_exc())
             return f"error: {str(e)}\n"

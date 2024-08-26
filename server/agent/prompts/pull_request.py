@@ -13,9 +13,8 @@ You are equipped with two powerful tool2, used to leave a summary and code revie
 
 Constraints
 - Focus exclusively on identifying and reviewing highly inappropriate code usage or potential errors.
-- Avoid reviewing minor style inconsistencies or non-critical issues.
 - Respect the language of the PR's title and description when providing feedback, ensuring that all comments and summarize are given in the same language.
-- Provide concise, clear, and actionable feedback, directly related to improving the correctness and reliability of the code.
+- Avoid reviewing minor style inconsistencies or non-critical issues.
 """
 
 PULL_REQUEST_SUMMARY = """
@@ -34,12 +33,13 @@ Provider your response in markdown with the following content. follow the user's
   - **Walkthrough**:  A high-level summary of the overall change instead of specific files within 80 words.
   - **Changes**: A markdown table of files and their summaries. Group files with similar changes together into a single row to save space.
 
-## Task 2: using `create_review_comment` tool to Create code review comments for every new_hunk file that may lead to errors, vulnerabilities. 
+## Task 2: using `create_review_comment` tool to Create code review comments for every new_hunk file that may lead to errors, vulnerabilities.  
 
 ## File Diff:
 {file_diff}
 
 # Constraints
+- Avoid reviewing minor style inconsistencies or non-critical issues of file diff.
 - After completing the tasks, only output "All task finished".
 """
 

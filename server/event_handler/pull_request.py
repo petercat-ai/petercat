@@ -93,7 +93,7 @@ class PullRequestEventHandler():
                     ChatData(
                         messages=[
                             Message(
-                                role="system",
+                                role="user",
                                 content=[TextContentBlock(type="text", text=prompt)]
                             ),
                             Message(
