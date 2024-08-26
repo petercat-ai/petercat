@@ -5,11 +5,11 @@ from github.Repository import Repository
 from github import GithubException
 from agent.prompts.issue_helper import generate_issue_comment_prompt, generate_issue_prompt
 
+from core.dao.botDAO import BotDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 from agent.qa_chat import agent_chat
-
 
 
 class IssueEventHandler:
@@ -45,13 +45,15 @@ class IssueEventHandler:
                 
                 repository_config = RepositoryConfigDAO()
                 repo_config = repository_config.get_by_repo_name(repo.full_name)
-
+                bot_dao = BotDAO()
+                bot = bot_dao.get_bot(repo_config.robot_id)
+                
                 analysis_result = await agent_chat(
                     ChatData(
                         prompt=prompt,
                         messages=[message],
                         bot_id=repo_config.robot_id
-                    ), self.auth)
+                    ), self.auth, bot)
 
                 issue.create_comment(analysis_result["output"])
 
@@ -61,6 +63,9 @@ class IssueEventHandler:
             return {"success": False, "error": str(e)}
 
 class IssueCommentEventHandler(IssueEventHandler):
+    def not_mentioned_me(self):
+        return "@petercat-bot" not in self.event["comment"]["body"]
+    
     async def execute(self):
         try:
             print(f"actions={self.event['action']},sender={self.event['sender']}")
@@ -68,6 +73,10 @@ class IssueCommentEventHandler(IssueEventHandler):
             if self.event['sender']['type'] == "Bot":
                 return {"success": True}
             if self.event["action"] == "created":
+                # 如果没有 AT 我。就算了
+                if self.not_mentioned_me():
+                    return {"success": True}
+        
                 issue, repo = self.get_issue()
                 issue_comments = issue.get_comments()
     
@@ -78,7 +87,6 @@ class IssueCommentEventHandler(IssueEventHandler):
                     ) for comment in issue_comments
                 ]
 
-                print(f"messages={messages}")
                 issue_content = f"{issue.title}: {issue.body}"
                 prompt = generate_issue_comment_prompt(issue_url=issue.url, issue_content=issue_content)
                 
