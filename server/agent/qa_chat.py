@@ -13,7 +13,7 @@ from agent.tools import issue, pull_request, sourcecode, knowledge, git_info
 def get_tools(bot: Bot, token: Optional[Auth.Token]):
     issue_tools = issue.factory(token=token)
     pull_request_tools = pull_request.factory(token=token)
-    print(f"get_tools, token={token.token}")
+
     return {
         "search_knowledge": knowledge.factory(bot_id=bot.id),
         "create_issue": issue_tools["create_issue"],
