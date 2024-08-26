@@ -9,6 +9,7 @@ from github.File import File
 from github.PullRequest import PullRequest
 from github.Repository import Repository
 
+from utils.path_to_hunk import convert_patch_to_hunk
 from utils.random_str import random_str
 from agent.prompts.pull_request import get_pr_summary, get_role_prompt
 from agent.qa_chat import agent_chat
@@ -41,7 +42,7 @@ class PullRequestEventHandler():
         exclusions = PullRequestEventHandler.get_file_exclusions()
         if file_match(file.filename, exclusions):
             return f"adds: {file.additions}, deletions: {file.deletions}, changes: {file.changes}"
-        return file.patch
+        return convert_patch_to_hunk(file.patch)
 
     @staticmethod
     def get_file_ref(file: File):
@@ -76,10 +77,10 @@ class PullRequestEventHandler():
 
                 file_diff = self.get_file_diff(diff)
                 role_prompt = get_role_prompt(repo.full_name, pr.head.ref)
-                prompt = get_pr_summary(repo.full_name, pr.number, file_diff)
+                prompt = get_pr_summary(repo.full_name, pr.number, pr.title, pr.body, file_diff)
 
                 pr_content = f"{pr.title}:{pr.body}"
-
+                print(f"file_diff={file_diff}")
                 bot = Bot(
                     id=random_str(),
                     uid="mock_pull_requst",
@@ -105,7 +106,6 @@ class PullRequestEventHandler():
                     bot=bot
                 )
                 print(f"analysis_result={analysis_result}")
-                pr.create_issue_comment(analysis_result["output"])
                 return { "success": True }
             else:
                 return { "success": True }

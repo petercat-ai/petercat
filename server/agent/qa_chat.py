@@ -1,5 +1,4 @@
-from typing import Annotated, AsyncIterator, Optional
-from fastapi import Depends
+from typing import AsyncIterator, Optional
 from github import Auth
 from agent.base import AgentBuilder
 from agent.llm import get_llm
@@ -21,6 +20,7 @@ def get_tools(bot: Bot, token: Optional[Auth.Token]):
         "get_issues": issue_tools["get_issues"],
         "get_file_content": pull_request_tools["get_file_content"],
         "create_review_comment": pull_request_tools["create_review_comment"],
+        "create_pr_summary": pull_request_tools["create_pr_summary"],
         "search_issues": issue_tools["search_issues"],
         "search_code": sourcecode.search_code,
         "search_repo": git_info.search_repo,

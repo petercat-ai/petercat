@@ -30,6 +30,23 @@ def factory(token: Optional[Auth.Token]):
             return json.dumps([])
     
     @tool
+    def create_pr_summary(repo_name: str, pull_number: int, summary: str):
+        """
+        Create a code review of specified pull requst file
+        :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
+        :param pull_number: The number of pull requst: e.g., 123
+        :param summary: markdown content of PR summary 
+        """
+        if token is None:
+            return need_github_login()
+        
+        g = Github(auth=token)
+        repo = g.get_repo(repo_name)
+        pull_request = repo.get_pull(pull_number)
+        print(f"token={token}, create_pr_summary, pull_request={pull_request}, comment={summary}")
+        # pull_request.create_issue_comment(summary)
+    
+    @tool
     def create_review_comment(repo_name: str, pull_number: int, sha: str, path: str, line: int, comment: str):
         """
         Create a code review of specified pull requst file
@@ -49,12 +66,13 @@ def factory(token: Optional[Auth.Token]):
             repo = g.get_repo(repo_name)
             pull_request = repo.get_pull(pull_number)
             commit = repo.get_commit(sha=sha)
-            pull_request.create_review_comment(
-                body=comment,
-                path=path,
-                commit=commit,
-                line=line,
-            )
+            print(f"create_review_comment, pull_request={pull_request}, commit={commit}, comment={comment}")
+            # pull_request.create_review_comment(
+            #     body=comment,
+            #     path=path,
+            #     commit=commit,
+            #     line=line,
+            # )
             
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -62,5 +80,6 @@ def factory(token: Optional[Auth.Token]):
 
     return {
         "get_file_content": get_file_content,
+        "create_pr_summary": create_pr_summary,
         "create_review_comment": create_review_comment,
     }
