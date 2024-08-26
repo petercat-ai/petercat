@@ -31,7 +31,7 @@ const ChunkCard = ({ update_timestamp, content, file_path }: RAGDoc) => {
         onClick={onOpen}
       >
         <div className="rounded-[4px] h-[154px] w-full p-2 bg-[#F3F4F6] mb-3 overflow-hidden overflow-ellipsis">
-          <p className="line-clamp-5">{content}</p>
+          <p className="line-clamp-4">{content}</p>
         </div>
         <div className="flex justify-between items-center gap-1">
           <h2 className="truncate overflow-hidden whitespace-nowrap font-bold text-lg">
@@ -84,7 +84,6 @@ export default function Knowledge({ botId, goBack }: IProps) {
   const {
     data: RagDocData,
     isPending,
-    isFetching,
     isLoading: isListLoading,
   } = useBotRAGChunkList(
     botId,
@@ -118,23 +117,29 @@ export default function Knowledge({ botId, goBack }: IProps) {
         </div>
       </div>
       <div className="pt-[40px] py-[40px] overflow-y-auto">
-        <MySpinner loading={isFetching || isPending || isListLoading}>
+        <MySpinner loading={isPending || isListLoading}>
           {list.length > 0 || isPending ? (
             <ChunkList data={list}></ChunkList>
           ) : (
             <div className="flex justify-center items-center h-full">
-              <h3>知识库为空</h3>
+              {taskProfile.running ? (
+                <h3>知识库更新中</h3>
+              ) : (
+                <h3>知识库为空</h3>
+              )}
             </div>
           )}
         </MySpinner>
-        <Pagination
-          className="flex justify-center items-center mt-[60px] p-[0] w-full"
-          total={Math.ceil((RagDocData?.total ?? 0) / 12)}
-          initialPage={1}
-          page={pageNumber}
-          size="lg"
-          onChange={(page) => setPageNumber(page)}
-        />
+        {RagDocData?.total && RagDocData?.total > 12 && (
+          <Pagination
+            className="flex justify-center items-center mt-[60px] p-[0] w-full"
+            total={Math.ceil((RagDocData?.total ?? 0) / 12)}
+            initialPage={1}
+            page={pageNumber}
+            size="lg"
+            onChange={(page) => setPageNumber(page)}
+          />
+        )}
       </div>
     </div>
   );
