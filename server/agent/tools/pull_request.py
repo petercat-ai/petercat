@@ -43,8 +43,7 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         repo = g.get_repo(repo_name)
         pull_request = repo.get_pull(pull_number)
-        print(f"token={token}, create_pr_summary, pull_request={pull_request}, comment={summary}")
-        # pull_request.create_issue_comment(summary)
+        pull_request.create_issue_comment(summary)
     
     @tool
     def create_review_comment(repo_name: str, pull_number: int, sha: str, path: str, line: int, comment: str):
@@ -57,7 +56,6 @@ def factory(token: Optional[Auth.Token]):
         :param line: The line number to create comment at. e.g., 19
         :param comment: Content of review comments 
         """
-        print(f"calling create_review_comment: {repo_name}, file={path}@{line}#{sha}, comment={comment}")
         if token is None:
             return need_github_login()
         
@@ -66,13 +64,13 @@ def factory(token: Optional[Auth.Token]):
             repo = g.get_repo(repo_name)
             pull_request = repo.get_pull(pull_number)
             commit = repo.get_commit(sha=sha)
-            print(f"create_review_comment, pull_request={pull_request}, commit={commit}, comment={comment}")
-            # pull_request.create_review_comment(
-            #     body=comment,
-            #     path=path,
-            #     commit=commit,
-            #     line=line,
-            # )
+            # print(f"create_review_comment, pull_request={pull_request}, commit={commit}, comment={comment}")
+            pull_request.create_review_comment(
+                body=comment,
+                path=path,
+                commit=commit,
+                line=line,
+            )
             
         except Exception as e:
             print(f"An error occurred: {e}")
