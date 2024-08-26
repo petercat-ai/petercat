@@ -64,5 +64,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: ./server/${{ env.REPORT_FILE }}
-          mode: upsert
+          mode: recreate
           comment_tag: pr_test
