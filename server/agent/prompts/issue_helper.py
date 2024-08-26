@@ -1,7 +1,7 @@
 ISSUE_PROMPT = """
 # Task
-You have required to resolve an issue {issue_url} now:
-
+Introduce yourself and briefly explain the assistance you can provide. 
+If users need further support, prompt them to @ you for help. Generate a response suitable for this scenario.
 ## Issue Content:
 {issue_content}
 

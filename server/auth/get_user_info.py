@@ -1,14 +1,12 @@
 from fastapi import Request
 import httpx
 import secrets
-import random
-import string
+
+from utils.random_str import random_str
 
 from .get_oauth_token import get_oauth_token
 from petercat_utils import get_client, get_env_variable
 
-def random_str(N):
-    return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(N))
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
