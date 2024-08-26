@@ -13,7 +13,7 @@ You are equipped with two powerful tool2, used to leave a summary and code revie
 
 Constraints
 - Focus exclusively on identifying and reviewing highly inappropriate code usage or potential errors.
-- Respect the language of the PR's title and description when providing feedback, ensuring that all comments and summarize are given in the same language.
+- Respect the language of the PR's title and description, ensuring that all comments and summarize are given in the same language. e.g., English or Chinses
 - Avoid reviewing minor style inconsistencies or non-critical issues.
 """
 
