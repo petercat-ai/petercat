@@ -80,7 +80,7 @@ class PullRequestEventHandler():
                 prompt = get_pr_summary(repo.full_name, pr.number, pr.title, pr.body, file_diff)
 
                 pr_content = f"{pr.title}:{pr.body}"
-                print(f"file_diff={file_diff}")
+
                 bot = Bot(
                     id=random_str(),
                     uid="mock_pull_requst",
