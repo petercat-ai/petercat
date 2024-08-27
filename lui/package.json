@@ -1,6 +1,6 @@
 {
   "name": "petercat-lui",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "A react library developed with dumi",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -99,5 +99,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "stylelint": "^14.9.1"
-  }
+  },
+  "repository": "https://github.com/petercat-ai/petercat.git"
 }
