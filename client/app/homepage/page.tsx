@@ -66,6 +66,8 @@ export default function Homepage() {
             <header className="h-20 max-w-[1400px] mx-auto flex justify-between items-center">
               <span className="w-[216px]">
                 <Image
+                  width={114}
+                  height={32}
                   src="/images/logo-inverse.svg"
                   alt="petercat"
                   className="h-8"
@@ -146,7 +148,12 @@ export default function Homepage() {
                 <tbody>
                   <tr>
                     <td className="relative px-10 py-[51.5px]">
-                      <Image src="/images/create.svg" alt="create" />
+                      <Image
+                        width={72}
+                        height={73}
+                        src="/images/create.svg"
+                        alt="create"
+                      />
                       <h3 className="mt-6 mb-3 font-medium text-4xl text-black leading-[1.4]">
                         对话即创造
                       </h3>
@@ -155,7 +162,12 @@ export default function Homepage() {
                       </p>
                     </td>
                     <td className="relative px-10 py-[51.5px]">
-                      <Image src="/images/knowledge.svg" alt="knowledge" />
+                      <Image
+                        width={72}
+                        height={73}
+                        src="/images/knowledge.svg"
+                        alt="knowledge"
+                      />
                       <h3 className="mt-6 mb-3 font-medium text-4xl text-black leading-[1.4]">
                         知识自动入库
                       </h3>
@@ -165,7 +177,12 @@ export default function Homepage() {
                       </p>
                     </td>
                     <td className="relative px-10 py-[51.5px]">
-                      <Image src="/images/integrated.svg" alt="integrated" />
+                      <Image
+                        width={72}
+                        height={73}
+                        src="/images/integrated.svg"
+                        alt="integrated"
+                      />
                       <h3 className="mt-6 mb-3 font-medium text-4xl text-black leading-[1.4]">
                         多平台集成
                       </h3>
@@ -208,6 +225,8 @@ export default function Homepage() {
                 <p className="text-xl font-bold text-[#FFA700]">Powered by</p>
                 <span className="inline-flex h-12 items-center mr-6">
                   <Image
+                    width={48}
+                    height={48}
                     className="mr-2"
                     src="/images/icon-open-ai.svg"
                     alt="OpenAI"
@@ -216,6 +235,8 @@ export default function Homepage() {
                 </span>
                 <span className="inline-flex h-12 items-center mr-6">
                   <Image
+                    width={49}
+                    height={48}
                     className="mr-2"
                     src="/images/icon-aws.svg"
                     alt="AWS"
@@ -224,6 +245,8 @@ export default function Homepage() {
                 </span>
                 <span className="inline-flex h-12 items-center mr-6">
                   <Image
+                    width={48}
+                    height={48}
                     className="mr-2"
                     src="/images/icon-supabase.svg"
                     alt="Supabase"
@@ -232,6 +255,8 @@ export default function Homepage() {
                 </span>
                 <span className="inline-flex h-12 items-center">
                   <Image
+                    width={48}
+                    height={48}
                     className="mr-2"
                     src="/images/icon-tavily.svg"
                     alt="Tavily"
@@ -401,7 +426,12 @@ export default function Homepage() {
                           只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。
                         </p>
                         <span className="flex-1 mx-12 h-px border-t border-[#7F7A71]" />
-                        <Image src="/images/logo-footer.svg" alt="petercat" />
+                        <Image
+                          width={106}
+                          height={20}
+                          src="/images/logo-footer.svg"
+                          alt="petercat"
+                        />
                       </div>
                     </td>
                   </tr>
