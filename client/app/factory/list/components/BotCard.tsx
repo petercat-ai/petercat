@@ -142,7 +142,7 @@ const BotCard = (props: { bot: Bot }) => {
             </div>
           </div>
         </CardBody>
-        <CardFooter className="text-small justify-between flex-col mt-4 p-0 px-3 h-[84px]">
+        <CardFooter className="text-small justify-between flex-col my-4 p-0 px-3 h-[84px]">
           <div className="flex w-full text-small justify-between pb-2">
             <span className="leading-8 h-8 font-semibold text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
               {bot.name}
