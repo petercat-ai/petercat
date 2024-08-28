@@ -59,6 +59,10 @@ jobs:
                                   FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
                                   SQSQueueName=${{ secrets.SQS_QUEUE_NAME }} \
                                   SQSQueueUrl=${{ secrets.SQS_QUEUE_URL }} \
+                                  AWS_SECRET_NAME=${{ secrets.AWS_SECRET_NAME }} \
+                                  AWS_REGION_NAME=${{ secrets.AWS_REGION_NAME }} \
+                                  S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} \
+                                  STATIC_URL=${{ secrets.STATIC_URL }} \
                                   GitHubToken=${{ secrets.X_GITHUB_TOKEN }} \
                                   Auth0Domain=${{ secrets.AUTH0_DOMAIN }} \
                                   Auth0ClientId=${{ secrets.AUTH0_CLIENT_ID }} \
