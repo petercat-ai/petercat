@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
 from agent.llm.base import BaseLLMClient
@@ -17,6 +18,7 @@ from petercat_utils import get_env_variable
 
 TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
+logger = logging.getLogger()
 
 class AgentBuilder:
 
@@ -195,4 +197,5 @@ class AgentBuilder:
                 return_only_outputs=True,
             )
         except Exception as e:
+            logger.error(e)
             return f"error: {str(e)}\n"

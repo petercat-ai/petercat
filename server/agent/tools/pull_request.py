@@ -43,8 +43,9 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         repo = g.get_repo(repo_name)
         pull_request = repo.get_pull(pull_number)
+        # print(f"create_pr_summary, pull_request={pull_request}, summary={summary}")
         pull_request.create_issue_comment(summary)
-    
+        return json.dumps([])
     @tool
     def create_review_comment(repo_name: str, pull_number: int, sha: str, path: str, line: int, comment: str):
         """
@@ -71,7 +72,7 @@ def factory(token: Optional[Auth.Token]):
                 commit=commit,
                 line=line,
             )
-            
+            return json.dumps([])
         except Exception as e:
             print(f"An error occurred: {e}")
             return json.dumps([])
