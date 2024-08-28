@@ -43,6 +43,7 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         repo = g.get_repo(repo_name)
         pull_request = repo.get_pull(pull_number)
+        # print(f"create_pr_summary, pull_request={pull_request}, summary={summary}")
         pull_request.create_issue_comment(summary)
         return json.dumps([])
     @tool

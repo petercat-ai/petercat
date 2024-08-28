@@ -49,8 +49,8 @@ def get_role_prompt(repo_name: str, ref: str):
 def get_pr_summary(repo_name: str, pull_number: int, title: str, description: str, file_diff: str):
   return PULL_REQUEST_SUMMARY.format(
     repo_name=repo_name,
-    pull_number={pull_number},
-    title={title},
-    description={description},
+    pull_number=pull_number,
+    title=title,
+    description=description,
     file_diff=file_diff
   )

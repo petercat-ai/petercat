@@ -1,41 +1,26 @@
-def convert_patch_to_hunk(patch: str) -> str:
-    if patch is None:
-        return ""
-    # 将 patch 按行拆分
-    lines = patch.strip().split('\n')
-    
-    new_hunk = []
-    old_hunk = []
-    
-    new_line_num = None
-    old_line_num = None
-    
-    for line in lines:
-        if line.startswith('@@'):
-            # 获取 old 和 new 的起始行号
-            parts = line.split()
-            old_line_num = int(parts[1].split(',')[0][1:])
-            new_line_num = int(parts[2].split(',')[0][1:])
-        elif line.startswith('+'):
-            # 新增行
-            new_hunk.append(f"{new_line_num}: {line[1:]}")
-            new_line_num += 1
-        elif line.startswith('-'):
-            # 删除行
-            old_hunk.append(line[1:])
-            old_line_num += 1
-        else:
-            # 不变行
-            new_hunk.append(f"{new_line_num}: {line}")
-            old_hunk.append(line)
-            new_line_num += 1
-            old_line_num += 1
-    
-    # 格式化输出
+import re
+
+def convert_patch_to_hunk(diff):
+    old_line, new_line = 0, 0
     result = []
-    result.append('---new_hunk---')
-    result.extend(new_hunk)
-    result.append('---old_hunk---')
-    result.extend(old_hunk)
-    
-    return '\n'.join(result)
+
+    for line in diff.splitlines():
+        if line.startswith('@@'):
+            # 使用正则表达式提取旧文件和新文件的起始行号
+            match = re.search(r'@@ -(\d+),?\d* \+(\d+),?\d* @@', line)
+            if match:
+                old_line = int(match.group(1))
+                new_line = int(match.group(2))
+            continue  # 跳过 @@ 行的输出
+        elif line.startswith('-'):
+            result.append(f"      {old_line:<5} {line}")  # 仅旧文件有内容
+            old_line += 1
+        elif line.startswith('+'):
+            result.append(f"{new_line:<5}       {line}")  # 仅新文件有内容
+            new_line += 1
+        else:
+            result.append(f"{new_line:<5} {old_line:<5} {line}")  # 两边都有的内容
+            old_line += 1
+            new_line += 1
+
+    return "NewFile OldFile SourceCode \n" + "\n".join(result)

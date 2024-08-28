@@ -79,7 +79,13 @@ class PullRequestEventHandler():
                 role_prompt = get_role_prompt(repo.full_name, pr.head.ref)
                 prompt = get_pr_summary(repo.full_name, pr.number, pr.title, pr.body, file_diff)
 
-                pr_content = f"{pr.title}:{pr.body}"
+                print(f"file_diff={file_diff}")
+                pr_content = f'''
+                ### Pr Title
+                {pr.title}
+                ### Pr Description
+                {pr.body}
+                '''
 
                 bot = Bot(
                     id=random_str(),
