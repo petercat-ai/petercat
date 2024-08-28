@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -45,6 +45,7 @@ export default function Homepage() {
     },
     [],
   );
+  const [stars, setStars] = useState(0);
 
   useEffect(() => {
     videoRef.current?.addEventListener('timeupdate', () => {
@@ -53,6 +54,12 @@ export default function Homepage() {
         videoRef.current!.play();
       }
     });
+
+    fetch('https://api.github.com/repos/petercat-bot/petercat')
+      .then((res) => res.json())
+      .then((data) => {
+        setStars(data.stargazers_count || 0);
+      });
   }, []);
 
   return (
@@ -63,8 +70,8 @@ export default function Homepage() {
       render={() => (
         <Fullpage.Wrapper>
           <div className="section bg-black">
-            <header className="h-20 max-w-[1400px] mx-auto flex justify-between items-center">
-              <span className="w-[216px]">
+            <header className="h-20 max-w-[1400px] mx-auto flex items-center">
+              <span className="flex-1">
                 <Image
                   width={114}
                   height={32}
@@ -74,29 +81,42 @@ export default function Homepage() {
                 />
               </span>
               <nav>
-                <a href="/" className="text-[#f4f4f5] opacity-60">
+                <a
+                  href="/"
+                  className="text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                >
                   皮套猫
                 </a>
-                <a href="/" className="ml-8 text-[#f4f4f5] opacity-60">
+                <a
+                  href="/"
+                  className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                >
                   演示案例
                 </a>
-                <a href="/" className="ml-8 text-[#f4f4f5] opacity-60">
+                <a
+                  href="/"
+                  className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                >
                   社区
                 </a>
-                <a href="/" className="ml-8 text-[#f4f4f5] opacity-60">
+                <a
+                  href="/"
+                  className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                >
                   文档
                 </a>
               </nav>
-              <div>
+              <div className="flex-1 flex justify-end">
                 <a
                   href="/"
-                  className="w-[100px] h-10 inline-block bg-white/[0.15] text-white rounded-full leading-10 text-center mr-4"
+                  className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center mr-4"
                 >
-                  0 stars
+                  <GitHubIcon className="inline scale-75 -translate-y-0.5" />
+                  {stars} stars
                 </a>
                 <a
                   href="/"
-                  className="w-[100px] h-10 inline-block bg-white/[0.15] text-white rounded-full leading-10 text-center"
+                  className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center"
                 >
                   登录
                 </a>
@@ -131,7 +151,7 @@ export default function Homepage() {
                   （皮套猫）是专为社区维护者和开发者打造的智能答疑机器人解决方案。
                 </p>
                 <a
-                  className="inline-block px-8 py-3 rounded-full border-2 border-white text-white text-xl"
+                  className="inline-block px-8 py-3 rounded-full border-2 border-white text-white text-xl transition-transform hover:scale-105"
                   href="/"
                 >
                   立即尝试
@@ -305,7 +325,7 @@ export default function Homepage() {
                   <span className="absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
                   <span className="absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
                   <a
-                    className="absolute bottom-[52px] left-1/2 -translate-x-1/2 py-3 px-8 bg-black text-xl text-white rounded-full"
+                    className="absolute bottom-[52px] left-1/2 -translate-x-1/2 py-3 px-8 bg-black text-xl text-white rounded-full transition-transform hover:scale-105"
                     href="/"
                   >
                     了解更多
@@ -322,20 +342,32 @@ export default function Homepage() {
             </div>
             <footer className="bg-black">
               <nav className="flex justify-between items-center max-w-[1400px] mx-auto py-[21px]">
-                <a className="text-base text-[#F4F4F5]/[0.6]" href="/">
+                <a
+                  className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                  href="/"
+                >
                   petercat.chat
                 </a>
-                <a className="text-base text-[#F4F4F5]/[0.6]" href="/">
+                <a
+                  className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                  href="/"
+                >
                   ant.design
                 </a>
-                <a className="text-base text-[#F4F4F5]/[0.6]" href="/">
+                <a
+                  className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                  href="/"
+                >
                   makojs.dev
                 </a>
-                <a className="text-base text-[#F4F4F5]/[0.6]" href="/">
+                <a
+                  className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                  href="/"
+                >
                   皮套猫社区
                 </a>
                 <a
-                  className="flex items-center text-sm text-white py-[10px] px-6 rounded-full border-2 border-color-white/[0.4]"
+                  className="flex items-center text-sm text-white py-[10px] px-6 rounded-full border-2 border-white/[0.4] transition-colors hover:border-white/[0.8]"
                   href="/"
                 >
                   <GitHubIcon className="inline scale-[0.66] -ml-1" />
@@ -349,7 +381,7 @@ export default function Homepage() {
                       <div className="flex justify-end">
                         <div className="flex-1 max-w-[660px]">
                           <a
-                            className="float-right mt-4 py-3 px-8 text-xl text-[#FEF4E1] rounded-full border-2 border-white/[0.4]"
+                            className="float-right mt-4 py-3 px-8 text-xl text-[#FEF4E1] rounded-full border-2 border-white/[0.4] transition-colors hover:border-white/[0.8]"
                             href="/"
                           >
                             查看更多
@@ -374,49 +406,49 @@ export default function Homepage() {
                       />
                       <div className="max-w-[335px] grid grid-cols-2 gap-4">
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           xingwanying
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           RaoHai
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           ch-liuzhide
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           PeachScript
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           golevkadesign
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           MadratJerry
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           AirBobby
                         </a>
                         <a
-                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
+                          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
                           href="/"
                         >
                           alichengyue
@@ -434,7 +466,7 @@ export default function Homepage() {
                             alt="CONTACT"
                           />
                           <a
-                            className="text-xl text-[#FEF4E1]"
+                            className="text-xl text-[#FEF4E1] hover:underline"
                             href="mailto:antd.antgroup@gmail.com"
                           >
                             antd.antgroup@gmail.com
