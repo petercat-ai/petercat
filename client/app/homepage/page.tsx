@@ -120,8 +120,15 @@ export default function Homepage() {
                   小猫咪助你征服 Github
                 </h2>
                 <p className="mb-8 text-xl text-white">
-                  Peter
-                  Cat（皮套猫）是专为社区维护者和开发者打造的智能答疑机器人解决方案。
+                  <Image
+                    className="inline scale-85 origin-top-right"
+                    style={{ filter: 'saturate(0)' }}
+                    width={106}
+                    height={20}
+                    src="/images/logo-footer.svg"
+                    alt="Peter Cat"
+                  />
+                  （皮套猫）是专为社区维护者和开发者打造的智能答疑机器人解决方案。
                 </p>
                 <a
                   className="inline-block px-8 py-3 rounded-full border-2 border-white text-white text-xl"
@@ -134,9 +141,13 @@ export default function Homepage() {
           </div>
           <div className="section bg-black">
             <div className="relative max-w-[1400px] mx-auto py-8 bg-[#FEF4E1] rounded-[48px] p-16 pt-[120px]">
-              <h2 className="ml-6 mb-6 text-[100px] leading-none font-bold text-[#27272A]">
-                Features
-              </h2>
+              <Image
+                width={475}
+                height={95}
+                className="ml-6 mb-6"
+                src="/images/title_features.svg"
+                alt="Features"
+              />
               <p className="ml-6 text-xl text-[#27272A] mr-[748px]">
                 我们提供对话式答疑 Agent
                 配置系统、自托管部署方案和便捷的一体化应用 SDK，让您能够为自己的
@@ -212,17 +223,25 @@ export default function Homepage() {
                 loop={false}
                 lottieRef={lightningCatRef}
               />
-              <h2 className="mb-6 text-[160px] leading-none font-bold text-[#FFA700] drop-shadow-[4px_8px_0_#000000]">
-                <small>Based on</small>
-                <br />
-                GPT4
-              </h2>
+              <Image
+                className="mb-6 relative"
+                width={542}
+                height={251}
+                src="/images/title_based.svg"
+                alt="Based on GPT4"
+              />
               <p className="mb-20 ml-2 text-xl text-[#FEF4E1] w-[500px] mix-blend-difference">
                 得益于强大的底层能力，您可以将任意感兴趣的代码仓库转换为答疑机器人，或体验社区中其它机器人。它们不仅能推荐优质代码仓库，还能协助用户自动提交
                 issue。
               </p>
               <div className="text-[#FEF4E1] text-base mix-blend-difference">
-                <p className="text-xl font-bold text-[#FFA700]">Powered by</p>
+                <Image
+                  className="my-1"
+                  width={147}
+                  height={24}
+                  src="/images/title_powered.svg"
+                  alt="Powered by"
+                />
                 <span className="inline-flex h-12 items-center mr-6">
                   <Image
                     width={48}
@@ -268,9 +287,13 @@ export default function Homepage() {
           </div>
           <div className="section bg-[#FEF4E1]">
             <div className="relative max-w-[1400px] mx-auto p-14 pt-[166px]">
-              <h2 className="mb-9 leading-none -indent-14 font-bold text-center text-[80px] text-[#3F3F46] drop-shadow-[4px_8px_0_#FECC6B]">
-                Showcase
-              </h2>
+              <Image
+                className="mb-9 mx-auto"
+                width={463}
+                height={90}
+                src="/images/title_showcase.svg"
+                alt="Showcase"
+              />
               <div className="flex justify-between items-start pl-10">
                 <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
                   <div className="border border-[#B2AB9D] w-[248px] h-[383px]"></div>
@@ -331,9 +354,11 @@ export default function Homepage() {
                           >
                             查看更多
                           </a>
-                          <h3 className="mb-2 text-3xl font-bold leading-[1.379]">
-                            DOCS
-                          </h3>
+                          <img
+                            className="mb-2 my-1.5"
+                            src="/images/title_docs.svg"
+                            alt="DOCS"
+                          />
                           <p className="text-xl">项目详细信息请进文档查阅</p>
                         </div>
                       </div>
@@ -342,9 +367,11 @@ export default function Homepage() {
                       className="border border-r-0 border-[#7F7A71] px-10 py-[51.5px] bg-[url('/images/footer-contribution.png')] bg-contain bg-no-repeat pl-[335px]"
                       rowSpan={2}
                     >
-                      <h3 className="mb-4 text-3xl font-bold leading-[1.379]">
-                        CONTRIBUTORS
-                      </h3>
+                      <img
+                        className="mb-4 my-1.5"
+                        src="/images/title_contributors.svg"
+                        alt="CONTRIBUTORS"
+                      />
                       <div className="max-w-[335px] grid grid-cols-2 gap-4">
                         <a
                           className="text-xl text-[#FEF4E1] tracking-widest font-extralight"
@@ -401,9 +428,11 @@ export default function Homepage() {
                     <td className="border border-l-0 border-[#7F7A71] px-10 py-[51.5px]">
                       <div className="flex justify-end">
                         <div className="flex-1 max-w-[660px]">
-                          <h3 className="mb-2 text-3xl font-bold leading-[1.379]">
-                            CONTACT
-                          </h3>
+                          <img
+                            className="mb-2 my-1.5"
+                            src="/images/title_contact.svg"
+                            alt="CONTACT"
+                          />
                           <a
                             className="text-xl text-[#FEF4E1]"
                             href="mailto:antd.antgroup@gmail.com"
@@ -430,7 +459,7 @@ export default function Homepage() {
                           width={106}
                           height={20}
                           src="/images/logo-footer.svg"
-                          alt="petercat"
+                          alt="Peter Cat"
                         />
                       </div>
                     </td>
