@@ -75,7 +75,9 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
             {JSON.stringify(safeJsonParse(content?.data), null, 2)}
           </Highlight>
         ) : (
-          <>{content?.data}</>
+          <Highlight language="text" theme="light" type="block">
+            {content?.data}
+          </Highlight>
         ),
       },
     ];

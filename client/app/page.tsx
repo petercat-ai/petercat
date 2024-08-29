@@ -5,10 +5,10 @@ import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import BotList from '@/components/BotList';
 import { useSearch } from '@/app/contexts/SearchContext';
 import { Assistant } from 'petercat-lui';
 import { useFingerprint } from './hooks/useFingerprint';
+import PublishBotEntity from '@/components/PublishBotEntity';
 
 declare type Bot = Tables<'bots'>;
 
@@ -66,7 +66,7 @@ export default function Home() {
   return (
     <div>
       <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        <BotList type="list" />
+        <PublishBotEntity type="list" />
         {!isEmpty(bots) &&
           map(bots, (bot: Bot) => (
             <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />

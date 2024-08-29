@@ -23,7 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 declare type Bot = Tables<'bots'>;
 
-const BotList = (props: { type: 'nav' | 'list' }) => {
+const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
   const { type } = props;
   const [selectedBot, setSelectedBot] = useState('');
   const [selectedBotName, setSelectedBotName] = useState('');
@@ -126,4 +126,4 @@ const BotList = (props: { type: 'nav' | 'list' }) => {
   );
 };
 
-export default BotList;
+export default PublishBotEntity;

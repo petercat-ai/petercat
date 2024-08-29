@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
 from agent.llm.base import BaseLLMClient
@@ -6,7 +7,7 @@ from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
-from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage
+from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage, SystemMessage
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain.prompts import MessagesPlaceholder
 from langchain_core.prompts import ChatPromptTemplate
@@ -17,6 +18,7 @@ from petercat_utils import get_env_variable
 
 TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
+logger = logging.getLogger()
 
 class AgentBuilder:
 
@@ -92,12 +94,15 @@ class AgentBuilder:
     def chat_history_transform(self, messages: list[Message]):
         transformed_messages = []
         for message in messages:
-            if message.role == "user":
-                transformed_messages.append(HumanMessage(self.chat_model.parse_content(content=message.content)))
-            elif message.role == "assistant":
-                transformed_messages.append(AIMessage(content=message.content))
-            else:
-                transformed_messages.append(FunctionMessage(content=message.content))
+            match message.role:
+                case "user":
+                    transformed_messages.append(HumanMessage(self.chat_model.parse_content(content=message.content)))
+                case "assistant":
+                    transformed_messages.append(AIMessage(content=message.content))
+                case "system":
+                    transformed_messages.append(SystemMessage(content=message.content))
+                case _:
+                    transformed_messages.append(FunctionMessage(content=message.content))
         return transformed_messages
 
     async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[str]:
@@ -192,4 +197,5 @@ class AgentBuilder:
                 return_only_outputs=True,
             )
         except Exception as e:
+            logger.error(e)
             return f"error: {str(e)}\n"

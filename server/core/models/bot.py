@@ -10,4 +10,4 @@ class Bot(BaseModel):
     prompt: Optional[str] = ""
     name: str
     llm: Optional[str] = "openai"
-    created_at: datetime 
+    created_at: datetime = datetime.now()

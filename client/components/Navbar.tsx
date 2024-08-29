@@ -8,7 +8,7 @@ import { ShopIcon } from '@/public/icons/ShopIcon';
 import { SpaceIcon } from '@/public/icons/SpaceIcon';
 import { SearchIcon } from '@/public/icons/SearchIcon';
 import { AddIcon } from '@/public/icons/AddIcon';
-import BotList from './BotList';
+import PublishBotEntity from './PublishBotEntity';
 import { useSearch } from '@/app/contexts/SearchContext';
 
 export function Navbar() {
@@ -113,7 +113,7 @@ export function Navbar() {
         />
       </div>
       <div className="w-[200px] ml-[48px] flex items-center">
-        {!pathname.includes('/factory/list') && <BotList type="nav" />}
+        {!pathname.includes('/factory/list') && <PublishBotEntity type="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
             onPress={() => router.push(`/factory/edit/new`)}
