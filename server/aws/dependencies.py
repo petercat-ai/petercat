@@ -1,4 +1,3 @@
-from fastapi import Depends
 from .constants import AWS_REGION_NAME
 import boto3
 
