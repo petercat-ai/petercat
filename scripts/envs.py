@@ -162,7 +162,7 @@ def update_config_with_env(args):
     env_file = args.env or LOCAL_ENV_FILE
     toml_file = args.template or ".aws/petercat-preview.toml"
     """Load env vars from a .env file and update them into a config.toml file."""
-    pull_envs()
+    pull_envs(args)
 
     env_vars = load_env_file(env_file)
     config = load_config_toml(toml_file)
