@@ -28,3 +28,5 @@ requests
 pytest
 httpx
 petercat_utils>=0.1.28
+toml
+pyyaml
