@@ -43,8 +43,8 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       # Sync .env from remote         
       - run: |
-        pip install -r scripts/requirements.txt
-        python scripts/sync_envs.py pull -t .aws/petercat-preview.toml
+          pip install toml pyyaml boto3
+          python scripts/sync_envs.py build -t .aws/petercat-preview.toml
       # Build inside Docker containers
       - run: sam build --use-container --config-file .aws/petercat-preview.toml
 

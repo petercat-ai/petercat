@@ -124,16 +124,17 @@ def main():
     parser = argparse.ArgumentParser(description="Update config.toml parameter_overrides with values from a .env file.")
 
     subparsers = parser.add_subparsers(dest='command', required=True, help='Sub-command help')
-    pull_parser = subparsers.add_parser('pull', help='Pull environment variables from a .env file and update samconfig.toml')
+    pull_parser = subparsers.add_parser('pull', help='Pull environment variables from a .env file')
+    build_parser = subparsers.add_parser('build', help='Pull environment variables from a .env file and update samconfig.toml')
 
-    pull_parser.add_argument(
+    build_parser.add_argument(
         '-e', '--env', 
         type=str, 
         default=LOCAL_ENV_FILE, 
         help='Path to the .env file (default: .env)'
     )
 
-    pull_parser.add_argument(
+    build_parser.add_argument(
         '-t', '--template', 
         type=str, 
         required=True, 
@@ -144,6 +145,9 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'pull':
+        pull_envs()
+    
+    if args.command == 'build':
         update_config_with_env(args.env, args.template)
 
 if __name__ == "__main__":
