@@ -1,172 +1,163 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
-Description: >
-  Streaming Bedrock Response with FastAPI on AWS Lambda
+Description: 'Streaming Bedrock Response with FastAPI on AWS Lambda
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+  '
 Globals:
   Function:
     Timeout: 300
-
+Outputs:
+  FastAPIFunction:
+    Description: FastAPI Lambda Function ARN
+    Value: FastAPIFunction.Arn
+  FastAPIFunctionUrl:
+    Description: Function URL for FastAPI function
+    Value: FastAPIFunctionUrl.FunctionUrl
+  SQSSubscriptionFunction:
+    Description: SQS Subscription Function Lambda Function ARN
+    Value: SQSSubscriptionFunction.Arn
+  SQSSubscriptionFunctionUrl:
+    Description: Function URL for SQS Subscriptio function
+    Value: SQSSubscriptionFunctionUrl.FunctionUrl
 Parameters:
-  GitHubAppID:
-    Type: Number
-    Description: Github App Id
-    Default: 1
-  GithubAppsClientId:
+  ApiIdentifier:
+    Description: Parameter for ApiIdentifier
     Type: String
-    Description: Github App Id
-    Default: 1
-  GitHubToken:
+  ApiUrl:
+    Description: Parameter for ApiUrl
     Type: String
-    Description: Github Token
-    Default: 1
-  WebUrl:
-    Type: String
-    Description: Web URL
-    Default: 1
-  APIUrl:
-    Type: String
-    Description: API URL
-    Default: 1
-  APIIdentifier:
-    Type: String
-    Description: APIIdentifier
-    Default: 1
-  FastAPISecretKey:
-    Type: String
-    Description: FastAPISecretKey
-    Default: 1
-  GithubAppsClientSecret:
-    Type: String
-    Description: Github App Id
-    Default: 1
-  OpenAIAPIKey:
-    Type: String
-    Description: Github App Id
-    Default: 1
-  GeminiAPIKey:
-    Type: String
-    Description: Gemini API Key
-    Default: 1
-  SupabaseServiceKey:
-    Type: String
-    Description: Github App Id
-    Default: 1
-  SupabaseUrl:
-    Type: String
-    Description: Github App Id
-    Default: 1
-  TavilyAPIKey:
-    Type: String
-    Description: Github App Id
-    Default: 1
-  SQSQueueName:
-    Type: String
-    Description: SQS Queue Name
-    Default: 1
-  SQSQueueUrl:
-    Type: String
-    Description: SQS Queue Url
-    Default: 1
-  Auth0Domain: 
-    Type: String
-    Description: Auth0 Domain
-    Default: 1
   Auth0ClientId:
+    Description: Parameter for Auth0ClientId
     Type: String
-    Description: Auth0 ClientId
-    Default: 1
   Auth0ClientSecret:
+    Description: Parameter for Auth0ClientSecret
     Type: String
-    Description: Auth0 Clientt Secret
-    Default: 1
+  Auth0Domain:
+    Description: Parameter for Auth0Domain
+    Type: String
+  AwsRegionName:
+    Description: Parameter for AwsRegionName
+    Type: String
+  AwsSecretName:
+    Description: Parameter for AwsSecretName
+    Type: String
+  CorsOriginWhitelist:
+    Description: Parameter for CorsOriginWhitelist
+    Type: String
+  FastapiSecretKey:
+    Description: Parameter for FastapiSecretKey
+    Type: String
+  GeminiApiKey:
+    Description: Parameter for GeminiApiKey
+    Type: String
+  OpenaiApiKey:
+    Description: Parameter for OpenaiApiKey
+    Type: String
+  RateLimitDuration:
+    Description: Parameter for RateLimitDuration
+    Type: String
+  RateLimitEnabled:
+    Description: Parameter for RateLimitEnabled
+    Type: String
+  RateLimitRequests:
+    Description: Parameter for RateLimitRequests
+    Type: String
+  S3BucketName:
+    Description: Parameter for S3BucketName
+    Type: String
+  SqsQueueUrl:
+    Description: Parameter for SqsQueueUrl
+    Type: String
+  SupabaseServiceKey:
+    Description: Parameter for SupabaseServiceKey
+    Type: String
+  SupabaseUrl:
+    Description: Parameter for SupabaseUrl
+    Type: String
+  TavilyApiKey:
+    Description: Parameter for TavilyApiKey
+    Type: String
+  WebUrl:
+    Description: Parameter for WebUrl
+    Type: String
+  XGithubAppId:
+    Description: Parameter for XGithubAppId
+    Type: String
+  XGithubAppsClientId:
+    Description: Parameter for XGithubAppsClientId
+    Type: String
+  XGithubAppsClientSecret:
+    Description: Parameter for XGithubAppsClientSecret
+    Type: String
 Resources:
   FastAPIFunction:
-    Type: AWS::Serverless::Function
+    Metadata:
+      DockerContext: server
+      DockerTag: v1
+      Dockerfile: ../docker/Dockerfile.aws.lambda
     Properties:
-      PackageType: Image
-      MemorySize: 512
       Environment:
         Variables:
+          API_IDENTIFIER: !Ref 'ApiIdentifier'
+          API_URL: !Ref 'ApiUrl'
+          AUTH0_CLIENT_ID: !Ref 'Auth0ClientId'
+          AUTH0_CLIENT_SECRET: !Ref 'Auth0ClientSecret'
+          AUTH0_DOMAIN: !Ref 'Auth0Domain'
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
-          API_URL: !Ref APIUrl
-          WEB_URL: !Ref WebUrl
-          X_GITHUB_APP_ID: !Ref GitHubAppID
-          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
-          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
-          API_IDENTIFIER: !Ref APIIdentifier
-          FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
-          OPENAI_API_KEY: !Ref OpenAIAPIKey
-          GEMINI_API_KEY: !Ref GeminiAPIKey
-          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
-          SUPABASE_URL: !Ref SupabaseUrl
-          GITHUB_TOKEN: !Ref GitHubToken
-          TAVILY_API_KEY: !Ref TavilyAPIKey
-          SQS_QUEUE_URL: !Ref SQSQueueUrl
-          AUTH0_DOMAIN: !Ref Auth0Domain
-          AUTH0_CLIENT_ID: !Ref Auth0ClientId
-          AUTH0_CLIENT_SECRET: !Ref Auth0ClientSecret
+          FASTAPI_SECRET_KEY: !Ref 'FastapiSecretKey'
+          GEMINI_API_KEY: !Ref 'GeminiApiKey'
+          GITHUB_TOKEN: GitHubToken
+          OPENAI_API_KEY: !Ref 'OpenaiApiKey'
+          SQS_QUEUE_URL: !Ref 'SqsQueueUrl'
+          SUPABASE_SERVICE_KEY: !Ref 'SupabaseServiceKey'
+          SUPABASE_URL: !Ref 'SupabaseUrl'
+          TAVILY_API_KEY: !Ref 'TavilyApiKey'
+          WEB_URL: !Ref 'WebUrl'
+          X_GITHUB_APPS_CLIENT_ID: !Ref 'XGithubAppsClientId'
+          X_GITHUB_APPS_CLIENT_SECRET: !Ref 'XGithubAppsClientSecret'
+          X_GITHUB_APP_ID: !Ref 'XGithubAppId'
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
-      Policies:
-      - Statement:
-        - Sid: BedrockInvokePolicy
-          Effect: Allow
-          Action:
-          - bedrock:InvokeModelWithResponseStream
-          Resource: '*'
-      Tracing: Active
-    Metadata:
-      DockerContext: server
-      Dockerfile: ../docker/Dockerfile.aws.lambda
-      DockerTag: v1
-
-  SQSSubscriptionFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      PackageType: Image
       MemorySize: 512
-      FunctionUrlConfig:
-        AuthType: NONE
-      Environment:
-        Variables:
-          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
-          SUPABASE_URL: !Ref SupabaseUrl
-          GITHUB_TOKEN: !Ref GitHubToken
+      PackageType: Image
       Policies:
       - Statement:
-        - Sid: BedrockInvokePolicy
-          Effect: Allow
-          Action:
+        - Action:
           - bedrock:InvokeModelWithResponseStream
-          Resource: '*'
-        - Sid: SQSInvokePolicy
           Effect: Allow
-          Action:
-          - sqs:*
           Resource: '*'
-      - SQSPollerPolicy:
-          QueueName: 
-            !Ref SQSQueueName
+          Sid: BedrockInvokePolicy
       Tracing: Active
+    Type: AWS::Serverless::Function
+  SQSSubscriptionFunction:
     Metadata:
-      Dockerfile: ../docker/Dockerfile.subscriber
       DockerContext: subscriber
       DockerTag: v1
-
-Outputs:
-  FastAPIFunctionUrl:
-    Description: "Function URL for FastAPI function"
-    Value: !GetAtt FastAPIFunctionUrl.FunctionUrl
-  FastAPIFunction:
-    Description: "FastAPI Lambda Function ARN"
-    Value: !GetAtt FastAPIFunction.Arn
-
-  SQSSubscriptionFunctionUrl:
-    Description: "Function URL for SQS Subscriptio function"
-    Value: !GetAtt SQSSubscriptionFunctionUrl.FunctionUrl
-  SQSSubscriptionFunction:
-    Description: "SQS Subscription Function Lambda Function ARN"
-    Value: !GetAtt SQSSubscriptionFunction.Arn
+      Dockerfile: ../docker/Dockerfile.subscriber
+    Properties:
+      Environment:
+        Variables:
+          GITHUB_TOKEN: GitHubToken
+          SUPABASE_SERVICE_KEY: !Ref 'SupabaseServiceKey'
+          SUPABASE_URL: !Ref 'SupabaseUrl'
+      FunctionUrlConfig:
+        AuthType: NONE
+      MemorySize: 512
+      PackageType: Image
+      Policies:
+      - Statement:
+        - Action:
+          - bedrock:InvokeModelWithResponseStream
+          Effect: Allow
+          Resource: '*'
+          Sid: BedrockInvokePolicy
+        - Action:
+          - sqs:*
+          Effect: Allow
+          Resource: '*'
+          Sid: SQSInvokePolicy
+      - SQSPollerPolicy:
+          QueueName: SQSQueueName
+      Tracing: Active
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

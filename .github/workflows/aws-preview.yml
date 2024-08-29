@@ -41,7 +41,10 @@ jobs:
           role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
           audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
-
+      # Sync .env from remote         
+      - run: |
+        pip install -r scripts/requirements.txt
+        python scripts/sync_envs.py pull -t .aws/petercat-preview.toml
       # Build inside Docker containers
       - run: sam build --use-container --config-file .aws/petercat-preview.toml
 
@@ -50,22 +53,4 @@ jobs:
           sam deploy \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --config-file .aws/petercat-preview.toml \
-            --parameter-overrides APIUrl="https://api-pre.petercat.chat" \
-                                  WebUrl="https://www.petercat.chat" \
-                                  GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
-                                  GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
-                                  GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
-                                  OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
-                                  GeminiAPIKey=${{ secrets.GEMINI_API_KEY }} \
-                                  SupabaseServiceKey=${{ secrets.SUPABASE_SERVICE_KEY }} \
-                                  SupabaseUrl=${{ secrets.SUPABASE_URL }} \
-                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }} \
-                                  APIIdentifier=${{ secrets.API_IDENTIFIER }} \
-                                  FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
-                                  SQSQueueName=${{ secrets.SQS_QUEUE_NAME }} \
-                                  SQSQueueUrl=${{ secrets.SQS_QUEUE_URL }} \
-                                  GitHubToken=${{ secrets.X_GITHUB_TOKEN }} \
-                                  Auth0Domain=${{ secrets.AUTH0_DOMAIN }} \
-                                  Auth0ClientId=${{ secrets.AUTH0_CLIENT_ID }} \
-                                  Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}
+            --config-file .aws/petercat-preview.toml
