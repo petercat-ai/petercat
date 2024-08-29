@@ -26,7 +26,7 @@ def confirm_action(message):
 
 
 def pull_envs(args):
-    if confirm_action("确认从远端拉取 .env 文件么"):
+    if args.silence or confirm_action("确认从远端拉取 .env 文件么"):
         obj = s3.Object(S3_BUCKET, ENV_FILE)
         data = io.BytesIO()
         obj.download_fileobj(data)
@@ -49,7 +49,7 @@ def push_envs(args):
             percentage = (self._seen_so_far / self._size) * 100
             print(f"\r{self._filename}: {self._seen_so_far} bytes transferred out of {self._size} ({percentage:.2f}%)", end='\n')
 
-    if confirm_action("确认将本地 .env 文件上传到远端么"):
+    if args.silence or confirm_action("确认将本地 .env 文件上传到远端么"):
         s3_client.upload_file(LOCAL_ENV_FILE, S3_BUCKET, ENV_FILE, Callback=ProgressPercentage(LOCAL_ENV_FILE))
         print("上传成功")
 
@@ -183,6 +183,7 @@ def main():
     pull_parser = subparsers.add_parser(
         "pull", help="Pull environment variables from a .env file"
     )
+    pull_parser.add_argument('--silence', action='store_true', help='Skip confirmation before updating the CloudFormation template')
     pull_parser.set_defaults(handle=pull_envs)
 
     push_parser = subparsers.add_parser(
@@ -212,6 +213,7 @@ def main():
         default=".aws/petercat-preview.toml",
         help="Path to the CloudFormation template file",
     )
+    build_parser.add_argument('--silence', action='store_true', help='Skip confirmation before updating the CloudFormation template')
 
     args = parser.parse_args()
     if args.command is not None:
