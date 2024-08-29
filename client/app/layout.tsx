@@ -7,6 +7,7 @@ import { BotProvider } from './contexts/BotContext';
 
 import 'petercat-lui/style';
 import './globals.css';
+import { usePathname } from 'next/navigation';
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
     <html lang="zh-CN">
       <head>
@@ -33,10 +36,14 @@ export default function RootLayout({
           <NextUIProvider>
             <SearchProvider>
               <BotProvider>
-                <div className="flex flex-col">
-                  <Navbar></Navbar>
-                  <div className="pb-[40px]">{children}</div>
-                </div>
+                {pathname === '/' ? (
+                  children
+                ) : (
+                  <div className="flex flex-col">
+                    <Navbar></Navbar>
+                    <div className="pb-[40px]">{children}</div>
+                  </div>
+                )}
               </BotProvider>
             </SearchProvider>
           </NextUIProvider>

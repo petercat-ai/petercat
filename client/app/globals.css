@@ -34,3 +34,56 @@ code {
 li {
   padding: 4px;
 }
+
+@keyframes leftToRight {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes rightToLeft {
+  0% {
+    width: 0%;
+    right: 0;
+  }
+  100% {
+    width: 100%;
+    right: 0;
+  }
+}
+
+@keyframes topToBottom {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+@keyframes bottomToTop {
+  0% {
+    height: 0%;
+    top: 100%;
+  }
+  100% {
+    height: 100%;
+    top: 0;
+  }
+}
+
+.animate-borders .border-top {
+  animation: leftToRight 1.5s ease-out forwards;
+}
+
+.animate-borders .border-side {
+  animation: bottomToTop 1.5s ease-out forwards;
+}
+
+
+.animate-borders .border-bottom {
+  animation: rightToLeft 1.5s ease-out forwards;
+}
