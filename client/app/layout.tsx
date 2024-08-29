@@ -36,7 +36,7 @@ export default function RootLayout({
           <NextUIProvider>
             <SearchProvider>
               <BotProvider>
-                {pathname === '/homepage' ? (
+                {pathname === '/' ? (
                   children
                 ) : (
                   <div className="flex flex-col">

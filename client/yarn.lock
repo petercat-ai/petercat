@@ -1049,6 +1049,14 @@
     "@babel/helper-create-regexp-features-plugin" "^7.24.7"
     "@babel/helper-plugin-utils" "^7.24.7"
 
+"@babel/polyfill@^7.2.5":
+  version "7.12.1"
+  resolved "https://registry.antgroup-inc.cn/@babel/polyfill/-/polyfill-7.12.1.tgz#1f2d6371d1261bbd961f3c5d5909150e12d0bd96"
+  integrity sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.4"
+
 "@babel/preset-env@^7.20.2":
   version "7.25.3"
   resolved "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.25.3.tgz#0bf4769d84ac51d1073ab4a86f00f30a3a83c67c"
@@ -1520,6 +1528,14 @@
   integrity sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==
   dependencies:
     tslib "^2.4.0"
+
+"@fullpage/react-fullpage@^0.1.42":
+  version "0.1.42"
+  resolved "https://registry.antgroup-inc.cn/@fullpage/react-fullpage/-/react-fullpage-0.1.42.tgz#17935efc73f14d63708ed3e92edff6e0cd270356"
+  integrity sha512-VgkjUKj8JZXaBaasrJPTn6x9TF1EEx9u/a724ANlEwf8vTCd7yiuz36LBvBIr0U6NTFCp+EqhmjXQkzZ4R3Iig==
+  dependencies:
+    "@babel/polyfill" "^7.2.5"
+    fullpage.js "^4.0.22"
 
 "@hapi/hoek@^9.0.0", "@hapi/hoek@^9.3.0":
   version "9.3.0"
@@ -5517,6 +5533,11 @@ core-js-compat@^3.37.1, core-js-compat@^3.38.0:
   dependencies:
     browserslist "^4.23.3"
 
+core-js@^2.6.5:
+  version "2.6.12"
+  resolved "https://registry.antgroup-inc.cn/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
 core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
@@ -6506,6 +6527,11 @@ fsevents@~2.3.2:
   version "2.3.3"
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
+fullpage.js@^4.0.22:
+  version "4.0.28"
+  resolved "https://registry.antgroup-inc.cn/fullpage.js/-/fullpage.js-4.0.28.tgz#b2345d5736320fcc0b0d640dda5eeb456e3e192f"
+  integrity sha512-wvKmVe+6t9Vn4kJrHqjZXxI0b58+ycDqBtonM9WutYKtNf/bdMw7H95QpFsqQkYapvvVIkAswoZclJXBT5OLkQ==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -9249,6 +9275,11 @@ regenerate@^1.4.2:
   version "1.4.2"
   resolved "https://registry.npmjs.org/regenerate/-/regenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
+
+regenerator-runtime@^0.13.4:
+  version "0.13.11"
+  resolved "https://registry.antgroup-inc.cn/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regenerator-runtime@^0.14.0:
   version "0.14.1"
