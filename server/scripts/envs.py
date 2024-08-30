@@ -118,7 +118,6 @@ def update_cloudformation_environment(
             )
             for key in env_vars_section:
                 if key in env_vars:
-                    print(f"assign vars: key={key}, value={env_vars[key]}")
                     env_vars_section[key] = env_vars[key]
 
     # Save the updated CloudFormation template
