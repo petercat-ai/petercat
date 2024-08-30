@@ -18,7 +18,8 @@ permissions:
 env:
   AWS_REGION: ap-northeast-1
   REPORT_FILE: md_report.md
-
+  WEB_URL: http://127.0.0.1:3000
+  API_URL: http://127.0.0.1:8000
 jobs:
   build:
     runs-on: ubuntu-latest
