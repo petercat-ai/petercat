@@ -189,6 +189,7 @@ def main():
     push_parser = subparsers.add_parser(
         "push", help="Push enviroment variables from local .env file to Remote"
     )
+    push_parser.add_argument('--silence', action='store_true', help='Skip confirmation before updating the CloudFormation template')
     push_parser.set_defaults(handle=push_envs)
 
     build_parser = subparsers.add_parser(

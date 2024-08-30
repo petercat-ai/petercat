@@ -21,6 +21,7 @@ AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
 API_URL =  get_env_variable("API_URL")
+WEB_URL =  get_env_variable("WEB_URL")
 CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
@@ -58,7 +59,11 @@ app.include_router(github_app_router.router)
 
 @app.get("/api/health_checker")
 def health_checker():
-    return { "Hello": "World" }
+    return {
+       "API_URL": API_URL,
+       "WEB_URL": WEB_URL,
+       "CALLBACK_URL": CALLBACK_URL,
+    }
 
 
 if __name__ == "__main__":
