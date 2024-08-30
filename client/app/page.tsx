@@ -63,7 +63,7 @@ export default function Homepage() {
       }
     });
 
-    fetch('https://api.github.com/repos/petercat-bot/petercat')
+    fetch('https://api.github.com/repos/petercat-ai/petercat')
       .then((res) => res.json())
       .then((data) => {
         setStars(data.stargazers_count || 0);
