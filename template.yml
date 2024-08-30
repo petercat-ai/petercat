@@ -115,6 +115,10 @@ Resources:
           X_GITHUB_APPS_CLIENT_ID: !Ref 'XGithubAppsClientId'
           X_GITHUB_APPS_CLIENT_SECRET: !Ref 'XGithubAppsClientSecret'
           X_GITHUB_APP_ID: !Ref 'XGithubAppId'
+          AWS_SECRET_NAME: !Ref AWS_SECRET_NAME
+          AWS_REGION_NAME: !Ref AWS_REGION_NAME
+          S3_BUCKET_NAME: !Ref S3_BUCKET_NAME
+          STATIC_URL: !Ref STATIC_URL
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM

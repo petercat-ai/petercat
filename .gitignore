@@ -37,6 +37,7 @@ yarn-error.log*
 .env*.pre
 .env
 *.env
+*.env.local
 # vercel
 .vercel
 
@@ -57,3 +58,4 @@ next-env.d.ts
 
 dist/
 lui/src/style.css
+
