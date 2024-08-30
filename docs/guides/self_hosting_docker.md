@@ -17,7 +17,7 @@ Follow these steps to start Supabase locally:
 - **Step 0**: Clone the repository:
 
   ```bash
-  git clone https://github.com/ant-xuexiao/petercat && cd server
+  git clone https://github.com/petercat-ai/petercat.git && cd server
   ```
 
 - **Step 1**: Copy the `.env.example` files

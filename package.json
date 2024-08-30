@@ -19,7 +19,7 @@
   "engines": {
     "node": "^18 || >=20"
   },
-  "repository": "https://github.com/ant-xuexiao/petercat.git",
+  "repository": "https://github.com/petercat-ai/petercat.git",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }

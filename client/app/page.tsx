@@ -227,12 +227,12 @@ export default function Homepage() {
                   </tbody>
                 </table>
 
-                <div className="absolute top-0 left-0 h-[2px] w-full bg-[#b2ab9d] border-top" />
-                <div className="absolute top-0 left-0 w-[2px] h-full bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 left-[424px] w-[2px] h-full bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 left-[848px] w-[2px] h-full  bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 right-0 w-[2px] h-full  bg-[#b2ab9d] border-side" />
-                <div className="absolute bottom-0 left-0 h-[2px]  w-full  bg-[#b2ab9d] border-bottom" />
+                <div className="absolute top-0 left-0 h-[1px] w-full bg-[#b2ab9d] border-top" />
+                <div className="absolute top-0 left-0 w-[1px] h-full bg-[#b2ab9d] border-side" />
+                <div className="absolute top-0 left-[424px] w-[1px] h-full bg-[#b2ab9d] border-side" />
+                <div className="absolute top-0 left-[848px] w-[1px] h-full  bg-[#b2ab9d] border-side" />
+                <div className="absolute top-0 right-0 w-[1px] h-full  bg-[#b2ab9d] border-side" />
+                <div className="absolute bottom-0 left-0 h-[1px]  w-full  bg-[#b2ab9d] border-bottom" />
               </div>
 
               <Lottie
