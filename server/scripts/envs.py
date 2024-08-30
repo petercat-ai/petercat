@@ -79,21 +79,8 @@ def load_env_file(env_file):
             line = line.strip()
             if line and not line.startswith("#"):  # Skip empty lines and comments
                 key, value = line.split("=", 1)
-                camel_case_key = snake_to_camel(key.strip())
-                env_vars[camel_case_key] = value.strip()
+                env_vars[key.strip()] = value.strip()
     return env_vars
-
-
-def generate_cloudformation_parameters(env_vars):
-    """Generate CloudFormation Parameters from dot-separated keys in env_vars."""
-    parameters = {}
-    for param_name in env_vars:
-        parameters[param_name] = {
-            "Type": "String",
-            "Description": f"Parameter for {param_name}",
-        }
-    return parameters
-
 
 class Ref:
     """Custom representation for CloudFormation !Ref."""
@@ -123,12 +110,6 @@ def update_cloudformation_environment(
     with open(cloudformation_template, "r") as file:
         template = yaml.safe_load(file)
 
-    parameters = generate_cloudformation_parameters(env_vars)
-    # Add parameters to the CloudFormation template
-    if "Parameters" not in template:
-        template["Parameters"] = {}
-    template["Parameters"].update(parameters)
-
     # Update environment variables in the resources
     for resource in template.get("Resources", {}).values():
         if "Properties" in resource and "Environment" in resource["Properties"]:
@@ -136,11 +117,8 @@ def update_cloudformation_environment(
                 "Variables", {}
             )
             for key in env_vars_section:
-                camel_key = snake_to_camel(key)
-                print(f"Environment Variables {camel_key}")
-
-                if camel_key in env_vars:
-                    env_vars_section[key] = Ref(camel_key)
+                if key in env_vars:
+                    env_vars_section[key] = env_vars[key]
 
     # Save the updated CloudFormation template
     with open(cloudformation_template, "w") as file:
@@ -171,14 +149,10 @@ def save_config_toml(config, toml_file):
 
 def update_config_with_env(args):
     env_file = args.env or LOCAL_ENV_FILE
-    toml_file = args.template or ".aws/petercat-preview.toml"
     """Load env vars from a .env file and update them into a config.toml file."""
     pull_envs(args)
 
     env_vars = load_env_file(env_file)
-    config = load_config_toml(toml_file)
-    updated_config = update_parameter_overrides(config, env_vars)
-    save_config_toml(updated_config, toml_file)
 
     update_cloudformation_environment(env_vars)
 
@@ -223,15 +197,6 @@ def main():
         type=str,
         default=LOCAL_ENV_FILE,
         help="Path to the .env file (default: .env)",
-    )
-
-    build_parser.add_argument(
-        "-t",
-        "--template",
-        type=str,
-        required=True,
-        default=".aws/petercat-preview.toml",
-        help="Path to the CloudFormation template file",
     )
     build_parser.add_argument(
         "--silence",
