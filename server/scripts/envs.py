@@ -7,7 +7,9 @@ import yaml
 
 S3_BUCKET = "petercat-env-variables"
 ENV_FILE = ".env"
-LOCAL_ENV_FILE = "./server/.env"
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+LOCAL_ENV_FILE = os.path.join(current_dir, "..", ".env")
 
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
@@ -47,11 +49,20 @@ def push_envs(args):
             # To simplify, we'll ignore multi-threading here.
             self._seen_so_far += bytes_amount
             percentage = (self._seen_so_far / self._size) * 100
-            print(f"\r{self._filename}: {self._seen_so_far} bytes transferred out of {self._size} ({percentage:.2f}%)", end='\n')
+            print(
+                f"\r{self._filename}: {self._seen_so_far} bytes transferred out of {self._size} ({percentage:.2f}%)",
+                end="\n",
+            )
 
     if args.silence or confirm_action("确认将本地 .env 文件上传到远端么"):
-        s3_client.upload_file(LOCAL_ENV_FILE, S3_BUCKET, ENV_FILE, Callback=ProgressPercentage(LOCAL_ENV_FILE))
+        s3_client.upload_file(
+            LOCAL_ENV_FILE,
+            S3_BUCKET,
+            ENV_FILE,
+            Callback=ProgressPercentage(LOCAL_ENV_FILE),
+        )
         print("上传成功")
+
 
 def snake_to_camel(snake_str):
     """Convert snake_case string to camelCase."""
@@ -146,9 +157,9 @@ def load_config_toml(toml_file):
 def update_parameter_overrides(config, env_vars):
     """Update the parameter_overrides in the config dictionary with values from env_vars."""
     parameter_overrides = [f"{key}={value}" for key, value in env_vars.items()]
-    config["default"]["deploy"]["parameters"]["parameter_overrides"] = (
-        parameter_overrides
-    )
+    config["default"]["deploy"]["parameters"][
+        "parameter_overrides"
+    ] = parameter_overrides
     return config
 
 
@@ -183,11 +194,20 @@ def main():
     pull_parser = subparsers.add_parser(
         "pull", help="Pull environment variables from a .env file"
     )
-    pull_parser.add_argument('--silence', action='store_true', help='Skip confirmation before updating the CloudFormation template')
+    pull_parser.add_argument(
+        "--silence",
+        action="store_true",
+        help="Skip confirmation before updating the CloudFormation template",
+    )
     pull_parser.set_defaults(handle=pull_envs)
 
     push_parser = subparsers.add_parser(
         "push", help="Push enviroment variables from local .env file to Remote"
+    )
+    push_parser.add_argument(
+        "--silence",
+        action="store_true",
+        help="Skip confirmation before updating the CloudFormation template",
     )
     push_parser.set_defaults(handle=push_envs)
 
@@ -213,7 +233,11 @@ def main():
         default=".aws/petercat-preview.toml",
         help="Path to the CloudFormation template file",
     )
-    build_parser.add_argument('--silence', action='store_true', help='Skip confirmation before updating the CloudFormation template')
+    build_parser.add_argument(
+        "--silence",
+        action="store_true",
+        help="Skip confirmation before updating the CloudFormation template",
+    )
 
     args = parser.parse_args()
     if args.command is not None:

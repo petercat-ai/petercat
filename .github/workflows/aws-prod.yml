@@ -39,7 +39,7 @@ jobs:
       # Sync .env from remote    
       - run: |
           pip install -r toml pyyaml boto3
-          python scripts/envs.py build -t .aws/petercat-preview.toml --silence
+          python server/scripts/envs.py build -t .aws/petercat-preview.toml --silence
       # Build inside Docker containers
       - run: sam build --use-container --config-file .aws/petercat-prod.toml
 

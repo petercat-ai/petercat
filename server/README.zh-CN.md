@@ -3,6 +3,11 @@
 # 介绍
 PeterCat 服务端，采用 FastAPI 框架开发。使用了 supabase 作为数据存储方案。
 
+## 代码目录结构参考
+
+fastapi 最佳实践请参考 https://github.com/zhanymkanov/fastapi-best-practices
+
+
 # 功能模块
 ## 存储
 采用 [supabase](https://supabase.com) 作为数据库进行存储。
