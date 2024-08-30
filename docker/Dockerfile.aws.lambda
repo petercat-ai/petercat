@@ -15,6 +15,5 @@ RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}" -U --no-cach
 
 # Set NLTK_DATA to load nltk_data
 ENV NLTK_DATA=/opt/nltk_data
-ENV ENV=production
 
 CMD ["python", "main.py"]

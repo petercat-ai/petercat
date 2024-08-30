@@ -2,12 +2,8 @@ from dotenv import load_dotenv
 import os
 
 def load_env():
-    env = os.getenv("ENV", "development")
-    print(f"load_env={env}")
-    load_dotenv(verbose=True, override=True)
-    
-    if env == 'development':
-        load_dotenv(dotenv_path=".env.local", verbose=True, override=True)
+    load_dotenv(verbose=True, override=True)    
+    load_dotenv(dotenv_path=".env.local", verbose=True, override=True)
 
 load_env()
 
