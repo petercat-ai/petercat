@@ -2,14 +2,14 @@ from typing import Annotated, Optional
 from github import Auth
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
-from agent.bot import bot_builder
+from agent.bot import Bot, bot_builder
 from agent.bot.get_bot import get_bot
-from core.models.bot import Bot
+from core.models.user import User
 from petercat_utils.data_class import ChatData
 
 from agent import qa_chat
 from auth.rate_limit import verify_rate_limit
-from auth.get_user_info import get_user_access_token, get_user_id
+from auth.get_user_info import get_user, get_user_id
 
 router = APIRouter(
     prefix="/api/chat",
@@ -30,16 +30,18 @@ async def generate_auth_failed_stream():
 )
 def run_qa_chat(
     input_data: ChatData,
-    user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
     print(
-        f"run_qa_chat: input_data={input_data}, user_access_token={user_access_token}"
+        f"run_qa_chat: input_data={input_data}, bot={bot}"
     )
 
-    token = Auth.Token(user_access_token) if user_access_token is not None else None
+    auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
     result = qa_chat.agent_stream_chat(
-        input_data=input_data, token=token, bot=bot
+        input_data=input_data,
+        auth_token=auth_token,
+        bot=bot
     )
     return StreamingResponse(result, media_type="text/event-stream")
 
@@ -47,11 +49,15 @@ def run_qa_chat(
 @router.post("/qa", dependencies=[Depends(verify_rate_limit)])
 async def run_issue_helper(
     input_data: ChatData,
-    user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
-    token = Auth.Token(user_access_token) if user_access_token is not None else None
-    result = await qa_chat.agent_chat(input_data, token, bot)
+    auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
+    result = await qa_chat.agent_chat(
+        input_data,
+        auth_token,
+        bot,
+    )
     return result
 
 

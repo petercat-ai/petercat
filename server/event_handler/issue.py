@@ -3,9 +3,9 @@ from github import Github, Auth
 from github.Issue import Issue
 from github.Repository import Repository
 from github import GithubException
+from agent.bot.get_bot import get_bot_by_id
 from agent.prompts.issue_helper import generate_issue_comment_prompt, generate_issue_prompt
 
-from core.dao.botDAO import BotDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
@@ -45,8 +45,7 @@ class IssueEventHandler:
                 
                 repository_config = RepositoryConfigDAO()
                 repo_config = repository_config.get_by_repo_name(repo.full_name)
-                bot_dao = BotDAO()
-                bot = bot_dao.get_bot(repo_config.robot_id)
+                bot = get_bot_by_id(repo_config.robot_id)
                 
                 analysis_result = await agent_chat(
                     ChatData(

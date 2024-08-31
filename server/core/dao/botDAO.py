@@ -1,7 +1,7 @@
 from core.dao.BaseDAO import BaseDAO
 from supabase.client import Client
 
-from core.models.bot import Bot
+from core.models.bot import BotModel
 from petercat_utils.db.client.supabase import get_client
 
 class BotDAO(BaseDAO):
@@ -17,4 +17,4 @@ class BotDAO(BaseDAO):
       .eq("id", bot_id) \
       .execute()
     bot = resp.data[0]
-    return Bot(**bot)
+    return BotModel(**bot)

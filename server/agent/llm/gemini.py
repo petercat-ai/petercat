@@ -19,13 +19,18 @@ def parse_gemini_input(message: MessageContent):
 class GeminiClient(BaseLLMClient):
   _client: ChatOpenAI
 
-  def __init__(self, temperature: Optional[int] = 0.2, max_tokens: Optional[int] = 1500, streaming: Optional[bool] = False):
+  def __init__(self,
+               temperature: Optional[int] = 0.2,
+               max_tokens: Optional[int] = 1500,
+               streaming: Optional[bool] = False,
+               api_key: Optional[str] = GEMINI_API_KEY,
+              ):
     self._client = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         temperature=temperature,
         streaming=streaming,
         max_tokens=max_tokens,
-        google_api_key=GEMINI_API_KEY,
+        google_api_key=api_key,
     )
   
   def get_client(self):

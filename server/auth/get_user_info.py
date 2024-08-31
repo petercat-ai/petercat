@@ -1,6 +1,7 @@
 from fastapi import Request
 import httpx
 import secrets
+from core.models.user import User
 
 from utils.random_str import random_str
 
@@ -72,14 +73,17 @@ async def get_user_id(request: Request):
     except Exception:
         return None
 
-async def get_user_access_token(request: Request):
+async def get_user(request: Request) -> User | None:
     try:
         user_info = request.session.get('user')
         if user_info is None:
             return None
+    
+        if user_info.sub.startswith("client|"):
+            return User(**user_info, anonymous=True)
         
         access_token = await getUserAccessToken(user_id=user_info['sub'])
-        return access_token
+
+        return User(**user_info, access_token=access_token, anonymous=False)
     except Exception:
         return None
- 
