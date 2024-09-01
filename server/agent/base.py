@@ -2,7 +2,7 @@ import json
 import logging
 from typing import AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
-from agent.llm.base import BaseLLMClient
+from agent.llm import BaseLLMClient
 from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
@@ -21,7 +21,7 @@ TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 logger = logging.getLogger()
 
 class AgentBuilder:
-
+    agent_executor: AgentExecutor
     def __init__(
         self,
         chat_model: BaseLLMClient,

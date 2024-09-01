@@ -8,13 +8,15 @@ from github.PaginatedList import PaginatedList
 from github.File import File
 from github.PullRequest import PullRequest
 from github.Repository import Repository
+from agent.bot import Bot
+from agent.bot.get_bot import get_bot_by_id
+from core.models.bot import BotModel
 
 from utils.path_to_hunk import convert_patch_to_hunk
 from utils.random_str import random_str
 from agent.prompts.pull_request import get_pr_summary, get_role_prompt
 from agent.qa_chat import agent_chat
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
-from core.models.bot import Bot
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 def file_match(filename: str, patterns: List[str]): 
@@ -67,6 +69,7 @@ class PullRequestEventHandler():
         repository_config = RepositoryConfigDAO()
         repo_config = repository_config.get_by_repo_name(repo_full_name)
 
+
         # 用户尚未为仓库配置承接的 CR 机器人，不做任何事情
         if repo_config is None:
             return { "success": True }
@@ -86,13 +89,17 @@ class PullRequestEventHandler():
                 ### Pr Description
                 {pr.body}
                 '''
+                origin_bot = get_bot_by_id(repo_config.robot_id)
 
                 bot = Bot(
-                    id=random_str(),
-                    uid="mock_pull_requst",
-                    description="A Robot for Pull Requst Review",
-                    name="pull_request_bot",
-                    prompt=role_prompt,
+                    bot=BotModel(
+                        id=random_str(),
+                        uid="mock_pull_requst",
+                        description="A Robot for Pull Requst Review",
+                        name="pull_request_bot",
+                        prompt=role_prompt,
+                    ),
+                    llm_token=origin_bot.llm_token
                 )
 
                 analysis_result = await agent_chat(

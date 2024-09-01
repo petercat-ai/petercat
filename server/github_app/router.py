@@ -5,11 +5,12 @@ from fastapi.responses import RedirectResponse
 
 import time
 from github import Auth, Github
-from auth.get_user_info import get_user_access_token
+from auth.get_user_info import get_user
 from core.dao.authorizationDAO import AuthorizationDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.repository import RepositoryConfig
 from core.models.authorization import Authorization
+from core.models.user import User
 
 from github_app.handlers import get_handler
 from github_app.utils import get_app_installations_access_token, get_installation_repositories, get_jwt, get_private_key
@@ -109,14 +110,14 @@ async def github_app_webhook(
 
 @router.get("/user/organizations")
 async def get_user_organizations(
-    user_access_token: Annotated[str | None, Depends(get_user_access_token)] = None
+    user: Annotated[User | None, Depends(get_user)] = None
 ):
-    if user_access_token is None:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Github Login needed"
         )
-    auth = Auth.Token(token=user_access_token)
+    auth = Auth.Token(token=user.access_token)
     g = Github(auth=auth)
     user = g.get_user()
     orgs = user.get_orgs()

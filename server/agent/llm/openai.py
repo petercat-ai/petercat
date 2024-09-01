@@ -12,13 +12,18 @@ OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
 class OpenAIClient(BaseLLMClient):
   _client: ChatOpenAI
 
-  def __init__(self, temperature: Optional[int] = 0.2, max_tokens: Optional[int] = 1500, streaming: Optional[bool] = False):
+  def __init__(self,
+               temperature: Optional[int] = 0.2,
+               max_tokens: Optional[int] = 1500,
+               streaming: Optional[bool] = False,
+               api_key: Optional[str] = OPEN_API_KEY
+  ):
     self._client = ChatOpenAI(
         model_name="gpt-4o",
         temperature=temperature,
         streaming=streaming,
         max_tokens=max_tokens,
-        openai_api_key=OPEN_API_KEY,
+        openai_api_key=api_key,
     )
   
   def get_client(self):
