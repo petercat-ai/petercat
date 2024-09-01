@@ -33,7 +33,23 @@ export async function fetcher(url: string) {
   return response.data.data;
 }
 
-export async function getBotDetail(id: string, apiDomain: string) {
-  const url = `${apiDomain}/api/bot/detail?id=${id}`;
-  return fetcher(url);
-}
+export const uploadImage = async (
+  file: File,
+  apiDomain: string,
+): Promise<string> => {
+  const formData = new FormData();
+  formData.append('title', file?.name);
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post(`${apiDomain}/api/aws/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response?.data?.data?.url;
+  } catch (error) {
+    console.error('Error:', error);
+    return '';
+  }
+};

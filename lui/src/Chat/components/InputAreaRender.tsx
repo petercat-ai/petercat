@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   message as AntMessage,
   Button,
@@ -19,9 +20,11 @@ import {
   MessageContent,
   TextContentBlock,
 } from '../../interface';
+import { uploadImage } from '../../services/ChatController';
 
 const InputAreaRender = (props: {
   isShowStop: boolean;
+  apiDomain: string;
   disabled?: boolean;
   disabledPlaceholder?: string;
   onMessageSend: (message: string) => void | Promise<any>;
@@ -32,7 +35,7 @@ const InputAreaRender = (props: {
   const [form] = Form.useForm();
   const [message, setMessage] = useState('');
   const [fileList, setFileList] = useState<
-    { url: string | ArrayBuffer | null; uid: any }[]
+    { url: string | ArrayBuffer | null; uid: any; isLoading: boolean }[]
   >([]);
 
   const uploadDisabled = useMemo(() => fileList?.length >= 4, [fileList]);
@@ -63,7 +66,7 @@ const InputAreaRender = (props: {
             type: 'image_url',
             image_url: {
               url: file.url,
-              detail: 'low',
+              detail: 'auto',
             },
           } as ImageURLContentBlock;
         });
@@ -94,7 +97,7 @@ const InputAreaRender = (props: {
     setMessage(event.target.value);
   };
 
-  const handleUpload = ({ file, uid }: { file: File | null; uid: string }) => {
+  const handleUpload = ({ file, uid }: { file: File | null; uid?: string }) => {
     if (!file || uploadDisabled || disabled) {
       return;
     }
@@ -102,11 +105,31 @@ const InputAreaRender = (props: {
       AntMessage.warning('上传图片不能超过 4 张');
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFileList([...fileList, { url: reader.result, uid }]);
-    };
-    reader.readAsDataURL(file);
+
+    // @ts-ignore
+    const fileId = uid ?? file?.uid;
+
+    setFileList((prevList) => [
+      ...prevList,
+
+      { url: '', uid: fileId, isLoading: true },
+    ]);
+    uploadImage(file, props.apiDomain).then((response: string) => {
+      if (response) {
+        setFileList((prevList) =>
+          prevList.map((item) =>
+            item.uid === fileId
+              ? { url: response, isLoading: false, uid: fileId }
+              : item,
+          ),
+        );
+      } else {
+        AntMessage.error('上传图片失败');
+        setFileList((prevList) =>
+          prevList.filter((item) => item.uid !== fileId),
+        );
+      }
+    });
   };
 
   const handleRemove = (uid: string) => {
@@ -117,13 +140,20 @@ const InputAreaRender = (props: {
     if (disabled) {
       return;
     }
-    const clipboardItems = event.clipboardData.items;
-    for (let i = 0; i < clipboardItems.length; i++) {
-      const item = clipboardItems[i];
-      if (item.type.includes('image')) {
-        const file = item.getAsFile();
-        handleUpload({ file, uid: Date.now().toString() });
+
+    const files = event.clipboardData.files;
+
+    if (files.length > 0) {
+      const file = files[0];
+      const uniqueUid = `${Date.now()}`;
+      const newFile = new File([file], uniqueUid, { type: file.type });
+      if (file.type.includes('image')) {
+        handleUpload({ file: newFile, uid: uniqueUid });
+      } else {
+        AntMessage.warning('只支持图片格式');
       }
+    } else {
+      AntMessage.warning('粘贴失败');
     }
   };
 
@@ -187,7 +217,7 @@ const InputAreaRender = (props: {
             />
             <Upload
               accept="image/*"
-              disabled={disabled}
+              disabled={disabled || uploadDisabled}
               uploadDisabled={uploadDisabled}
               showUploadList={false}
               // @ts-ignore
@@ -215,16 +245,23 @@ const InputAreaRender = (props: {
             </Upload>
             {fileList.map((file) => (
               <div key={file.uid} className="relative h-[32px]">
-                <Image
-                  src={file.url as string}
-                  preview={{
-                    mask: false,
-                  }}
-                  width={32}
-                  height={32}
-                  alt="uploaded"
-                  className="object-cover rounded-lg shadow-md"
-                />
+                {file.isLoading ? (
+                  <div className="rounded-lg shadow-md w-[32px] h-[32px] flex items-center justify-center">
+                    <LoadingOutlined className="text-center" />
+                  </div>
+                ) : (
+                  <Image
+                    src={file.url as string}
+                    preview={{
+                      mask: false,
+                    }}
+                    width={32}
+                    height={32}
+                    alt="uploaded"
+                    className="object-cover rounded-lg shadow-md"
+                  />
+                )}
+
                 <div
                   className="absolute w-[16px] h-[16px] bg-gray-800 top-[-8px] right-[-8px] text-white rounded-full cursor-pointer"
                   style={{ border: '2px solid #f1f1f1' }}
