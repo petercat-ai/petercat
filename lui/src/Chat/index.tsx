@@ -423,6 +423,7 @@ const Chat: FC<ChatProps> = memo(
             ) => {
               return (
                 <InputArea
+                  apiDomain={apiDomain}
                   disabled={disabled}
                   disabledPlaceholder={disabledPlaceholder}
                   isShowStop={!!proChatRef?.current?.getChatLoadingId()}
