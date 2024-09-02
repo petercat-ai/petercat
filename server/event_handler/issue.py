@@ -39,7 +39,7 @@ class IssueEventHandler:
             if self.event["action"] == "opened":
                 issue, repo = self.get_issue()
 
-                prompt = generate_issue_prompt(issue_url=issue.url, issue_content=issue.body)
+                prompt = generate_issue_prompt(repo_name=repo.full_name, issue_url=issue.url, issue_content=issue.body)
                 issue_content = f"{issue.title}: {issue.body}"
                 message = Message(role="user", content=[TextContentBlock(type="text", text=issue_content)])  
                 
@@ -87,7 +87,7 @@ class IssueCommentEventHandler(IssueEventHandler):
                 ]
 
                 issue_content = f"{issue.title}: {issue.body}"
-                prompt = generate_issue_comment_prompt(issue_url=issue.url, issue_content=issue_content)
+                prompt = generate_issue_comment_prompt(repo_name=repo.full_name, issue_url=issue.url, issue_content=issue_content)
                 
                 repository_config = RepositoryConfigDAO()
                 repo_config = repository_config.get_by_repo_name(repo.full_name)
