@@ -97,6 +97,12 @@ export default function Homepage() {
                   演示案例
                 </a>
                 <a
+                  href="/market"
+                  className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                >
+                  工作台
+                </a>
+                <a
                   href="https://github.com/petercat-ai/petercat/blob/main/README.zh-CN.md"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                   target="_blank"
