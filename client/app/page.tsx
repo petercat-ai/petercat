@@ -123,7 +123,7 @@ export default function Homepage() {
                 className="mx-auto"
                 width={1400}
                 height={1200}
-                src="https://mass-office.alipay.com/huamei_koqzbu/afts/file/TFhCS4dF8Y4AAAAAAAAAABAADnV5AQBr"
+                src="https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*CeZ5TJsdJfMAAAAAAAAAAAAADuH-AQ"
                 ref={videoRef}
                 autoPlay
                 muted
