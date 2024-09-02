@@ -21,7 +21,7 @@ export function Navbar() {
     {
       id: 'market',
       label: '市场',
-      href: '/',
+      href: '/market',
       icon: <ShopIcon />,
     },
     {
@@ -61,7 +61,7 @@ export function Navbar() {
         <Tabs
           items={navs}
           variant="underlined"
-          selectedKey={pathname === '/' ? 'market' : 'factory'}
+          selectedKey={pathname === '/market' ? 'market' : 'factory'}
           classNames={{
             base: 'bg-[#F3F4F6] rounded-full ml-[32px]',
             tabList: 'gap-0',
