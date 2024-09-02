@@ -35,18 +35,25 @@
 
 我们提供对话式答疑 Agent 配置系统、自托管部署方案和便捷的一体化应用 SDK，让您能够为自己的 GitHub 仓库一键创建智能答疑机器人，并快速集成到各类官网或项目中， 为社区提供更高效的技术支持生态。
 
-### 特性1
+### 对话即创造
 
 仅需要告知你的仓库地址或名称，Peter Cat 即可自动完成创建机器人的全部流程
 
+![对话即创造](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*aQ9uRoNZGe8AAAAAAAAAAAAADrPSAQ/original)
 
-### 特性2
+
+### 知识自动入库
 
 机器人创建后，所有相关Github 文档和 issue 将自动入库，作为机器人的知识依据
 
-### 特性3 
+![知识自动入库](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*hkkFSaR1UqgAAAAAAAAAAAAADrPSAQ/original)
+
+### 多平台集成
 
 多种集成方式自由选择，如对话应用 SDK 集成至官网，Github APP一键安装至 Github 仓库等
+
+| ![官网](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
+|:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
 
 ## Agent 工作流
 
