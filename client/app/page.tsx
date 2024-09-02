@@ -95,6 +95,14 @@ export default function Homepage() {
     },
     [],
   );
+  const enterHandler = useCallback<NonNullable<fullpageOptions['afterLoad']>>(
+    (_, dest) => {
+      if (dest.index === 2) {
+        lightningCatRef.current!.goToAndPlay(0);
+      }
+    },
+    [],
+  );
   const [stars, setStars] = useState(0);
 
   useEffect(() => {
@@ -116,6 +124,7 @@ export default function Homepage() {
     <Fullpage
       onScrollOverflow={scrollHandler}
       beforeLeave={leaveHandler}
+      afterLoad={enterHandler}
       credits={{}}
       render={() => (
         <Fullpage.Wrapper>
@@ -133,7 +142,7 @@ export default function Homepage() {
               <nav>
                 <a
                   href="/"
-                  className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                  className="text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                 >
                   演示案例
                 </a>
@@ -199,16 +208,16 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="section bg-black">
+          <div className="section bg-black group">
             <div className="relative max-w-[1400px] mx-auto py-8 bg-[#FEF4E1] rounded-[48px] p-16 pt-[120px]">
               <Image
                 width={475}
                 height={95}
-                className="ml-6 mb-6"
+                className="ml-6 mb-6 opacity-0 transition-opacity group-[.fp-completely]:opacity-100"
                 src="/images/title_features.svg"
                 alt="Features"
               />
-              <p className="ml-6 text-xl text-[#27272A] mr-[748px]">
+              <p className="ml-6 text-xl text-[#27272A] mr-[748px] opacity-0 transition-opacity group-[.fp-completely]:opacity-100">
                 我们提供对话式答疑 Agent
                 配置系统、自托管部署方案和便捷的一体化应用 SDK，让您能够为自己的
                 GitHub
@@ -222,7 +231,7 @@ export default function Homepage() {
                 <table className="table-fixed border-collapse ">
                   <tbody>
                     <tr>
-                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-300 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
                         <Image
                           width={72}
                           height={73}
@@ -237,7 +246,7 @@ export default function Homepage() {
                           即可自动完成创建机器人的全部流程
                         </p>
                       </td>
-                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-500 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
                         <Image
                           width={72}
                           height={73}
@@ -252,7 +261,7 @@ export default function Homepage() {
                           将自动入库，作为机器人的知识依据
                         </p>
                       </td>
-                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-700 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
                         <Image
                           width={72}
                           height={73}
@@ -290,27 +299,27 @@ export default function Homepage() {
               />
             </div>
           </div>
-          <div className="section bg-black">
-            <div className="max-w-[1400px] mx-auto p-[84px] pb-8">
+          <div className="section bg-black group">
+            <div className="max-w-[1400px] mx-auto p-[100px] pb-8">
               <Lottie
-                className="absolute bottom-0 right-0"
+                className="absolute bottom-0 right-0 opacity-0 group-[.fp-completely]:opacity-100"
                 animationData={LottieLightningCat}
                 autoPlay={false}
                 loop={false}
                 lottieRef={lightningCatRef}
               />
               <Image
-                className="mb-6 relative"
+                className="mb-9 relative scale-0 transition-transform group-[.fp-completely]:delay-700 group-[.fp-completely]:scale-100"
                 width={542}
                 height={251}
                 src="/images/title_based.svg"
                 alt="Based on GPT4"
               />
-              <p className="mb-20 ml-2 text-xl text-[#FEF4E1] w-[500px] mix-blend-difference">
+              <p className="mb-[119px] ml-2 text-xl text-[#FEF4E1] w-[500px] mix-blend-difference scale-0 transition-transform group-[.fp-completely]:delay-500 group-[.fp-completely]:scale-100">
                 得益于强大的底层能力，您可以将任意感兴趣的代码仓库转换为答疑机器人，或体验社区中其它机器人。它们不仅能推荐优质代码仓库，还能协助用户自动提交
                 issue。
               </p>
-              <div className="text-[#FEF4E1] text-base mix-blend-difference">
+              <div className="inline-block text-[#FEF4E1] text-base mix-blend-difference scale-0 transition-transform group-[.fp-completely]:delay-300 group-[.fp-completely]:scale-100">
                 <Image
                   className="my-1"
                   width={147}
@@ -327,6 +336,16 @@ export default function Homepage() {
                     alt="OpenAI"
                   />
                   OpenAI
+                </span>
+                <span className="inline-flex h-12 items-center mr-6">
+                  <Image
+                    width={48}
+                    height={48}
+                    className="mr-2"
+                    src="/images/icon-gemini.svg"
+                    alt="Gemini"
+                  />
+                  Gemini
                 </span>
                 <span className="inline-flex h-12 items-center mr-6">
                   <Image
