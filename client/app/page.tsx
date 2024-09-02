@@ -182,7 +182,7 @@ export default function Homepage() {
                 <table className="table-fixed border-collapse ">
                   <tbody>
                     <tr>
-                      <td className="relative px-10 py-[51.5px]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
                         <Image
                           width={72}
                           height={73}
@@ -197,7 +197,7 @@ export default function Homepage() {
                           即可自动完成创建机器人的全部流程
                         </p>
                       </td>
-                      <td className="relative px-10 py-[51.5px]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
                         <Image
                           width={72}
                           height={73}
@@ -212,7 +212,7 @@ export default function Homepage() {
                           将自动入库，作为机器人的知识依据
                         </p>
                       </td>
-                      <td className="relative px-10 py-[51.5px]">
+                      <td className="relative px-10 py-[51.5px] w-[calc(100%/3)]">
                         <Image
                           width={72}
                           height={73}
@@ -231,12 +231,14 @@ export default function Homepage() {
                   </tbody>
                 </table>
 
-                <div className="absolute top-0 left-0 h-[1px] w-full bg-[#b2ab9d] border-top" />
-                <div className="absolute top-0 left-0 w-[1px] h-full bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 left-[424px] w-[1px] h-full bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 left-[848px] w-[1px] h-full  bg-[#b2ab9d] border-side" />
-                <div className="absolute top-0 right-0 w-[1px] h-full  bg-[#b2ab9d] border-side" />
-                <div className="absolute bottom-0 left-0 h-[1px]  w-full  bg-[#b2ab9d] border-bottom" />
+                <div className="absolute inset-0 pointer-events-none border-group">
+                  <div className="absolute inset-x-0 top-0 h-[1px] bg-[#b2ab9d] border-top" />
+                  <div className="absolute inset-y-0 left-0 w-[1px] bg-[#b2ab9d] border-side" />
+                  <div className="absolute inset-y-0 right-0 w-[1px] bg-[#b2ab9d] border-side" />
+                  <div className="absolute inset-x-0 bottom-0 h-[1px] bg-[#b2ab9d] border-bottom" />
+                  <div className="absolute top-0 left-[calc(100%/3)] w-[1px] h-full bg-[#b2ab9d] border-side" />
+                  <div className="absolute top-0 left-[calc(100%*2/3)] w-[1px] h-full bg-[#b2ab9d] border-side" />
+                </div>
               </div>
 
               <Lottie
