@@ -131,6 +131,14 @@ Resources:
           Action:
           - bedrock:InvokeModelWithResponseStream
           Resource: '*'
+        - Sid: AllObjectActions
+          Effect: Allow
+          Action: 
+          - s3:PutObject
+          - s3:GetObject
+          - s3:DeleteObject
+          Resource: 
+          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
       Tracing: Active
     Metadata:
       DockerContext: server
@@ -161,6 +169,14 @@ Resources:
           Action:
           - sqs:*
           Resource: '*'
+        - Sid: AllObjectActions
+          Effect: Allow
+          Action: 
+          - s3:PutObject
+          - s3:GetObject
+          - s3:DeleteObject
+          Resource: 
+          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
       - SQSPollerPolicy:
           QueueName: 
             !Ref SQSQueueName
