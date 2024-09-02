@@ -22,6 +22,10 @@
   <a href="https://github.com/petercat-ai/petercat/blob/master/LICENSE" target="_blank" target="_blank">
     <img alt="License: MIT@PeterCat" src="https://img.shields.io/badge/License-MIT@Peter Cat-yellow.svg" alt="license"/>
   </a>
+    <a href="https://hub.docker.com/r/petercatai/petercat" target="_blank" target="_blank">
+    <img alt="DockerHub: petercatai/petercat" src="https://img.shields.io/docker/v/petercatai/petercat"/>
+  </a>
+
 </p>
 
 
