@@ -28,7 +28,7 @@ export default function Profile() {
   }
 
   const avatar = (
-    <Dropdown>
+    <Dropdown className="cursor-pointer">
       <DropdownTrigger>
         <Avatar
           src={user.picture!}
