@@ -5,26 +5,15 @@
 <div  align="center">
 
   <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
-
-  <p> 专为社区维护者和开发者打造的智能答疑机器人解决方案。</p>
   
-  <a href="https://www.npmjs.com/package/petercat-lui" title="npm">
-    <img src="https://img.shields.io/npm/dm/petercat-lui.svg" alt="npm"/>
-  </a>
-  <a href="https://www.npmjs.com/package/petercat-lui" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/petercat-lui/latest.svg" alt="version">
-  </a>
-  <a href="https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml" target="_blank">
-    <img src="https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg" alt="ci test status"/>
-  </a>
-  <a href="https://github.com/petercat-ai/petercat/discussions" target="_blank">
-    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
-  </a>
-  <a href="https://github.com/petercat-ai/petercat/blob/master/LICENSE" target="_blank" target="_blank">
-    <img alt="License: MIT@PeterCat" src="https://img.shields.io/badge/License-MIT@Peter Cat-yellow.svg" alt="license"/>
-  </a>
-</div>
+  **专为社区维护者和开发者打造的智能答疑机器人解决方案。**
 
+  [![npm](https://img.shields.io/npm/dm/petercat-lui.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
+  [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
+</div>
+ 
 
 ## 🏠 主页
 
