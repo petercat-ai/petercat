@@ -105,18 +105,53 @@ li {
   animation: bottomToTop 1s forwards 0.5s;
 }
 
-.border-container .animated-borders .border-t {
-  animation: leftToRight 1s forwards 1s;
+.animated-borders .border-container  .border-t {
+  animation: rightToLeft 1s forwards 0.75s;
 }
 
-.border-container .animated-borders .border-b {
+.animated-borders .border-container  .border-b {
   animation: leftToRight 0.1s forwards;
 }
 
-.border-container .animated-borders .border-l {
-  animation: bottomToTop 1s forwards 0.5s;
+.animated-borders .border-container .border-l {
+  animation: bottomToTop 1s forwards 1s;
 }
 
-.border-container .animated-borders .border-r {
+.animated-borders .border-container  .border-r {
   animation: bottomToTop 1s forwards;
+}
+
+@keyframes spinBorder {
+  0% {
+    transform: rotate(0deg);
+    border-top-color: #b2ab9d00;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
+  25% {
+    border-right-color: #B2AB9D;
+  }
+  50% {
+    border-bottom-color: #B2AB9D;
+  }
+  75% {
+    border-left-color: #B2AB9D;
+  }
+  100% {
+    transform: rotate(-360deg); 
+    border-top-color: #B2AB9D;
+    border-right-color: #B2AB9D;
+    border-bottom-color: #B2AB9D;
+    border-left-color: #B2AB9D;
+  }
+}
+
+.animated-borders .circle-border-animation {
+  border: 1px solid transparent; 
+  border-top-color: #B2AB9D;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  animation: spinBorder 2s linear forwards;
 }

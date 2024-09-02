@@ -321,7 +321,7 @@ export default function Homepage() {
               </div>
             </div>
           </div> */}
-          <div className="section bg-[#FEF4E1]">
+          <div className="section bg-[#FEF4E1] animated-borders">
             <div className="relative max-w-[1400px] mx-auto p-14 pt-[166px]">
               <Image
                 className="mb-9 mx-auto"
@@ -332,28 +332,41 @@ export default function Homepage() {
               />
               <div className="flex justify-between items-start pl-10">
                 <div className="relative -translate-y-[116px] p-2">
-                  <div className="animated-borders w-full h-full absolute inset-0">
-                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
-                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0"></div>
-                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
-                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0"></div>
+                  <div className="w-full h-full absolute inset-0">
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                   </div>
                   <div className="border-container relative w-[248px] h-[383px]">
-                    <div className="animated-borders w-full h-full absolute inset-0">
-                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
-                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0"></div>
-                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
-                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0"></div>
+                    <div className="w-full h-full absolute inset-0">
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
+                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
-                    <div className="content relative w-full h-full"></div>
                   </div>
                   <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
                 </div>
-                <div className="relative border border-[#B2AB9D] p-2 pt-9">
-                  <div className="border border-[#B2AB9D] w-[844px] h-[436px]"></div>
-                  <span className="absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
+                <div className="relative p-2 pt-9">
+                  <div className="w-full h-full absolute inset-0">
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                  </div>
+
+                  <div className="border-container relative w-[844px] h-[436px]">
+                    <div className="animated-border w-full h-full absolute inset-0">
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
+                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                    </div>
+                  </div>
+                  <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <a
                     className="absolute bottom-[52px] left-1/2 -translate-x-1/2 py-3 px-8 bg-black text-xl text-white rounded-full transition-transform hover:scale-105"
                     href="/"
