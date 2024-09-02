@@ -231,7 +231,7 @@ export default function Homepage() {
                   </tbody>
                 </table>
 
-                <div className="absolute inset-0 pointer-events-none border-group">
+                <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute inset-x-0 top-0 h-[1px] bg-[#b2ab9d] border-top" />
                   <div className="absolute inset-y-0 left-0 w-[1px] bg-[#b2ab9d] border-side" />
                   <div className="absolute inset-y-0 right-0 w-[1px] bg-[#b2ab9d] border-side" />
