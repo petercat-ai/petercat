@@ -1,6 +1,6 @@
 import base64
 from .schemas import ImageMetaData
-from .constants import S3_BUCKET_NAME, STATIC_URL
+from .constants import S3_TEMP_BUCKET_NAME, STATIC_URL
 from .exceptions import UploadError
 
 
@@ -26,7 +26,7 @@ def upload_image_to_s3(file, metadata: ImageMetaData, s3_client):
         }
 
         s3_client.put_object(
-            Bucket=S3_BUCKET_NAME,
+            Bucket=S3_TEMP_BUCKET_NAME,
             Key=s3_key,
             Body=file_content,
             ContentType=file.content_type,
