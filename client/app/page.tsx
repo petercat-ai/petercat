@@ -7,6 +7,7 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import Profile from '@/components/User';
 
 export default function Homepage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -98,6 +99,7 @@ export default function Homepage() {
                 <a
                   href="https://github.com/petercat-ai/petercat/blob/main/README.zh-CN.md"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                  target="_blank"
                 >
                   文档
                 </a>
@@ -106,16 +108,12 @@ export default function Homepage() {
                 <a
                   href="https://github.com/petercat-ai/petercat"
                   className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center mr-4"
+                  target="_blank"
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
                   {stars} stars
                 </a>
-                <a
-                  href="/"
-                  className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center"
-                >
-                  登录
-                </a>
+                <Profile />
               </div>
             </header>
             <div className="relative">
@@ -337,6 +335,7 @@ export default function Homepage() {
                   <a
                     className="absolute bottom-[52px] left-1/2 -translate-x-1/2 py-3 px-8 bg-black text-xl text-white rounded-full transition-transform hover:scale-105"
                     href="/"
+                    target="_blank"
                   >
                     了解更多
                   </a>
@@ -379,13 +378,6 @@ export default function Homepage() {
                   target="_blank"
                 >
                   蚂蚁开源
-                </a>
-                <a
-                  className="flex items-center text-sm text-white py-[10px] px-6 rounded-full border-2 border-white/[0.4] transition-colors hover:border-white/[0.8]"
-                  href="/"
-                >
-                  <GitHubIcon className="inline scale-[0.66] -ml-1" />
-                  登录
                 </a>
               </nav>
               <table className="w-full text-[#FEF4E1]">

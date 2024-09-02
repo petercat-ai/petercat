@@ -1,8 +1,15 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Avatar, Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import useUser from '../app/hooks/useUser';
-import { LoginIcon } from '@/public/icons/LoginIcon';
 
 export default function Profile() {
   const router = useRouter();
@@ -13,8 +20,7 @@ export default function Profile() {
     return (
       <Button
         onPress={() => router.push(`${apiDomain}/api/auth/login`)}
-        className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2"
-        startContent={<LoginIcon />}
+        className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center"
       >
         登录
       </Button>
@@ -33,7 +39,9 @@ export default function Profile() {
         />
       </DropdownTrigger>
       <DropdownMenu>
-        <DropdownItem onClick={() => router.push(`${apiDomain}/api/auth/login`)}>
+        <DropdownItem
+          onClick={() => router.push(`${apiDomain}/api/auth/login`)}
+        >
           登录
         </DropdownItem>
       </DropdownMenu>
@@ -41,7 +49,11 @@ export default function Profile() {
   );
 
   if (user.id.startsWith('client|')) {
-    return <Badge content="匿名" size="sm" color='default'>{avatar}</Badge>
+    return (
+      <Badge content="匿名" size="sm" color="default">
+        {avatar}
+      </Badge>
+    );
   }
 
   return avatar;
