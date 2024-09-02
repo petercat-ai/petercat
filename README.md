@@ -2,11 +2,12 @@
 
 <h1 align="center"> Peter Cat</h1>
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
+<div  align="center">
 
-专为社区维护者和开发者打造的智能答疑机器人解决方案。
+  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
 
-<p>
+  <p> 专为社区维护者和开发者打造的智能答疑机器人解决方案。</p>
+  
   <a href="https://www.npmjs.com/package/petercat-lui" title="npm">
     <img src="https://img.shields.io/npm/dm/petercat-lui.svg" alt="npm"/>
   </a>
@@ -22,12 +23,12 @@
   <a href="https://github.com/petercat-ai/petercat/blob/master/LICENSE" target="_blank" target="_blank">
     <img alt="License: MIT@PeterCat" src="https://img.shields.io/badge/License-MIT@Peter Cat-yellow.svg" alt="license"/>
   </a>
-</p>
+</div>
 
 
 ## 🏠 主页
 
-[🐱窝](https://www.petercat.ai)
+[🐱窝: petercat.ai](https://www.petercat.ai)
 
 ## ✨ 特性
 
@@ -36,6 +37,7 @@
 ### 特性1
 
 仅需要告知你的仓库地址或名称，Peter Cat 即可自动完成创建机器人的全部流程
+
 
 ### 特性2
 
@@ -47,40 +49,63 @@
 
 ## 📦 私有化部署
 
+
 ## ⚙️ 环境变量
 
 本项目需要进行环境变量进行设置：
 
 ### Client
 `.env.local`
-
-
-| 环境变量            | 类型 | 描述                                                                                                                          | 示例                                                                                                   |
-| ------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `NODE_ENV`    | 必选 |                                                                         | `s`                                                                                   |
-| `CHAT_HOST`  | 必选 |                                        | `` |
-| `NEXT_PUBLIC_API_DOMAIN` | 必选 |                                          | ``                                            
+  
 
 ### Server
 
 `.env`
 
 
-| 环境变量            | 类型 | 描述                                                                                                                          | 示例                                                                                                   |
-| ------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `NODE_ENV`    | 必选 |                                                                         | `s`                                                                                   |
-| `CHAT_HOST`  | 必选 |                                        | `` |
-| `NEXT_PUBLIC_API_DOMAIN` | 必选 |        
-
-
-## 🔨 本地开发
 
 ## 🤝 参与贡献
 
 > Peter Cat 使用 yarn 作为包管理器
 
+```bash
+git clone https://github.com/petercat-ai/petercat.git
+
+# 安装依赖
+yarn run bootstrap
+
+# 调试 client
+yarn run client
+
+# 调试 lui
+yarn run lui
+
+# 调试 server
+yarn run server
+
+# 本地启动网站
+yarn run client:server
+
+# 本地启动 lui 组件
+yarn run lui:server
+
+# lui 构建
+cd lui
+yarn run build
+npm publish
+
+# docker 构建
+yarn run build:docker
+
+# pypi 构建
+yarn run build:pypi
+yarn run publish:pypi
+
+```
+
 
 ## 💼 企业版接入
+
 
 
 ## 📧 反馈问题
