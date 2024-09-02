@@ -80,10 +80,10 @@ Parameters:
     Type: String
     Description: Auth0 Clientt Secret
     Default: 1
-  AWSRegionName:
+  AWSSecretName:
     Type: String
-    Description: AWS Region Name
-    Default: ap-northeast-1
+    Description: AWS Secret Name
+    Default: 1
   S3TempBucketName:
     Type: String
     Description: S3 Bucket Name
