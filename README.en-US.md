@@ -77,7 +77,6 @@ The project requires environment variables to be set:
 | `WEB_URL`                  | Required                                   | Domain of the frontend web service            | `https://petercat.ai`                       |
 | `STATIC_URL`               | Required                                   | Static resource domain                        | `https://static.petercat.ai`                |
 | **AWS Related Environment Variables**                                  |
-| `AWS_REGION`          | Required                                   | AWS Region for deployment                     | `ap-northeast-1`                            |
 | `AWS_SECRET_NAME`          | Required                                   | AWS secret file name                          | `prod/githubapp/petercat/pem`               |
 | `S3_TEMP_BUCKET_NAME`           | Required                                   | AWS S3 bucket for temporary image files                 | `xxx-temp`                                  |
 | `SQS_QUEUE_URL`            | Required                                   | AWS SQS queue URL                             | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |

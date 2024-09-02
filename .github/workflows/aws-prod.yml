@@ -46,7 +46,6 @@ jobs:
             --config-file .aws/petercat-prod.toml \
             --parameter-overrides APIUrl="https://api.petercat.ai" \
                                   WebUrl="https://www.petercat.ai" \
-                                  AWSRegionName=${{ vars.AWS_REGION }} \
                                   AWSSecretName=${{ vars.AWS_SECRET_NAME }} \
                                   S3TempBucketName=${{ vars.S3_TEMP_BUCKET_NAME }} \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \

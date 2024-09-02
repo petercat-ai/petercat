@@ -82,7 +82,6 @@
 | `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
 | `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` 
 |  **AWS 相关环境变量** |
-| `AWS_REGION` | 必选 |  AWS 部署的 Region | `ap-northeast-1`
 | `AWS_SECRET_NAME` | 必选 |  AWS 托管的私钥文件名 | `prod/githubapp/petercat/pem`
 | `S3_TEMP_BUCKET_NAME` | 必选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` 
 | `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`

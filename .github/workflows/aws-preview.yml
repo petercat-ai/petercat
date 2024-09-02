@@ -16,7 +16,7 @@ on:
       - template.yml
 
 env:
-  AWS_REGION: ap-northeast-1
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -52,7 +52,6 @@ jobs:
             --config-file .aws/petercat-preview.toml \
             --parameter-overrides APIUrl="https://api-pre.petercat.ai" \
                                   WebUrl="https://www.petercat.ai" \
-                                  AWSRegionName=${{ vars.AWS_REGION }} \
                                   AWSSecretName=${{ vars.AWS_SECRET_NAME }} \
                                   S3TempBucketName=${{ vars.S3_TEMP_BUCKET_NAME }} \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
