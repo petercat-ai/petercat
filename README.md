@@ -56,13 +56,49 @@
 
 ### Client
 `.env.local`
-  
+
+
+| 环境变量            | 类型 | 描述                                                                                                                          | 示例                                                                                                   |
+| ------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_API_DOMAIN`    | 必选 |   后端服务的 API 域名。                                                                 | `https://api.petercat.ai`                                                                                   |
+
 
 ### Server
 
 `.env`
 
 
+| 环境变量            | 类型 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;         | 描述                                                                                                                          | 示例                                                                                                   |
+| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+|  **应用基础环境变量** |
+| `API_URL` | 必选 |  后端服务的 API 域名 | `https://api.petercat.ai`
+| `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
+| `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` 
+|  **AWS 相关环境变量** |
+| `AWS_REGION_NAME` | 必选 |  AWS 部署的 Region | `ap-northeast-1`
+| `AWS_SECRET_NAME` | 必选 |  AWS 托管的私钥文件名 | `prod/githubapp/petercat/pem`
+| `S3_BUCKET_NAME` | 必选 | AWS 图片文件 S3 的 bucket | `xxx-temp` 
+| `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`
+| **SUPABASE 相关 env** |
+| `SUPABASE_URL`    | 必选 |    supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                                                    | `https://***.supabase.co`                                                                                   |
+| `SUPABASE_SERVICE_KEY`  | 必选 |    supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                     | `{{SUPABASE_SERVICE_KEY}}` |
+|  **Auth0 相关 env **|
+| `AUTH0_DOMAIN` | 必选 |   auth0 服务域名，从 auth0 / Application / Basic Information 下获取 |  `petercat.us.auth0.com`
+| `AUTH0_CLIENT_ID` | 必选 | auth0 客户端 ID，从 auth0 / Application / Basic Information 下获取  | `artfiUxxxx`
+| `AUTH0_CLIENT_SECRET` | 必选 | auth0 客户端密钥， 从 auth0 / Application / Basic Information 下获取 | `xxxx-xxxx-xxx`
+| `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/`
+|  **LLM相关的 env** |
+| `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx`
+| `GEMINI_API_KEY` | 必选 | Gemini 的密钥 | `xxxx`
+| `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx`
+|  **注册为 Github App 的 env** |
+| `X_GITHUB_APP_ID` | 可选 |  注册为 Github App 时，APPID | `123456`
+| `X_GITHUB_APPS_CLIENT_ID` | 可选 | 注册为 Github App 时，APP 的 Client ID | `Iv1.xxxxxxx`
+| `X_GITHUB_APPS_CLIENT_SECRET` | 可选 |  注册为 Github App 时，APP 的 Client 密钥 | `xxxxxxxx`
+|  **限流配置** |
+| `RATE_LIMIT_ENABLED` | 可选 |  限流配置是否开启 | `True`
+| `RATE_LIMIT_REQUESTS` | 可选 | 限流的请求数量 | `100`
+| `RATE_LIMIT_DURATION` | 可选 |  限流的统计时长，单位为分钟 | `1`
 
 ## 🤝 参与贡献
 
