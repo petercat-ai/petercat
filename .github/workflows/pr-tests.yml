@@ -8,6 +8,7 @@ on:
       - server/**
       - petercat_utils/**
       - subscriber/**
+      - template.yml
 
 permissions:
   id-token: write   # This is required for requesting the JWT
