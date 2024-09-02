@@ -39,7 +39,7 @@ class IssueEventHandler:
             if self.event["action"] == "opened":
                 issue, repo = self.get_issue()
 
-                prompt = generate_issue_prompt(repo_name={repo.full_name}, issue_url=issue.url, issue_content=issue.body)
+                prompt = generate_issue_prompt(repo_name=repo.full_name, issue_url=issue.url, issue_content=issue.body)
                 issue_content = f"{issue.title}: {issue.body}"
                 message = Message(role="user", content=[TextContentBlock(type="text", text=issue_content)])  
                 
