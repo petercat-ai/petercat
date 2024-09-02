@@ -64,8 +64,8 @@
 `.env`
 
 
-| 环境变量            | 类型 | 描述                                                                                                                          | 示例                                                                                                   |
-| ------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 环境变量            | 类型 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;         | 描述                                                                                                                          | 示例                                                                                                   |
+| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 |  **应用基础环境变量** |
 | `API_URL` | 必选 |  后端服务的 API 域名 | `https://api.petercat.ai`
 | `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
@@ -76,8 +76,8 @@
 | `S3_BUCKET_NAME` | 必选 | AWS 图片文件 S3 的 bucket | `xxx-temp` 
 | `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`
 | **SUPABASE 相关 env** |
-| `SUPABASE_URL`    | 必选 |    supabase 服务的 URL，可以在这里找到 https://supabase.com/dashboard/project/_/settings/database                                                                   | `https://***.supabase.co`                                                                                   |
-| `SUPABASE_SERVICE_KEY`  | 必选 |    supabase 服务密钥，可以在这里找到 https://supabase.com/dashboard/project/_/settings/database                                    | `{{SUPABASE_SERVICE_KEY}}` |
+| `SUPABASE_URL`    | 必选 |    supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                                                    | `https://***.supabase.co`                                                                                   |
+| `SUPABASE_SERVICE_KEY`  | 必选 |    supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                     | `{{SUPABASE_SERVICE_KEY}}` |
 |  **Auth0 相关 env **|
 | `AUTH0_DOMAIN` | 必选 |   auth0 服务域名，从 auth0 / Application / Basic Information 下获取 |  `petercat.us.auth0.com`
 | `AUTH0_CLIENT_ID` | 必选 | auth0 客户端 ID，从 auth0 / Application / Basic Information 下获取  | `artfiUxxxx`
