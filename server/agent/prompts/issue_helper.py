@@ -2,8 +2,12 @@ ISSUE_PROMPT = """
 # Task
 Introduce yourself and briefly explain the assistance you can provide. 
 If users need further support, prompt them to @ you for help. Generate a response suitable for this scenario.
-## Issue Content:
-{issue_content}
+## Issue Infomation:
+```
+repo_name: {repo_name}
+issue_url: {issue_url}
+issue_content: {issue_content}
+```
 
 # Constraints:
 First, carefully analyze the user’s requirements. 
@@ -16,8 +20,13 @@ ISSUE_COMMENT_PROMPT = """
 # Task
 You have required to resolve an issue {issue_url} now:
 
-## Issue Content:
-{issue_content}
+## Issue Infomation:
+```
+repo_name: {repo_name}
+issue_url: {issue_url}
+issue_content: {issue_content}
+```
+
 
 # Constraints:
 - Summarize user needs based on the issue content and information.
@@ -25,9 +34,9 @@ You have required to resolve an issue {issue_url} now:
 
 """
 
-def generate_issue_prompt(issue_url: str, issue_content: str):
-    return ISSUE_PROMPT.format(issue_url=issue_url, issue_content=issue_content)
+def generate_issue_prompt(repo_name: str, issue_url: str, issue_content: str):
+    return ISSUE_PROMPT.format(repo_name=repo_name, issue_url=issue_url, issue_content=issue_content)
 
-def generate_issue_comment_prompt(issue_url: str, issue_content: str):
-    return ISSUE_COMMENT_PROMPT.format(issue_url=issue_url, issue_content=issue_content)
+def generate_issue_comment_prompt(repo_name: str, issue_url: str, issue_content: str):
+    return ISSUE_COMMENT_PROMPT.format(repo_name=repo_name, issue_url=issue_url, issue_content=issue_content)
 
