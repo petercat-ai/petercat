@@ -1,8 +1,16 @@
----
-atomId: ThoughtChain
----
-
 # ThoughtChain
+
+ThoughtChain 是一个用于显示执行过程和状态的折叠组件，支持根据状态显示不同的图标和内容。
+
+## 安装
+
+确保你已经安装了必要的依赖：
+
+```bash
+npm install petercat-lui
+```
+
+## 使用示例
 
 ```tsx
 import React from 'react';
@@ -33,3 +41,12 @@ export default () => (
   />
 );
 ```
+
+## API
+
+| 属性名    | 类型              | 默认值      | 描述                                                                 |
+| --------- | ----------------- | ----------- | -------------------------------------------------------------------- |
+| `content` | `IExtraInfo`      | `undefined` | 额外的信息内容，通常包含需要显示的 JSON 数据或文本数据。               |
+| `status`  | `Status`          | `undefined` | 当前的执行状态，影响组件的颜色和图标。                                |
+| `source`  | `string`          | `undefined` | 数据来源的描述文本。                                                  |
+| `timeCost`| `string`          | `undefined` | （可选）执行过程所花费的时间。                                        |
