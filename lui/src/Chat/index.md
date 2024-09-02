@@ -7,7 +7,7 @@ Chat 是一个基于 @ant-design/pro-chat 和 @ant-design/pro-editor 构建的�
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install @ant-design/pro-chat @ant-design/pro-editor lodash swr
+npm install petercat-lui
 ```
 
 ## 使用示例
