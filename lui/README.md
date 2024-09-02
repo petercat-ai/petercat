@@ -1,17 +1,9 @@
 # lui
 
-[![NPM version](https://img.shields.io/npm/v/lui.svg?style=flat)](https://npmjs.org/package/lui)
-[![NPM downloads](http://img.shields.io/npm/dm/lui.svg?style=flat)](https://npmjs.org/package/lui)
+  [![npm](https://img.shields.io/npm/dm/petercat-lui.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
 
-A react library developed with dumi
-
-## Usage
-
-TODO
-
-## Options
-
-TODO
+PeterCat LUI 是一个基于 dumi 的 UI 组件库，用于构建 PeterCat 对话界面。
 
 ## Development
 
