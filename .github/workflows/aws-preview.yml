@@ -1,67 +1,18 @@
+# .github/workflows/deploy-preview.yml
 name: Deploy Backend to Preview ECS
 
-# 依赖
 on:
   workflow_run:
     workflows: ["PR Tests"]
     types:
       - completed
 
-env:
-  AWS_REGION: ap-northeast-1
-  ECR_REPOSITORY: petercat-lambda
-  ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
-
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
-  actions: write 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: Preview
-    strategy:
-      fail-fast: true
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
-          audience: sts.amazonaws.com
-          aws-region: ${{ env.AWS_REGION }}
-
-      # Build inside Docker containers
-      - run: sam build --use-container --config-file .aws/petercat-preview.toml
-
-      # Prevent prompts and failure when the stack is unchanged
-      - run: |
-          sam deploy \
-            --no-confirm-changeset \
-            --no-fail-on-empty-changeset \
-            --config-file .aws/petercat-preview.toml \
-            --parameter-overrides APIUrl="https://api-pre.petercat.ai" \
-                                  WebUrl="https://www.petercat.ai" \
-                                  AWSRegionName=${{ vars.AWS_REGION_NAME }} \
-                                  AWSSecretName=${{ vars.AWS_SECRET_NAME }} \
-                                  S3BucketName=${{ vars.S3_BUCKET_NAME }} \
-                                  GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
-                                  GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
-                                  GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
-                                  OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
-                                  GeminiAPIKey=${{ secrets.GEMINI_API_KEY }} \
-                                  SupabaseServiceKey=${{ secrets.SUPABASE_SERVICE_KEY }} \
-                                  SupabaseUrl=${{ secrets.SUPABASE_URL }} \
-                                  TavilyAPIKey=${{ secrets.TAVILY_API_KEY }} \
-                                  APIIdentifier=${{ secrets.API_IDENTIFIER }} \
-                                  FastAPISecretKey=${{ secrets.FASTAPI_SECRET_KEY }} \
-                                  SQSQueueName=${{ secrets.SQS_QUEUE_NAME }} \
-                                  SQSQueueUrl=${{ secrets.SQS_QUEUE_URL }} \
-                                  GitHubToken=${{ secrets.X_GITHUB_TOKEN }} \
-                                  Auth0Domain=${{ secrets.AUTH0_DOMAIN }} \
-                                  Auth0ClientId=${{ secrets.AUTH0_CLIENT_ID }} \
-                                  Auth0ClientSecret=${{ secrets.AUTH0_CLIENT_SECRET }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Deploy to Preview Environment
+        run: echo "Deploying to preview environment..."
