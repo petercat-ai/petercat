@@ -94,7 +94,7 @@
 |  **限流配置** |
 | `RATE_LIMIT_ENABLED` | 可选 |  限流配置是否开启 | `True`
 | `RATE_LIMIT_REQUESTS` | 可选 | 限流的请求数量 | `100`
-| `RATE_LIMIT_DURATIONT` | 可选 |  限流的统计时长，单位为分钟 | `1`
+| `RATE_LIMIT_DURATION` | 可选 |  限流的统计时长，单位为分钟 | `1`
 ## 🔨 本地开发
 
 ## 🤝 参与贡献
