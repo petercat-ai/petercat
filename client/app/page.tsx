@@ -350,21 +350,20 @@ export default function Homepage() {
                 </div>
                 <div className="relative p-2 pt-9">
                   <div className="w-full h-full absolute inset-0">
-                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
                     <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
                     <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
                     <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                   </div>
-
                   <div className="border-container relative w-[844px] h-[436px]">
                     <div className="animated-border w-full h-full absolute inset-0">
-                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
                       <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
                       <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
                       <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
                   </div>
-                  <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                 <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <a
