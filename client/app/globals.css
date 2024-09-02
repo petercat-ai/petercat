@@ -75,6 +75,7 @@ li {
   }
 }
 
+
 .animate-borders .border-top {
   animation: leftToRight 1.5s ease-out forwards;
 }
@@ -86,4 +87,36 @@ li {
 
 .animate-borders .border-bottom {
   animation: rightToLeft 1.5s ease-out forwards;
+}
+
+.animated-borders .border-t {
+  animation: leftToRight 1s forwards;
+}
+
+.animated-borders .border-b {
+  animation: leftToRight 1s forwards 0.5s;
+}
+
+.animated-borders .border-l {
+  animation: topToBottom 1s forwards;
+}
+
+.animated-borders .border-r {
+  animation: bottomToTop 1s forwards 0.5s;
+}
+
+.border-container .animated-borders .border-t {
+  animation: leftToRight 1s forwards 1s;
+}
+
+.border-container .animated-borders .border-b {
+  animation: leftToRight 0.1s forwards;
+}
+
+.border-container .animated-borders .border-l {
+  animation: bottomToTop 1s forwards 0.5s;
+}
+
+.border-container .animated-borders .border-r {
+  animation: bottomToTop 1s forwards;
 }

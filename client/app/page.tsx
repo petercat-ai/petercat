@@ -78,7 +78,7 @@ export default function Homepage() {
       credits={{}}
       render={() => (
         <Fullpage.Wrapper>
-          <div className="section bg-black">
+          {/* <div className="section bg-black">
             <header className="h-20 max-w-[1400px] mx-auto flex items-center">
               <span className="flex-1">
                 <Image
@@ -320,7 +320,7 @@ export default function Homepage() {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="section bg-[#FEF4E1]">
             <div className="relative max-w-[1400px] mx-auto p-14 pt-[166px]">
               <Image
@@ -331,8 +331,22 @@ export default function Homepage() {
                 alt="Showcase"
               />
               <div className="flex justify-between items-start pl-10">
-                <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
-                  <div className="border border-[#B2AB9D] w-[248px] h-[383px]"></div>
+                <div className="relative -translate-y-[116px] p-2">
+                  <div className="animated-borders w-full h-full absolute inset-0">
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
+                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0"></div>
+                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
+                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0"></div>
+                  </div>
+                  <div className="border-container relative w-[248px] h-[383px]">
+                    <div className="animated-borders w-full h-full absolute inset-0">
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
+                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0"></div>
+                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0"></div>
+                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0"></div>
+                    </div>
+                    <div className="content relative w-full h-full"></div>
+                  </div>
                   <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
                 </div>
                 <div className="relative border border-[#B2AB9D] p-2 pt-9">
