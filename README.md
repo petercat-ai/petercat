@@ -1,4 +1,4 @@
-![banner](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*HNxrTLILmrsAAAAAAAAAAAAADrPSAQ/original)
+![banner](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m23lS7sVRDgAAAAAAAAAAAAADrPSAQ/original)
 
 <h1 align="center"> Peter Cat</h1>
 
@@ -30,6 +30,7 @@
 
 [🐱窝: petercat.ai](https://www.petercat.ai)
 
+
 ## ✨ 特性
 
 我们提供对话式答疑 Agent 配置系统、自托管部署方案和便捷的一体化应用 SDK，让您能够为自己的 GitHub 仓库一键创建智能答疑机器人，并快速集成到各类官网或项目中， 为社区提供更高效的技术支持生态。
@@ -47,7 +48,15 @@
 
 多种集成方式自由选择，如对话应用 SDK 集成至官网，Github APP一键安装至 Github 仓库等
 
+## Agent 工作流
+
+![Agent workflow](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m24tTIZpW7cAAAAAAAAAAAAADrPSAQ/original)
+
 ## 📦 私有化部署
+
+部署方案：[AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
+
+![部署方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
 
 ## ⚙️ 环境变量
