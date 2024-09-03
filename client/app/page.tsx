@@ -16,6 +16,7 @@ export default function Homepage() {
   const helixCatRef = useRef<LottieRefCurrentProps>(null);
   const helixOctopusRef = useRef<LottieRefCurrentProps>(null);
   const tableRef = useRef<HTMLDivElement>(null);
+  const showCaseRef = useRef<HTMLDivElement>(null);
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -39,17 +40,22 @@ export default function Homepage() {
       if (dest.isFirst) {
         videoRef.current!.play();
         tableRef.current!.classList.remove('animate-borders');
+        showCaseRef.current!.classList.remove('animate-border-group');
       } else if (dest.index === 1) {
         helixOctopusRef.current!.goToAndPlay(0);
         tableRef.current!.classList.add('animate-borders');
+        showCaseRef.current!.classList.remove('animate-border-group');
       } else if (dest.index === 2) {
         tableRef.current!.classList.remove('animate-borders');
+        showCaseRef.current!.classList.remove('animate-border-group');
         lightningCatRef.current!.goToAndPlay(0);
       } else if (dest.index === 3) {
         tableRef.current!.classList.remove('animate-borders');
+        showCaseRef.current!.classList.add('animate-border-group');
         helixCatRef.current!.goToAndPlay(0);
       } else {
         tableRef.current!.classList.remove('animate-borders');
+        showCaseRef.current!.classList.remove('animate-border-group');
       }
     },
     [],
@@ -78,7 +84,7 @@ export default function Homepage() {
       credits={{}}
       render={() => (
         <Fullpage.Wrapper>
-          {/* <div className="section bg-black">
+          <div className="section bg-black">
             <header className="h-20 max-w-[1400px] mx-auto flex items-center">
               <span className="flex-1">
                 <Image
@@ -320,8 +326,8 @@ export default function Homepage() {
                 </span>
               </div>
             </div>
-          </div> */}
-          <div className="section bg-[#FEF4E1] animated-borders">
+          </div>
+          <div className="section bg-[#FEF4E1] " ref={showCaseRef}>
             <div className="relative max-w-[1400px] mx-auto p-14 pt-[166px]">
               <Image
                 className="mb-9 mx-auto"
@@ -363,7 +369,7 @@ export default function Homepage() {
                       <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
                   </div>
-                 <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <a

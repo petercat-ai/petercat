@@ -89,35 +89,35 @@ li {
   animation: rightToLeft 1.5s ease-out forwards;
 }
 
-.animated-borders .border-t {
+.animate-border-group .border-t {
   animation: leftToRight 1s forwards;
 }
 
-.animated-borders .border-b {
+.animate-border-group .border-b {
   animation: leftToRight 1s forwards 0.5s;
 }
 
-.animated-borders .border-l {
+.animate-border-group .border-l {
   animation: topToBottom 1s forwards;
 }
 
-.animated-borders .border-r {
+.animate-border-group .border-r {
   animation: bottomToTop 1s forwards 0.5s;
 }
 
-.animated-borders .border-container  .border-t {
+.animate-border-group .border-container  .border-t {
   animation: rightToLeft 1s forwards 0.75s;
 }
 
-.animated-borders .border-container  .border-b {
+.animate-border-group .border-container  .border-b {
   animation: leftToRight 0.1s forwards;
 }
 
-.animated-borders .border-container .border-l {
+.animate-border-group .border-container .border-l {
   animation: bottomToTop 1s forwards 1s;
 }
 
-.animated-borders .border-container  .border-r {
+.animate-border-group .border-container  .border-r {
   animation: bottomToTop 1s forwards;
 }
 
@@ -147,7 +147,7 @@ li {
   }
 }
 
-.animated-borders .circle-border-animation {
+.animate-border-group .circle-border-animation {
   border: 1px solid transparent; 
   border-top-color: #B2AB9D;
   border-radius: 50%;
