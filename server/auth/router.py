@@ -18,6 +18,7 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 LOGIN_URL = f"{API_URL}/api/auth/login"
 
 WEB_URL =  get_env_variable("WEB_URL")
+MARKET_URL = f"{WEB_URL}/market"
 
 config = Config(environ={
     "AUTH0_CLIENT_ID": CLIENT_ID,
@@ -52,16 +53,16 @@ async def getAnonymousUser(request: Request):
 
 @router.get("/login")
 async def login(request: Request):
-    return await oauth.auth0.authorize_redirect(request, redirect_uri=CALLBACK_URL)
+    redirect_response = await oauth.auth0.authorize_redirect(request, redirect_uri=CALLBACK_URL)
+    return redirect_response
 
 @router.get('/logout')
 async def logout(request: Request):
     request.session.pop('user', None)
-    return RedirectResponse(url='/')
+    return RedirectResponse(url=MARKET_URL)
 
 @router.get("/callback")
 async def callback(request: Request):
-    print(f"auth_callback: {request.query_params}")
     auth0_token = await oauth.auth0.authorize_access_token(request)
     user_info = await getUserInfoByToken(token=auth0_token['access_token'])
 
@@ -77,7 +78,7 @@ async def callback(request: Request):
         }
         supabase = get_client()
         supabase.table("profiles").upsert(data).execute()
-    return RedirectResponse(url=f'{WEB_URL}', status_code=302)
+    return RedirectResponse(url=f'{MARKET_URL}', status_code=302)
 
 @router.get("/userinfo")
 async def userinfo(request: Request):
