@@ -75,8 +75,7 @@ jobs:
         env:
           SUPABASE_DB_URL: postgres://postgres:postgres@localhost:5432/postgres
         run: |
-          pwd
-          cd ./migrations
+          cd ../migrations
           npx supabase db push
   
       # - name: Run tests
