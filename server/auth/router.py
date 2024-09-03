@@ -53,6 +53,10 @@ async def getAnonymousUser(request: Request):
 
 @router.get("/login")
 async def login(request: Request):
+    if CLIENT_ID is None:
+        return {
+            "message": "enviroments CLIENT_ID and CLIENT_SECRET required.",
+        }
     redirect_response = await oauth.auth0.authorize_redirect(request, redirect_uri=CALLBACK_URL)
     return redirect_response
 

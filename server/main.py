@@ -1,5 +1,6 @@
 import os
 
+from fastapi.responses import RedirectResponse
 import uvicorn
 
 from fastapi import FastAPI
@@ -58,6 +59,10 @@ app.include_router(task_router.router)
 app.include_router(github_app_router.router)
 app.include_router(aws_router.router)
 
+
+@app.get("/")
+def home_page():
+    return RedirectResponse(url=WEB_URL)
 
 @app.get("/api/health_checker")
 def health_checker():
