@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -16,6 +16,7 @@ export default function Homepage() {
   const helixCatRef = useRef<LottieRefCurrentProps>(null);
   const helixOctopusRef = useRef<LottieRefCurrentProps>(null);
   const tableRef = useRef<HTMLDivElement>(null);
+  const showCaseRef = useRef<HTMLDivElement>(null);
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -34,22 +35,63 @@ export default function Homepage() {
       bannerActionRef.current!.classList.add('translate-y-8');
     }
   }, []);
+
+  const playAnimation = useCallback(
+    (
+      animationRef: RefObject<{ goToAndPlay: (frame: number) => void }>,
+      play: boolean = true,
+    ) => {
+      if (play) {
+        requestAnimationFrame(() => animationRef.current?.goToAndPlay(0));
+      }
+    },
+    [],
+  );
+
+  const updateClasses = useCallback(
+    (addTableClass: boolean, addShowCaseClass: boolean) => {
+      requestAnimationFrame(() => {
+        if (addTableClass) {
+          tableRef.current?.classList.add('animate-borders');
+        } else {
+          tableRef.current?.classList.remove('animate-borders');
+        }
+
+        if (addShowCaseClass) {
+          showCaseRef.current?.classList.add('animate-border-group');
+        } else {
+          showCaseRef.current?.classList.remove('animate-border-group');
+        }
+      });
+    },
+    [tableRef, showCaseRef],
+  );
+
   const leaveHandler = useCallback<NonNullable<fullpageOptions['beforeLeave']>>(
     (_, dest) => {
       if (dest.isFirst) {
-        videoRef.current!.play();
-        tableRef.current!.classList.remove('animate-borders');
-      } else if (dest.index === 1) {
-        helixOctopusRef.current!.goToAndPlay(0);
-        tableRef.current!.classList.add('animate-borders');
-      } else if (dest.index === 2) {
-        tableRef.current!.classList.remove('animate-borders');
-        lightningCatRef.current!.goToAndPlay(0);
-      } else if (dest.index === 3) {
-        tableRef.current!.classList.remove('animate-borders');
-        helixCatRef.current!.goToAndPlay(0);
+        requestAnimationFrame(() => {
+          videoRef.current?.play();
+          updateClasses(false, false);
+        });
       } else {
-        tableRef.current!.classList.remove('animate-borders');
+        switch (dest.index) {
+          case 1:
+            playAnimation(helixOctopusRef);
+            updateClasses(true, false);
+            break;
+          case 2:
+            playAnimation(lightningCatRef);
+            updateClasses(false, false);
+            break;
+          case 3:
+            playAnimation(helixCatRef);
+            updateClasses(false, true);
+            break;
+          default:
+            updateClasses(false, false);
+            break;
+        }
       }
     },
     [],
@@ -321,7 +363,7 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="section bg-[#FEF4E1]">
+          <div className="section bg-[#FEF4E1] " ref={showCaseRef}>
             <div className="relative max-w-[1400px] mx-auto p-14 pt-[166px]">
               <Image
                 className="mb-9 mx-auto"
@@ -331,15 +373,41 @@ export default function Homepage() {
                 alt="Showcase"
               />
               <div className="flex justify-between items-start pl-10">
-                <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
-                  <div className="border border-[#B2AB9D] w-[248px] h-[383px]"></div>
+                <div className="relative -translate-y-[116px] p-2">
+                  <div className="w-full h-full absolute inset-0">
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                  </div>
+                  <div className="border-container relative w-[248px] h-[383px]">
+                    <div className="w-full h-full absolute inset-0">
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
+                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                    </div>
+                  </div>
                   <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
                 </div>
-                <div className="relative border border-[#B2AB9D] p-2 pt-9">
-                  <div className="border border-[#B2AB9D] w-[844px] h-[436px]"></div>
-                  <span className="absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
+                <div className="relative p-2 pt-9">
+                  <div className="w-full h-full absolute inset-0">
+                    <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 right-0" />
+                    <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                    <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                    <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                  </div>
+                  <div className="border-container relative w-[844px] h-[436px]">
+                    <div className="animated-border w-full h-full absolute inset-0">
+                      <div className="border-t border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                      <div className="border-b border-[#B2AB9D] w-0 h-0 absolute bottom-0 left-0" />
+                      <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
+                      <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
+                    </div>
+                  </div>
+                  <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <a
                     className="absolute bottom-[52px] left-1/2 -translate-x-1/2 py-3 px-8 bg-black text-xl text-white rounded-full transition-transform hover:scale-105"
                     href="/"

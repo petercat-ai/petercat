@@ -75,6 +75,7 @@ li {
   }
 }
 
+
 .animate-borders .border-top {
   animation: leftToRight 1.5s ease-out forwards;
 }
@@ -86,4 +87,75 @@ li {
 
 .animate-borders .border-bottom {
   animation: rightToLeft 1.5s ease-out forwards;
+}
+
+.animate-border-group .border-t {
+  animation: leftToRight 1s forwards;
+}
+
+.animate-border-group .border-b {
+  animation: leftToRight 1s forwards 0.5s;
+}
+
+.animate-border-group .border-l {
+  animation: topToBottom 1s forwards;
+}
+
+.animate-border-group .border-r {
+  animation: bottomToTop 1s forwards 0.5s;
+}
+
+.animate-border-group .border-container  .border-t {
+  animation: rightToLeft 1s forwards 0.75s;
+}
+
+.animate-border-group .border-container  .border-b {
+  animation: leftToRight 0.1s forwards;
+}
+
+.animate-border-group .border-container .border-l {
+  animation: bottomToTop 1s forwards 1s;
+}
+
+.animate-border-group .border-container  .border-r {
+  animation: bottomToTop 1s forwards;
+}
+
+@keyframes spinBorder {
+  0% {
+    transform: rotate(0deg);
+    border-top-color: #b2ab9d00;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
+  25% {
+    border-right-color: #B2AB9D;
+  }
+  50% {
+    border-bottom-color: #B2AB9D;
+  }
+  75% {
+    border-left-color: #B2AB9D;
+  }
+  100% {
+    transform: rotate(-360deg); 
+    border-top-color: #B2AB9D;
+    border-right-color: #B2AB9D;
+    border-bottom-color: #B2AB9D;
+    border-left-color: #B2AB9D;
+  }
+}
+
+.animate-border-group .circle-border-animation {
+  border: 1px solid transparent; 
+  border-top-color: #B2AB9D;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  animation: spinBorder 2s linear forwards;
+}
+
+div.fp-watermark {
+    display: none;
 }
