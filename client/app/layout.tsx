@@ -5,7 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { SearchProvider } from './contexts/SearchContext';
 import { BotProvider } from './contexts/BotContext';
 
-import 'petercat-lui/style';
+import '@petercatai/assistant/style';
 import './globals.css';
 import { usePathname } from 'next/navigation';
 

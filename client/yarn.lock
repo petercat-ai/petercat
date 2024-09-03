@@ -2656,6 +2656,26 @@
   resolved "https://registry.npmjs.org/@panva/hkdf/-/hkdf-1.2.1.tgz#cb0d111ef700136f4580349ff0226bf25c853f23"
   integrity sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==
 
+"@petercatai/assistant@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@petercatai/assistant/-/assistant-1.0.0.tgz#cb05d5247126ade08a1fedaf1999f406e3feaf35"
+  integrity sha512-7BpHBHfV0FcWw3PFmlxhyJVQ9287RKASKOcYDc8qtbrosa2tfifNGFM9MEvVbqbJr+O2YniBbPJOyRwgGijDEA==
+  dependencies:
+    "@ant-design/icons" "^5.3.5"
+    "@ant-design/pro-chat" "^1.9.0"
+    "@ant-design/pro-editor" "^1.1.1"
+    "@babel/runtime" "^7.18.0"
+    antd "^5.15.3"
+    antd-style "^3.6.1"
+    axios "^1.6.7"
+    classnames "^2.5.1"
+    dotenv "^16.4.5"
+    lodash "^4.17.21"
+    lottie-react "^2.4.0"
+    swr "^2.2.5"
+    tailwindcss "^3.4.1"
+    tailwindcss-scoped-preflight "^3.2.6"
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
@@ -8560,26 +8580,6 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
-
-petercat-lui@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/petercat-lui/-/petercat-lui-1.0.0.tgz#734067a1dc13f34f23139461759ca2ecd0150a6d"
-  integrity sha512-BN9d/afmZhxYYXgaymjLVr4VGxWjv41SJHxCNL2UB19LVKkiCf4ExpC0Tg/Yz1PnoJppWaVfcBGy7YRPJW1WTg==
-  dependencies:
-    "@ant-design/icons" "^5.3.5"
-    "@ant-design/pro-chat" "^1.9.0"
-    "@ant-design/pro-editor" "^1.1.1"
-    "@babel/runtime" "^7.18.0"
-    antd "^5.15.3"
-    antd-style "^3.6.1"
-    axios "^1.6.7"
-    classnames "^2.5.1"
-    dotenv "^16.4.5"
-    lodash "^4.17.21"
-    lottie-react "^2.4.0"
-    swr "^2.2.5"
-    tailwindcss "^3.4.1"
-    tailwindcss-scoped-preflight "^3.2.6"
 
 picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.1.0"

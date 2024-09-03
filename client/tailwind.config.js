@@ -7,7 +7,7 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     "./node_modules/@nextui-org/**/dist/**/*.{js,ts,jsx,tsx,mjs}",
-    "./node_modules/petercat-lui/dist/**/*.{js,jsx}"
+    "./node_modules/@petercatai/assistant/dist/**/*.{js,jsx}"
   ],
   theme: {
     extend: {
