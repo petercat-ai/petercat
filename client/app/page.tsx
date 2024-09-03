@@ -132,8 +132,9 @@ export default function Homepage() {
               </span>
               <nav>
                 <a
-                  href="/"
+                  href="https://www.youtube.com/@petercat-ai"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                  target="_blank"
                 >
                   演示案例
                 </a>
