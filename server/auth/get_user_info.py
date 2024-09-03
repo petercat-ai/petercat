@@ -82,4 +82,4 @@ async def get_user(request: Request) -> User | None:
         return User(**user_info, anonymous=True)
     
     access_token = await getUserAccessToken(user_id=user_info['sub'])
-    return User(**user_info, id=user_info['sid'], avatar=user_info['picture'], access_token=access_token, anonymous=False)
+    return User(**user_info, access_token=access_token, anonymous=False)
