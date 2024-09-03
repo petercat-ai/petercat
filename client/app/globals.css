@@ -124,7 +124,7 @@ li {
 @keyframes spinBorder {
   0% {
     transform: rotate(0deg);
-    border-top-color: #b2ab9d00;
+    border-top-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
     border-left-color: transparent;
