@@ -459,18 +459,9 @@ export default function Homepage() {
                       src={PC_EXAMPLE_VIDEO}
                     />
                   </div>
-                  <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
-                  <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
-                  <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
-                  {/* <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
-                  <div className="border border-[#B2AB9D] pt-[55.55%] w-[250px] h-[450px]"></div>
-                  <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
-                </div>
-                <div className="relative border border-[#B2AB9D] p-2 pt-9">
-                  <div className="border border-[#B2AB9D] pl-[62.85%] h-[calc(100vh-400px)] min-h-[400px]"></div>
-                  <span className="absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4"></span>
-                  <span className="absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4"></span> */}
+                  <span className="circle-border-animation absolute top-2.5 left-4 border rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-12 border rounded-full w-4 h-4" />
+                  <span className="circle-border-animation absolute top-2.5 left-20 border rounded-full w-4 h-4" />
                 </div>
               </div>
               <a
