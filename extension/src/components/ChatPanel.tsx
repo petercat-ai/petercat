@@ -1,5 +1,5 @@
 'use client';
-import { Chat } from 'petercat-lui';
+import { Chat } from '@petercatai/assistant';
 import React from 'react';
 const ChatPanel = () => {
   return (

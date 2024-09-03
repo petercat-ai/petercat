@@ -7,14 +7,14 @@ ThoughtChain 是一个用于显示执行过程和状态的折叠组件，支持�
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install petercat-lui
+npm install @petercatai/assitant
 ```
 
 ## 使用示例
 
 ```tsx
 import React from 'react';
-import { ThoughtChain } from 'petercat-lui';
+import { ThoughtChain } from '@petercatai/assistant';
 
 export default () => (
   <ThoughtChain

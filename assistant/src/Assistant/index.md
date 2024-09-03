@@ -11,14 +11,14 @@ Assistant 是一个带有浮动气泡和可拖动的聊天助手组件。
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install petercat-lui
+npm install @petercatai/assitant
 ```
 
 ## 使用示例
 
 ```tsx
 import React from 'react';
-import { Assistant } from 'petercat-lui';
+import { Assistant } from '@petercatai/assistant';
 
 export default () => (
   <Assistant

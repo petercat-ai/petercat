@@ -7,14 +7,14 @@ StarterList 是一个用于展示机器人开场白的组件。
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install petercat-lui
+npm install @petercatai/assistant
 ```
 
 ## 使用示例
 
 ```jsx
 import React, { useEffect, useState } from 'react';
-import { StarterList } from 'petercat-lui';
+import { StarterList } from '@petercatai/assistant';
 
 export default () => {
   return (

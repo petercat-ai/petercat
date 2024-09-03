@@ -1,11 +1,11 @@
 {
-  "name": "@petercat/assistant",
+  "name": "@petercatai/assistant",
   "version": "1.0.0",
   "description": "Peter Cat Assistant Application",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "style": "dist/esm/style.css",
-  "browser": "dist/umd/petercat-lui.min.js",
+  "browser": "dist/umd/assistant.min.js",
   "exports": {
     ".": {
       "import": "./dist/esm/index.js"
