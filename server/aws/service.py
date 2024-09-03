@@ -1,4 +1,5 @@
 import base64
+import hashlib
 from .schemas import ImageMetaData
 from .constants import S3_TEMP_BUCKET_NAME, STATIC_URL
 from .exceptions import UploadError
@@ -7,8 +8,9 @@ from .exceptions import UploadError
 def upload_image_to_s3(file, metadata: ImageMetaData, s3_client):
     try:
         file_content = file.file.read()
-
-        s3_key = f"{file.filename}"
+        md5_hash = hashlib.md5()
+        md5_hash.update(file.filename.encode('utf-8'))
+        s3_key = md5_hash.hexdigest()
         encoded_filename = (
             base64.b64encode(metadata.title.encode("utf-8")).decode("utf-8")
             if metadata.title

@@ -1,14 +1,13 @@
-from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
 class User(BaseModel):
-    id: str
+    id: Optional[str] = None
     sub: str
     sid: str
     nickname: str
-    avatar: datetime 
+    avatar: Optional[str] = None
     picture: Optional[str]
 
     anonymous: Optional[bool] = True
-    access_token: Optional[str]
+    access_token: Optional[str] = None

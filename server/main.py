@@ -1,5 +1,6 @@
 import os
 
+from fastapi.responses import RedirectResponse
 import uvicorn
 
 from fastapi import FastAPI
@@ -32,9 +33,7 @@ app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat API
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key=session_secret_key,
-    same_site='None',
-    https_only=True  # 确保在 HTTPS 下运行
+    secret_key=session_secret_key
 )
 
 cors_origins = (
@@ -58,6 +57,10 @@ app.include_router(task_router.router)
 app.include_router(github_app_router.router)
 app.include_router(aws_router.router)
 
+
+@app.get("/")
+def home_page():
+    return RedirectResponse(url=WEB_URL)
 
 @app.get("/api/health_checker")
 def health_checker():

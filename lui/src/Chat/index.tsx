@@ -396,12 +396,19 @@ const Chat: FC<ChatProps> = memo(
                       return message;
                     }
                   } else {
+                    const originMessage = convertChunkToJson(
+                      message?.content as string,
+                    ) as any;
+                    const text =
+                      typeof originMessage === 'string'
+                        ? originMessage
+                        : originMessage.message;
                     return {
                       role: message.role,
                       content: [
                         {
                           type: 'text',
-                          text: message.content,
+                          text: text,
                         },
                       ],
                     };

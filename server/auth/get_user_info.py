@@ -74,16 +74,12 @@ async def get_user_id(request: Request):
         return None
 
 async def get_user(request: Request) -> User | None:
-    try:
-        user_info = request.session.get('user')
-        if user_info is None:
-            return None
-    
-        if user_info.sub.startswith("client|"):
-            return User(**user_info, anonymous=True)
-        
-        access_token = await getUserAccessToken(user_id=user_info['sub'])
-
-        return User(**user_info, access_token=access_token, anonymous=False)
-    except Exception:
+    user_info = request.session.get('user')
+    if user_info is None:
         return None
+
+    if user_info['sub'].startswith("client|"):
+        return User(**user_info, anonymous=True)
+    
+    access_token = await getUserAccessToken(user_id=user_info['sub'])
+    return User(**user_info, access_token=access_token, anonymous=False)

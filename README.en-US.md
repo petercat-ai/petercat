@@ -12,6 +12,7 @@
   [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
   [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
   [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
+  [![codecov](https://codecov.io/github/petercat-ai/petercat/graph/badge.svg?token=2HAO18FB6X)](https://codecov.io/github/petercat-ai/petercat)
   [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
  
 
@@ -19,7 +20,7 @@
 
 ## 🏠 Homepage
 
-[🐱Nest: petercat.ai](https://www.petercat.ai)
+[🐱Nest: petercat.ai](https://petercat.ai)
 
 ## ✨ Features
 
@@ -52,7 +53,15 @@ Various integration options, such as SDK integration into official websites or o
 
 Deployment solution: [AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
+Here you can find the complete guides:
+- [Self-Hosting - Start the Service Locally](./docs/guides/self_hosted_local.md)
+- [Self-Hosting - Deploy to AWS](./docs/guides/self_hosted_aws.md)
+
+
 ![Deployment Solution](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
+
+[![Self hosted Video](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*spdZSbWsVhkAAAAAAAAAAAAADrPSAQ/fmt.webp)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
 
 ## ⚙️ Environment Variables
 

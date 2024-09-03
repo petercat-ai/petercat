@@ -13,13 +13,13 @@ const PC_EXAMPLE_VIDEO = [
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/LOrpQ66m2xoAAAAAAAAAABAADnV5AQBr',
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/iKvmQ7J0hLoAAAAAAAAAABAADnV5AQBr',
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/LIxDSqvF240AAAAAAAAAABAADnV5AQBr',
-][Math.floor((Math.random() * 4))];
+][Math.floor(Math.random() * 4)];
 const MOBILE_EXAMPLE_VIDEO = [
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/OIwnTaSfkrgAAAAAAAAAABAADnV5AQBr',
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/rzD7RbDSlOIAAAAAAAAAABAADnV5AQBr',
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/h78QS4sjtP8AAAAAAAAAABAADnV5AQBr',
   'https://mass-office.alipay.com/huamei_koqzbu/afts/file/uevzRKomLYUAAAAAAAAAABAADnV5AQBr',
-][Math.floor((Math.random() * 5))];
+][Math.floor(Math.random() * 5)];
 
 export default function Homepage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -155,8 +155,9 @@ export default function Homepage() {
               </span>
               <nav>
                 <a
-                  href="/"
+                  href="https://www.youtube.com/@petercat-ai"
                   className="text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
+                  target="_blank"
                 >
                   演示案例
                 </a>
@@ -234,8 +235,8 @@ export default function Homepage() {
                 />
                 <p className="ml-6 text-xl text-[#27272A] mr-[748px] opacity-0 transition-opacity group-[.fp-completely]:opacity-100">
                   我们提供对话式答疑 Agent
-                  配置系统、自托管部署方案和便捷的一体化应用 SDK，让您能够为自己的
-                  GitHub
+                  配置系统、自托管部署方案和便捷的一体化应用
+                  SDK，让您能够为自己的 GitHub
                   仓库一键创建智能答疑机器人，并快速集成到各类官网或项目中，
                   为社区提供更高效的技术支持生态。
                 </p>
@@ -398,7 +399,10 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="section bg-[#FEF4E1] group *:relative" ref={showCaseRef}>
+          <div
+            className="section bg-[#FEF4E1] group *:relative"
+            ref={showCaseRef}
+          >
             <div className="absolute z-10 left-0 top-0 w-1/2 h-screen flex justify-center items-end">
               <Lottie
                 animationData={LottieHelixCat}
@@ -430,7 +434,10 @@ export default function Homepage() {
                       <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
                       <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
-                    <video className="max-h-[60vh] min-h-[383px] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100" src={MOBILE_EXAMPLE_VIDEO}></video>
+                    <video
+                      className="max-h-[60vh] min-h-[383px] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
+                      src={MOBILE_EXAMPLE_VIDEO}
+                    ></video>
                   </div>
                 </div>
                 <div className="relative p-2 pt-9">
@@ -447,12 +454,15 @@ export default function Homepage() {
                       <div className="border-l border-[#B2AB9D] w-0 h-0 absolute top-0 left-0" />
                       <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
-                    <video className="max-h-[55vh] min-h-[400px] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100" src={PC_EXAMPLE_VIDEO} />
+                    <video
+                      className="max-h-[55vh] min-h-[400px] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
+                      src={PC_EXAMPLE_VIDEO}
+                    />
                   </div>
                   <span className="circle-border-animation absolute top-2.5 left-4 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-12 border border-[#B2AB9D] rounded-full w-4 h-4" />
                   <span className="circle-border-animation absolute top-2.5 left-20 border border-[#B2AB9D] rounded-full w-4 h-4" />
-                {/* <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
+                  {/* <div className="relative -translate-y-[116px] border border-[#B2AB9D] p-2">
                   <div className="border border-[#B2AB9D] pt-[55.55%] w-[250px] h-[450px]"></div>
                   <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
                 </div>
@@ -619,8 +629,7 @@ export default function Homepage() {
                     >
                       <div className="flex max-w-[1400px] mx-auto items-center">
                         <p className="max-w-[560px] text-xl">
-                          我们来自蚂蚁集团的 Ant Design
-                          团队，致力于创造美而实用的产品，AI
+                          我们来自蚂蚁集团支付宝体验技术部，致力于创造美而实用的产品，AI
                           只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。
                         </p>
                         <span className="flex-1 mx-12 h-px border-t border-[#7F7A71]" />

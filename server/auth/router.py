@@ -53,6 +53,10 @@ async def getAnonymousUser(request: Request):
 
 @router.get("/login")
 async def login(request: Request):
+    if CLIENT_ID is None:
+        return {
+            "message": "enviroments CLIENT_ID and CLIENT_SECRET required.",
+        }
     redirect_response = await oauth.auth0.authorize_redirect(request, redirect_uri=CALLBACK_URL)
     return redirect_response
 
@@ -67,7 +71,6 @@ async def callback(request: Request):
     user_info = await getUserInfoByToken(token=auth0_token['access_token'])
 
     if user_info:
-        request.session['user'] = dict(user_info)
         data = {
             "id": user_info["sub"],
             "nickname": user_info.get("nickname"),
@@ -76,6 +79,7 @@ async def callback(request: Request):
             "sub": user_info["sub"],
             "sid": secrets.token_urlsafe(32)
         }
+        request.session['user'] = dict(data)
         supabase = get_client()
         supabase.table("profiles").upsert(data).execute()
     return RedirectResponse(url=f'{MARKET_URL}', status_code=302)
