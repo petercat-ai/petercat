@@ -54,9 +54,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-      
-      - name: Install Supabase CLI
-        run: npm install -g supabase@latest
     
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -79,7 +76,7 @@ jobs:
           SUPABASE_DB_URL: postgres://postgres:postgres@localhost:5432/postgres
         run: |
           cd migrations
-          supabase db push
+          npx supabase db push
   
       - name: Run tests
         run: pytest --cov
