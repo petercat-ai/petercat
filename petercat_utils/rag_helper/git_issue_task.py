@@ -22,6 +22,16 @@ def add_rag_git_issue_task(config: RAGGitIssueConfig):
     return res
 
 
+def create_rag_git_issue_task(record):
+    return GitIssueTask(id=record["id"],
+                 issue_id=record["issue_id"],
+                 repo_name=record["repo_name"],
+                 node_type=record["node_type"],
+                 bot_id=record["bot_id"],
+                 status=record["status"],
+                 from_id=record["from_task_id"],
+                 page_index=record["page_index"]
+                 )
 class GitIssueTask(GitTask):
     issue_id: str
     node_type: GitIssueTaskNodeType
