@@ -20,7 +20,7 @@
 
 ## 🏠 主页
 
-[🐱窝: petercat.ai](https://www.petercat.ai)
+[🐱窝: petercat.ai](https://petercat.ai)
 
 
 ## ✨ 特性
