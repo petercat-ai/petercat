@@ -8,8 +8,8 @@ import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import Profile from '@/components/User';
-import { useTranslation } from 'react-i18next'; // 引入 useTranslation hook
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LangSwitcher';
 
 export default function Homepage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,6 +19,7 @@ export default function Homepage() {
   const helixOctopusRef = useRef<LottieRefCurrentProps>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const showCaseRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation('common');
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -138,23 +139,24 @@ export default function Homepage() {
                   href="/"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                 >
-                  {t('homepage.nav.home', '演示案例')}
+                  {t('homepage.nav.home')}
                 </a>
                 <a
                   href="/market"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                 >
-                  工作台
+                  {t('homepage.nav.market')}
                 </a>
                 <a
                   href="https://github.com/petercat-ai/petercat/blob/main/README.zh-CN.md"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                   target="_blank"
                 >
-                  文档
+                  {t('homepage.nav.doc')}
                 </a>
               </nav>
               <div className="flex-1 flex justify-end">
+                <LanguageSwitcher />
                 <a
                   href="https://github.com/petercat-ai/petercat"
                   className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center mr-4"

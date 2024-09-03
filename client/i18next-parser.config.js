@@ -1,6 +1,6 @@
 module.exports = {
   locales: ['zh', 'en'], 
-  output: 'app/locales/$LOCALE/$NAMESPACE.json', 
+  output: 'public/locales/$LOCALE/$NAMESPACE.json', 
   defaultNamespace: 'common',
   keySeparator: false, 
   namespaceSeparator: false,
@@ -11,5 +11,7 @@ module.exports = {
   reactNamespace: false,
   useKeysAsDefaultValue: true,
   verbose: true,
+  createOldCatalogs: false, 
+  resetDefaultValueLocale: null, 
   input: ['app/**/*.{ts,tsx}'],
 };

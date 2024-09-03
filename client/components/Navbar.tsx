@@ -10,6 +10,7 @@ import { SearchIcon } from '@/public/icons/SearchIcon';
 import { AddIcon } from '@/public/icons/AddIcon';
 import PublishBotEntity from './PublishBotEntity';
 import { useSearch } from '@/app/contexts/SearchContext';
+import LanguageSwitcher from '@/components/LangSwitcher';
 
 export function Navbar() {
   const { setSearch } = useSearch();
@@ -123,7 +124,7 @@ export function Navbar() {
             创建机器人
           </Button>
         )}
-
+        <LanguageSwitcher />
         <Profile />
       </div>
     </div>

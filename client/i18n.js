@@ -8,13 +8,17 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en', 
-    debug: process.env.NODE_ENV === 'development', 
+    fallbackLng: 'en',
+    debug: true,
     interpolation: {
       escapeValue: false,
     },
     backend: {
-      loadPath: '/locales/{{lng}}/common.json', 
+      loadPath: '/locales/{{lng}}/common.json',
+    },
+    detection: {
+      order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage', 'cookie'],
     },
   });
 
