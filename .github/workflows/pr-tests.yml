@@ -29,15 +29,11 @@ jobs:
     environment: Preview
     services:
       postgres:
-        image: supabase/postgres:latest
+        image: supabase/postgres
         ports:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
-      kong:
-        image: supabase/kong:latest
-        ports:
-          - 8000:8000
     strategy:
       fail-fast: true
     defaults:
