@@ -33,6 +33,8 @@ app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat API
 app.add_middleware(
     SessionMiddleware,
     secret_key=session_secret_key,
+    same_site='None',
+    https_only=True  # 确保在 HTTPS 下运行
 )
 
 cors_origins = (

@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation';
 import {
   Avatar,
-  Badge,
   Button,
   Dropdown,
   DropdownItem,
@@ -10,18 +9,20 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react';
 import useUser from '../app/hooks/useUser';
+import GitHubIcon from '@/public/icons/GitHubIcon';
 
 export default function Profile() {
   const router = useRouter();
   const { data: user, status } = useUser();
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 
-  if (!user || status !== 'success') {
+  if (!user || status !== 'success' || user.id.startsWith('client|')) {
     return (
       <Button
         onPress={() => router.push(`${apiDomain}/api/auth/login`)}
-        className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center"
+        className="min-w-[88px] px-4 h-10 inline-block transition-colors bg-[#3F3F46] text-[#FFFFFF] rounded-full leading-10 text-center"
       >
+        <GitHubIcon className="inline scale-75 -translate-y-0.5" />
         登录
       </Button>
     );
@@ -40,21 +41,13 @@ export default function Profile() {
       </DropdownTrigger>
       <DropdownMenu>
         <DropdownItem
-          onClick={() => router.push(`${apiDomain}/api/auth/login`)}
+          onClick={() => router.push(`${apiDomain}/api/auth/logout`)}
         >
-          登录
+          登出
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
-
-  if (user.id.startsWith('client|')) {
-    return (
-      <Badge content="匿名" size="sm" color="default">
-        {avatar}
-      </Badge>
-    );
-  }
 
   return avatar;
 }

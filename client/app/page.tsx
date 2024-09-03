@@ -7,7 +7,6 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
-import Profile from '@/components/User';
 
 export default function Homepage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -161,7 +160,6 @@ export default function Homepage() {
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
                   {stars} stars
                 </a>
-                <Profile />
               </div>
             </header>
             <div className="relative">
