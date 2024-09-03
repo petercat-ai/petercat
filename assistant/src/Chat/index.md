@@ -11,14 +11,14 @@ Chat 是一个基于 @ant-design/pro-chat 和 @ant-design/pro-editor 构建的�
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install petercat-lui
+npm install @petercatai/assistant
 ```
 
 ## 使用示例
 
 ```jsx
 import React, { useEffect, useState } from 'react';
-import { Chat } from 'petercat-lui';
+import { Chat } from '@petercatai/assistant';
 
 export default () => {
   const [res, setRes] = useState({});

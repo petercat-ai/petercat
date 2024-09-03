@@ -4,10 +4,9 @@ import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
 import { SearchProvider } from './contexts/SearchContext';
 import { BotProvider } from './contexts/BotContext';
-
-import 'petercat-lui/style';
-import './globals.css';
 import { usePathname } from 'next/navigation';
+import '@petercatai/assistant/style';
+import './globals.css';
 
 const queryClient = new QueryClient();
 

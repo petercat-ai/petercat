@@ -1,12 +1,9 @@
-# petercat-lui
+# @petercat/chat-app
 
-  [![npm](https://img.shields.io/npm/dm/petercat-lui.svg)](https://www.npmjs.com/package/petercat-lui)
-  [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![npm](https://img.shields.io/npm/dm/petercatai/chat-sdk.svg)](https://www.npmjs.com/package/petercatai/chat-sdk)
+  [![Version](https://img.shields.io/npm/v/petercatai/chat-sdk/latest.svg)](https://www.npmjs.com/package/petercatai/chat-sdk)
 
-PeterCat LUI is a UI component library based on dumi, designed for building PeterCat conversation interfaces.
-
-## Peter Cat HomePage
-
+chat-app is a UI component library based on dumi, designed for building [Peter Cat](https://www.petercat.ai) conversation interfaces.
 
 
 ## Development
@@ -32,7 +29,7 @@ $ yarn run doctor
 ```
 
 
-## How to integrate PertercatLUI by UMD way?
+## How to integrate Perter Cat Assistant by UMD way?
 
 Step 1, externalize the following dependencies for your project **if you already used them in your project**:
 

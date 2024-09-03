@@ -6,7 +6,7 @@ import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useSearch } from '@/app/contexts/SearchContext';
-import { Assistant } from 'petercat-lui';
+import { Assistant } from '@petercatai/assistant';
 import { useFingerprint } from '../hooks/useFingerprint';
 import PublishBotEntity from '@/components/PublishBotEntity';
 import Crash from '@/components/Crash';

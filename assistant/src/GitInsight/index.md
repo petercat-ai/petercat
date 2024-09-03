@@ -8,14 +8,14 @@ GitInsight 是一个展示 Git 仓库统计信息（包括 Star 数量、Fork �
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install petercat-lui
+npm install @petercatai/assistant
 ```
 
 ## 使用示例
 
 ```tsx
 import React from 'react';
-import { GitInsight } from 'petercat-lui';
+import { GitInsight } from '@petercatai/assistant';
 
 export default () => (
   <GitInsight
