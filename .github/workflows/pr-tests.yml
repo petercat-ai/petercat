@@ -24,8 +24,9 @@ env:
   PETERCAT_ENV: unittest
 
 jobs:
-  supabase:
+  build:
     runs-on: ubuntu-latest
+    environment: Preview
     services:
       postgres:
         image: supabase/postgres:latest
@@ -37,10 +38,6 @@ jobs:
         image: supabase/kong:latest
         ports:
           - 8000:8000
-  
-  build:
-    runs-on: ubuntu-latest
-    environment: Preview
     strategy:
       fail-fast: true
     defaults:
