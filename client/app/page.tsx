@@ -571,9 +571,7 @@ export default function Homepage() {
                     >
                       <div className="flex max-w-[1400px] mx-auto items-center">
                         <p className="max-w-[400px] text-xl">
-                          我们来自蚂蚁集团的 Ant Design
-                          团队，致力于创造美而实用的产品，AI
-                          只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。
+                          我们来自蚂蚁集团支付宝体验技术部，致力于创造美而实用的产品，AI 只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。
                         </p>
                         <span className="flex-1 mx-12 h-px border-t border-[#7F7A71]" />
                         <Image
