@@ -75,7 +75,6 @@ async def get_user_id(request: Request):
 
 async def get_user(request: Request) -> User | None:
     user_info = request.session.get('user')
-    
     if user_info is None:
         return None
 
