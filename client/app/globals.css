@@ -153,7 +153,7 @@ li {
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
-  animation: spinBorder 2s linear forwards;
+  animation: spinBorder 2s linear forwards 1s;
 }
 
 div.fp-watermark {

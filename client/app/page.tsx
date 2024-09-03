@@ -190,7 +190,7 @@ export default function Homepage() {
                     src="/images/logo-footer.svg"
                     alt="Peter Cat"
                   />
-                  是专为社区维护者和开发者打造的智能答疑机器人解决方案。
+                  是专为社区维护者和开发者打造的智能答疑机器人解决方案
                 </p>
                 <a
                   className="inline-block px-8 py-3 rounded-full border-2 border-white text-white text-xl transition-transform hover:scale-105"
@@ -388,7 +388,6 @@ export default function Homepage() {
                       <div className="border-r border-[#B2AB9D] w-0 h-0 absolute bottom-0 right-0" />
                     </div>
                   </div>
-                  <span className="absolute top-5 left-1/2 ml-[-32px] border border-[#B2AB9D] rounded-full w-16 h-[15px] bg-[#FEF4E1]"></span>
                 </div>
                 <div className="relative p-2 pt-9">
                   <div className="w-full h-full absolute inset-0">
