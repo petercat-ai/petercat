@@ -54,7 +54,11 @@
 
 部署方案：[AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
-![部署方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
+你可以在这里看到完整方案：
+- [私有化部署 - 本地启动服务](./docs/guides/self_hosted_local_cn.md)
+- [私有化部署 - 部署到 AWS ](./docs/guides/self_hosted_aws_cn.md)
+
+![架构方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
 [![演示视频](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
 

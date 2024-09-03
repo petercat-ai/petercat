@@ -1,6 +1,5 @@
-以下是翻译成中文的版本：
+[![演示视频](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
 
-```markdown
 ## 一键在 AWS 上部署 Petercat：准备步骤
 
 在 AWS 上部署 Petercat 之前，请确保您已完成以下准备工作：
@@ -148,6 +147,3 @@ Value               https://q7kpxukbpgxkkjldgnvvbc6dyi0akzuk.lambda-url.ap-south
 ```bash 
 curl https://itebdgout4h33aqpy2ygxaedgm0nlnys.lambda-url.ap-southeast-1.on.aws/api/health_checker
 ```
-```
-
-这就是翻译后的版本，格式和结构保持一致。请告诉我是否需要进一步调整！

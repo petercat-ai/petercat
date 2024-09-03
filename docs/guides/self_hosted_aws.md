@@ -1,3 +1,5 @@
+[![演示视频](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
 ## Deploying Petercat on AWS with One Click: Preparation Steps
 
 Before deploying Petercat on AWS, ensure you have completed the following prerequisites:

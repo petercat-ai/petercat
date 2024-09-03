@@ -52,6 +52,11 @@ Various integration options, such as SDK integration into official websites or o
 
 Deployment solution: [AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
+Here you can find the complete guides:
+- [Self-Hosting - Start the Service Locally](./docs/guides/self_hosted_local.md)
+- [Self-Hosting - Deploy to AWS](./docs/guides/self_hosted_aws.md)
+
+
 ![Deployment Solution](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
 [![Self hosted Video](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
