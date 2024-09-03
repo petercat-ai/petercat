@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -35,27 +35,63 @@ export default function Homepage() {
       bannerActionRef.current!.classList.add('translate-y-8');
     }
   }, []);
+
+  const playAnimation = useCallback(
+    (
+      animationRef: RefObject<{ goToAndPlay: (frame: number) => void }>,
+      play: boolean = true,
+    ) => {
+      if (play) {
+        requestAnimationFrame(() => animationRef.current?.goToAndPlay(0));
+      }
+    },
+    [],
+  );
+
+  const updateClasses = useCallback(
+    (addTableClass: boolean, addShowCaseClass: boolean) => {
+      requestAnimationFrame(() => {
+        if (addTableClass) {
+          tableRef.current?.classList.add('animate-borders');
+        } else {
+          tableRef.current?.classList.remove('animate-borders');
+        }
+
+        if (addShowCaseClass) {
+          showCaseRef.current?.classList.add('animate-border-group');
+        } else {
+          showCaseRef.current?.classList.remove('animate-border-group');
+        }
+      });
+    },
+    [tableRef, showCaseRef],
+  );
+
   const leaveHandler = useCallback<NonNullable<fullpageOptions['beforeLeave']>>(
     (_, dest) => {
       if (dest.isFirst) {
-        videoRef.current!.play();
-        tableRef.current!.classList.remove('animate-borders');
-        showCaseRef.current!.classList.remove('animate-border-group');
-      } else if (dest.index === 1) {
-        helixOctopusRef.current!.goToAndPlay(0);
-        tableRef.current!.classList.add('animate-borders');
-        showCaseRef.current!.classList.remove('animate-border-group');
-      } else if (dest.index === 2) {
-        tableRef.current!.classList.remove('animate-borders');
-        showCaseRef.current!.classList.remove('animate-border-group');
-        lightningCatRef.current!.goToAndPlay(0);
-      } else if (dest.index === 3) {
-        tableRef.current!.classList.remove('animate-borders');
-        showCaseRef.current!.classList.add('animate-border-group');
-        helixCatRef.current!.goToAndPlay(0);
+        requestAnimationFrame(() => {
+          videoRef.current?.play();
+          updateClasses(false, false);
+        });
       } else {
-        tableRef.current!.classList.remove('animate-borders');
-        showCaseRef.current!.classList.remove('animate-border-group');
+        switch (dest.index) {
+          case 1:
+            playAnimation(helixOctopusRef);
+            updateClasses(true, false);
+            break;
+          case 2:
+            playAnimation(lightningCatRef);
+            updateClasses(false, false);
+            break;
+          case 3:
+            playAnimation(helixCatRef);
+            updateClasses(false, true);
+            break;
+          default:
+            updateClasses(false, false);
+            break;
+        }
       }
     },
     [],

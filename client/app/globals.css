@@ -155,3 +155,7 @@ li {
   height: 1rem;
   animation: spinBorder 2s linear forwards;
 }
+
+div.fp-watermark {
+    display: none;
+}
