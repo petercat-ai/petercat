@@ -156,6 +156,7 @@ yarn run publish:pypi
 
 ## 💼 企业版接入
 
+请把您的项目地址，使用场景，使用频率等信息发送至 [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
 
 
 ## 📧 反馈问题
@@ -172,5 +173,9 @@ yarn run publish:pypi
 ## 📄 License
 
 MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
+
+## 💗 Sponsor
+
+[Ant Design](https://ant.design/)
 
 
