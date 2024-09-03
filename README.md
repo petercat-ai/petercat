@@ -56,6 +56,9 @@
 
 ![部署方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
+[![演示视频](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
+
 
 ## ⚙️ 环境变量
 
@@ -95,7 +98,7 @@
 | `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/`
 |  **LLM相关的 env** |
 | `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx`
-| `GEMINI_API_KEY` | 必选 | Gemini 的密钥 | `xxxx`
+| `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx`
 | `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx`
 |  **注册为 Github App 的 env** |
 | `X_GITHUB_APP_ID` | 可选 |  注册为 Github App 时，APPID | `123456`

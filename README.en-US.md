@@ -54,6 +54,9 @@ Deployment solution: [AWS](https://aws.amazon.com) + [Supabase](https://supabase
 
 ![Deployment Solution](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
+[![Self hosted Video](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
+
 ## ⚙️ Environment Variables
 
 The project requires environment variables to be set:
