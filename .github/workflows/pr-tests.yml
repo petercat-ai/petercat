@@ -24,6 +24,20 @@ env:
   PETERCAT_ENV: unittest
 
 jobs:
+  supabase:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: supabase/postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
+      kong:
+        image: supabase/kong:latest
+        ports:
+          - 8000:8000
+  
   build:
     runs-on: ubuntu-latest
     environment: Preview
@@ -42,7 +56,7 @@ jobs:
           role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
           audience: sts.amazonaws.com
           aws-region: ${{ env.AWS_REGION }}
-
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -59,6 +73,18 @@ jobs:
         run: |
           ruff check --output-format=github .
 
+      - name: Run Supabase CLI using Docker
+        env:
+          SUPABASE_DB_URL: postgres://postgres:postgres@localhost:5432/postgres
+        run: |
+          docker run --rm \
+            -e SUPABASE_ACCESS_TOKEN=${{ secrets.SUPABASE_ACCESS_TOKEN }} \
+            -e SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            -e SUPABASE_DB_URL=${SUPABASE_DB_URL} \
+            -v $(pwd):/migrations \
+            supabase/cli \
+            supabase db push
+  
       - name: Run tests
         run: pytest --cov
 
