@@ -9,6 +9,8 @@ def lambda_handler(event, context):
         batch_item_failures = []
         sqs_batch_response = {}
 
+        if len(event):
+            print(f"event batch size is ${len(event)}")
         for record in event["Records"]:
             try:
                 body = record["body"]
