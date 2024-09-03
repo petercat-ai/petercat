@@ -9,6 +9,7 @@ import { useSearch } from '@/app/contexts/SearchContext';
 import { Assistant } from 'petercat-lui';
 import { useFingerprint } from '../hooks/useFingerprint';
 import PublishBotEntity from '@/components/PublishBotEntity';
+import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;
 
@@ -60,7 +61,7 @@ export default function Home() {
   }
 
   if (error) {
-    return <div>Error loading bots! {error.message}</div>;
+    return <Crash />;
   }
 
   return (
