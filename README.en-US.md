@@ -20,7 +20,7 @@
 
 ## 🏠 Homepage
 
-[🐱Nest: petercat.ai](https://www.petercat.ai)
+[🐱Nest: petercat.ai](https://petercat.ai)
 
 ## ✨ Features
 
