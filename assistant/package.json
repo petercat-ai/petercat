@@ -1,7 +1,7 @@
 {
-  "name": "petercat-lui",
+  "name": "@petercat/assistant",
   "version": "1.0.0",
-  "description": "A react library developed with dumi",
+  "description": "Peter Cat Assistant Application",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "style": "dist/esm/style.css",
