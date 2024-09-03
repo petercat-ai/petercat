@@ -8,6 +8,8 @@ import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import Profile from '@/components/User';
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation hook
+import { t } from 'i18next';
 
 export default function Homepage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -136,7 +138,7 @@ export default function Homepage() {
                   href="/"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                 >
-                  演示案例
+                  {t('homepage.nav.home', '演示案例')}
                 </a>
                 <a
                   href="/market"

@@ -1,5 +1,5 @@
 module.exports = {
-  locales: ['en', 'zh'], 
+  locales: ['zh', 'en'], 
   output: 'app/locales/$LOCALE/$NAMESPACE.json', 
   defaultNamespace: 'common',
   keySeparator: false, 
