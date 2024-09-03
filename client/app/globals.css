@@ -90,35 +90,35 @@ li {
 }
 
 .animate-border-group .border-t {
-  animation: leftToRight 1s forwards;
+  animation: leftToRight 1s forwards 1s;
 }
 
 .animate-border-group .border-b {
-  animation: leftToRight 1s forwards 0.5s;
+  animation: leftToRight 1s forwards 1.5s;
 }
 
 .animate-border-group .border-l {
-  animation: topToBottom 1s forwards;
+  animation: topToBottom 1s forwards 1s;
 }
 
 .animate-border-group .border-r {
-  animation: bottomToTop 1s forwards 0.5s;
+  animation: bottomToTop 1s forwards 2.5s;
 }
 
 .animate-border-group .border-container  .border-t {
-  animation: rightToLeft 1s forwards 0.75s;
+  animation: rightToLeft 1s forwards 1.75s;
 }
 
 .animate-border-group .border-container  .border-b {
-  animation: leftToRight 0.1s forwards;
+  animation: leftToRight 0.1s forwards 1s;
 }
 
 .animate-border-group .border-container .border-l {
-  animation: bottomToTop 1s forwards 1s;
+  animation: bottomToTop 1s forwards 2s;
 }
 
 .animate-border-group .border-container  .border-r {
-  animation: bottomToTop 1s forwards;
+  animation: bottomToTop 1s forwards 1s;
 }
 
 @keyframes spinBorder {
