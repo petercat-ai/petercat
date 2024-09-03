@@ -60,7 +60,7 @@
 
 ![架构方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
 
-[![演示视频](https://img.youtube.com/vi/Al6R9Ye5mBY/0.jpg)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+[![演示视频](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*spdZSbWsVhkAAAAAAAAAAAAADrPSAQ/original)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
 
 
 
