@@ -66,6 +66,8 @@ class GitIssueTask(GitTask):
         self.update_status(TaskStatus.IN_PROGRESS)
         if self.node_type == GitIssueTaskNodeType.REPO:
             return self.handle_repo_node()
+        elif self.node_type == GitIssueTaskNodeType.ISSUE_PAGE:
+            return self.handle_issue_page_node()
         elif self.node_type == GitIssueTaskNodeType.ISSUE:
             return self.handle_issue_node()
         else:
@@ -84,6 +86,7 @@ class GitIssueTask(GitTask):
 
         slice_page_index = latest_page[0]["page_index"] if len(latest_page) > 0 else 0
 
+        # The latest page might have a new issue.
         if len(latest_page) > 0:
             create_rag_git_issue_task(latest_page[0]).send()
 
@@ -109,10 +112,45 @@ class GitIssueTask(GitTask):
                     issue_task = create_rag_git_issue_task(record)
                     issue_task.send()
 
-        return (self.get_table().update(
-            {"status": TaskStatus.COMPLETED.value})
-                .eq("id", self.id)
-                .execute())
+        return self.update_status(TaskStatus.COMPLETED)
+
+    def handle_issue_page_node(self):
+        repo = g.get_repo(self.repo_name)
+        issues = repo.get_issues(state='all').get_page(self.page_index)
+
+        task_list = list(
+            map(
+                lambda item: {
+                    "repo_name": self.repo_name,
+                    "issue_id": item.number,
+                    "status": TaskStatus.NOT_STARTED.value,
+                    "node_type": GitIssueTaskNodeType.ISSUE.value,
+                    "from_task_id": self.id,
+                    "bot_id": self.bot_id,
+                },
+                issues,
+            ),
+        )
+        if len(task_list) > 0:
+            existing_issues = (self.get_table()
+                               .select('*')
+                               .in_('issue_id', [item['issue_id'] for item in task_list])
+                               .eq('repo_name', self.repo_name)
+                               .eq('node_type', GitIssueTaskNodeType.ISSUE.value)
+                               .execute()
+                               )
+
+            existing_issue_ids = {int(issue['issue_id']) for issue in existing_issues.data}
+
+            new_task_list = [item for item in task_list if item['issue_id'] not in existing_issue_ids]
+            if len(new_task_list) > 0:
+                result = self.get_table().insert(new_task_list).execute()
+                for record in result.data:
+                    issue_task = create_rag_git_issue_task(record)
+                    issue_task.send()
+
+        return self.update_status(TaskStatus.COMPLETED)
+
 
     def handle_issue_node(self):
         issue_retrieval.add_knowledge_by_issue(
