@@ -10,6 +10,7 @@ import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useSearch } from '@/app/contexts/SearchContext';
 import AddBotCard from '@/components/AddBotCard';
 import { useRouter } from 'next/navigation';
+import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;
 
@@ -21,7 +22,7 @@ export default function List() {
     return <FullPageSkeleton />;
   }
   if (error) {
-    return <div>Error loading bots!{error.message}</div>;
+    return <Crash />;
   }
 
   return (
