@@ -11,9 +11,7 @@ on:
       - template.yml
 
 env:
-  AWS_REGION: ap-northeast-1
-  ECR_REPOSITORY: petercat-lambda
-  ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -48,9 +46,8 @@ jobs:
             --config-file .aws/petercat-prod.toml \
             --parameter-overrides APIUrl="https://api.petercat.ai" \
                                   WebUrl="https://www.petercat.ai" \
-                                  AWSRegionName=${{ vars.AWS_REGION_NAME }} \
                                   AWSSecretName=${{ vars.AWS_SECRET_NAME }} \
-                                  S3BucketName=${{ vars.S3_BUCKET_NAME }} \
+                                  S3TempBucketName=${{ vars.S3_TEMP_BUCKET_NAME }} \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \

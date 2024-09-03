@@ -11,7 +11,7 @@ from petercat_utils.utils.env import get_env_variable
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 SECRET_NAME = get_env_variable("AWS_SECRET_NAME")
-REGIN_NAME = get_env_variable("AWS_REGION_NAME")
+REGIN_NAME = get_env_variable("AWS_REGION")
 
 
 def get_private_key():

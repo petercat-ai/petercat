@@ -80,15 +80,11 @@ Parameters:
     Type: String
     Description: Auth0 Clientt Secret
     Default: 1
-  AWSRegionName:
-    Type: String
-    Description: AWS Region Name
-    Default: ap-northeast-1
   AWSSecretName:
     Type: String
     Description: AWS Secret Name
     Default: 1
-  S3BucketName:
+  S3TempBucketName:
     Type: String
     Description: S3 Bucket Name
     Default: 1
@@ -102,8 +98,7 @@ Resources:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
           AWS_SECRET_NAME: !Ref AWSSecretName
-          AWS_REGION_NAME: !Ref AWSRegionName
-          S3_BUCKET_NAME: !Ref S3BucketName
+          S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
           API_URL: !Ref APIUrl
           WEB_URL: !Ref WebUrl
           X_GITHUB_APP_ID: !Ref GitHubAppID
@@ -138,7 +133,7 @@ Resources:
           - s3:GetObject
           - s3:DeleteObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       Tracing: Active
     Metadata:
       DockerContext: server
@@ -176,7 +171,7 @@ Resources:
           - s3:GetObject
           - s3:DeleteObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       - SQSPollerPolicy:
           QueueName: 
             !Ref SQSQueueName
