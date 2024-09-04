@@ -18,12 +18,15 @@ type IProps = {
 const KnowledgeBtn = (props: IProps) => {
   const { onClick, botId, mode } = props;
   const { setTaskProfile } = useBotTask();
-  const [isPolling, setIsPolling] = React.useState<boolean>(true);
+  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>(!!botId);
   const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
-  const { data: taskList } = useGetBotRagTask(botId, isPolling, true);
-  const taskCnt = taskList?.length ?? 0;
   const [allowShowChunkList, setAllowShowChunkList] =
     React.useState<boolean>(false);
+
+  const { data: taskList } = useGetBotRagTask(botId, shouldGetTask, true);
+  const taskCnt = taskList?.length ?? 0;
+
+  // compute task running status by taskList
   useEffect(() => {
     if (!taskList) return;
     let completeTaskCnt = 0;
@@ -44,12 +47,13 @@ const KnowledgeBtn = (props: IProps) => {
     setTaskProfile({ running: taskRunning });
   }, [taskList]);
 
+  // close the interval query
   useEffect(() => {
-    setIsPolling(true);
     return () => {
-      setIsPolling(false);
+      setShouldGetTask(false);
     };
   }, []);
+
   if (mode === 'pageHeader') {
     return (
       <>

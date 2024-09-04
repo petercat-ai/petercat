@@ -227,6 +227,7 @@ export default function Edit({ params }: { params: { id: string } }) {
             toast.success('Token 已复制到剪贴板');
           }}
         >
+          {/* @ts-ignore */}
           <span className="text-xs text-gray-500 cursor-pointer">
             复制 Token
           </span>
