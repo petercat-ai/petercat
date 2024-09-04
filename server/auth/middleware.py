@@ -46,4 +46,4 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
     except Exception as e:
         # 处理其他异常
-        return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
+        return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
