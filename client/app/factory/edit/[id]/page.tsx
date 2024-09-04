@@ -53,7 +53,7 @@ export default function Edit({ params }: { params: { id: string } }) {
     if (!user || status !== 'success' || user.id.startsWith('client|')) {
       router.push(`${apiDomain}/api/auth/login`);
     }
-  }, []);
+  }, [user, status]);
 
   const {
     updateBot: onUpdateBot,
