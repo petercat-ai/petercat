@@ -5,6 +5,7 @@ import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useRouter } from 'next/navigation';
 import {
   useBotConfigGenerator,
   useBotConfig,
@@ -20,11 +21,12 @@ import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
-
-import 'react-toastify/dist/ReactToastify.css';
+import useUser from '@/app/hooks/useUser';
 import Knowledge from '../components/Knowledge';
 import KnowledgeBtn from '../components/KnowledgeBtn';
 import { BotTaskProvider } from '../components/TaskContext';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -37,13 +39,21 @@ enum ConfigTypeEnum {
 }
 export default function Edit({ params }: { params: { id: string } }) {
   const { botProfile, setBotProfile } = useBot();
-
+  const { data: user, status } = useUser();
+  const router = useRouter();
   const [activeTab, setActiveTab] = React.useState<ConfigTypeEnum>(
     ConfigTypeEnum.CHAT_CONFIG,
   );
   const [visibleType, setVisibleType] = React.useState<VisibleTypeEnum>(
     VisibleTypeEnum.BOT_CONFIG,
   );
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+
+  useEffect(() => {
+    if (!user || status !== 'success' || user.id.startsWith('client|')) {
+      router.push(`${apiDomain}/api/auth/login`);
+    }
+  }, [user, status]);
 
   const {
     updateBot: onUpdateBot,
