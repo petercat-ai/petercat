@@ -233,6 +233,24 @@ const Chat: FC<ChatProps> = memo(
                   originData.content,
                 ) as any;
 
+                // handle errors
+                if (originMessage.errors.length > 0) {
+                  return (
+                    <ChatItemRender
+                      direction={'start'}
+                      avatar={domsMap.avatar}
+                      title={domsMap.title}
+                      content={
+                        <div className="leftMessageContent">
+                          <div className="ant-pro-chat-list-item-message-content text-red-700">
+                            ops...似乎出了点问题。
+                          </div>
+                        </div>
+                      }
+                    />
+                  );
+                }
+
                 // Default message content
                 const defaultMessageContent = (
                   <div className="leftMessageContent">{defaultDom}</div>
@@ -414,14 +432,24 @@ const Chat: FC<ChatProps> = memo(
                     };
                   }
                 }) as Message[];
-              const response = await streamChat(
-                newMessages,
-                apiDomain,
-                apiUrl,
-                prompt,
-                token,
-              );
-              return handleStream(response);
+              try {
+                const response = await streamChat(
+                  newMessages,
+                  apiDomain,
+                  apiUrl,
+                  prompt,
+                  token,
+                );
+                return handleStream(response);
+              } catch (e: any) {
+                // catch query error,such as network error. then return error response for message render
+                return new Response(
+                  `data: ${JSON.stringify({
+                    status: 'error',
+                    message: e.message,
+                  })}`,
+                );
+              }
             }}
             inputAreaRender={(
               _: ReactNode,
