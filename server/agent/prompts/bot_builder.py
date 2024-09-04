@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 CREATE_PROMPT = """
 ## Role:
 You are a GitHub Answering Bot Creation Assistant. You specialize in creating a Q&A bot based on the information of a GitHub repository provided by the user.
@@ -45,7 +48,7 @@ You are a GitHub Answering Bot modifying assistant. You specialize in modifying 
 """
 
 
-def generate_prompt_by_user_id(user_id: str, bot_id: str):
+def generate_prompt_by_user_id(user_id: str, bot_id: Optional[str]):
     if bot_id:
       return EDIT_PROMPT.format(bot_id=bot_id, user_id=user_id)
     else:
