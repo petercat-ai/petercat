@@ -127,8 +127,8 @@ yarn run bootstrap
 # 调试 client
 yarn run client
 
-# 调试 lui
-yarn run lui
+# 调试 assistant
+yarn run assistant
 
 # 调试 server
 yarn run server
@@ -136,11 +136,11 @@ yarn run server
 # 本地启动网站
 yarn run client:server
 
-# 本地启动 lui 组件
-yarn run lui:server
+# 本地启动 assistant 组件
+yarn run assistant:server
 
-# lui 构建
-cd lui
+# assistant 构建
+cd assistant
 yarn run build
 npm publish
 
@@ -170,12 +170,10 @@ yarn run publish:pypi
 
 ![https://github.com/petercat-ai/petercat/graphs/contributors](https://contrib.rocks/image?repo=petercat-ai/petercat)
 
-## 📄 License
-
-MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
-
 ## 💗 Sponsor
 
 [Ant Design](https://ant.design/)
 
+## 📄 License
 
+MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
