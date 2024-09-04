@@ -1,6 +1,6 @@
 {
   "name": "@petercatai/assistant",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Peter Cat Assistant Application",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "dev": "npm run build:css & dumi dev",
+    "dev": "dumi dev",
     "build:css": "tailwindcss -i tailwind.css -o ./src/style.css",
     "build": "npm run build:css && cp ./src/style.css ./.dumi/tmp/style.css && father build",
     "build:watch": "father dev",
@@ -30,9 +30,6 @@
   },
   "authors": [],
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
   "sideEffects": [
     "**/*.css"
   ],

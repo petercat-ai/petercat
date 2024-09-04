@@ -161,6 +161,7 @@ class AgentBuilder:
 
                     yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_end":
+                    children_value = event["data"].get("output", {})
                     if isinstance(children_value, str):
                         try:
                             parsed_children_value = json.loads(children_value)
