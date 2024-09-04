@@ -126,8 +126,8 @@ yarn run bootstrap
 # Debug client
 yarn run client
 
-# Debug lui
-yarn run lui
+# Debug assistant
+yarn run assistant
 
 # Debug server
 yarn run server
@@ -135,11 +135,11 @@ yarn run server
 # Start website locally
 yarn run client:server
 
-# Start lui component locally
-yarn run lui:server
+# Start assistant component locally
+yarn run assistant:server
 
-# Build lui
-cd lui
+# Build assistant
+cd assistant
 yarn run build
 npm publish
 
