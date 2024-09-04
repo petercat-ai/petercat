@@ -5,6 +5,7 @@ from starlette.responses import Response
 
 ALLOW_LIST = [
   "/favicon.ico",
+  "/api/health_checker",
   "/api/bot/list",
   "/api/bot/detail",
   "/api/github/app/webhook",
