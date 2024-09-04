@@ -48,6 +48,7 @@ jobs:
             --parameter-overrides APIUrl="https://api.petercat.ai" \
                                   WebUrl="https://www.petercat.ai" \
                                   StaticUrl="https://static.petercat.ai" \
+                                  etercatEnv="production" \
                                   AWSGithubSecretName=${{ secrets.AWS_GITHUB_SECRET_NAME }} \
                                   AWSStaticSecretName=${{ secrets.AWS_STATIC_SECRET_NAME }} \
                                   AWSStaticKeyPairId=${{ secrets.AWS_STATIC_KEYPAIR_ID }} \
