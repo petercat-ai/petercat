@@ -9,29 +9,43 @@ interface Tool {
   };
 }
 
+/**
+ * parse stream chunk data to lui message json
+ * @param rawData original data
+ * @returns 
+ */
 export const convertChunkToJson = (rawData: string) => {
   const chunks = rawData?.trim()?.split('\n\n');
   const tools: Tool[] = [];
   const messages: string[] = [];
+  const errors: string[] = [];
 
   try {
     forEach(chunks, (chunk) => {
       const regex = /data: (.*?})\s*$/;
       const match = chunk.match(regex);
+      // SSE prototype
       if (match && match[1]) {
-        const parsedChunk = JSON.parse(match[1]);
+       const parsedChunk = JSON.parse(match[1]);
         if (parsedChunk.type === 'tool') {
           tools.push(parsedChunk);
         } else if (parsedChunk.type === 'message') {
           messages.push(parsedChunk.content);
+        }else if(parsedChunk.status === 'error'){
+          console.warn('assistant error info:',parsedChunk.message)
+          errors.push(parsedChunk.message);
         }
-      } else {
-        messages.push(chunk);
-      }
+        // ignore other type
+      }else {
+          messages.push(chunk);
+        }
     });
-    return { tools, message: messages.join('') };
-  } catch (error) {
-    return rawData;
+    // final message
+    return { tools, message: messages.join(''),errors};
+  } catch (error:any) {
+    // it seems never happen
+    errors.push(error.message)
+    return { tools, message: messages.join(''),errors};
   }
 };
 
