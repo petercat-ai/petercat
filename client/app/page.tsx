@@ -122,18 +122,24 @@ export default function Homepage() {
   const enterHandler = useCallback<NonNullable<fullpageOptions['afterLoad']>>(
     (_, dest) => {
       if (dest.index === 2) {
-        lightningCatRef.current!.goToAndPlay(0);
+        lightningCatRef.current?.goToAndPlay(0);
       } else if (dest.index === 3) {
         updateClasses(false, true);
 
         // play video after transition
-        clearTimeout(videoRefs.pcCase.current!._timer);
-        videoRefs.pcCase.current!._timer = window.setTimeout(() => {
-          videoRefs.pcCase.current!.currentTime = 0;
-          videoRefs.pcCase.current!.play();
-          videoRefs.mobileCase.current!.currentTime = 0;
-          videoRefs.mobileCase.current!.play();
-        }, 1333);
+        const [{ current: pcElm }, { current: mobileElm }] = [
+          videoRefs.pcCase,
+          videoRefs.mobileCase,
+        ];
+        if (pcElm && mobileElm) {
+          clearTimeout(pcElm._timer);
+          pcElm._timer = window.setTimeout(() => {
+            pcElm.currentTime = 0;
+            pcElm.play();
+            mobileElm.currentTime = 0;
+            mobileElm.play();
+          }, 1333);
+        }
       }
     },
     [],
@@ -171,11 +177,13 @@ export default function Homepage() {
       mobile: MOBILE_EXAMPLE_VIDEO[Math.floor(Math.random() * 4)],
     });
 
-    return () =>
+    return () => {
       videoRefs.banner.current?.removeEventListener(
         'timeupdate',
         videoUpdateHandler,
       );
+      clearTimeout(videoRefs.pcCase.current!._timer);
+    };
   }, []);
 
   return (
