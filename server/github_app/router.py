@@ -20,6 +20,8 @@ from petercat_utils import get_env_variable
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 WEB_URL =  get_env_variable("WEB_URL")
+AWS_GITHUB_SECRET_NAME = get_env_variable("AWS_GITHUB_SECRET_NAME")
+REGIN_NAME = get_env_variable("AWS_REGION")
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
@@ -92,7 +94,7 @@ async def github_app_webhook(
     installation_id = payload["installation"]["id"]
     try:
         auth = Auth.AppAuth(
-            app_id=APP_ID, private_key=get_private_key(), jwt_algorithm="RS256"
+            app_id=APP_ID, private_key=get_private_key(region_name=REGIN_NAME, secret_id=AWS_GITHUB_SECRET_NAME), jwt_algorithm="RS256"
         ).get_installation_auth(installation_id=int(installation_id))
     except Exception as e:
         print("Failed", f"Authentication failed: {e}")
