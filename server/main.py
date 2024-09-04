@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
+from auth.middleware import AuthMiddleWare
 from petercat_utils import get_env_variable
 
 
@@ -30,6 +31,8 @@ is_dev = bool(get_env_variable("IS_DEV"))
 session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
 cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat APIs")
+
+app.add_middleware(AuthMiddleWare)
 
 app.add_middleware(
     SessionMiddleware,

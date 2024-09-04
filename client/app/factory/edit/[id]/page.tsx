@@ -243,6 +243,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           variant="bordered"
           name="repo_name"
           label={manualConfigLabel}
+          disabled={isEdit}
           value={botProfile?.repoName}
           placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
           labelPlacement="outside"
@@ -303,7 +304,7 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   return (
     <BotTaskProvider>
-      <div className="flex h-full w-full flex-col items-center bg-white">
+      <div className="flex h-full w-full flex-col items-center bg-white mb-[-40px] overflow-hidden">
         <ToastContainer />
         {visibleType === VisibleTypeEnum.BOT_CONFIG ? (
           <div className="relative flex w-full grow overflow-hidden">

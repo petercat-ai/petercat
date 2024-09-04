@@ -25,6 +25,7 @@
     "@tanstack/react-query": "^5.17.19",
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "18.2.7",
     "ai": "^2.1.28",
     "autoprefixer": "10.4.14",
