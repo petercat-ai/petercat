@@ -86,8 +86,10 @@ The project requires environment variables to be set:
 | `WEB_URL`                  | Required                                   | Domain of the frontend web service            | `https://petercat.ai`                       |
 | `STATIC_URL`               | Required                                   | Static resource domain                        | `https://static.petercat.ai`                |
 | **AWS Related Environment Variables**                                  |
-| `AWS_SECRET_NAME`          | Required                                   | AWS secret file name                          | `prod/githubapp/petercat/pem`               |
-| `S3_TEMP_BUCKET_NAME`           | Required                                   | AWS S3 bucket for temporary image files                 | `xxx-temp`                                  |
+| `AWS_GITHUB_SECRET_NAME`          | Required                                   | AWS secret file name                          | `prod/githubapp/petercat/pem`               |
+| `AWS_STATIC_SECRET_NAME` | Optional | The name of the AWS-managed CloudFront private key. If configured, CloudFront signed URLs will be used to protect your resources. For more information, see the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html). | `prod/petercat/static` |
+| `AWS_STATIC_KEYPAIR_ID` | Optional | The Key Pair ID for AWS CloudFront. If configured, CloudFront signed URLs will be used to protect your resources. For more information, see the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html). | `APKxxxxxxxx` |
+| `S3_TEMP_BUCKET_NAME`      | Required                                   | AWS S3 bucket for temporary image files                 | `xxx-temp`                                  |
 | `SQS_QUEUE_URL`            | Required                                   | AWS SQS queue URL                             | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **Supabase Related Environment Variables**                              |
 | `SUPABASE_URL`             | Required                                   | Supabase service URL, found [here](https://supabase.com/dashboard/project/_/settings/database) | `https://***.supabase.co`                   |

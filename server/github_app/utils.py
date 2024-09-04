@@ -1,30 +1,17 @@
-import boto3
 import jwt
 import requests
-from botocore.exceptions import ClientError
+
 import time
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 
 from petercat_utils.utils.env import get_env_variable
+from utils.get_private_key import get_private_key
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
-SECRET_NAME = get_env_variable("AWS_SECRET_NAME")
+AWS_GITHUB_SECRET_NAME = get_env_variable("AWS_GITHUB_SECRET_NAME")
 REGIN_NAME = get_env_variable("AWS_REGION")
-
-
-def get_private_key():
-    session = boto3.session.Session()
-    client = session.client(service_name="secretsmanager", region_name=REGIN_NAME)
-    try:
-        get_secret_value_response = client.get_secret_value(SecretId=SECRET_NAME)
-    except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        raise e
-
-    return get_secret_value_response["SecretString"]
 
 
 def get_jwt():
@@ -37,7 +24,7 @@ def get_jwt():
         "iss": APP_ID,
     }
 
-    pem = get_private_key()
+    pem = get_private_key(region_name=REGIN_NAME, secret_id=AWS_GITHUB_SECRET_NAME)
     private_key = serialization.load_pem_private_key(
         pem.encode("utf-8"), password=None, backend=default_backend()
     )

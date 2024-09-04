@@ -84,9 +84,17 @@ Parameters:
     Type: String
     Description: Auth0 Clientt Secret
     Default: 1
-  AWSSecretName:
+  AWSGithubSecretName:
     Type: String
-    Description: AWS Secret Name
+    Description: Github Secret Name Store in AWS
+    Default: 1
+  AWSStaticSecretName:
+    Type: String
+    Description: Static Secret Name Store in AWS
+    Default: 1
+  AWSStaticKeyPairId: 
+    Type: String
+    Description: Static Key Pair Id
     Default: 1
   S3TempBucketName:
     Type: String
@@ -101,7 +109,9 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
-          AWS_SECRET_NAME: !Ref AWSSecretName
+          AWS_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
+          AWS_STATIC_SECRET_NAME: !Ref AWSStaticSecretName
+          AWS_STATIC_KEYPAIR_ID: !Ref AWSStaticKeyPairId
           S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
           API_URL: !Ref APIUrl
           WEB_URL: !Ref WebUrl
