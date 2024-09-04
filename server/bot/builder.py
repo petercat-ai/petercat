@@ -11,10 +11,10 @@ g = Github()
 
 
 async def bot_info_generator(
-        uid: str,
-        repo_name: str,
-        starters: Optional[List[str]] = None,
-        hello_message: Optional[str] = None
+    uid: str,
+    repo_name: str,
+    starters: Optional[List[str]] = None,
+    hello_message: Optional[str] = None,
 ):
     try:
         # Step1:Get the repository object
@@ -31,10 +31,21 @@ async def bot_info_generator(
             "prompt": prompt,
             "uid": uid,
             "label": "Assistant",
-            "starters": starters if starters else [f"介绍一下 {repo.name} 这个项目", f"查看 {repo_name} 的贡献指南",
-                                                   "我该怎样快速上手"],
+            "starters": (
+                starters
+                if starters
+                else [
+                    f"介绍一下 {repo.name} 这个项目",
+                    f"查看 {repo_name} 的贡献指南",
+                    "我该怎样快速上手",
+                ]
+            ),
             "public": False,
-            "hello_message": hello_message if hello_message else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题~"
+            "hello_message": (
+                hello_message
+                if hello_message
+                else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题~"
+            ),
         }
 
         return bot_data
@@ -60,10 +71,10 @@ def trigger_rag_task(repo_name: str, bot_id: str):
 
 
 async def bot_builder(
-        uid: str,
-        repo_name: str,
-        starters: Optional[List[str]] = None,
-        hello_message: Optional[str] = None
+    uid: str,
+    repo_name: str,
+    starters: Optional[List[str]] = None,
+    hello_message: Optional[str] = None,
 ):
     """
     create a bot based on the given github repository.
