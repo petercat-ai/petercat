@@ -67,7 +67,6 @@ def home_page():
 @app.get("/api/health_checker")
 def health_checker():
     return {
-        "ENV": ENV,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
         "CALLBACK_URL": CALLBACK_URL,
