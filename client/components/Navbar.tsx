@@ -113,7 +113,7 @@ export function Navbar() {
         />
       </div>
       <div className="w-[200px] ml-[48px] flex items-center">
-        {!pathname.includes('/factory/list') && <PublishBotEntity type="nav" />}
+        {!pathname.includes('/factory/list') && <PublishBotEntity area="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
             onPress={() => router.push(`/factory/edit/new`)}

@@ -2,7 +2,6 @@
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useMemo, useState } from 'react';
 import { filter, isEmpty, map } from 'lodash';
-import AddBotCard from '@/components/AddBotCard';
 import { useBotEdit } from '@/app/hooks/useBot';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -20,11 +19,12 @@ import { useBotList } from '@/app/hooks/useBot';
 import BotItem from './BotItem';
 
 import 'react-toastify/dist/ReactToastify.css';
+import PublishBotCard from './PublishBotCard';
 
 declare type Bot = Tables<'bots'>;
 
-const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
-  const { type } = props;
+const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
+  const { area } = props;
   const [selectedBot, setSelectedBot] = useState('');
   const [selectedBotName, setSelectedBotName] = useState('');
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -53,7 +53,7 @@ const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
   }, [editError]);
   return (
     <>
-      {type === 'nav' && (
+      {area === 'nav' && (
         <>
           <ToastContainer />
           <Button
@@ -66,7 +66,7 @@ const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
           </Button>
         </>
       )}
-      {type === 'list' && <AddBotCard onPress={onOpen} />}
+      {area === 'list' && <PublishBotCard onPress={onOpen} />}
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
