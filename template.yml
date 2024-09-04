@@ -164,9 +164,17 @@ Resources:
         AuthType: NONE
       Environment:
         Variables:
+          X_GITHUB_APP_ID: !Ref GitHubAppID
+          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
+          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          API_IDENTIFIER: !Ref APIIdentifier
+          FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
+          OPENAI_API_KEY: !Ref OpenAIAPIKey
+          GEMINI_API_KEY: !Ref GeminiAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
+          TAVILY_API_KEY: !Ref TavilyAPIKey
           SQS_QUEUE_URL: !Ref SQSQueueUrl
       Policies:
       - Statement:
