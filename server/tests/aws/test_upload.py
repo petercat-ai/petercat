@@ -54,4 +54,4 @@ def test_upload_image_error(monkeypatch):
             data={"title": "Test Title", "description": "Test Description"},
         )
 
-    assert response.status_code == 500
+    assert response.status_code == 400

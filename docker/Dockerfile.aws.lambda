@@ -4,8 +4,11 @@ FROM public.ecr.aws/docker/library/python:3.12.0-slim-bullseye
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.1 /lambda-adapter /opt/extensions/lambda-adapter
 
 # Copy nltk_lambda_layer for using nltk in lambda
-COPY --from=public.ecr.aws/m5s2b0d4/nltk_lambda_layer:866cf93d71913f478da0cbd06b3055a1edee7712 /nltk_data /opt/nltk_data
+COPY --from=petercatai/nltk-layer:1.0.1 /nltk_data /opt/nltk_data
 
+# 安装 libmagic
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libmagic1
 
 # Copy function code
 COPY . ${LAMBDA_TASK_ROOT}
