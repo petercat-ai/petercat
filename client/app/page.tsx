@@ -1,12 +1,5 @@
 'use client';
-import {
-  Ref,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -17,15 +10,15 @@ import GitHubIcon from '@/public/icons/GitHubIcon';
 
 // play same video util refresh page
 const PC_EXAMPLE_VIDEO = [
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/LOrpQ66m2xoAAAAAAAAAABAADnV5AQBr',
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/iKvmQ7J0hLoAAAAAAAAAABAADnV5AQBr',
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/LIxDSqvF240AAAAAAAAAABAADnV5AQBr',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*7lc3QKRnuYAAAAAAAAAAAAAADuH-AQ',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*TmIsT7SUWPsAAAAAAAAAAAAADuH-AQ',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*UaYESbe_mJMAAAAAAAAAAAAADuH-AQ',
 ];
 const MOBILE_EXAMPLE_VIDEO = [
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/OIwnTaSfkrgAAAAAAAAAABAADnV5AQBr',
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/rzD7RbDSlOIAAAAAAAAAABAADnV5AQBr',
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/h78QS4sjtP8AAAAAAAAAABAADnV5AQBr',
-  'https://mass-office.alipay.com/huamei_koqzbu/afts/file/uevzRKomLYUAAAAAAAAAABAADnV5AQBr',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*izMfSbJJXLoAAAAAAAAAAAAADuH-AQ',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*tuaNRbG-5q4AAAAAAAAAAAAADuH-AQ',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*sxvhTafMlIoAAAAAAAAAAAAADuH-AQ',
+  'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
 export default function Homepage() {
@@ -527,7 +520,7 @@ export default function Homepage() {
               <span className="absolute z-10 bottom-[8.8%] left-1/2 -translate-x-1/2 opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100">
                 <a
                   className="inline-block py-3 px-8 bg-gray-800 text-xl text-white rounded-full transition-all hover:scale-105"
-                  href="/"
+                  href="https://www.youtube.com/@petercat-ai"
                   target="_blank"
                 >
                   了解更多
@@ -574,8 +567,8 @@ export default function Homepage() {
                       <div className="flex justify-end">
                         <div className="flex-1 max-w-[660px]">
                           <a
-                            className="float-right mt-4 py-3 px-8 text-xl text-[#FEF4E1] rounded-full border-2 border-white/[0.4] transition-colors hover:border-white/[0.8]"
-                            href="/"
+                            className="float-right mt-4 py-3 px-8 text-xl text-[#FEF4E1] rounded-full border-2 border-white/[0.4] transition-all hover:border-white/[0.8] hover:scale-105"
+                            href="https://github.com/petercat-ai/petercat/blob/main/README.md"
                             target="_blank"
                           >
                             查看更多
