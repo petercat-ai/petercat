@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
+from auth.middle_ware import AuthMiddleWare
 from petercat_utils import get_env_variable
 
 
@@ -31,11 +32,12 @@ session_secret_key = get_env_variable("FASTAPI_SECRET_KEY")
 cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat APIs")
 
+
+app.add_middleware(AuthMiddleWare)
 app.add_middleware(
     SessionMiddleware,
     secret_key=session_secret_key
 )
-
 cors_origins = (
     ["*"] if cors_origins_whitelist is None else cors_origins_whitelist.split(",")
 )
@@ -47,7 +49,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
 )
-
 
 app.include_router(rag_router.router)
 app.include_router(bot_router.router)
