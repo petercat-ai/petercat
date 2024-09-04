@@ -19,7 +19,7 @@ router = APIRouter(
 
 
 def is_allowed_file(file: UploadFile) -> bool:
-    mime = magic.Magic()
+    mime = magic.Magic(mime=True)
     mime_type = mime.from_buffer(file.file.read(2048))
     file.file.seek(0)  # 重新定位到文件开头
     return mime_type in ALLOWED_MIME_TYPES
