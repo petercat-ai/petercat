@@ -154,12 +154,14 @@ yarn run publish:pypi
 
 ## 💼 Enterprise Integration
 
+Please send your project address, usage scenarios, usage frequency, and other information to [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
+
 ## 📧 Reporting Issues
 
 Peter Cat is still in its growth stage, and occasional “tantrums” are to be expected. Please report issues via the following channels:
 
-	•	Submit an Issue
-	•	Discussions
+* [Submit an Issue(https://github.com/petercat-ai/petercat/issues/new/choose)
+*  [Discussions](https://github.com/petercat-ai/petercat/discussions) 
 
 👬 Contributors
 
