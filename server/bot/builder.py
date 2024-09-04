@@ -46,6 +46,7 @@ async def bot_info_generator(
                 if hello_message
                 else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题~"
             ),
+            "repo_name": repo_name,
         }
 
         return bot_data
