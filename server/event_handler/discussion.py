@@ -2,9 +2,7 @@ import requests
 from typing import Any
 from github import Github, Auth
 from github import GithubException
-
 from agent.bot.get_bot import get_bot_by_id
-from agent.prompts.issue_helper import generate_issue_prompt
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
