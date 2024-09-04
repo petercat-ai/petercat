@@ -23,8 +23,8 @@ async def upload_image(
     user: Annotated[User | None, Depends(get_user)] = None,
 ):  
 
-    # if user is None or user.anonymous:
-    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Need Login")
+    if user is None or user.anonymous:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Need Login")
 
     metadata = ImageMetaData(title=title, description=description)
     result = upload_image_to_s3(file, metadata, s3_client)

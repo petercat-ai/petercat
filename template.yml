@@ -139,22 +139,22 @@ Resources:
         - Sid: BedrockInvokePolicy
           Effect: Allow
           Action:
-          - bedrock:InvokeModelWithResponseStream
+            - bedrock:InvokeModelWithResponseStream
           Resource: '*'
         - Sid: AllObjectActions
           Effect: Allow
           Action: 
-          - s3:PutObject
-          - s3:GetObject
-          - s3:DeleteObject
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+            - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
         - Sid: LimitUploadsBySize
           Effect: Deny
           Principal: "*"
           Action: s3:PutObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+            - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
           Condition:
             NumericGreaterThan:
               s3:ContentLength: 5242880 # 5mb
@@ -163,7 +163,7 @@ Resources:
           Principal: "*"
           Action: "s3:PutObject"
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+            - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
           Condition:
             StringNotLike:
               "s3:ContentType":
