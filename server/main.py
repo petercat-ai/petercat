@@ -34,7 +34,9 @@ cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat APIs")
 
 
-app.add_middleware(AuthMiddleWare)
+if ENV in ['preview', 'production', 'unitest']:
+    app.add_middleware(AuthMiddleWare)
+
 app.add_middleware(
     SessionMiddleware,
     secret_key=session_secret_key
