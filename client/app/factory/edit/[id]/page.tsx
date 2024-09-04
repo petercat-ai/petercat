@@ -27,6 +27,7 @@ import KnowledgeBtn from '../components/KnowledgeBtn';
 import { BotTaskProvider } from '../components/TaskContext';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -256,13 +257,16 @@ export default function Edit({ params }: { params: { id: string } }) {
           label={manualConfigLabel}
           disabled={isEdit}
           value={botProfile?.repoName}
-          placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
+          placeholder="请输入 GitHub 项目地址"
           labelPlacement="outside"
           onChange={(e) => {
-            const repoName = e.target.value;
-            setBotProfile((draft) => {
-              draft.repoName = repoName;
-            });
+            const url = e.target.value;
+            const repoName = extractFullRepoNameFromGitHubUrl(url);
+            if (repoName) {
+              setBotProfile((draft) => {
+                draft.repoName = repoName;
+              });
+            }
           }}
           isDisabled={isEdit}
           required
