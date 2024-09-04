@@ -139,6 +139,29 @@ Resources:
           - s3:DeleteObject
           Resource: 
           - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+        - Sid: LimitUploadsBySize
+          Effect: Deny
+          Principal: "*"
+          Action: s3:PutObject
+          Resource: 
+          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+          Condition:
+            NumericGreaterThan:
+              s3:ContentLength: 5242880 # 5mb
+        - Sid: "AllowOnlyImageUploads"
+          Effect: "Deny"
+          Principal: "*"
+          Action: "s3:PutObject"
+          Resource: 
+          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
+          Condition:
+            StringNotLike:
+              "s3:ContentType":
+                - "image/jpeg"
+                - "image/png"
+                - "image/gif"
+                - "image/webp"
+                - "image/bmp"
       Tracing: Active
     Metadata:
       DockerContext: server
