@@ -27,15 +27,19 @@ class AuthMiddleWare(BaseHTTPMiddleware):
       return await call_next(request)
   
     # 获取 session 中的用户信息
-    user = request.session.get("user")  
+    user = request.session.get("user") 
+    anonymous_user = user['sub'].startswith("client|")
+    print(f"AuthMiddleWare: user={user}, anonymous_user={anonymous_user}")
 
     if not user:
       # 如果没有用户信息，返回 401 Unauthorized 错误
       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
 
     # 如果是匿名用户，仅放过固定
-    if user['sub'].startswith("client|") and request.url.path in ANONYMOUS_USER_ALLOW_LIST:
+    if user['sub'].startswith("client|"):
+      if request.url.path in ANONYMOUS_USER_ALLOW_LIST:
         return await call_next(request)
-    else:
-       # 如果没有用户信息，返回 401 Unauthorized 错误
-      raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Anonymous User Not Allow")
+      else:
+        # 如果没有用户信息，返回 401 Unauthorized 错误
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Anonymous User Not Allow")
+    return await call_next(request)
