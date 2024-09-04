@@ -28,5 +28,5 @@ fastapi_auth0
 requests
 pytest
 httpx
-python-magic-bin
+python-magic
 petercat_utils>=0.1.31

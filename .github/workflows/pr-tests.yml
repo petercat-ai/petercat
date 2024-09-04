@@ -45,6 +45,11 @@ jobs:
         with:
           python-version: '3.12.0'
 
+      - name: Install libmagic
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmagic1
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
