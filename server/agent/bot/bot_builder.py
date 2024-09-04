@@ -1,4 +1,4 @@
-from typing import AsyncIterator, Optional
+from typing import AsyncIterator
 from agent.llm.openai import OpenAIClient
 from petercat_utils.data_class import ChatData
 
