@@ -167,6 +167,7 @@ Resources:
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
+          SQS_QUEUE_URL: !Ref SQSQueueUrl
       Policies:
       - Statement:
         - Sid: BedrockInvokePolicy
