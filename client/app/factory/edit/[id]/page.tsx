@@ -4,6 +4,7 @@ import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   useBotConfigGenerator,
   useBotConfig,
@@ -80,6 +81,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           draft.description = data.description;
           draft.starters = data.starters;
           draft.public = data.public;
+          draft.repoName = data.repoName;
           draft.helloMessage = data.hello_message;
         });
       }
@@ -109,6 +111,7 @@ export default function Edit({ params }: { params: { id: string } }) {
         draft.helloMessage = config.hello_message || '';
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
+        draft.repoName = config.repo_name ?? '';
       });
   }, [config]);
 
@@ -214,6 +217,23 @@ export default function Edit({ params }: { params: { id: string } }) {
       />
     </div>
   );
+  const manualConfigLabel = (
+    <div className="flex justify-between">
+      <span>Github 项目名</span>
+      {botProfile.id && (
+        <CopyToClipboard
+          text={botProfile.id}
+          onCopy={() => {
+            toast.success('Token 已复制到剪贴板');
+          }}
+        >
+          <span className="text-xs text-gray-500 cursor-pointer">
+            复制 Token
+          </span>
+        </CopyToClipboard>
+      )}
+    </div>
+  );
 
   const manualConfigContent = (
     <div className="h-full px-10 py-10 overflow-x-hidden overflow-y-scroll">
@@ -222,7 +242,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           type="text"
           variant="bordered"
           name="repo_name"
-          label="Github 项目名"
+          label={manualConfigLabel}
           value={botProfile?.repoName}
           placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
           labelPlacement="outside"
@@ -232,7 +252,9 @@ export default function Edit({ params }: { params: { id: string } }) {
               draft.repoName = repoName;
             });
           }}
+          isDisabled={isEdit}
           required
+          classNames={{ label: 'w-full' }}
           className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
         <div className="flex items-center gap-4">

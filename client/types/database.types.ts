@@ -45,6 +45,7 @@ export type Database = {
           name: string
           prompt: string | null
           public: boolean | null
+          repo_name:string | null
           starters: string[] | null
           uid: string | null
           updated_at: string | null
@@ -59,6 +60,7 @@ export type Database = {
           name?: string
           prompt?: string | null
           public?: boolean | null
+          repo_name?:string | null
           starters?: string[] | null
           uid?: string | null
           updated_at?: string | null
@@ -73,6 +75,7 @@ export type Database = {
           name?: string
           prompt?: string | null
           public?: boolean | null
+          repo_name?:string | null
           starters?: string[] | null
           uid?: string | null
           updated_at?: string | null
