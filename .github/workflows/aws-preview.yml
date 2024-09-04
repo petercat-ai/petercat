@@ -17,6 +17,7 @@ on:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
+  PETERCAT_ENV: preview
 
 permissions:
   id-token: write   # This is required for requesting the JWT

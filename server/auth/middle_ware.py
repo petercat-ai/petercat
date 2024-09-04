@@ -1,7 +1,10 @@
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
+from petercat_utils import get_env_variable
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
+
+ENV = get_env_variable("PETERCAT_ENV")
 
 ALLOW_LIST = [
   "/favicon.ico",
@@ -19,6 +22,10 @@ ANONYMOUS_USER_ALLOW_LIST = [
 
 class AuthMiddleWare(BaseHTTPMiddleware):
   async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+    # 只有 preview production 和 unitest 进行鉴权
+    if ENV not in ['preview', 'production', 'unitest']:
+      return await call_next(request)
+    
     # Auth 相关的直接放过
     if request.url.path.startswith("/api/auth"):
       return await call_next(request)
@@ -28,8 +35,6 @@ class AuthMiddleWare(BaseHTTPMiddleware):
   
     # 获取 session 中的用户信息
     user = request.session.get("user") 
-    anonymous_user = user['sub'].startswith("client|")
-    print(f"AuthMiddleWare: user={user}, anonymous_user={anonymous_user}")
 
     if not user:
       # 如果没有用户信息，返回 401 Unauthorized 错误

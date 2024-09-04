@@ -20,6 +20,7 @@ from task import router as task_router
 from github_app import router as github_app_router
 from aws import router as aws_router
 
+ENV = get_env_variable("PETERCAT_ENV")
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
@@ -66,6 +67,7 @@ def home_page():
 @app.get("/api/health_checker")
 def health_checker():
     return {
+        "ENV": ENV,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
         "CALLBACK_URL": CALLBACK_URL,
