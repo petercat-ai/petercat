@@ -142,19 +142,16 @@ const InputAreaRender = (props: {
     }
 
     const files = event.clipboardData.files;
+    if (!files.length) return;
 
-    if (files.length > 0) {
-      const file = files[0];
-      const uniqueUid = `${Date.now()}`;
-      const newFile = new File([file], uniqueUid, { type: file.type });
-      if (file.type.includes('image')) {
-        handleUpload({ file: newFile, uid: uniqueUid });
-      } else {
-        AntMessage.warning('只支持图片格式');
-      }
-    } else {
-      AntMessage.warning('粘贴失败');
-    }
+    const file = files[0];
+
+    if (!file.type.includes('image')) return;
+
+    const uniqueUid = `${Date.now()}`;
+    const newFile = new File([file], uniqueUid, { type: file.type });
+
+    handleUpload({ file: newFile, uid: uniqueUid });
   };
 
   return (
