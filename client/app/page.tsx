@@ -168,7 +168,7 @@ export default function Homepage() {
                   工作台
                 </a>
                 <a
-                  href="https://github.com/petercat-ai/petercat/blob/main/README.zh-CN.md"
+                  href="https://github.com/petercat-ai/petercat/blob/main/README.md"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                   target="_blank"
                 >
