@@ -2,7 +2,8 @@ import requests
 from typing import Any
 from github import Github, Auth
 from github import GithubException
-
+from agent.bot.get_bot import get_bot_by_id
+from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 from agent.qa_chat import agent_chat
@@ -82,15 +83,30 @@ class DiscussionEventHandler:
 
     async def handle_discussion_event(self, action: str):
         owner = self.event["organization"]["login"]
-        repo = self.event["repository"]["name"]
+        repo_name = self.event["repository"]["full_name"]
         discussion = self.event["discussion"]
         discussion_content = f"{discussion['title']}: {discussion['body']}"
         text_block = TextContentBlock(type="text", text=discussion_content)
         discussion_number = discussion["number"]
         message = Message(role="user", content=[text_block])
 
-        analysis_result = await agent_chat(ChatData(messages=[message]), None)
-        discussion_id = await self.get_discussion_id(owner, repo, discussion_number)
+        repository_config = RepositoryConfigDAO()
+        repo_config = repository_config.get_by_repo_name(repo_name)
+
+        bot = get_bot_by_id(repo_config.robot_id)
+
+        analysis_result = await agent_chat(
+            ChatData(
+                prompt=bot.prompt,
+                messages=[message],
+                bot_id=repo_config.robot_id,
+            ),
+            self.auth,
+            bot,
+        )
+        discussion_id = await self.get_discussion_id(
+            owner, self.event["repository"]["name"], discussion_number
+        )
         await self.create_discussion_comment(discussion_id, analysis_result["output"])
 
     async def execute(self):

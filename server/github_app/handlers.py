@@ -10,11 +10,23 @@ from event_handler.issue import IssueEventHandler, IssueCommentEventHandler
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
 
 
-def get_handler(event: str, payload: dict, auth: Auth.AppAuth, installation_id: int) -> Union[PullRequestEventHandler, IssueCommentEventHandler, IssueEventHandler, DiscussionEventHandler, None]:
+def get_handler(
+    event: str, payload: dict, auth: Auth.AppAuth, installation_id: int
+) -> Union[
+    PullRequestEventHandler,
+    IssueCommentEventHandler,
+    IssueEventHandler,
+    DiscussionEventHandler,
+    None,
+]:
     handlers = {
-        'pull_request': PullRequestEventHandler,
-        'issues': IssueEventHandler,
+        "pull_request": PullRequestEventHandler,
+        "issues": IssueEventHandler,
         "issue_comment": IssueCommentEventHandler,
-        'discussion': DiscussionEventHandler
+        "discussion": DiscussionEventHandler,
     }
-    return handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id) if event in handlers else None
+    return (
+        handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id)
+        if event in handlers
+        else None
+    )
