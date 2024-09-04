@@ -20,7 +20,6 @@ from task import router as task_router
 from github_app import router as github_app_router
 from aws import router as aws_router
 
-ENV = get_env_variable("PETERCAT_ENV")
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
@@ -34,8 +33,7 @@ cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 app = FastAPI(title="Bo-meta Server", version="1.0", description="Agent Chat APIs")
 
 
-if ENV in ['preview', 'production', 'unitest']:
-    app.add_middleware(AuthMiddleWare)
+app.add_middleware(AuthMiddleWare)
 
 app.add_middleware(
     SessionMiddleware,
