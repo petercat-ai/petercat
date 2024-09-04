@@ -17,7 +17,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      AWS_SECRET_NAME: ${AWS_SECRET_NAME}
+      AWS_GITHUB_SECRET_NAME: ${AWS_GITHUB_SECRET_NAME}
       S3_TEMP_BUCKET_NAME: ${S3_TEMP_BUCKET_NAME}
       API_URL: ${API_URL}
       WEB_URL: ${WEB_URL}
