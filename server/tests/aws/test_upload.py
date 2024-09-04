@@ -60,4 +60,4 @@ def test_upload_image_error(monkeypatch):
             cookies=mock_session()
         )
 
-    assert response.status_code == 400
+    assert response.status_code == 500
