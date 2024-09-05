@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { Button } from '@nextui-org/react';
+import { Button, Tooltip } from '@nextui-org/react';
 import { useGetBotRagTask } from '@/app/hooks/useBot';
 import { convertToLocalTime } from '@/app/utils/time';
 import BookIcon from '@/public/icons/BookIcon';
@@ -77,7 +77,13 @@ const KnowledgeBtn = (props: IProps) => {
             // TODO: reload knowledge
           }}
         >
-          {taskLoading ? '知识库更新中' : '更新知识库'}
+          {taskLoading ? (
+            '知识库更新中'
+          ) : (
+            <Tooltip content="Coming Soon">
+              <span>更新知识库</span>
+            </Tooltip>
+          )}
         </Button>
       </>
     );
