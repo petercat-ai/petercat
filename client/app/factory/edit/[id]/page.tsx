@@ -106,6 +106,16 @@ export default function Edit({ params }: { params: { id: string } }) {
     [params?.id, botProfile?.id],
   );
 
+  const botId = useMemo(() => {
+    if (!!params?.id && params?.id !== 'new') {
+      return params.id;
+    } else if (!!botProfile?.id) {
+      return botProfile.id;
+    } else {
+      return undefined;
+    }
+  }, [params?.id, botProfile?.id]);
+
   const { data: config, isLoading } = useBotConfig(
     params?.id,
     !!params?.id && params?.id !== 'new',
@@ -450,7 +460,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                     style={{
                       backgroundColor: '#FCFCFC',
                     }}
-                    token={params.id}
+                    token={botId}
                     apiDomain={API_HOST}
                     apiUrl="/api/chat/stream_qa"
                     prompt={botProfile?.prompt}
