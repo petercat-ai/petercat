@@ -25,6 +25,7 @@ API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
 API_URL = get_env_variable("API_URL")
 WEB_URL = get_env_variable("WEB_URL")
+ENVRIMENT = get_env_variable("PETERCAT_ENV", "development")
 CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
@@ -68,6 +69,7 @@ def home_page():
 @app.get("/api/health_checker")
 def health_checker():
     return {
+        "ENVRIMENT": ENVRIMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
         "CALLBACK_URL": CALLBACK_URL,
