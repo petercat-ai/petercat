@@ -163,6 +163,9 @@ yarn run publish:pypi
 
 ![image](https://github.com/user-attachments/assets/0b46736c-26d3-49c2-95c0-b033173a3a2d)
 
+![image](https://github.com/user-attachments/assets/3f8ef3ec-7759-4641-a326-0051ddd06058)
+
+
 
 
 ## 📧 反馈问题
