@@ -161,16 +161,15 @@ yarn run publish:pypi
 请把您的项目地址，使用场景，使用频率等信息发送至 [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
 或者扫码加入我们的交流群
 
-![image](https://github.com/user-attachments/assets/0b46736c-26d3-49c2-95c0-b033173a3a2d)
-
-![image](https://github.com/user-attachments/assets/3f8ef3ec-7759-4641-a326-0051ddd06058)
-
-
-
+<div style="display: 50%" align="center">
+   <img src="https://github.com/user-attachments/assets/0b46736c-26d3-49c2-95c0-b033173a3a2d" />
+  <img src="https://github.com/user-attachments/assets/3f8ef3ec-7759-4641-a326-0051ddd06058" />
+</div>
 
 ## 📧 反馈问题
 
 猫猫还在养成阶段，难免有些 “小脾气”，遇到问题请对它宽容一些，可以通过以下两种途径告知铲屎官：
+
 
 * [提交 Issue](https://github.com/petercat-ai/petercat/issues/new/choose)
 *  [Discussions](https://github.com/petercat-ai/petercat/discussions) 提问
