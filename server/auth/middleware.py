@@ -44,7 +44,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
           or
           referer in bot.domain_whitelist
         )
-    except HTTPException as e:
+    except HTTPException:
       return False
         
   async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
