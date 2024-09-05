@@ -19,6 +19,7 @@ export async function streamChat(
       'Content-Type': 'application/json',
       connection: 'keep-alive',
       'keep-alive': 'timeout=5',
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify({
       messages: messages,
@@ -28,9 +29,13 @@ export async function streamChat(
   });
 }
 
-export async function fetcher(url: string) {
-  const response = await axios.get(url);
-  return response.data.data;
+export async function fetcher<T>([url, token]: [string, string | undefined]) {
+  const response = await axios.get(url, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return response.data.data as T;
 }
 
 export const uploadImage = async (
