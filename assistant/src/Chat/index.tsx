@@ -74,9 +74,9 @@ const Chat: FC<ChatProps> = memo(
     const proChatRef = useRef<ProChatInstance>();
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
     const [complete, setComplete] = useState(false);
-    const { data: detail } = useSWR<BotInfo>(
-      token ? [`${apiDomain}/api/bot/detail?id=${token}`] : null,
-      fetcher,
+    const { data: detail } = useSWR(
+      token ? [`${apiDomain}/api/bot/detail?id=${token}`, token] : null,
+      fetcher<BotInfo>,
     );
 
     const [botInfo, setBotInfo] = useState<BotInfo>({

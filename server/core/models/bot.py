@@ -11,3 +11,4 @@ class BotModel(BaseModel):
     name: str
     llm: Optional[str] = "openai"
     created_at: datetime = datetime.now()
+    domain_whitelist: Optional[list[str]] = []
