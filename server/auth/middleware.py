@@ -9,8 +9,10 @@ from fastapi.security import OAuth2PasswordBearer
 from core.dao.botDAO import BotDAO
 
 WEB_URL = get_env_variable("WEB_URL")
+ENVRIMENT = get_env_variable("PETERCAT_ENV", "development")
 
 ALLOW_LIST = [
+  "/",
   "/favicon.ico",
   "/api/health_checker",
   "/api/bot/list",
@@ -28,23 +30,29 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
 class AuthMiddleWare(BaseHTTPMiddleware):
 
   async def oauth(self, request: Request):
-    referer = request.headers.get('referer')
-    if referer.startswith(WEB_URL):
-      return True
-    
-    token = await oauth2_scheme(request=request)
+    try:
+      referer = request.headers.get('referer')
+      if referer and referer.startswith(WEB_URL):
+        return True
+      
+      token = await oauth2_scheme(request=request)
 
-    if token:
-      bot_dao = BotDAO()
-      bot = bot_dao.get_bot(bot_id=token)
-      return bot and (
-        "*" in bot.domain_whitelist
-        or
-        referer in bot.domain_whitelist
-      )
+      if token:
+        bot_dao = BotDAO()
+        bot = bot_dao.get_bot(bot_id=token)
+        return bot and (
+          "*" in bot.domain_whitelist
+          or
+          referer in bot.domain_whitelist
+        )
+    except HTTPException:
+      return False
         
   async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
     try:
+      if ENVRIMENT == "development":
+        return await call_next(request)
+  
       # Auth 相关的直接放过
       if request.url.path.startswith("/api/auth"):
         return await call_next(request)
@@ -72,6 +80,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
       
         # 处理 HTTP 异常
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
-    except Exception as e:
+    # except Exception as e:
+        print(f"error={e}")
         # 处理其他异常
         return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
