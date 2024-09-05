@@ -8,6 +8,10 @@ Globals:
     Timeout: 300
 
 Parameters:
+  PetercatEnv:
+    Type: String
+    Description: Environment mark of PetercatEnv
+    Default: 1
   GitHubAppID:
     Type: Number
     Description: Github App Id
@@ -109,6 +113,7 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
+          PETERCAT_ENV: !Ref PetercatEnv
           AWS_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
           AWS_STATIC_SECRET_NAME: !Ref AWSStaticSecretName
           AWS_STATIC_KEYPAIR_ID: !Ref AWSStaticKeyPairId
