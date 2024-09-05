@@ -376,10 +376,11 @@ export default function Edit({ params }: { params: { id: string } }) {
                     </Tabs>
                   </div>
                   <div className="flex items-center gap-2">
-                    <PublicSwitcher
+                    {/* TODO 暂时关闭上架入口 */}
+                    {/* <PublicSwitcher 
                       isSelected={!!botProfile?.public}
                       setBotProfile={setBotProfile}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">

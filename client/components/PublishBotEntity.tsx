@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter,
   Spinner,
+  Tooltip,
 } from '@nextui-org/react';
 import { StoreIcon } from '../public/icons/StoreIcon';
 import { useBotList } from '@/app/hooks/useBot';
@@ -56,14 +57,30 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
       {area === 'nav' && (
         <>
           <ToastContainer />
-          <Button
-            key="public"
-            onPress={onOpen}
-            className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
-            startContent={<StoreIcon />}
+          <Tooltip
+            content={
+              <span>
+                coming soon, 请先前往 GitHub
+                <a
+                  href="https://github.com/petercat-ai/petercat/issues"
+                  target="_blank"
+                >
+                  Issue 区
+                </a>
+                给我们提一个 Issue，留下宁的机器人信息
+              </span>
+            }
           >
-            上架机器人
-          </Button>
+            <Button
+              disabled={true}
+              key="public"
+              onPress={onOpen}
+              className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
+              startContent={<StoreIcon />}
+            >
+              上架机器人
+            </Button>
+          </Tooltip>
         </>
       )}
       {area === 'list' && <PublishBotCard onPress={onOpen} />}
