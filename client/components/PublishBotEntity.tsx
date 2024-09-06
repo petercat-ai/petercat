@@ -74,7 +74,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
             <Button
               disabled={true}
               key="public"
-              onPress={onOpen}
+              // onPress={onOpen}
               className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
               startContent={<StoreIcon />}
             >
