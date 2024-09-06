@@ -67,7 +67,10 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         return await call_next(request)
       
       if await self.oauth(request=request):
-        return await call_next(request)
+        origin = request.headers.get('origin')
+        response = await call_next(request)
+        response.headers["Access-Control-Allow-Origin"] = origin
+        return response
     
       # 获取 session 中的用户信息
       user = request.session.get("user") 
