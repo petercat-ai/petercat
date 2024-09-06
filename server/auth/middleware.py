@@ -1,3 +1,4 @@
+import logging
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
@@ -7,6 +8,9 @@ from starlette.responses import Response
 from fastapi.security import OAuth2PasswordBearer
 
 from core.dao.botDAO import BotDAO
+
+logger = logging.getLogger()
+logger.setLevel("INFO")
 
 WEB_URL = get_env_variable("WEB_URL")
 ENVRIMENT = get_env_variable("PETERCAT_ENV", "development")
@@ -45,7 +49,8 @@ class AuthMiddleWare(BaseHTTPMiddleware):
           or
           referer in bot.domain_whitelist
         )
-    except HTTPException:
+    except HTTPException as e:
+      logger.error(f"oauth: {e}")
       return False
         
   async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
@@ -77,10 +82,10 @@ class AuthMiddleWare(BaseHTTPMiddleware):
     
       return await call_next(request)
     except HTTPException as e:
-      
+        logger.error(f"HTTPException: {e}")
         # 处理 HTTP 异常
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
-    # except Exception as e:
-        print(f"error={e}")
+    except Exception as e:
+        logger.error(f"Other HTTPException={e}")
         # 处理其他异常
         return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
