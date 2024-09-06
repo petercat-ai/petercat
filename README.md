@@ -47,6 +47,8 @@
 | ![官网](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
 |:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
 
+[完整演示视频](https://www.bilibili.com/video/BV1KiHUeFE4p)
+
 ### 不止是 QA 机器人
 
 | 项目信息查询                              | 回复 Discussion                                | 
@@ -62,7 +64,7 @@
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
 | ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
 
-
+[完整演示视频](https://www.bilibili.com/video/BV12eHUe8EkT/)
 
 
 ## Agent 工作流
