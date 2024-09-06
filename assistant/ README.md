@@ -3,7 +3,7 @@
   [![npm](https://img.shields.io/npm/dm/petercatai/chat-sdk.svg)](https://www.npmjs.com/package/petercatai/chat-sdk)
   [![Version](https://img.shields.io/npm/v/petercatai/chat-sdk/latest.svg)](https://www.npmjs.com/package/petercatai/chat-sdk)
 
-chat-app is a UI component library based on dumi, designed for building [Peter Cat](https://www.petercat.ai) conversation interfaces.
+chat-app is a UI component library based on dumi, designed for building [Peter Cat](https://petercat.ai) conversation interfaces.
 
 
 ## Development
