@@ -12,7 +12,6 @@ import {
   useBotCreate,
   useBotEdit,
 } from '@/app/hooks/useBot';
-import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { Chat } from '@petercatai/assistant';
@@ -48,6 +47,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   const [visibleType, setVisibleType] = React.useState<VisibleTypeEnum>(
     VisibleTypeEnum.BOT_CONFIG,
   );
+  const [gitUrl, setGitUrl] = React.useState<string>('');
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 
   useEffect(() => {
@@ -240,7 +240,7 @@ export default function Edit({ params }: { params: { id: string } }) {
   );
   const manualConfigLabel = (
     <div className="flex justify-between">
-      <span>Github 项目名</span>
+      <span>Github 项目地址</span>
       {botProfile.id && (
         <CopyToClipboard
           text={botProfile.id}
@@ -266,17 +266,11 @@ export default function Edit({ params }: { params: { id: string } }) {
           name="repo_name"
           label={manualConfigLabel}
           disabled={isEdit}
-          value={botProfile?.repoName}
           placeholder="请输入 GitHub 项目地址"
           labelPlacement="outside"
           onChange={(e) => {
             const url = e.target.value;
-            const repoName = extractFullRepoNameFromGitHubUrl(url);
-            if (repoName) {
-              setBotProfile((draft) => {
-                draft.repoName = repoName;
-              });
-            }
+            setGitUrl(url);
           }}
           isDisabled={isEdit}
           required
@@ -292,7 +286,12 @@ export default function Edit({ params }: { params: { id: string } }) {
                 startContent={<AIBtnIcon />}
                 isLoading={createBotLoading}
                 onClick={() => {
-                  onCreateBot(botProfile?.repoName!);
+                  const repoName = extractFullRepoNameFromGitHubUrl(gitUrl);
+                  if (repoName) {
+                    onCreateBot(repoName!);
+                  } else {
+                    toast.error('地址有误');
+                  }
                 }}
               >
                 自动生成配置
