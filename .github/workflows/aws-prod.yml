@@ -45,7 +45,7 @@ jobs:
             --no-fail-on-empty-changeset \
             --config-file .aws/petercat-prod.toml \
             --parameter-overrides APIUrl="https://api.petercat.ai" \
-                                  WebUrl="https://www.petercat.ai" \
+                                  WebUrl="https://petercat.ai" \
                                   StaticUrl="https://static.petercat.ai" \
                                   PetercatEnv="production" \
                                   AWSGithubSecretName=${{ secrets.AWS_GITHUB_SECRET_NAME }} \
