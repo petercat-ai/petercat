@@ -1,4 +1,5 @@
 import logging
+import traceback
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
@@ -82,10 +83,10 @@ class AuthMiddleWare(BaseHTTPMiddleware):
     
       return await call_next(request)
     except HTTPException as e:
-        logger.error(f"HTTPException: {e}")
+        logger.error(f"HTTPException: {traceback.format_exc()}")
         # 处理 HTTP 异常
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
     except Exception as e:
-        logger.error(f"Other HTTPException={e}")
+        logger.error(f"Internal Server Error={traceback.format_exc()}")
         # 处理其他异常
         return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
