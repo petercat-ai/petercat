@@ -47,7 +47,27 @@
 | ![官网](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
 |:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
 
+### 不止是 QA 机器人
+
+| 项目信息查询                              | 回复 Discussion                                | 
+| ----------------------------------------- | --------------------------------------- | 
+| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331)|
+
+
+| PR Summary       | Code Review     | 
+| ----------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
+
+| 查 Issue                          | 回 Issue                             | 提 Issue      | 
+| ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+
+
+
+
 ## Agent 工作流
+
+我们为猫猫预置了一个创建机器人的机器人，当得到用户 GitHub 仓库地址或名称时，它会使用创建工具，生成该仓库答疑机器人的各项配置（Prompt，、名字、 头像、开场白、引导语、工具集……），同时触发 Issue 和 Markdown 的入库任务。这些任务会拆分为多个子任务，将该仓库的所有已解决 issue 、高票回复以及所有 Markdown 文件内容经过 load -> split -> embed -> store 的加工过程进行知识库构建，作为机器人的回复知识依据。
 
 ![Agent workflow](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m24tTIZpW7cAAAAAAAAAAAAADrPSAQ/original)
 
