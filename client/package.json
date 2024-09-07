@@ -21,6 +21,7 @@
     "@next/bundle-analyzer": "^13.4.19",
     "@nextui-org/react": "^2.2.9",
     "@petercatai/assistant": "^1.0.3",
+    "@sentry/nextjs": "^8.28.0",
     "@supabase/supabase-js": "^2.32.0",
     "@tanstack/react-query": "^5.17.19",
     "@types/node": "20.4.5",
