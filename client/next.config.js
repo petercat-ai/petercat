@@ -2,6 +2,8 @@
 //   enabled: process.env.ANALYZE === 'true',
 // })
 // module.exports = withBundleAnalyzer({})
+const { withSentryConfig } = require("@sentry/nextjs");
+
 
 const nextConfig = {
   ...process.env.NEXT_STANDALONE ? { output: "standalone" } :{},
