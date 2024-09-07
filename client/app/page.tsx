@@ -1,5 +1,12 @@
 'use client';
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  RefObject,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -7,6 +14,7 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import React from 'react';
 
 // play same video util refresh page
 const PC_EXAMPLE_VIDEO = [
@@ -21,22 +29,23 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
-declare global {
-  var githubStarsCount: number;
-}
+const GitHubStars = React.lazy(async () => {
+  let stars: number;
 
-// fetch github stars in server side
-globalThis.githubStarsCount = 0;
-const githubStarsFetcher = () =>
-  fetch('https://api.github.com/repos/petercat-ai/petercat')
-    .then((res) => res.json())
-    .then(({ stargazers_count }) => stargazers_count || 0);
+  if (typeof window === 'undefined') {
+    const res = await fetch(
+      'https://api.github.com/repos/petercat-ai/petercat',
+    );
+    ({ stargazers_count: stars = 0 } = await res.json());
+  } else {
+    stars = parseInt(
+      document.getElementById('github-stars-wrapper')!.innerText,
+      10,
+    );
+  }
 
-if (typeof window === 'undefined') {
-  githubStarsFetcher().then((data) => {
-    globalThis.githubStarsCount = data;
-  });
-}
+  return { default: () => <span id="github-stars-wrapper">{stars}</span> };
+});
 
 export default function Homepage() {
   const videoRefs = {
@@ -154,22 +163,6 @@ export default function Homepage() {
     },
     [],
   );
-  // why not to use async component or getServerSideProps?
-  // because async component is only available for server component
-  // and the getServerSideProps is only avaiable for page router but this project using app router
-  const [stars, setStars] = useState(() => {
-    // server use cache value first and refresh it
-    if (typeof window === 'undefined') {
-      githubStarsFetcher();
-      return globalThis.githubStarsCount;
-    }
-
-    // client use ssr result as initial value to avoid hydration error
-    return parseInt(
-      document.getElementById('github-stars-wrapper')?.innerText || '0',
-      10,
-    );
-  });
 
   useEffect(() => {
     const videoUpdateHandler = () => {
@@ -190,13 +183,6 @@ export default function Homepage() {
       'timeupdate',
       videoUpdateHandler,
     );
-
-    // client refresh stars data if server has no cached value
-    if (stars === 0) {
-      githubStarsFetcher().then((data) => {
-        setStars(data.stargazers_count || 0);
-      });
-    }
 
     setVideos({
       pc: PC_EXAMPLE_VIDEO[Math.floor(Math.random() * 3)],
@@ -260,7 +246,10 @@ export default function Homepage() {
                   target="_blank"
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-                  <span id="github-stars-wrapper">{stars}</span> stars
+                  <Suspense>
+                    <GitHubStars />
+                  </Suspense>{' '}
+                  stars
                 </a>
               </div>
             </header>
