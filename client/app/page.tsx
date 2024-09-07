@@ -35,6 +35,7 @@ const GitHubStars = React.lazy(async () => {
   if (typeof window === 'undefined') {
     const res = await fetch(
       'https://api.github.com/repos/petercat-ai/petercat',
+      { cache: 'no-store' },
     );
     ({ stargazers_count: stars = 0 } = await res.json());
   } else {
