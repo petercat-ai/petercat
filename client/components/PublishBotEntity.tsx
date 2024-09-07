@@ -67,7 +67,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
                 >
                   Issue 区
                 </a>
-                给我们提一个 Issue，留下宁的机器人信息
+                给我们提一个 Issue，留下您的机器人信息
               </span>
             }
           >
