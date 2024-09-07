@@ -21,6 +21,19 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
+// fetch github stars in server side
+let githubStarsCount = 0;
+const githubStarsFetcher = () =>
+  fetch('https://api.github.com/repos/petercat-ai/petercat')
+    .then((res) => res.json())
+    .then(({ stargazers_count }) => stargazers_count || 0);
+
+if (typeof window === 'undefined') {
+  githubStarsFetcher().then((data) => {
+    githubStarsCount = data;
+  });
+}
+
 export default function Homepage() {
   const videoRefs = {
     banner: useRef<HTMLVideoElement>(null),
@@ -137,7 +150,19 @@ export default function Homepage() {
     },
     [],
   );
-  const [stars, setStars] = useState(0);
+  // why not to use async component or getServerSideProps?
+  // because async component is only available for server component
+  // and the getServerSideProps is only avaiable for page router but this project using app router
+  const [stars, setStars] = useState(() => {
+    // server use cache value first and refresh it
+    if (typeof window === 'undefined') {
+      githubStarsFetcher();
+      return githubStarsCount;
+    }
+
+    // client use ssr result as initial value to avoid hydration error
+    return document.getElementById('github-stars-wrapper')?.innerText;
+  });
 
   useEffect(() => {
     const videoUpdateHandler = () => {
@@ -159,11 +184,12 @@ export default function Homepage() {
       videoUpdateHandler,
     );
 
-    fetch('https://api.github.com/repos/petercat-ai/petercat')
-      .then((res) => res.json())
-      .then((data) => {
+    // client refresh stars data if server has no cached value
+    if (stars === 0) {
+      githubStarsFetcher().then((data) => {
         setStars(data.stargazers_count || 0);
       });
+    }
 
     setVideos({
       pc: PC_EXAMPLE_VIDEO[Math.floor(Math.random() * 3)],
@@ -227,7 +253,7 @@ export default function Homepage() {
                   target="_blank"
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-                  {stars} stars
+                  <span id="github-stars-wrapper">{stars}</span> stars
                 </a>
               </div>
             </header>
