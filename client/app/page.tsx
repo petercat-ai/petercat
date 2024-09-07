@@ -21,8 +21,12 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
+declare global {
+  var githubStarsCount: number;
+}
+
 // fetch github stars in server side
-let githubStarsCount = 0;
+globalThis.githubStarsCount = 0;
 const githubStarsFetcher = () =>
   fetch('https://api.github.com/repos/petercat-ai/petercat')
     .then((res) => res.json())
@@ -30,7 +34,7 @@ const githubStarsFetcher = () =>
 
 if (typeof window === 'undefined') {
   githubStarsFetcher().then((data) => {
-    githubStarsCount = data;
+    globalThis.githubStarsCount = data;
   });
 }
 
@@ -157,7 +161,7 @@ export default function Homepage() {
     // server use cache value first and refresh it
     if (typeof window === 'undefined') {
       githubStarsFetcher();
-      return githubStarsCount;
+      return globalThis.githubStarsCount;
     }
 
     // client use ssr result as initial value to avoid hydration error
