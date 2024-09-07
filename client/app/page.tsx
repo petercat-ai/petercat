@@ -161,7 +161,10 @@ export default function Homepage() {
     }
 
     // client use ssr result as initial value to avoid hydration error
-    return document.getElementById('github-stars-wrapper')?.innerText;
+    return parseInt(
+      document.getElementById('github-stars-wrapper')?.innerText || '0',
+      10,
+    );
   });
 
   useEffect(() => {
