@@ -1,5 +1,12 @@
 'use client';
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  RefObject,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -7,6 +14,7 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import React from 'react';
 
 // play same video util refresh page
 const PC_EXAMPLE_VIDEO = [
@@ -20,6 +28,25 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*sxvhTafMlIoAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
+
+const GitHubStars = React.lazy(async () => {
+  let stars: number;
+
+  if (typeof window === 'undefined') {
+    const res = await fetch(
+      'https://api.github.com/repos/petercat-ai/petercat',
+      { cache: 'no-store' },
+    );
+    ({ stargazers_count: stars = 0 } = await res.json());
+  } else {
+    stars = parseInt(
+      document.getElementById('github-stars-wrapper')!.innerText,
+      10,
+    );
+  }
+
+  return { default: () => <span id="github-stars-wrapper">{stars}</span> };
+});
 
 export default function Homepage() {
   const videoRefs = {
@@ -137,7 +164,6 @@ export default function Homepage() {
     },
     [],
   );
-  const [stars, setStars] = useState(0);
 
   useEffect(() => {
     const videoUpdateHandler = () => {
@@ -158,12 +184,6 @@ export default function Homepage() {
       'timeupdate',
       videoUpdateHandler,
     );
-
-    fetch('https://api.github.com/repos/petercat-ai/petercat')
-      .then((res) => res.json())
-      .then((data) => {
-        setStars(data.stargazers_count || 0);
-      });
 
     setVideos({
       pc: PC_EXAMPLE_VIDEO[Math.floor(Math.random() * 3)],
@@ -227,7 +247,10 @@ export default function Homepage() {
                   target="_blank"
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-                  {stars} stars
+                  <Suspense>
+                    <GitHubStars />
+                  </Suspense>{' '}
+                  stars
                 </a>
               </div>
             </header>
