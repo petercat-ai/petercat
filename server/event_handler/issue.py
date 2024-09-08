@@ -45,6 +45,7 @@ class IssueEventHandler:
                 prompt = generate_issue_prompt(
                     repo_name=repo.full_name,
                     issue_url=issue.url,
+                    issue_number=issue.number,
                     issue_content=issue.body,
                 )
                 issue_content = f"{issue.title}: {issue.body}"
