@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react';
 import useUser from '../app/hooks/useUser';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import Link from 'next/link';
 
 export default function Profile() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function Profile() {
 
   const avatar = (
     <Dropdown className="cursor-pointer">
-      <DropdownTrigger>
+      <DropdownTrigger >
         <Avatar
           src={user.picture!}
           alt={user.name!}
@@ -40,10 +41,11 @@ export default function Profile() {
         />
       </DropdownTrigger>
       <DropdownMenu>
-        <DropdownItem
-          onClick={() => router.push(`${apiDomain}/api/auth/logout`)}
-        >
-          登出
+        <DropdownItem>
+          <Link href="/user/tokens">Token 管理</Link>
+        </DropdownItem>
+        <DropdownItem> 
+          <Link href={`${apiDomain}/api/auth/logout`}>登出</Link>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

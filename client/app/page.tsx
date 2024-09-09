@@ -40,7 +40,7 @@ const GitHubStars = React.lazy(async () => {
     ({ stargazers_count: stars = 0 } = await res.json());
   } else {
     stars = parseInt(
-      document.getElementById('github-stars-wrapper')!.innerText,
+      document.getElementById('github-stars-wrapper')?.innerText,
       10,
     );
   }
@@ -195,7 +195,9 @@ export default function Homepage() {
         'timeupdate',
         videoUpdateHandler,
       );
-      clearTimeout(videoRefs.pcCase.current!._timer);
+      if (videoRefs.pcCase.current) {
+        clearTimeout(videoRefs.pcCase.current!._timer);
+      }
     };
   }, []);
 

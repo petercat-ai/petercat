@@ -39,7 +39,7 @@ class UserLLMTokenDAO(BaseDAO):
             "count": response.count,
             "page_number": page_number,
             "page_size": page_size,
-            "data": [UserLLMToken(token) for token in response.data],
+            "data": [UserLLMToken(**token) for token in response.data],
         }
 
     def create(self, llm_token: UserLLMToken):
@@ -51,4 +51,5 @@ class UserLLMTokenDAO(BaseDAO):
     def delete(self, llm_token: UserLLMToken):
         self.client.table("user_llm_tokens") \
                     .delete() \
-                    .eq("id", llm_token.id)
+                    .eq("id", llm_token.id) \
+                    .execute()

@@ -36,7 +36,7 @@ def list_by_user(
   user_id: Annotated[str | None, Depends(get_user_id)] = None,
   llm_service: Annotated[UserLLMTokenService | None, Depends(get_llm_token_service)] = None
 ):
-    return llm_service.list_by_user(user_id)
+  return llm_service.list_by_user(user_id)
 
 @router.delete("/llm_token/{token_id}")
 def delete_token(
@@ -44,5 +44,6 @@ def delete_token(
   user_id: Annotated[str | None, Depends(get_user_id)] = None,
   llm_service: Annotated[UserLLMTokenService | None, Depends(get_llm_token_service)] = None
 ):
-  
-  return llm_service.delete_llm_token(id=token_id, user_id=user_id)
+  print(f"delete_llm_token, token={token_id}, user_id={user_id}")
+  llm_service.delete_llm_token(id=token_id, user_id=user_id)
+  return {}

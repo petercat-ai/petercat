@@ -8,6 +8,7 @@ from core.models.user_llm_token import UserLLMToken
 
 from utils.get_private_key import get_private_key
 from utils.rsa import decrypt_token, encrypt_token
+from utils.sanitize_token import sanitize_token
 
 REGIN_NAME = get_env_variable("AWS_REGION")
 AWS_LLM_TOKEN_SECRET_NAME = get_env_variable("AWS_LLM_TOKEN_SECRET_NAME")
@@ -39,6 +40,7 @@ class UserLLMTokenService():
       slug=create_llm_token_data.slug,
       llm=create_llm_token_data.llm,
       encrypted_token=encrypted_token,
+      sanitized_token=sanitize_token(create_llm_token_data.token),
     )
 
     self.llm_token_dao.create(llm_token_model)
@@ -61,7 +63,6 @@ class UserLLMTokenService():
     
   def delete_llm_token(self, id: str, user_id: str):
     token_model = self.llm_token_dao.get_by_id(id=id, user_id=user_id)
-
     if token_model:
       return  self.llm_token_dao.delete(token_model)
 

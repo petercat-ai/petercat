@@ -9,3 +9,4 @@ class UserLLMToken(BaseModel):
     slug: Optional[str] = None
     llm: str
     encrypted_token: Optional[str] = None
+    sanitized_token: Optional[str] = None
