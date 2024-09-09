@@ -3,7 +3,6 @@ from github import Auth
 from agent.base import AgentBuilder
 from agent.bot import Bot
 
-from agent.prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils.data_class import ChatData
 
 from agent.tools import issue, pull_request, sourcecode, knowledge, git_info
