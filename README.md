@@ -60,7 +60,7 @@
 | ----------------------------------------- | --------------------------------------- | 
 | ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
 
-| 查 Issue                          | 回 Issue                             | 提 Issue      | 
+| 查 Issue                          | 提 Issue                             | 回 Issue      | 
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
 | ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
 
