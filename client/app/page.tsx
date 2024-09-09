@@ -195,7 +195,9 @@ export default function Homepage() {
         'timeupdate',
         videoUpdateHandler,
       );
-      clearTimeout(videoRefs.pcCase.current!._timer);
+      if (videoRefs.pcCase.current) {
+        clearTimeout(videoRefs.pcCase.current!._timer);
+      }
     };
   }, []);
 

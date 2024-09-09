@@ -50,6 +50,8 @@ jobs:
                                   PetercatEnv="production" \
                                   AWSGithubSecretName=${{ secrets.AWS_GITHUB_SECRET_NAME }} \
                                   AWSStaticSecretName=${{ secrets.AWS_STATIC_SECRET_NAME }} \
+                                  AWSLLMTokenSecretName=${{ vars.AWS_LLM_TOKEN_SECRET_NAME }} \
+                                  AWSLLMTokenPublicName=${{ vars.AWS_LLM_TOKEN_PUBLIC_NAME }} \
                                   AWSStaticKeyPairId=${{ secrets.AWS_STATIC_KEYPAIR_ID }} \
                                   S3TempBucketName=${{ vars.S3_TEMP_BUCKET_NAME }} \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \

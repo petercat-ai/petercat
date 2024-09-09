@@ -96,6 +96,14 @@ Parameters:
     Type: String
     Description: Static Secret Name Store in AWS
     Default: 1
+  AWSLLMTokenSecretName: 
+    Type: String
+    Description: AWS Secret Name Store in AWS
+    Default: 1
+  AWSLLMTokenPublicName:
+    Type: String
+    Description: AWS Public Name Store in AWS
+    Default: 1
   AWSStaticKeyPairId: 
     Type: String
     Description: Static Key Pair Id
@@ -116,6 +124,8 @@ Resources:
           PETERCAT_ENV: !Ref PetercatEnv
           AWS_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
           AWS_STATIC_SECRET_NAME: !Ref AWSStaticSecretName
+          AWS_LLM_TOKEN_SECRET_NAME: !Ref AWSLLMTokenSecretName 
+          AWS_LLM_TOKEN_PUBLIC_NAME: !Ref AWSLLMTokenPublicName
           AWS_STATIC_KEYPAIR_ID: !Ref AWSStaticKeyPairId
           S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
           API_URL: !Ref APIUrl

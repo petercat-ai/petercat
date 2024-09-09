@@ -1,7 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 
-def get_private_key(region_name: str, secret_id: str):
+def get_private_key(region_name: str, secret_id: str) -> str:
     session = boto3.session.Session()
     client = session.client(service_name="secretsmanager", region_name=region_name)
     try:

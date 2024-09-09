@@ -35,5 +35,5 @@ class RepositoryConfigDAO(BaseDAO):
         if not response.data or not response.data[0]:
             return None
         repo_config = response.data[0]
-        print(f"repo_config={repo_config}")
+    
         return RepositoryConfig(**repo_config)
