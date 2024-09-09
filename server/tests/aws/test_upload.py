@@ -4,7 +4,7 @@ from main import app
 from aws.dependencies import get_s3_client
 import tempfile
 
-from tests.utils.mock_session import get_mock_user, mock_session
+from tests.mock_session import get_mock_user, mock_session
 
 client = TestClient(app)
 s3_client = get_s3_client()
