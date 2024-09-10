@@ -169,7 +169,7 @@ def update_bot(
             .eq("uid", user_id)
             .execute()
         )
-        print(response)
+
         if not response.data:
             return JSONResponse(
                 content={"success": False, "errorMessage": "bot 不存在，更新失败"}
