@@ -1,15 +1,16 @@
 from core.models.bot import BotModel
-from core.models.llm_token import LLMToken
-from agent.llm import LLM
+from agent.llm import LLM, LLMTokenLike
+
+
 
 class Bot:
     _bot: BotModel
     _llm: LLM
-    _llm_token: LLMToken
-    def __init__(self, bot: BotModel, llm_token: LLMToken):
+    _llm_token: LLMTokenLike
+    def __init__(self, bot: BotModel, llm_token: LLMTokenLike):
         self._bot = bot
         self._llm_token = llm_token
-        self._llm = LLM()
+        self._llm = LLM(llm_token=llm_token)
 
     @property
     def id(self):

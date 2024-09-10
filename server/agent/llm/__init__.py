@@ -2,7 +2,10 @@ import importlib
 import os
 from typing import Dict, Optional, Type
 from agent.llm.base import BaseLLMClient
-from core.models.llm_token import LLMToken
+
+class LLMTokenLike():
+    token: str
+    llm: str
 
 llm_client_registry: Dict[str, Type['BaseLLMClient']] = {}
 
@@ -30,10 +33,10 @@ def import_clients(directory: str = 'clients'):
             importlib.import_module(module_name)
 
 class LLM():
-  llm_token: LLMToken
+  llm_token: LLMTokenLike
   client: Optional[BaseLLMClient]
   
-  def __init__(self, llm_token: LLMToken):
+  def __init__(self, llm_token: LLMTokenLike):
     self._llm_token = llm_token
     self._client = self.get_llm_client(llm_token.llm, api_key=llm_token.token)
   
