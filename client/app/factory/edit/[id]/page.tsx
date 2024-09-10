@@ -4,26 +4,29 @@ import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useRouter } from 'next/navigation';
 import {
   useBotConfigGenerator,
   useBotConfig,
   useBotCreate,
   useBotEdit,
 } from '@/app/hooks/useBot';
-import PublicSwitcher from '@/app/factory/edit/components/PublicSwitcher';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
-import { Chat } from 'petercat-lui';
+import { Chat } from '@petercatai/assistant';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
-
-import 'react-toastify/dist/ReactToastify.css';
+import useUser from '@/app/hooks/useUser';
 import Knowledge from '../components/Knowledge';
 import KnowledgeBtn from '../components/KnowledgeBtn';
 import { BotTaskProvider } from '../components/TaskContext';
+
+import 'react-toastify/dist/ReactToastify.css';
+import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -36,13 +39,22 @@ enum ConfigTypeEnum {
 }
 export default function Edit({ params }: { params: { id: string } }) {
   const { botProfile, setBotProfile } = useBot();
-
+  const { data: user, status } = useUser();
+  const router = useRouter();
   const [activeTab, setActiveTab] = React.useState<ConfigTypeEnum>(
     ConfigTypeEnum.CHAT_CONFIG,
   );
   const [visibleType, setVisibleType] = React.useState<VisibleTypeEnum>(
     VisibleTypeEnum.BOT_CONFIG,
   );
+  const [gitUrl, setGitUrl] = React.useState<string>('');
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+
+  useEffect(() => {
+    if (!user || status !== 'success' || user.id.startsWith('client|')) {
+      router.push(`${apiDomain}/api/auth/login`);
+    }
+  }, [user, status]);
 
   const {
     updateBot: onUpdateBot,
@@ -80,6 +92,7 @@ export default function Edit({ params }: { params: { id: string } }) {
           draft.description = data.description;
           draft.starters = data.starters;
           draft.public = data.public;
+          draft.repoName = data.repoName;
           draft.helloMessage = data.hello_message;
         });
       }
@@ -92,6 +105,16 @@ export default function Edit({ params }: { params: { id: string } }) {
     () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
     [params?.id, botProfile?.id],
   );
+
+  const botId = useMemo(() => {
+    if (!!params?.id && params?.id !== 'new') {
+      return params.id;
+    } else if (!!botProfile?.id) {
+      return botProfile.id;
+    } else {
+      return undefined;
+    }
+  }, [params?.id, botProfile?.id]);
 
   const { data: config, isLoading } = useBotConfig(
     params?.id,
@@ -109,6 +132,7 @@ export default function Edit({ params }: { params: { id: string } }) {
         draft.helloMessage = config.hello_message || '';
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
+        draft.repoName = config.repo_name ?? '';
       });
   }, [config]);
 
@@ -214,6 +238,24 @@ export default function Edit({ params }: { params: { id: string } }) {
       />
     </div>
   );
+  const manualConfigLabel = (
+    <div className="flex justify-between">
+      <span>Github 项目地址</span>
+      {botProfile.id && (
+        <CopyToClipboard
+          text={botProfile.id}
+          onCopy={() => {
+            toast.success('Token 已复制到剪贴板');
+          }}
+        >
+          {/* @ts-ignore */}
+          <span className="text-xs text-gray-500 cursor-pointer">
+            复制 Token
+          </span>
+        </CopyToClipboard>
+      )}
+    </div>
+  );
 
   const manualConfigContent = (
     <div className="h-full px-10 py-10 overflow-x-hidden overflow-y-scroll">
@@ -222,17 +264,17 @@ export default function Edit({ params }: { params: { id: string } }) {
           type="text"
           variant="bordered"
           name="repo_name"
-          label="Github 项目名"
-          value={botProfile?.repoName}
-          placeholder="请输入 GitHub 项目名称 (ORG_NAME/REPO_NAME)"
+          label={manualConfigLabel}
+          disabled={isEdit}
+          placeholder="请输入 GitHub 项目地址"
           labelPlacement="outside"
           onChange={(e) => {
-            const repoName = e.target.value;
-            setBotProfile((draft) => {
-              draft.repoName = repoName;
-            });
+            const url = e.target.value;
+            setGitUrl(url);
           }}
+          isDisabled={isEdit}
           required
+          classNames={{ label: 'w-full' }}
           className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
         <div className="flex items-center gap-4">
@@ -244,7 +286,12 @@ export default function Edit({ params }: { params: { id: string } }) {
                 startContent={<AIBtnIcon />}
                 isLoading={createBotLoading}
                 onClick={() => {
-                  onCreateBot(botProfile?.repoName!);
+                  const repoName = extractFullRepoNameFromGitHubUrl(gitUrl);
+                  if (repoName) {
+                    onCreateBot(repoName!);
+                  } else {
+                    toast.error('地址有误');
+                  }
                 }}
               >
                 自动生成配置
@@ -281,7 +328,7 @@ export default function Edit({ params }: { params: { id: string } }) {
 
   return (
     <BotTaskProvider>
-      <div className="flex h-full w-full flex-col items-center bg-white">
+      <div className="flex h-full w-full flex-col items-center bg-white mb-[-40px] overflow-hidden">
         <ToastContainer />
         {visibleType === VisibleTypeEnum.BOT_CONFIG ? (
           <div className="relative flex w-full grow overflow-hidden">
@@ -342,10 +389,11 @@ export default function Edit({ params }: { params: { id: string } }) {
                     </Tabs>
                   </div>
                   <div className="flex items-center gap-2">
-                    <PublicSwitcher
+                    {/* TODO 暂时关闭上架入口 */}
+                    {/* <PublicSwitcher 
                       isSelected={!!botProfile?.public}
                       setBotProfile={setBotProfile}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
@@ -412,7 +460,7 @@ export default function Edit({ params }: { params: { id: string } }) {
                     style={{
                       backgroundColor: '#FCFCFC',
                     }}
-                    token={params.id}
+                    token={botId}
                     apiDomain={API_HOST}
                     apiUrl="/api/chat/stream_qa"
                     prompt={botProfile?.prompt}

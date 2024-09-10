@@ -121,7 +121,7 @@ const BotCard = (props: { bot: Bot }) => {
               <Tooltip
                 showArrow
                 placement="top"
-                content="更新知识库"
+                content="更新知识库(Coming Soon)"
                 classNames={{
                   base: [
                     // arrow color

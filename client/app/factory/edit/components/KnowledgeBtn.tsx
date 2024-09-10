@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { Button } from '@nextui-org/react';
+import { Button, Tooltip } from '@nextui-org/react';
 import { useGetBotRagTask } from '@/app/hooks/useBot';
 import { convertToLocalTime } from '@/app/utils/time';
 import BookIcon from '@/public/icons/BookIcon';
@@ -18,12 +18,15 @@ type IProps = {
 const KnowledgeBtn = (props: IProps) => {
   const { onClick, botId, mode } = props;
   const { setTaskProfile } = useBotTask();
-  const [isPolling, setIsPolling] = React.useState<boolean>(true);
+  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>(!!botId);
   const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
-  const { data: taskList } = useGetBotRagTask(botId, isPolling, true);
-  const taskCnt = taskList?.length ?? 0;
   const [allowShowChunkList, setAllowShowChunkList] =
     React.useState<boolean>(false);
+
+  const { data: taskList } = useGetBotRagTask(botId, shouldGetTask, true);
+  const taskCnt = taskList?.length ?? 0;
+
+  // compute task running status by taskList
   useEffect(() => {
     if (!taskList) return;
     let completeTaskCnt = 0;
@@ -44,12 +47,13 @@ const KnowledgeBtn = (props: IProps) => {
     setTaskProfile({ running: taskRunning });
   }, [taskList]);
 
+  // close the interval query
   useEffect(() => {
-    setIsPolling(true);
     return () => {
-      setIsPolling(false);
+      setShouldGetTask(false);
     };
   }, []);
+
   if (mode === 'pageHeader') {
     return (
       <>
@@ -73,7 +77,13 @@ const KnowledgeBtn = (props: IProps) => {
             // TODO: reload knowledge
           }}
         >
-          {taskLoading ? '知识库更新中' : '更新知识库'}
+          {taskLoading ? (
+            '知识库更新中'
+          ) : (
+            <Tooltip content="Coming Soon">
+              <span>更新知识库</span>
+            </Tooltip>
+          )}
         </Button>
       </>
     );

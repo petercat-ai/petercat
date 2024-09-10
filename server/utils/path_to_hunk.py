@@ -1,6 +1,8 @@
 import re
 
 def convert_patch_to_hunk(diff):
+    if not diff:
+        return ''
     old_line, new_line = 0, 0
     result = []
 

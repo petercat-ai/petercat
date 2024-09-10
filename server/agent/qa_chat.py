@@ -3,7 +3,6 @@ from github import Auth
 from agent.base import AgentBuilder
 from agent.bot import Bot
 
-from agent.prompts.bot_template import generate_prompt_by_repo_name
 from petercat_utils.data_class import ChatData
 
 from agent.tools import issue, pull_request, sourcecode, knowledge, git_info
@@ -25,18 +24,23 @@ def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
         "search_repo": git_info.search_repo,
     }
 
-def agent_stream_chat(input_data: ChatData, auth_token: Auth.Token, bot: Bot) -> AsyncIterator[str]:
+
+def agent_stream_chat(
+    input_data: ChatData, auth_token: Auth.Token, bot: Bot
+) -> AsyncIterator[str]:
     agent = AgentBuilder(
         chat_model=bot.llm,
-        prompt=bot.prompt or generate_prompt_by_repo_name("ant-design"),
+        prompt=bot.prompt,
         tools=get_tools(bot=bot, auth_token=auth_token),
     )
     return agent.run_stream_chat(input_data)
 
 
-def agent_chat(input_data: ChatData, auth_token: Auth.Token, bot: Bot) -> AsyncIterator[str]:
+def agent_chat(
+    input_data: ChatData, auth_token: Auth.Token, bot: Bot
+) -> AsyncIterator[str]:
 
-    prompt = bot.prompt or generate_prompt_by_repo_name("ant-design")
+    prompt = bot.prompt
 
     if input_data.prompt is not None:
         prompt = f"{prompt}\n\n{input_data.prompt}"

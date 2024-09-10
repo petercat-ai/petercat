@@ -12,6 +12,7 @@
   [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
   [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
   [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
+  [![codecov](https://codecov.io/github/petercat-ai/petercat/graph/badge.svg?token=2HAO18FB6X)](https://codecov.io/github/petercat-ai/petercat)
   [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
   
 </div>
@@ -19,7 +20,7 @@
 
 ## 🏠 主页
 
-[🐱窝: petercat.ai](https://www.petercat.ai)
+[🐱窝: petercat.ai](https://petercat.ai)
 
 
 ## ✨ 特性
@@ -46,7 +47,29 @@
 | ![官网](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
 |:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
 
+[完整演示视频](https://www.bilibili.com/video/BV1KiHUeFE4p)
+
+### 不止是 QA 机器人
+
+| 项目信息查询                              | 回复 Discussion                                | 
+| ----------------------------------------- | --------------------------------------- | 
+| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331)|
+
+
+| PR Summary       | Code Review     | 
+| ----------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
+
+| 查 Issue                          | 提 Issue                             | 回 Issue      | 
+| ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+
+[完整演示视频](https://www.bilibili.com/video/BV12eHUe8EkT/)
+
+
 ## Agent 工作流
+
+我们为猫猫预置了一个创建机器人的机器人，当得到用户 GitHub 仓库地址或名称时，它会使用创建工具，生成该仓库答疑机器人的各项配置（Prompt，、名字、 头像、开场白、引导语、工具集……），同时触发 Issue 和 Markdown 的入库任务。这些任务会拆分为多个子任务，将该仓库的所有已解决 issue 、高票回复以及所有 Markdown 文件内容经过 load -> split -> embed -> store 的加工过程进行知识库构建，作为机器人的回复知识依据。
 
 ![Agent workflow](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m24tTIZpW7cAAAAAAAAAAAAADrPSAQ/original)
 
@@ -54,7 +77,14 @@
 
 部署方案：[AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
-![部署方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
+你可以在这里看到完整方案：
+- [私有化部署 - 本地启动服务](./docs/guides/self_hosted_local_cn.md)
+- [私有化部署 - 部署到 AWS ](./docs/guides/self_hosted_aws_cn.md)
+
+![架构方案](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
+
+[![演示视频](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*spdZSbWsVhkAAAAAAAAAAAAADrPSAQ/fmt.webp)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
 
 
 ## ⚙️ 环境变量
@@ -82,21 +112,25 @@
 | `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
 | `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` 
 |  **AWS 相关环境变量** |
-| `AWS_REGION_NAME` | 必选 |  AWS 部署的 Region | `ap-northeast-1`
-| `AWS_SECRET_NAME` | 必选 |  AWS 托管的私钥文件名 | `prod/githubapp/petercat/pem`
-| `S3_BUCKET_NAME` | 必选 | AWS 图片文件 S3 的 bucket | `xxx-temp` 
+| `AWS_GITHUB_SECRET_NAME` | 必选 |  AWS 托管的 Github 私钥文件名 | `prod/githubapp/petercat/pem`
+| `AWS_STATIC_SECRET_NAME` | 可选 | AWS 托管的 CloudFront 签名私钥名称。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `prod/petercat/static` |
+| `AWS_LLM_TOKEN_SECRET_NAME` | 可选 | AWS 托管的 llm 签名私钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm` |
+| `AWS_LLM_TOKEN_PUBLIC_NAME` | 可选 | AWS 托管的 llm 签名公钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm/pub` |
+
+| `AWS_STATIC_KEYPAIR_ID` | 可选 | AWS CloudFront 的 Key Pair ID。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `APKxxxxxxxx` |
+| `S3_TEMP_BUCKET_NAME` | 可选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` 
 | `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`
 | **SUPABASE 相关 env** |
 | `SUPABASE_URL`    | 必选 |    supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                                                    | `https://***.supabase.co`                                                                                   |
 | `SUPABASE_SERVICE_KEY`  | 必选 |    supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                     | `{{SUPABASE_SERVICE_KEY}}` |
-|  **Auth0 相关 env **|
+|  **Auth0 相关 env**|
 | `AUTH0_DOMAIN` | 必选 |   auth0 服务域名，从 auth0 / Application / Basic Information 下获取 |  `petercat.us.auth0.com`
 | `AUTH0_CLIENT_ID` | 必选 | auth0 客户端 ID，从 auth0 / Application / Basic Information 下获取  | `artfiUxxxx`
 | `AUTH0_CLIENT_SECRET` | 必选 | auth0 客户端密钥， 从 auth0 / Application / Basic Information 下获取 | `xxxx-xxxx-xxx`
 | `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/`
 |  **LLM相关的 env** |
 | `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx`
-| `GEMINI_API_KEY` | 必选 | Gemini 的密钥 | `xxxx`
+| `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx`
 | `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx`
 |  **注册为 Github App 的 env** |
 | `X_GITHUB_APP_ID` | 可选 |  注册为 Github App 时，APPID | `123456`
@@ -120,8 +154,8 @@ yarn run bootstrap
 # 调试 client
 yarn run client
 
-# 调试 lui
-yarn run lui
+# 调试 assistant
+yarn run assistant
 
 # 调试 server
 yarn run server
@@ -129,11 +163,11 @@ yarn run server
 # 本地启动网站
 yarn run client:server
 
-# 本地启动 lui 组件
-yarn run lui:server
+# 本地启动 assistant 组件
+yarn run assistant:server
 
-# lui 构建
-cd lui
+# assistant 构建
+cd assistant
 yarn run build
 npm publish
 
@@ -149,11 +183,17 @@ yarn run publish:pypi
 
 ## 💼 企业版接入
 
+请把您的项目地址，使用场景，使用频率等信息发送至 [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
+或者扫码加入我们的交流群
+
+| ![钉钉群](https://github.com/user-attachments/assets/0b46736c-26d3-49c2-95c0-b033173a3a2d) | ![GitHub](https://github.com/user-attachments/assets/b5d3b1a7-c751-4937-8480-55b95614c057) |
+|:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
 
 
 ## 📧 反馈问题
 
 猫猫还在养成阶段，难免有些 “小脾气”，遇到问题请对它宽容一些，可以通过以下两种途径告知铲屎官：
+
 
 * [提交 Issue](https://github.com/petercat-ai/petercat/issues/new/choose)
 *  [Discussions](https://github.com/petercat-ai/petercat/discussions) 提问
@@ -162,8 +202,10 @@ yarn run publish:pypi
 
 ![https://github.com/petercat-ai/petercat/graphs/contributors](https://contrib.rocks/image?repo=petercat-ai/petercat)
 
+## 💗 Sponsor
+
+[Ant Design](https://ant.design/)
+
 ## 📄 License
 
 MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
-
-

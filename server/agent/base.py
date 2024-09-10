@@ -7,7 +7,12 @@ from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
-from langchain_core.messages import AIMessage, FunctionMessage, HumanMessage, SystemMessage
+from langchain_core.messages import (
+    AIMessage,
+    FunctionMessage,
+    HumanMessage,
+    SystemMessage,
+)
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain.prompts import MessagesPlaceholder
 from langchain_core.prompts import ChatPromptTemplate
@@ -20,8 +25,10 @@ TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
 logger = logging.getLogger()
 
+
 class AgentBuilder:
     agent_executor: AgentExecutor
+
     def __init__(
         self,
         chat_model: BaseLLMClient,
@@ -96,13 +103,19 @@ class AgentBuilder:
         for message in messages:
             match message.role:
                 case "user":
-                    transformed_messages.append(HumanMessage(self.chat_model.parse_content(content=message.content)))
+                    transformed_messages.append(
+                        HumanMessage(
+                            self.chat_model.parse_content(content=message.content)
+                        )
+                    )
                 case "assistant":
                     transformed_messages.append(AIMessage(content=message.content))
                 case "system":
                     transformed_messages.append(SystemMessage(content=message.content))
                 case _:
-                    transformed_messages.append(FunctionMessage(content=message.content))
+                    transformed_messages.append(
+                        FunctionMessage(content=message.content)
+                    )
         return transformed_messages
 
     async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[str]:
@@ -110,7 +123,9 @@ class AgentBuilder:
             messages = input_data.messages
             async for event in self.agent_executor.astream_events(
                 {
-                    "input": self.chat_model.parse_content(messages[len(messages) - 1].content),
+                    "input": self.chat_model.parse_content(
+                        messages[len(messages) - 1].content
+                    ),
                     "chat_history": self.chat_history_transform(messages),
                 },
                 version="v1",
@@ -147,8 +162,14 @@ class AgentBuilder:
                     yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
-
-                    parsed_children_value = json.loads(children_value)
+                    if isinstance(children_value, str):
+                        try:
+                            parsed_children_value = json.loads(children_value)
+                        except json.JSONDecodeError:
+                            print("Invalid JSON string")
+                            return
+                    else:
+                        parsed_children_value = children_value
                     if isinstance(parsed_children_value, dict):
                         template_id = parsed_children_value.get("template_id", None)
                         card_data = parsed_children_value.get("card_data", None)

@@ -6,9 +6,10 @@ import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useSearch } from '@/app/contexts/SearchContext';
-import { Assistant } from 'petercat-lui';
+import { Assistant } from '@petercatai/assistant';
 import { useFingerprint } from '../hooks/useFingerprint';
 import PublishBotEntity from '@/components/PublishBotEntity';
+import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;
 
@@ -60,13 +61,13 @@ export default function Home() {
   }
 
   if (error) {
-    return <div>Error loading bots! {error.message}</div>;
+    return <Crash />;
   }
 
   return (
     <div>
       <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        <PublishBotEntity type="list" />
+        <PublishBotEntity area="list" />
         {!isEmpty(bots) &&
           map(bots, (bot: Bot) => (
             <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />

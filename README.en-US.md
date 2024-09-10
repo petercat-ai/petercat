@@ -1,4 +1,5 @@
-![banner](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m23lS7sVRDgAAAAAAAAAAAAADrPSAQ/original)
+<img width="1785" alt="image" src="https://github.com/user-attachments/assets/50ae3bb2-e4da-4537-8df0-89a1ce23e800">
+
 
 # Peter Cat
 
@@ -12,6 +13,7 @@
   [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
   [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
   [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
+  [![codecov](https://codecov.io/github/petercat-ai/petercat/graph/badge.svg?token=2HAO18FB6X)](https://codecov.io/github/petercat-ai/petercat)
   [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
  
 
@@ -19,7 +21,7 @@
 
 ## 🏠 Homepage
 
-[🐱Nest: petercat.ai](https://www.petercat.ai)
+[🐱Nest: petercat.ai](https://petercat.ai)
 
 ## ✨ Features
 
@@ -52,7 +54,15 @@ Various integration options, such as SDK integration into official websites or o
 
 Deployment solution: [AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
+Here you can find the complete guides:
+- [Self-Hosting - Start the Service Locally](./docs/guides/self_hosted_local.md)
+- [Self-Hosting - Deploy to AWS](./docs/guides/self_hosted_aws.md)
+
+
 ![Deployment Solution](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*0_aUTJpyx1YAAAAAAAAAAAAADrPSAQ/original)
+
+[![Self hosted Video](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*spdZSbWsVhkAAAAAAAAAAAAADrPSAQ/fmt.webp)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
+
 
 ## ⚙️ Environment Variables
 
@@ -77,9 +87,12 @@ The project requires environment variables to be set:
 | `WEB_URL`                  | Required                                   | Domain of the frontend web service            | `https://petercat.ai`                       |
 | `STATIC_URL`               | Required                                   | Static resource domain                        | `https://static.petercat.ai`                |
 | **AWS Related Environment Variables**                                  |
-| `AWS_REGION_NAME`          | Required                                   | AWS Region for deployment                     | `ap-northeast-1`                            |
-| `AWS_SECRET_NAME`          | Required                                   | AWS secret file name                          | `prod/githubapp/petercat/pem`               |
-| `S3_BUCKET_NAME`           | Required                                   | AWS S3 bucket for image files                 | `xxx-temp`                                  |
+| `AWS_GITHUB_SECRET_NAME`          | Required                                   | AWS secret file name                          | `prod/githubapp/petercat/pem`               |
+| `AWS_STATIC_SECRET_NAME` | Optional | The name of the AWS-managed CloudFront private key. If configured, CloudFront signed URLs will be used to protect your resources. For more information, see the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html). | `prod/petercat/static` |
+| `AWS_LLM_TOKEN_SECRET_NAME` | Optional | The name of the LLM signing private key managed by AWS. If configured, Petercat will use the RSA algorithm to manage the user's LLM Token. | `prod/petercat/llm` |
+| `AWS_LLM_TOKEN_PUBLIC_NAME` | Optional | The name of the LLM signing public key managed by AWS. If configured, Petercat will use the RSA algorithm to manage the user's LLM Token. | `prod/petercat/llm/pub` |
+| `AWS_STATIC_KEYPAIR_ID` | Optional | The Key Pair ID for AWS CloudFront. If configured, CloudFront signed URLs will be used to protect your resources. For more information, see the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html). | `APKxxxxxxxx` |
+| `S3_TEMP_BUCKET_NAME`      | Required                                   | AWS S3 bucket for temporary image files                 | `xxx-temp`                                  |
 | `SQS_QUEUE_URL`            | Required                                   | AWS SQS queue URL                             | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **Supabase Related Environment Variables**                              |
 | `SUPABASE_URL`             | Required                                   | Supabase service URL, found [here](https://supabase.com/dashboard/project/_/settings/database) | `https://***.supabase.co`                   |
@@ -115,8 +128,8 @@ yarn run bootstrap
 # Debug client
 yarn run client
 
-# Debug lui
-yarn run lui
+# Debug assistant
+yarn run assistant
 
 # Debug server
 yarn run server
@@ -124,11 +137,11 @@ yarn run server
 # Start website locally
 yarn run client:server
 
-# Start lui component locally
-yarn run lui:server
+# Start assistant component locally
+yarn run assistant:server
 
-# Build lui
-cd lui
+# Build assistant
+cd assistant
 yarn run build
 npm publish
 
@@ -143,12 +156,14 @@ yarn run publish:pypi
 
 ## 💼 Enterprise Integration
 
+Please send your project address, usage scenarios, usage frequency, and other information to [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
+
 ## 📧 Reporting Issues
 
 Peter Cat is still in its growth stage, and occasional “tantrums” are to be expected. Please report issues via the following channels:
 
-	•	Submit an Issue
-	•	Discussions
+* [Submit an Issue(https://github.com/petercat-ai/petercat/issues/new/choose)
+*  [Discussions](https://github.com/petercat-ai/petercat/discussions) 
 
 👬 Contributors
 

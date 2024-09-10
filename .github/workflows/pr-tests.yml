@@ -16,7 +16,7 @@ permissions:
   actions: write
 
 env:
-  AWS_REGION: ap-northeast-1
+  AWS_REGION: ${{ vars.AWS_REGION }}
   REPORT_FILE: md_report.md
   WEB_URL: http://127.0.0.1:3000
   API_URL: http://127.0.0.1:8000
@@ -50,20 +50,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install ruff
-          pip install pytest pytest-cov pytest-md-report
+          pip install pytest pytest-cov
         
       - name: Lint with Ruff
         run: |
           ruff check --output-format=github .
 
-      - name: Test with pytest
-        run: |
-          pytest -v --md-report --md-report-output ${{ env.REPORT_FILE }}
-          cat ${{ env.REPORT_FILE }}
-      
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+      - name: Run tests
+        run: pytest --cov
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          filePath: ./server/${{ env.REPORT_FILE }}
-          mode: recreate
-          comment_tag: pr_test
+          token: ${{ secrets.CODECOV_TOKEN }}

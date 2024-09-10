@@ -39,12 +39,15 @@ export type Database = {
           avatar: string | null
           created_at: string
           description: string | null
+          domain_whitelist: string[] | null
           hello_message: string | null
           id: string
           label: string | null
+          llm: string | null
           name: string
           prompt: string | null
           public: boolean | null
+          repo_name: string | null
           starters: string[] | null
           uid: string | null
           updated_at: string | null
@@ -53,12 +56,15 @@ export type Database = {
           avatar?: string | null
           created_at?: string
           description?: string | null
+          domain_whitelist?: string[] | null
           hello_message?: string | null
           id?: string
           label?: string | null
+          llm?: string | null
           name?: string
           prompt?: string | null
           public?: boolean | null
+          repo_name?: string | null
           starters?: string[] | null
           uid?: string | null
           updated_at?: string | null
@@ -67,15 +73,54 @@ export type Database = {
           avatar?: string | null
           created_at?: string
           description?: string | null
+          domain_whitelist?: string[] | null
           hello_message?: string | null
           id?: string
           label?: string | null
+          llm?: string | null
           name?: string
           prompt?: string | null
           public?: boolean | null
+          repo_name?: string | null
           starters?: string[] | null
           uid?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      git_issue_tasks: {
+        Row: {
+          bot_id: string | null
+          created_at: string
+          from_task_id: string | null
+          id: string
+          issue_id: string | null
+          node_type: string | null
+          page_index: number | null
+          repo_name: string | null
+          status: string | null
+        }
+        Insert: {
+          bot_id?: string | null
+          created_at?: string
+          from_task_id?: string | null
+          id?: string
+          issue_id?: string | null
+          node_type?: string | null
+          page_index?: number | null
+          repo_name?: string | null
+          status?: string | null
+        }
+        Update: {
+          bot_id?: string | null
+          created_at?: string
+          from_task_id?: string | null
+          id?: string
+          issue_id?: string | null
+          node_type?: string | null
+          page_index?: number | null
+          repo_name?: string | null
+          status?: string | null
         }
         Relationships: []
       }
@@ -106,6 +151,66 @@ export type Database = {
           installation_id?: string | null
           permissions?: Json | null
           token?: string | null
+        }
+        Relationships: []
+      }
+      github_repo_config: {
+        Row: {
+          created_at: string
+          id: string
+          repo_name: string | null
+          robot_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          repo_name?: string | null
+          robot_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          repo_name?: string | null
+          robot_id?: string | null
+        }
+        Relationships: []
+      }
+      llm_tokens: {
+        Row: {
+          created_at: string
+          encrypted_token: string | null
+          free: boolean | null
+          id: number
+          limit: number | null
+          llm: string | null
+          slug: string | null
+          token: string | null
+          usage: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          encrypted_token?: string | null
+          free?: boolean | null
+          id?: number
+          limit?: number | null
+          llm?: string | null
+          slug?: string | null
+          token?: string | null
+          usage?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          encrypted_token?: string | null
+          free?: boolean | null
+          id?: number
+          limit?: number | null
+          llm?: string | null
+          slug?: string | null
+          token?: string | null
+          usage?: number | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -141,7 +246,6 @@ export type Database = {
       }
       rag_docs: {
         Row: {
-          update_timestamp: string | null
           bot_id: string | null
           commit_id: string | null
           content: string | null
@@ -151,9 +255,9 @@ export type Database = {
           id: string
           metadata: Json | null
           repo_name: string | null
+          update_timestamp: string | null
         }
         Insert: {
-          update_timestamp?: string | null
           bot_id?: string | null
           commit_id?: string | null
           content?: string | null
@@ -163,9 +267,9 @@ export type Database = {
           id?: string
           metadata?: Json | null
           repo_name?: string | null
+          update_timestamp?: string | null
         }
         Update: {
-          update_timestamp?: string | null
           bot_id?: string | null
           commit_id?: string | null
           content?: string | null
@@ -175,6 +279,43 @@ export type Database = {
           id?: string
           metadata?: Json | null
           repo_name?: string | null
+          update_timestamp?: string | null
+        }
+        Relationships: []
+      }
+      rag_issues: {
+        Row: {
+          bot_id: string | null
+          comment_id: string | null
+          content: string | null
+          embedding: string | null
+          id: string
+          issue_id: string | null
+          metadata: Json | null
+          repo_name: string | null
+          update_timestamp: string
+        }
+        Insert: {
+          bot_id?: string | null
+          comment_id?: string | null
+          content?: string | null
+          embedding?: string | null
+          id?: string
+          issue_id?: string | null
+          metadata?: Json | null
+          repo_name?: string | null
+          update_timestamp?: string
+        }
+        Update: {
+          bot_id?: string | null
+          comment_id?: string | null
+          content?: string | null
+          embedding?: string | null
+          id?: string
+          issue_id?: string | null
+          metadata?: Json | null
+          repo_name?: string | null
+          update_timestamp?: string
         }
         Relationships: []
       }
@@ -187,6 +328,7 @@ export type Database = {
           id: string
           metadata: Json | null
           node_type: string | null
+          page_index: number | null
           path: string | null
           repo_name: string | null
           sha: string | null
@@ -200,6 +342,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           node_type?: string | null
+          page_index?: number | null
           path?: string | null
           repo_name?: string | null
           sha?: string | null
@@ -213,10 +356,41 @@ export type Database = {
           id?: string
           metadata?: Json | null
           node_type?: string | null
+          page_index?: number | null
           path?: string | null
           repo_name?: string | null
           sha?: string | null
           status?: string | null
+        }
+        Relationships: []
+      }
+      user_llm_tokens: {
+        Row: {
+          created_at: string
+          encrypted_token: string | null
+          id: string
+          llm: string | null
+          sanitized_token: string | null
+          slug: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          encrypted_token?: string | null
+          id?: string
+          llm?: string | null
+          sanitized_token?: string | null
+          slug?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          encrypted_token?: string | null
+          id?: string
+          llm?: string | null
+          sanitized_token?: string | null
+          slug?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -249,19 +423,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      binary_quantize:
-        | {
-            Args: {
-              "": string
-            }
-            Returns: unknown
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
-          }
       execute_sql: {
         Args: {
           query: string
@@ -283,61 +444,7 @@ export type Database = {
           hello_message: string
         }[]
       }
-      halfvec_avg: {
-        Args: {
-          "": number[]
-        }
-        Returns: unknown
-      }
-      halfvec_out: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      halfvec_send: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      halfvec_typmod_in: {
-        Args: {
-          "": unknown[]
-        }
-        Returns: number
-      }
-      hnsw_bit_support: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      hnsw_halfvec_support: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      hnsw_sparsevec_support: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
       hnswhandler: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      ivfflat_bit_support: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      ivfflat_halfvec_support: {
         Args: {
           "": unknown
         }
@@ -349,38 +456,6 @@ export type Database = {
         }
         Returns: unknown
       }
-      l2_norm:
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
-          }
-      l2_normalize:
-        | {
-            Args: {
-              "": string
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
-          }
       match_antd_doc: {
         Args: {
           query_embedding: string
@@ -446,12 +521,12 @@ export type Database = {
         Args: {
           query_embedding: string
           filter?: Json
-          repo_name?: string
         }
         Returns: {
           id: string
           content: string
           metadata: Json
+          embedding: string
           similarity: number
         }[]
       }
@@ -468,23 +543,18 @@ export type Database = {
           similarity: number
         }[]
       }
-      sparsevec_out: {
+      rag_docs: {
         Args: {
-          "": unknown
+          query_embedding: string
+          filter?: Json
+          query_repo_name?: string
         }
-        Returns: unknown
-      }
-      sparsevec_send: {
-        Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-      sparsevec_typmod_in: {
-        Args: {
-          "": unknown[]
-        }
-        Returns: number
+        Returns: {
+          id: string
+          metadata: Json
+          content: string
+          similarity: number
+        }[]
       }
       vector_avg: {
         Args: {
@@ -492,19 +562,12 @@ export type Database = {
         }
         Returns: string
       }
-      vector_dims:
-        | {
-            Args: {
-              "": string
-            }
-            Returns: number
-          }
-        | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
-          }
+      vector_dims: {
+        Args: {
+          "": string
+        }
+        Returns: number
+      }
       vector_norm: {
         Args: {
           "": string
@@ -528,6 +591,321 @@ export type Database = {
           "": unknown[]
         }
         Returns: number
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  storage: {
+    Tables: {
+      buckets: {
+        Row: {
+          allowed_mime_types: string[] | null
+          avif_autodetection: boolean | null
+          created_at: string | null
+          file_size_limit: number | null
+          id: string
+          name: string
+          owner: string | null
+          owner_id: string | null
+          public: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
+          created_at?: string | null
+          file_size_limit?: number | null
+          id: string
+          name: string
+          owner?: string | null
+          owner_id?: string | null
+          public?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
+          created_at?: string | null
+          file_size_limit?: number | null
+          id?: string
+          name?: string
+          owner?: string | null
+          owner_id?: string | null
+          public?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      migrations: {
+        Row: {
+          executed_at: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Insert: {
+          executed_at?: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Update: {
+          executed_at?: string | null
+          hash?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      objects: {
+        Row: {
+          bucket_id: string | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          metadata: Json | null
+          name: string | null
+          owner: string | null
+          owner_id: string | null
+          path_tokens: string[] | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+        }
+        Insert: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          owner_id?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+          user_metadata?: Json | null
+          version?: string | null
+        }
+        Update: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          owner_id?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+          user_metadata?: Json | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      s3_multipart_uploads: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          id: string
+          in_progress_size: number
+          key: string
+          owner_id: string | null
+          upload_signature: string
+          user_metadata: Json | null
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          id: string
+          in_progress_size?: number
+          key: string
+          owner_id?: string | null
+          upload_signature: string
+          user_metadata?: Json | null
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          id?: string
+          in_progress_size?: number
+          key?: string
+          owner_id?: string | null
+          upload_signature?: string
+          user_metadata?: Json | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      s3_multipart_uploads_parts: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          etag: string
+          id: string
+          key: string
+          owner_id: string | null
+          part_number: number
+          size: number
+          upload_id: string
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          etag: string
+          id?: string
+          key: string
+          owner_id?: string | null
+          part_number: number
+          size?: number
+          upload_id: string
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          etag?: string
+          id?: string
+          key?: string
+          owner_id?: string | null
+          part_number?: number
+          size?: number
+          upload_id?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "s3_multipart_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      can_insert_object: {
+        Args: {
+          bucketid: string
+          name: string
+          owner: string
+          metadata: Json
+        }
+        Returns: undefined
+      }
+      extension: {
+        Args: {
+          name: string
+        }
+        Returns: string
+      }
+      filename: {
+        Args: {
+          name: string
+        }
+        Returns: string
+      }
+      foldername: {
+        Args: {
+          name: string
+        }
+        Returns: string[]
+      }
+      get_size_by_bucket: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          size: number
+          bucket_id: string
+        }[]
+      }
+      list_multipart_uploads_with_delimiter: {
+        Args: {
+          bucket_id: string
+          prefix_param: string
+          delimiter_param: string
+          max_keys?: number
+          next_key_token?: string
+          next_upload_token?: string
+        }
+        Returns: {
+          key: string
+          id: string
+          created_at: string
+        }[]
+      }
+      list_objects_with_delimiter: {
+        Args: {
+          bucket_id: string
+          prefix_param: string
+          delimiter_param: string
+          max_keys?: number
+          start_after?: string
+          next_token?: string
+        }
+        Returns: {
+          name: string
+          id: string
+          metadata: Json
+          updated_at: string
+        }[]
+      }
+      operation: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      search: {
+        Args: {
+          prefix: string
+          bucketname: string
+          limits?: number
+          levels?: number
+          offsets?: number
+          search?: string
+          sortcolumn?: string
+          sortorder?: string
+        }
+        Returns: {
+          name: string
+          id: string
+          updated_at: string
+          created_at: string
+          last_accessed_at: string
+          metadata: Json
+        }[]
       }
     }
     Enums: {
@@ -620,3 +998,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+

@@ -15,6 +15,8 @@ class BotUpdateRequest(BaseModel):
     starters: Optional[List[str]] = None
     public: Optional[bool] = None
     hello_message: Optional[str] = None
+    llm: Optional[str] = None
+    token_id: Optional[str] = None
 
 class ErrorResponse(BaseModel):
     error: str

@@ -2,6 +2,7 @@
 //   enabled: process.env.ANALYZE === 'true',
 // })
 // module.exports = withBundleAnalyzer({})
+const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = {
   i18n: {
@@ -23,3 +24,20 @@ module.exports = {
     return config;
   }
 };
+
+// Make sure adding Sentry options is the last code to run before exporting
+module.exports = withSentryConfig(nextConfig, {
+  org: "petercat",
+  project: "petercat",
+
+  // An auth token is required for uploading source maps.
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  silent: false, // Can be used to suppress logs
+
+  hideSourceMaps: true,
+  
+  sourcemaps: {
+    disable: true,
+  },
+});

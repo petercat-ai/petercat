@@ -149,11 +149,10 @@ li {
 
 .animate-border-group .circle-border-animation {
   border: 1px solid transparent; 
-  border-top-color: #B2AB9D;
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
-  animation: spinBorder 2s linear forwards;
+  animation: spinBorder 2s linear forwards 2s;
 }
 
 div.fp-watermark {

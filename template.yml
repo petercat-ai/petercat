@@ -8,6 +8,10 @@ Globals:
     Timeout: 300
 
 Parameters:
+  PetercatEnv:
+    Type: String
+    Description: Environment mark of PetercatEnv
+    Default: 1
   GitHubAppID:
     Type: Number
     Description: Github App Id
@@ -23,6 +27,10 @@ Parameters:
   WebUrl:
     Type: String
     Description: Web URL
+    Default: 1
+  StaticUrl:
+    Type: String
+    Description: Static file url
     Default: 1
   APIUrl:
     Type: String
@@ -80,15 +88,27 @@ Parameters:
     Type: String
     Description: Auth0 Clientt Secret
     Default: 1
-  AWSRegionName:
+  AWSGithubSecretName:
     Type: String
-    Description: AWS Region Name
-    Default: ap-northeast-1
-  AWSSecretName:
-    Type: String
-    Description: AWS Secret Name
+    Description: Github Secret Name Store in AWS
     Default: 1
-  S3BucketName:
+  AWSStaticSecretName:
+    Type: String
+    Description: Static Secret Name Store in AWS
+    Default: 1
+  AWSLLMTokenSecretName: 
+    Type: String
+    Description: AWS Secret Name Store in AWS
+    Default: 1
+  AWSLLMTokenPublicName:
+    Type: String
+    Description: AWS Public Name Store in AWS
+    Default: 1
+  AWSStaticKeyPairId: 
+    Type: String
+    Description: Static Key Pair Id
+    Default: 1
+  S3TempBucketName:
     Type: String
     Description: S3 Bucket Name
     Default: 1
@@ -101,11 +121,16 @@ Resources:
       Environment:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
-          AWS_SECRET_NAME: !Ref AWSSecretName
-          AWS_REGION_NAME: !Ref AWSRegionName
-          S3_BUCKET_NAME: !Ref S3BucketName
+          PETERCAT_ENV: !Ref PetercatEnv
+          AWS_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
+          AWS_STATIC_SECRET_NAME: !Ref AWSStaticSecretName
+          AWS_LLM_TOKEN_SECRET_NAME: !Ref AWSLLMTokenSecretName 
+          AWS_LLM_TOKEN_PUBLIC_NAME: !Ref AWSLLMTokenPublicName
+          AWS_STATIC_KEYPAIR_ID: !Ref AWSStaticKeyPairId
+          S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
           API_URL: !Ref APIUrl
           WEB_URL: !Ref WebUrl
+          STATIC_URL: !Ref StaticUrl
           X_GITHUB_APP_ID: !Ref GitHubAppID
           X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
           X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
@@ -129,16 +154,16 @@ Resources:
         - Sid: BedrockInvokePolicy
           Effect: Allow
           Action:
-          - bedrock:InvokeModelWithResponseStream
+            - bedrock:InvokeModelWithResponseStream
           Resource: '*'
         - Sid: AllObjectActions
           Effect: Allow
           Action: 
-          - s3:PutObject
-          - s3:GetObject
-          - s3:DeleteObject
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+            - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       Tracing: Active
     Metadata:
       DockerContext: server
@@ -154,9 +179,18 @@ Resources:
         AuthType: NONE
       Environment:
         Variables:
+          X_GITHUB_APP_ID: !Ref GitHubAppID
+          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
+          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
+          API_IDENTIFIER: !Ref APIIdentifier
+          FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
+          OPENAI_API_KEY: !Ref OpenAIAPIKey
+          GEMINI_API_KEY: !Ref GeminiAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
+          TAVILY_API_KEY: !Ref TavilyAPIKey
+          SQS_QUEUE_URL: !Ref SQSQueueUrl
       Policies:
       - Statement:
         - Sid: BedrockInvokePolicy
@@ -176,7 +210,7 @@ Resources:
           - s3:GetObject
           - s3:DeleteObject
           Resource: 
-          - !Sub 'arn:aws:s3:::${S3BucketName}/*'
+          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       - SQSPollerPolicy:
           QueueName: 
             !Ref SQSQueueName

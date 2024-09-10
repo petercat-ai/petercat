@@ -5,8 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { SearchProvider } from './contexts/SearchContext';
 import { BotProvider } from './contexts/BotContext';
 import { usePathname } from 'next/navigation';
-
-import 'petercat-lui/style';
+import '@petercatai/assistant/style';
 import './globals.css';
 
 const queryClient = new QueryClient();

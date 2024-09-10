@@ -2,7 +2,6 @@
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useMemo, useState } from 'react';
 import { filter, isEmpty, map } from 'lodash';
-import AddBotCard from '@/components/AddBotCard';
 import { useBotEdit } from '@/app/hooks/useBot';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -14,17 +13,19 @@ import {
   ModalBody,
   ModalFooter,
   Spinner,
+  Tooltip,
 } from '@nextui-org/react';
 import { StoreIcon } from '../public/icons/StoreIcon';
 import { useBotList } from '@/app/hooks/useBot';
 import BotItem from './BotItem';
 
 import 'react-toastify/dist/ReactToastify.css';
+import PublishBotCard from './PublishBotCard';
 
 declare type Bot = Tables<'bots'>;
 
-const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
-  const { type } = props;
+const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
+  const { area } = props;
   const [selectedBot, setSelectedBot] = useState('');
   const [selectedBotName, setSelectedBotName] = useState('');
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -53,20 +54,36 @@ const PublishBotEntity = (props: { type: 'nav' | 'list' }) => {
   }, [editError]);
   return (
     <>
-      {type === 'nav' && (
+      {area === 'nav' && (
         <>
           <ToastContainer />
-          <Button
-            key="public"
-            onPress={onOpen}
-            className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
-            startContent={<StoreIcon />}
+          <Tooltip
+            content={
+              <span>
+                coming soon, 请先前往 GitHub
+                <a
+                  href="https://github.com/petercat-ai/petercat/issues"
+                  target="_blank"
+                >
+                  Issue 区
+                </a>
+                给我们提一个 Issue，留下您的机器人信息
+              </span>
+            }
           >
-            上架机器人
-          </Button>
+            <Button
+              disabled={true}
+              key="public"
+              // onPress={onOpen}
+              className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
+              startContent={<StoreIcon />}
+            >
+              上架机器人
+            </Button>
+          </Tooltip>
         </>
       )}
-      {type === 'list' && <AddBotCard onPress={onOpen} />}
+      {area === 'list' && <PublishBotCard onPress={onOpen} />}
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

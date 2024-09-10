@@ -16,9 +16,7 @@ on:
       - template.yml
 
 env:
-  AWS_REGION: ap-northeast-1
-  ECR_REPOSITORY: petercat-lambda
-  ECR_REGISTRY: 654654285942.dkr.ecr.ap-northeast-1.amazonaws.com
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -53,10 +51,15 @@ jobs:
             --no-fail-on-empty-changeset \
             --config-file .aws/petercat-preview.toml \
             --parameter-overrides APIUrl="https://api-pre.petercat.ai" \
-                                  WebUrl="https://www.petercat.ai" \
-                                  AWSRegionName=${{ vars.AWS_REGION_NAME }} \
-                                  AWSSecretName=${{ vars.AWS_SECRET_NAME }} \
-                                  S3BucketName=${{ vars.S3_BUCKET_NAME }} \
+                                  WebUrl="https://petercat.ai" \
+                                  StaticUrl="https://static.petercat.ai" \
+                                  PetercatEnv="preview" \
+                                  AWSGithubSecretName=${{ secrets.AWS_GITHUB_SECRET_NAME }} \
+                                  AWSStaticSecretName=${{ secrets.AWS_STATIC_SECRET_NAME }} \
+                                  AWSLLMTokenSecretName=${{ vars.AWS_LLM_TOKEN_SECRET_NAME }} \
+                                  AWSLLMTokenPublicName=${{ vars.AWS_LLM_TOKEN_PUBLIC_NAME }} \
+                                  AWSStaticKeyPairId=${{ secrets.AWS_STATIC_KEYPAIR_ID }} \
+                                  S3TempBucketName=${{ vars.S3_TEMP_BUCKET_NAME }} \
                                   GitHubAppID=${{ secrets.X_GITHUB_APP_ID }} \
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
