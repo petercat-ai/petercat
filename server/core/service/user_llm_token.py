@@ -45,7 +45,7 @@ class UserLLMTokenService():
 
     self.llm_token_dao.create(llm_token_model)
 
-  def get_llm_token(self, id: str, user_id: str):
+  def get_llm_token(self, id: str, user_id: Optional[str] = None) -> UserLLMTokenVO:
     private_key_str = get_private_key(REGIN_NAME, AWS_LLM_TOKEN_SECRET_NAME)
 
     token_model = self.llm_token_dao.get_by_id(id=id, user_id=user_id)

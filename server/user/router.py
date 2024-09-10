@@ -3,6 +3,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 
+from agent.llm import get_registered_llm_client, import_clients
 from auth.get_user_info import get_user_id
 from core.service.user_llm_token import UserLLMTokenService, CreateUserLLMTokenVO, get_llm_token_service
 
@@ -11,6 +12,13 @@ router = APIRouter(
     tags=["user"],
     responses={404: {"description": "Not found"}},
 )
+
+@router.get("/llms")
+def get_avaliable_llms():
+  import_clients()
+  llms = get_registered_llm_client()
+  keys = llms.keys()
+  return list(keys)
 
 @router.post("/llm_token")
 def create_token(

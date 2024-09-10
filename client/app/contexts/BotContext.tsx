@@ -13,6 +13,8 @@ export const defaultBotProfile: BotProfile = {
   public: false,
   repoName: '',
   helloMessage: '',
+  llm: 'openai',
+  token_id: 'default',
 };
 
 const BotContext = createContext<

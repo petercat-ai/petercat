@@ -40,7 +40,7 @@ const GitHubStars = React.lazy(async () => {
     ({ stargazers_count: stars = 0 } = await res.json());
   } else {
     stars = parseInt(
-      document.getElementById('github-stars-wrapper')!.innerText,
+      document.getElementById('github-stars-wrapper')?.innerText || '0',
       10,
     );
   }

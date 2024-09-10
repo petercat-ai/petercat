@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import {
   Textarea,
   Input,
@@ -11,6 +11,10 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Select,
+  SelectItem,
+  SelectSection,
+  Chip,
 } from '@nextui-org/react';
 import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
@@ -25,12 +29,25 @@ import { useBot } from '@/app/contexts/BotContext';
 import 'react-toastify/dist/ReactToastify.css';
 import { AVATARS } from '@/app/constant/avatar';
 import { useRouter } from 'next/navigation';
+import { useAvaliableLLMs } from '@/app/hooks/useAvaliableLLMs';
+import { useTokenList } from '@/app/hooks/useToken';
+import CreateButton from '@/app/user/tokens/components/CreateButton';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
-  const router = useRouter();
+  const router = useRouter(); 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { data: avaliableLLMs = [] } = useAvaliableLLMs();
+  const { data: userTokens = [] } = useTokenList();
+
+  const filteredTokens = useMemo(() => {
+    if (botProfile.llm) {
+      return userTokens.filter(t => t.llm === botProfile.llm);
+    }
+    return userTokens;
+  }, [userTokens, botProfile]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
     setBotProfile((draft: BotProfile) => {
@@ -60,6 +77,15 @@ const BotCreateFrom = () => {
   const handelDelete = () => {
     deleteBot(botProfile?.id!);
   };
+
+  const customTitle = (
+    <div className='flex'>
+      <div className='flex-1 leading-8'>自定义</div>
+      <div className='flex-0'>
+        <CreateButton size="sm" variant="ghost" />
+      </div>
+    </div>
+  ) as any;
 
   return (
     <div className="container mx-auto px-8 pt-8 pb-[45px] ">
@@ -143,6 +169,40 @@ const BotCreateFrom = () => {
               input: 'resize-y min-h-[216px]',
             }}
           />
+        </Collapse>
+        <Collapse title="大模型">
+          <div className="flex items-center mb-6 gap-8">
+            <div className="flex-1">
+              <Select
+                name="llm"
+                label="选择大模型"
+                isRequired
+                variant='bordered'
+                onChange={handleChange}
+              >
+                {avaliableLLMs.map(llm => <SelectItem key={llm}>{llm}</SelectItem>)}
+              </Select>
+            </div>
+            <div className="flex-1">
+              <Select
+                name="token_id"
+                label="选择 token"
+                variant='bordered'
+                onChange={handleChange}
+                popoverProps={{style: { zIndex: 10 }}}
+              >
+                <SelectSection title="官方">
+                  <SelectItem key="default">使用 petercat 提供的 token</SelectItem>
+                </SelectSection>
+                <SelectSection title={customTitle}>
+                  {filteredTokens.map(t => <SelectItem key={t.id} textValue={t.slug!}>
+                    <Chip color="default">{t.slug}</Chip>
+                    {t.sanitized_token}
+                  </SelectItem>)}
+                </SelectSection>
+              </Select>
+            </div>
+          </div>
         </Collapse>
         <Collapse title="开场白">
           <Input
