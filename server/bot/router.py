@@ -101,8 +101,14 @@ async def create_bot(
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
+    blacklist_fields = {"public"}
+    filtered_bot_data = {
+        key: value
+        for key, value in bot_data.model_dump().items()
+        if key not in blacklist_fields
+    }
     try:
-        res = await bot_builder(user_id, **bot_data.model_dump())
+        res = await bot_builder(user_id, **filtered_bot_data)
         if not res:
             return JSONResponse(
                 content={"success": False, "errorMessage": "仓库不存在，生成失败"},
@@ -141,13 +147,14 @@ def update_bot(
 ):
     if not id:
         return {"error": "Incomplete parameters", "status": 400}
+    blacklist_fields = {"public"}
+
     try:
         update_fields = {
             key: value
             for key, value in bot_data.model_dump(exclude_unset=True).items()
-            if value is not None
+            if value is not None and key not in blacklist_fields
         }
-
         if not update_fields:
             return JSONResponse(
                 content={"success": False, "errorMessage": "No fields to update"},
@@ -162,7 +169,7 @@ def update_bot(
             .eq("uid", user_id)
             .execute()
         )
-
+        print(response)
         if not response.data:
             return JSONResponse(
                 content={"success": False, "errorMessage": "bot 不存在，更新失败"}
