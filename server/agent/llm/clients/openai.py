@@ -2,6 +2,7 @@ from typing import Any, List, Optional
 from langchain_openai import ChatOpenAI
 from langchain_core.utils.function_calling import convert_to_openai_tool
 
+from agent.llm import register_llm_client
 from agent.llm.base import BaseLLMClient
 from petercat_utils.data_class import MessageContent
 from petercat_utils.utils.env import get_env_variable
@@ -9,6 +10,7 @@ from petercat_utils.utils.env import get_env_variable
 
 OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")
 
+@register_llm_client("openai")
 class OpenAIClient(BaseLLMClient):
   _client: ChatOpenAI
 

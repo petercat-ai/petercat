@@ -3,6 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai.chat_models import convert_to_genai_function_declarations
 from langchain_openai import ChatOpenAI
 
+from agent.llm import register_llm_client
 from agent.llm.base import BaseLLMClient
 from petercat_utils.data_class import ImageRawURLContentBlock, MessageContent
 from petercat_utils.utils.env import get_env_variable
@@ -16,6 +17,7 @@ def parse_gemini_input(message: MessageContent):
     case _:
       return message
 
+@register_llm_client("gemini")
 class GeminiClient(BaseLLMClient):
   _client: ChatOpenAI
 

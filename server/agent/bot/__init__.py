@@ -9,7 +9,7 @@ class Bot:
     def __init__(self, bot: BotModel, llm_token: LLMToken):
         self._bot = bot
         self._llm_token = llm_token
-        self._llm = LLM(llm_token=llm_token)
+        self._llm = LLM()
 
     @property
     def id(self):

@@ -1,5 +1,5 @@
 from typing import AsyncIterator
-from agent.llm.openai import OpenAIClient
+from agent.llm.clients.openai import OpenAIClient
 from petercat_utils.data_class import ChatData
 
 from agent.base import AgentBuilder

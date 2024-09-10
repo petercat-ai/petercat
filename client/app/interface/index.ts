@@ -9,4 +9,6 @@ export interface BotProfile {
   helloMessage?: string;
   repoName?: string;
   gitAvatar?: string;
+  llm?: string;
+  token_id?: string;
 }
