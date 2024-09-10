@@ -44,6 +44,7 @@ class PullRequestEventHandler():
         exclusions = PullRequestEventHandler.get_file_exclusions()
         if file_match(file.filename, exclusions):
             return f"adds: {file.additions}, deletions: {file.deletions}, changes: {file.changes}"
+
         return convert_patch_to_hunk(file.patch)
 
     @staticmethod

@@ -14,14 +14,13 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { DeleteIcon } from '@/public/icons/DeleteIcon';
-import { createToken, deleteToken } from '@/app/services/TokensController';
+import { deleteToken } from '@/app/services/TokensController';
 import { useMutation } from '@tanstack/react-query';
 import DeleteModal from './components/DeleteModal';
-import CreateModal from './components/CreateModal';
+import CreateButton from './components/CreateButton';
 
 export default function List() {
   const { data = [], refetch } = useTokenList();
-  const { isOpen: createIsOpen, onOpen: onCreateOpen, onClose: onCreateClose } = useDisclosure();
 
   const { isOpen: deleteIsOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const [currentToken, setCurrentToken] = useState<LLMToken>();
@@ -34,13 +33,6 @@ export default function List() {
     }
   });
 
-  const createMutation = useMutation({
-    mutationFn: createToken,
-    onSuccess() {
-      onCreateClose();
-      refetch();
-    }
-  });
   
   const onConfirmDelete = useCallback((token: LLMToken) => {
     setCurrentToken(token);
@@ -51,7 +43,7 @@ export default function List() {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <Button color="primary" onClick={() => onCreateOpen()}> Add New </Button>
+          <CreateButton />
         </div>
       </div>
     );
@@ -85,13 +77,6 @@ export default function List() {
           ))}
         </TableBody>
       </Table>
-      <CreateModal
-        isOpen={createIsOpen}
-        onClose={onCreateClose}
-        onOpen={onCreateOpen}
-        onCreate={data => createMutation.mutate(data)}
-        isLoading={createMutation.isPending}
-      />
       <DeleteModal
         onClose={onDeleteClose}
         isOpen={deleteIsOpen}

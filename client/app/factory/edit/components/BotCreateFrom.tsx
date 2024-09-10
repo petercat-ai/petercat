@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import {
   Textarea,
   Input,
@@ -31,6 +31,7 @@ import { AVATARS } from '@/app/constant/avatar';
 import { useRouter } from 'next/navigation';
 import { useAvaliableLLMs } from '@/app/hooks/useAvaliableLLMs';
 import { useTokenList } from '@/app/hooks/useToken';
+import CreateButton from '@/app/user/tokens/components/CreateButton';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
@@ -76,6 +77,15 @@ const BotCreateFrom = () => {
   const handelDelete = () => {
     deleteBot(botProfile?.id!);
   };
+
+  const customTitle = (
+    <div className='flex'>
+      <div className='flex-1 leading-8'>自定义</div>
+      <div className='flex-0'>
+        <CreateButton size="sm" variant="ghost" />
+      </div>
+    </div>
+  ) as any;
 
   return (
     <div className="container mx-auto px-8 pt-8 pb-[45px] ">
@@ -165,8 +175,9 @@ const BotCreateFrom = () => {
             <div className="flex-1">
               <Select
                 name="llm"
-                label="Select a llm"
+                label="选择大模型"
                 isRequired
+                variant='bordered'
                 onChange={handleChange}
               >
                 {avaliableLLMs.map(llm => <SelectItem key={llm}>{llm}</SelectItem>)}
@@ -175,13 +186,15 @@ const BotCreateFrom = () => {
             <div className="flex-1">
               <Select
                 name="token_id"
-                label="Select a token"
+                label="选择 token"
+                variant='bordered'
                 onChange={handleChange}
+                popoverProps={{style: { zIndex: 10 }}}
               >
                 <SelectSection title="官方">
                   <SelectItem key="default">使用 petercat 提供的 token</SelectItem>
                 </SelectSection>
-                <SelectSection title="自定义">
+                <SelectSection title={customTitle}>
                   {filteredTokens.map(t => <SelectItem key={t.id} textValue={t.slug!}>
                     <Chip color="default">{t.slug}</Chip>
                     {t.sanitized_token}
