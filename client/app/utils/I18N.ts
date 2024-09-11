@@ -4,29 +4,24 @@
  */
 
 import kiwiIntl from 'kiwi-intl';
-import enUsLangs from '../../.kiwi/en-US';
+import enLangs from '../../.kiwi/en';
 import zhCNLangs from '../../.kiwi/zh-CN';
 
 export enum LangEnum {
   'zh-CN' = 'zh-CN',
-  'en-US' = 'en-US',
+  'zh-TW' = 'zh-TW',
+  'en' = 'en',
+  'ja' = 'ja',
+  'ko' = 'ko',
 }
 
 const langs = {
-  'en-US': enUsLangs,
+  en: enLangs,
   'zh-CN': zhCNLangs,
 };
-// 从 Cookie 中取语言值, 默认为 zh-CN
-const defaultLang = 'en-US';
 
-let curLang;
-if (Object.keys(langs).indexOf(defaultLang) > -1) {
-  curLang = defaultLang;
-} else {
-  // 如果没有对应的语言文件, 置为中文
-  curLang = 'zh-CN';
-}
+const defaultLang = 'zh-CN';
 
-const I18N = kiwiIntl.init(curLang, langs);
+const I18N = kiwiIntl.init(defaultLang, langs);
 
 export default I18N;
