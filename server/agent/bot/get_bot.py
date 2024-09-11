@@ -3,6 +3,7 @@ from typing import Annotated
 
 from fastapi import Depends
 from agent.bot import Bot
+from agent.llm import import_clients
 from auth.get_user_info import get_user
 from core.dao.botDAO import BotDAO
 from core.dao.llmTokenDAO import LLMTokenDAO
@@ -16,6 +17,9 @@ def get_bot(
         user: Annotated[User | None, Depends(get_user)] = None,
         llm_service: Annotated[UserLLMTokenService | None, Depends(get_llm_token_service)] = None
     ) -> Bot:
+
+    import_clients()
+
     bot_dao = BotDAO()
     llm_token_dao = LLMTokenDAO()
 
