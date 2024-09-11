@@ -1,5 +1,5 @@
 export default {
   tools: {
-    jieXiJSO: '解析JSON时发生错误：',
+    jieXiJSO: 'Error occurred while parsing JSON:',
   },
 };
