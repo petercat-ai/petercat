@@ -37,7 +37,7 @@ def run_qa_chat(
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
     print(
-        f"run_qa_chat: input_data={input_data}, bot={bot}"
+        f"run_qa_chat: input_data={input_data}, bot={bot}, llm={bot.llm}"
     )
 
     auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
