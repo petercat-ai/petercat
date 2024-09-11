@@ -1,4 +1,4 @@
-from typing import AsyncIterator, Optional
+from typing import AsyncIterator, Dict, Optional
 from github import Auth
 from agent.base import AgentBuilder
 from agent.bot import Bot
@@ -27,7 +27,7 @@ def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
 
 def agent_stream_chat(
     input_data: ChatData, auth_token: Auth.Token, bot: Bot
-) -> AsyncIterator[str]:
+) -> AsyncIterator[Dict]:
     agent = AgentBuilder(
         chat_model=bot.llm,
         prompt=bot.prompt,

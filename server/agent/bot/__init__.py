@@ -27,3 +27,7 @@ class Bot:
     @property
     def llm(self):
         return self._llm._client
+
+    @property
+    def token_id(self):
+        return self._bot.token_id

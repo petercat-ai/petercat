@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import AsyncIterator, Dict, Callable, Optional
+from typing import AsyncGenerator, AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
 from agent.llm import BaseLLMClient
 from petercat_utils.data_class import ChatData, Message
@@ -25,6 +25,15 @@ TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
 logger = logging.getLogger()
 
+
+async def dict_to_sse(generator: AsyncGenerator[Dict, None]):
+    async for d in generator:
+        try:
+            json_output = json.dumps(d, ensure_ascii=False)
+            yield f"data: {json_output}\n\n"
+        except Exception as e:
+            error_output = json.dumps({"status": "error", "message": str(e)}, ensure_ascii=False)
+            yield f"data: {error_output}\n\n"
 
 class AgentBuilder:
     agent_executor: AgentExecutor
@@ -118,7 +127,7 @@ class AgentBuilder:
                     )
         return transformed_messages
 
-    async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[str]:
+    async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[Dict]:
         try:
             messages = input_data.messages
             async for event in self.agent_executor.astream_events(
@@ -134,46 +143,33 @@ class AgentBuilder:
                 if kind == "on_llm_stream" or kind == "on_chat_model_stream":
                     content = event["data"]["chunk"].content
                     if content:
-                        json_output = json.dumps(
-                            {
-                                "id": event["run_id"],
-                                "type": "message",
-                                "content": content,
-                            },
-                            ensure_ascii=False,
-                        )
-                        yield f"data: {json_output}\n\n"
+                        yield {
+                            "id": event["run_id"],
+                            "type": "message",
+                            "content": content,
+                        }
                 elif kind == "on_chat_model_end":
                     content = event["data"]["output"]["generations"][0][0][
                         "message"
                     ].usage_metadata
                     if content:
-                        json_output = json.dumps(
-                            {
-                                "id": event["run_id"],
-                                "type": "usage",
-                                **content,
-                            },
-                            ensure_ascii=False,
-                        )
-                        yield f"data: {json_output}\n\n"
+                        yield {
+                            "id": event["run_id"],
+                            "type": "usage",
+                            **content,
+                        }
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
-                    json_output = json.dumps(
-                        {
-                            "id": event["run_id"],
-                            "type": "tool",
-                            "extra": {
-                                "source": f"已调用工具: {event['name']}",
-                                "pluginName": "GitHub",
-                                "data": json.dumps(children_value, ensure_ascii=False),
-                                "status": "loading",
-                            },
+                    yield {
+                        "id": event["run_id"],
+                        "type": "tool",
+                        "extra": {
+                            "source": f"已调用工具: {event['name']}",
+                            "pluginName": "GitHub",
+                            "data": json.dumps(children_value, ensure_ascii=False),
+                            "status": "loading",
                         },
-                        ensure_ascii=False,
-                    )
-
-                    yield f"data: {json_output}\n\n"
+                    }
                 elif kind == "on_tool_end":
                     children_value = event["data"].get("output", {})
                     if isinstance(children_value, str):
@@ -207,19 +203,15 @@ class AgentBuilder:
                             }
                         )
 
-                    json_output = json.dumps(
-                        {
-                            "id": event["run_id"],
-                            "type": "tool",
-                            "extra": extra_data,
-                        },
-                        ensure_ascii=False,
-                    )
+                    yield {
+                        "id": event["run_id"],
+                        "type": "tool",
+                        "extra": extra_data,
+                    }
 
-                    yield f"data: {json_output}\n\n"
         except Exception as e:
             res = {"status": "error", "message": str(e)}
-            yield f"data: {json.dumps(res, ensure_ascii=False)}\n\n"
+            yield res
 
     async def run_chat(self, input_data: ChatData) -> str:
         try:
