@@ -1,5 +1,5 @@
-import I18N from '@/app/utils/I18N';
 'use client';
+import I18N from '@/app/utils/I18N';
 import React from 'react';
 import { useBot } from '@/app/contexts/BotContext';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,10 +39,12 @@ const ChunkCard = ({ update_timestamp, content, file_path }: RAGDoc) => {
             {file_path}
           </h2>
           <span className="bg-[#E5E7EB] text-[12px] rounded-[4px] p-[4px] color-[#4B5563] shrink-0">
-            {content?.length} {I18N.components.Knowledge.ziFu}</span>
+            {content?.length} {I18N.components.Knowledge.ziFu}
+          </span>
         </div>
         <p className="text-sm text-gray-600">
-          {I18N.components.Knowledge.gengXinYu}{convertToLocalTime(update_timestamp ?? '')}
+          {I18N.components.Knowledge.gengXinYu}
+          {convertToLocalTime(update_timestamp ?? '')}
         </p>
       </div>
       <Modal

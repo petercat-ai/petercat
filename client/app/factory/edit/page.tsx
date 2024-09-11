@@ -1,4 +1,5 @@
 'use client';
+import I18N from '@/app/utils/I18N';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
@@ -161,37 +162,37 @@ export default function Edit() {
 
   useEffect(() => {
     if (createSuccess) {
-      toast.success('生成成功');
+      toast.success(I18N.edit.page.shengChengChengGong);
     }
   }, [createSuccess]);
 
   useEffect(() => {
     if (createError) {
-      toast.error(`生成失败${createError.message}`);
+      toast.error(I18N.edit.page.shengChengShiBaiC);
     }
   }, [createError]);
 
   useEffect(() => {
     if (editSuccess) {
-      toast.success('保存成功');
+      toast.success(I18N.edit.page.baoCunChengGong);
     }
   }, [editSuccess]);
 
   useEffect(() => {
     if (editError) {
-      toast.error(`保存失败${editError.message}`);
+      toast.error(I18N.edit.page.baoCunShiBaiE);
     }
   }, [editError]);
 
   useEffect(() => {
     if (editError) {
-      toast.error(`生成成功${editError.message}`);
+      toast.error(I18N.edit.page.shengChengChengGongE);
     }
   }, [getBotInfoByRepoNameSuccess]);
 
   useEffect(() => {
     if (editSuccess) {
-      toast.success('生成失败');
+      toast.success(I18N.edit.page.shengChengShiBai);
     }
   }, [getBotInfoByRepoNameError]);
 
@@ -231,8 +232,8 @@ export default function Edit() {
         hideLogo={true}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
-        helloMessage="初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。"
-        starters={['帮我配置一个答疑机器人']}
+        helloMessage={I18N.edit.page.chuCiJianMianXian}
+        starters={[I18N.edit.page.bangWoPeiZhiYi]}
         getToolsResult={(result) => {
           const data = result?.data;
           updateConfigFromChatResult(data);
@@ -242,17 +243,17 @@ export default function Edit() {
   );
   const manualConfigLabel = (
     <div className="flex justify-between">
-      <span>Github 项目地址</span>
+      <span>{I18N.edit.page.gITHU}</span>
       {botProfile.id && (
         <CopyToClipboard
           text={botProfile.id}
           onCopy={() => {
-            toast.success('Token 已复制到剪贴板');
+            toast.success(I18N.edit.page.tOKEN);
           }}
         >
           {/* @ts-ignore */}
           <span className="text-xs text-gray-500 cursor-pointer">
-            复制 Token
+            {I18N.edit.page.fuZhiTOK}
           </span>
         </CopyToClipboard>
       )}
@@ -268,7 +269,7 @@ export default function Edit() {
           name="repo_name"
           label={manualConfigLabel}
           disabled={isEdit}
-          placeholder="请输入 GitHub 项目地址"
+          placeholder={I18N.edit.page.qingShuRuGI}
           labelPlacement="outside"
           onChange={(e) => {
             const url = e.target.value;
@@ -292,11 +293,11 @@ export default function Edit() {
                   if (repoName) {
                     onCreateBot(repoName!);
                   } else {
-                    toast.error('地址有误');
+                    toast.error(I18N.edit.page.diZhiYouWu);
                   }
                 }}
               >
-                自动生成配置
+                {I18N.edit.page.ziDongShengChengPei}
               </Button>
             </div>
           ) : (
@@ -309,7 +310,7 @@ export default function Edit() {
                 getBotInfoByRepoName(botProfile?.repoName!);
               }}
             >
-              重新生成配置
+              {I18N.edit.page.chongXinShengChengPei}
             </Button>
           )}
           {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
@@ -374,7 +375,10 @@ export default function Edit() {
                         key={ConfigTypeEnum.CHAT_CONFIG}
                         title={
                           <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
-                            <ChatIcon /> <span className="ml-2">对话调试</span>
+                            <ChatIcon />{' '}
+                            <span className="ml-2">
+                              {I18N.edit.page.duiHuaTiaoShi}
+                            </span>
                           </div>
                         }
                       />
@@ -384,7 +388,9 @@ export default function Edit() {
                         title={
                           <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
                             <ConfigIcon />
-                            <span className="ml-2">手动配置</span>
+                            <span className="ml-2">
+                              {I18N.edit.page.shouDongPeiZhi}
+                            </span>
                           </div>
                         }
                       />
@@ -429,7 +435,7 @@ export default function Edit() {
               <div className="relative flex h-[72px] w-full items-center justify-between gap-2 px-6 flex-shrink-0">
                 <div className="flex items-center gap-2"></div>
                 <div className="flex items-center">
-                  <div>预览与测试</div>
+                  <div>{I18N.edit.page.yuLanYuCeShi}</div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
@@ -445,7 +451,7 @@ export default function Edit() {
                       }
                     }}
                   >
-                    保存
+                    {I18N.edit.page.baoCun}
                   </Button>
                 </div>
               </div>
@@ -468,7 +474,7 @@ export default function Edit() {
                     prompt={botProfile?.prompt}
                     starters={botProfile?.starters}
                     helloMessage={botProfile?.helloMessage}
-                    disabledPlaceholder="机器人尚未配置任何内容    请在完成配置后进行对话测试"
+                    disabledPlaceholder={I18N.edit.page.jiQiRenShangWei}
                     disabled={!isEdit}
                   />
                 </div>

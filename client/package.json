@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"app\"",
-    "extract-i18n": "kiwi --extract app"
+    "extract-lang": "kiwi --extract app"
   },
   "engines": {
     "node": ">=18"

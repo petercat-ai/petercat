@@ -124,7 +124,8 @@ export function Navbar() {
             创建机器人
           </Button>
         )}
-        <LanguageSwitcher />
+        {pathname === '/' && <LanguageSwitcher />}
+
         <Profile />
       </div>
     </div>

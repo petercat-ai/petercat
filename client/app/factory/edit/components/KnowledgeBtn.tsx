@@ -1,5 +1,5 @@
-import I18N from '@/app/utils/I18N';
 'use client';
+import I18N from '@/app/utils/I18N';
 import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button, Tooltip } from '@nextui-org/react';
@@ -63,7 +63,8 @@ const KnowledgeBtn = (props: IProps) => {
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
-            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}{convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
+            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}
+            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
         <Button
@@ -100,14 +101,17 @@ const KnowledgeBtn = (props: IProps) => {
             onClick();
           }}
         >
-          {taskLoading ? I18N.components.Knowledge.zhiShiKuGengXin : I18N.components.KnowledgeBtn.chaKanZhiShiKu}
+          {taskLoading
+            ? I18N.components.Knowledge.zhiShiKuGengXin
+            : I18N.components.KnowledgeBtn.chaKanZhiShiKu}
         </Button>
         {taskList && taskList?.length > 0 ? (
           <span
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
-            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}{convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
+            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}
+            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
       </>
