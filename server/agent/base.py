@@ -143,6 +143,20 @@ class AgentBuilder:
                             ensure_ascii=False,
                         )
                         yield f"data: {json_output}\n\n"
+                elif kind == "on_chat_model_end":
+                    content = event["data"]["output"]["generations"][0][0][
+                        "message"
+                    ].usage_metadata
+                    if content:
+                        json_output = json.dumps(
+                            {
+                                "id": event["run_id"],
+                                "type": "usage",
+                                **content,
+                            },
+                            ensure_ascii=False,
+                        )
+                        yield f"data: {json_output}\n\n"
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     json_output = json.dumps(

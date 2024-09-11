@@ -22,7 +22,7 @@ import { Assistant } from '@petercatai/assistant';
 
 export default () => (
   <Assistant
-    token="45cb2003-98f5-46b4-b299-b60c42f69fbf"
+    token="36c6b04b-b619-4449-91fa-faf23ab30b80"
     clearMessage={true}
   />
 );

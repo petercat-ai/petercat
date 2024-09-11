@@ -27,7 +27,7 @@
 
 We provide a conversational Q&A agent configuration system, self-hosted deployment solutions, and a convenient all-in-one application SDK, allowing you to create intelligent Q&A bots for your GitHub repositories with a single click and quickly integrate them into various official websites or projects, providing a more efficient technical support ecosystem for your community.
 
-### Create with Conversations
+### Chatting means creating
 
 You only need to provide the address or name of your repository, and Peter Cat will automatically complete the entire process of creating a bot.
 
@@ -45,6 +45,23 @@ Various integration options, such as SDK integration into official websites or o
 
 | ![Website](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
 |:----------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|
+
+### More than QA Robot
+
+| project information Query                | Discussion Reply                          
+| ----------------------------------------- | --------------------------------------- | 
+| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331)|
+
+
+| PR Summary       | Code Review     | 
+| ----------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
+
+| Issue Search                          | Issue Submit                             | Issue Reply      | 
+| ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
+| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+
+[Watch full video](https://www.youtube.com/watch?v=83Y0_q2Fskk)
 
 ## Agent Workflow
 
@@ -168,6 +185,10 @@ Peter Cat is still in its growth stage, and occasional “tantrums” are to be 
 👬 Contributors
 
 ![https://github.com/petercat-ai/petercat/graphs/contributors](https://contrib.rocks/image?repo=petercat-ai/petercat)
+
+## 💗 Sponsor
+
+[Ant Design](https://ant.design/)
 
 ## 📄 License
 
