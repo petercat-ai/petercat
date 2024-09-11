@@ -28,8 +28,12 @@ logger = logging.getLogger()
 
 async def dict_to_sse(generator: AsyncGenerator[Dict, None]):
     async for d in generator:
-        json_output = json.dumps(d, ensure_ascii=False)
-        yield f"data: {json_output}\n\n"
+        try:
+            json_output = json.dumps(d, ensure_ascii=False)
+            yield f"data: {json_output}\n\n"
+        except Exception as e:
+            error_output = json.dumps({"status": "error", "message": str(e)}, ensure_ascii=False)
+            yield f"data: {error_output}\n\n"
 
 class AgentBuilder:
     agent_executor: AgentExecutor
