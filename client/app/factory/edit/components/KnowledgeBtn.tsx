@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 'use client';
 import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
@@ -62,8 +63,7 @@ const KnowledgeBtn = (props: IProps) => {
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
-            最近更新于
-            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
+            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}{convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
         <Button
@@ -78,10 +78,10 @@ const KnowledgeBtn = (props: IProps) => {
           }}
         >
           {taskLoading ? (
-            '知识库更新中'
+            I18N.components.Knowledge.zhiShiKuGengXin
           ) : (
             <Tooltip content="Coming Soon">
-              <span>更新知识库</span>
+              <span>{I18N.components.KnowledgeBtn.gengXinZhiShiKu}</span>
             </Tooltip>
           )}
         </Button>
@@ -100,15 +100,14 @@ const KnowledgeBtn = (props: IProps) => {
             onClick();
           }}
         >
-          {taskLoading ? '知识库更新中' : '查看知识库'}
+          {taskLoading ? I18N.components.Knowledge.zhiShiKuGengXin : I18N.components.KnowledgeBtn.chaKanZhiShiKu}
         </Button>
         {taskList && taskList?.length > 0 ? (
           <span
             className="font-sf-pro text-xs font-normal leading-5 text-left"
             style={{ color: '#9CA3AF' }}
           >
-            最近更新于
-            {convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
+            {I18N.components.KnowledgeBtn.zuiJinGengXinYu}{convertToLocalTime(taskList[taskCnt - 1]?.created_at ?? '')}
           </span>
         ) : null}
       </>

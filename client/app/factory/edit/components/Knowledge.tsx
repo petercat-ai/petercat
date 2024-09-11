@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 'use client';
 import React from 'react';
 import { useBot } from '@/app/contexts/BotContext';
@@ -38,11 +39,10 @@ const ChunkCard = ({ update_timestamp, content, file_path }: RAGDoc) => {
             {file_path}
           </h2>
           <span className="bg-[#E5E7EB] text-[12px] rounded-[4px] p-[4px] color-[#4B5563] shrink-0">
-            {content?.length} 字符
-          </span>
+            {content?.length} {I18N.components.Knowledge.ziFu}</span>
         </div>
         <p className="text-sm text-gray-600">
-          更新于 {convertToLocalTime(update_timestamp ?? '')}
+          {I18N.components.Knowledge.gengXinYu}{convertToLocalTime(update_timestamp ?? '')}
         </p>
       </div>
       <Modal
@@ -110,7 +110,7 @@ export default function Knowledge({ botId, goBack }: IProps) {
             <span>{botProfile.name}</span>
           </span>
           <span>/</span>
-          <span>知识库分段</span>
+          <span>{I18N.components.Knowledge.zhiShiKuFenDuan}</span>
         </div>
         <div className="flex items-center gap-2">
           <KnowledgeBtn botId={botId} onClick={() => {}} mode={'pageHeader'} />
@@ -123,9 +123,9 @@ export default function Knowledge({ botId, goBack }: IProps) {
           ) : (
             <div className="flex justify-center items-center h-full">
               {taskProfile.running ? (
-                <h3>知识库更新中</h3>
+                <h3>{I18N.components.Knowledge.zhiShiKuGengXin}</h3>
               ) : (
-                <h3>知识库为空</h3>
+                <h3>{I18N.components.Knowledge.zhiShiKuWeiKong}</h3>
               )}
             </div>
           )}

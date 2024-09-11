@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import React, { useEffect, useState } from 'react';
 import { Switch, cn } from '@nextui-org/react';
 import type { Updater } from 'use-immer';
@@ -39,8 +40,7 @@ const PublicSwitcher = (props: PublicSwitcherProps) => {
       }}
       onChange={onChange}
     >
-      市场中公开
-    </Switch>
+      {I18N.components.PublicSwitcher.shiChangZhongGongKai}</Switch>
   );
 };
 

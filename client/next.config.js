@@ -4,13 +4,9 @@
 // module.exports = withBundleAnalyzer({})
 const { withSentryConfig } = require("@sentry/nextjs");
 
-module.exports = {
-  i18n: {
-    locales: ['en-US', 'zh-CN'],
-    defaultLocale: 'en-US',
-    localeDetection: true, 
-  },
-  ...process.env.NEXT_STANDALONE ? { output: "standalone" } : {},
+
+const nextConfig = {
+  ...process.env.NEXT_STANDALONE ? { output: "standalone" } :{},
   webpack: (config, { dev}) => {
     config.resolve.fallback = { http: false, https: false, net: false, tls: false };
 

@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { LLMTokenInsert, useCreateToken } from '@/app/hooks/useToken';
 import {
   Button,
@@ -52,10 +53,10 @@ export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: Cr
                   <div className="mb-[42px]">
                     <Input
                       name="slug"
-                      label="密钥标识*"
+                      label={I18N.components.CreateModal.miYaoBiaoShi}
                       variant="bordered"
                       labelPlacement="outside"
-                      placeholder="给 Token 取一个独一无二的标识"
+                      placeholder={I18N.components.CreateModal.geiTOKE}
                       required
                       onChange={handleChange}
                     />
@@ -75,10 +76,10 @@ export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: Cr
                     <Input
                       name="token"
                       type="password"
-                      label="密钥*"
+                      label={I18N.components.CreateModal.miYao2}
                       variant="bordered"
                       labelPlacement="outside"
-                      placeholder="密钥"
+                      placeholder={I18N.components.CreateModal.miYao}
                       required
                       onChange={handleChange}
                     />

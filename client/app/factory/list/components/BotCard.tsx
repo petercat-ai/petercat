@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 'use client';
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useState } from 'react';
@@ -99,7 +100,7 @@ const BotCard = (props: { bot: Bot }) => {
               <Tooltip
                 showArrow
                 placement="top"
-                content="调试"
+                content={I18N.components.BotCard.tiaoShi}
                 classNames={{
                   base: [
                     // arrow color
@@ -113,7 +114,7 @@ const BotCard = (props: { bot: Bot }) => {
               >
                 <Image
                   src="../images/debug.svg"
-                  alt={'调试'}
+                  alt={I18N.components.BotCard.tiaoShi}
                   onClick={() => router.push(`/factory/edit/${bot.id}`)}
                   className="z-10 cursor-pointer"
                 />
@@ -121,7 +122,7 @@ const BotCard = (props: { bot: Bot }) => {
               <Tooltip
                 showArrow
                 placement="top"
-                content="更新知识库(Coming Soon)"
+                content={I18N.components.BotCard.gengXinZhiShiKu}
                 classNames={{
                   base: [
                     // arrow color
@@ -135,7 +136,7 @@ const BotCard = (props: { bot: Bot }) => {
               >
                 <Image
                   src="../images/refresh.svg"
-                  alt={'更新知识'}
+                  alt={I18N.components.BotCard.gengXinZhiShi}
                   className="z-10 cursor-pointer"
                 />
               </Tooltip>
@@ -169,24 +170,20 @@ const BotCard = (props: { bot: Bot }) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                删除机器人
-              </ModalHeader>
+                {I18N.components.BotCreateFrom.shanChuJiQiRen}</ModalHeader>
               <ModalBody>
                 <p>
-                  确认要删除 「{bot.name}」 吗？删除后将无法恢复，请谨慎操作。
-                </p>
+                  {I18N.components.BotCard.queRenYaoShanChu}{bot.name}{I18N.components.BotCard.maShanChuHouJiang}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color="default" variant="light" onPress={onClose}>
-                  关闭
-                </Button>
+                  {I18N.components.BotCard.guanBi}</Button>
                 <Button
                   color="danger"
                   isLoading={isLoading}
                   onPress={() => onDelete(bot?.id)}
                 >
-                  确认
-                </Button>
+                  {I18N.components.BotCreateFrom.queRen}</Button>
               </ModalFooter>
             </>
           )}

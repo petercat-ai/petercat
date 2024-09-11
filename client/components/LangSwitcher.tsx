@@ -1,28 +1,24 @@
 import React from 'react';
-import i18next from 'i18next';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LangIcon from '../public/icons/LangIcon';
-import { usePathname } from 'next/navigation';
+import I18N, { getCurrentLang, LangEnum } from '@/app/utils/I18N';
+
+// const curLang = getCurrentLang();
+
 const LanguageSwitcher = () => {
-  const [currentLanguage, setCurrentLanguage] = useState(i18next.language);
-
-  const pathname = usePathname();
-
-  // useEffect(() => {
-  //   const handleLanguageChange = (lng: string) => {
-  //     setCurrentLanguage(lng);
-  //   };
-
-  //   i18next.on('languageChanged', handleLanguageChange);
-
-  //   return () => {
-  //     i18next.off('languageChanged', handleLanguageChange);
-  //   };
-  // }, []);
+  const [currentLanguage, setCurrentLanguage] = useState<LangEnum>(
+    LangEnum['en-US'],
+  );
 
   const toggleLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'zh' : 'en';
-    i18next.changeLanguage(newLanguage);
+    const newLanguage =
+      currentLanguage === LangEnum['zh-CN']
+        ? LangEnum['en-US']
+        : LangEnum['zh-CN'];
+    setCurrentLanguage(newLanguage);
+    if (I18N.setLang) {
+      I18N.setLang(newLanguage);
+    }
   };
 
   return (

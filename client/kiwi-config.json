@@ -1,0 +1,23 @@
+{
+  "fileType": "ts",
+  "srcLang": "zh-CN",
+  "distLangs": [
+    "en-US"
+  ],
+  "googleApiKey": "",
+  "baiduApiKey": {
+    "appId": "",
+    "appKey": ""
+  },
+  "baiduLangMap": {
+    "en-US": "en"
+  },
+  "translateOptions": {
+    "concurrentLimit": 10,
+    "requestOptions": {}
+  },
+  "defaultTranslateKeyApi": "Pinyin",
+  "importI18N": "import I18N from '@/app/utils/I18N';",
+  "ignoreDir": ["app/factory/edit/[id]"],
+  "ignoreFile": []
+}

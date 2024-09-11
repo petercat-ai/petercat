@@ -42,6 +42,7 @@
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.1",
     "immer": "^10.0.3",
+    "kiwi-intl": "^1.2.6-beta.0",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",

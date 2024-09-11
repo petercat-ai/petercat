@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 export const extractParametersByTools = (content: string) => {
   const regex = /\$\$TOOLS\$\$ (.+?) \$\$END\$\$/;
   const match = content.match(regex);
@@ -6,7 +7,7 @@ export const extractParametersByTools = (content: string) => {
       const json = JSON.parse(match[1]);
       return json.parameters;
     } catch (error) {
-      console.error('解析JSON时发生错误：', error);
+      console.error(I18N.utils.tools.jieXiJSO, error);
     }
   }
   return null;
