@@ -2,7 +2,7 @@ from typing import AsyncIterator
 from agent.llm.clients.openai import OpenAIClient
 from petercat_utils.data_class import ChatData
 
-from agent.base import AgentBuilder
+from agent.base import AgentBuilder, dict_to_sse
 from agent.prompts.bot_builder import generate_prompt_by_user_id
 from agent.tools import bot_builder
 
@@ -22,4 +22,6 @@ def agent_stream_chat(
         chat_model=OpenAIClient(),
         prompt=prompt, tools=TOOL_MAPPING, enable_tavily=False
     )
-    return agent.run_stream_chat(input_data)
+    return dict_to_sse(
+        agent.run_stream_chat(input_data)
+    )

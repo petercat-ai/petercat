@@ -2,10 +2,13 @@ from typing import Annotated, Optional
 from github import Auth
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
+from agent.base import dict_to_sse
 from agent.bot import Bot, bot_builder
 from agent.bot.get_bot import get_bot
 from core.models.user import User
+from core.service.user_token_usage import create_token_recorder
 from petercat_utils.data_class import ChatData
+from toolz import compose
 
 from agent import qa_chat
 from auth.rate_limit import verify_rate_limit
@@ -38,11 +41,20 @@ def run_qa_chat(
     )
 
     auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
-    result = qa_chat.agent_stream_chat(
+    token_usage_recorder = create_token_recorder(user=user, bot=bot)
+
+    pipeline = compose(
+        dict_to_sse,
+        token_usage_recorder,
+        qa_chat.agent_stream_chat,
+    )
+
+    result = pipeline(
         input_data=input_data,
         auth_token=auth_token,
         bot=bot
     )
+
     return StreamingResponse(result, media_type="text/event-stream")
 
 

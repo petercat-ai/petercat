@@ -1,0 +1,14 @@
+from datetime import datetime
+from typing import Optional
+from pydantic import BaseModel
+
+class UserTokenUsage(BaseModel):
+    id: Optional[str] = None
+    user_id: Optional[str] = None
+    token_id: Optional[str] = None
+    bot_id: Optional[str] = None
+    created_at: Optional[datetime] = datetime.now().isoformat()
+    date: Optional[datetime] = datetime.now().date().isoformat()
+    input_token: Optional[int] = 0
+    output_token: Optional[int] = 0
+    total_token: Optional[int] = 0
