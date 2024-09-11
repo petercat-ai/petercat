@@ -74,11 +74,7 @@ const BotCreateFrom = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(
-        I18N.template(I18N.components.BotCreateFrom.shanChuShiBaiE, {
-          val1: error.message,
-        }),
-      );
+      toast.error(I18N.components.BotCreateFrom.shanChuShiBaiE);
     }
   }, [error]);
 

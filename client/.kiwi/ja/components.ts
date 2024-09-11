@@ -24,7 +24,7 @@ export default {
     suiJiTouXiang: '随机头像',
     jiQiRenTouXiang: '机器人头像*',
     ziDingYi: '自定义',
-    shanChuShiBaiE: '删除失败 {val1}',
+    shanChuShiBaiE: '删除失败 ',
     shanChuChengGong: '删除成功',
   },
   InputList: {

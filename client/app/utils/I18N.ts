@@ -6,6 +6,9 @@
 import kiwiIntl from 'kiwi-intl';
 import enLangs from '../../.kiwi/en';
 import zhCNLangs from '../../.kiwi/zh-CN';
+import zhWTLangs from '../../.kiwi/zh-TW';
+import jaLangs from '../../.kiwi/ja';
+import koLangs from '../../.kiwi/ko';
 
 export enum LangEnum {
   'zh-CN' = 'zh-CN',
@@ -18,6 +21,9 @@ export enum LangEnum {
 const langs = {
   en: enLangs,
   'zh-CN': zhCNLangs,
+  'zh-TW': zhWTLangs,
+  ja: jaLangs,
+  ko: koLangs,
 };
 
 const defaultLang = 'zh-CN';

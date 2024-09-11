@@ -16,10 +16,10 @@ export default {
     chuCiJianMianXian:
       '初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。',
     shengChengShiBai: '生成失败',
-    shengChengChengGongE: '生成成功{val1}',
-    baoCunShiBaiE: '保存失败{val1}',
+    shengChengChengGongE: '生成成功',
+    baoCunShiBaiE: '保存失败',
     baoCunChengGong: '保存成功',
-    shengChengShiBaiC: '生成失败{val1}',
+    shengChengShiBaiC: '生成失败',
     shengChengChengGong: '生成成功',
   },
 };
