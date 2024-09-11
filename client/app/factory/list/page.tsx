@@ -29,7 +29,7 @@ export default function List() {
     <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       <AddBotCard
         onPress={() => {
-          router.push(`/factory/edit/new`);
+          router.push(`/factory/edit?id=new`);
         }}
       />
       {!isEmpty(bots) &&

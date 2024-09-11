@@ -117,7 +117,7 @@ export function Navbar() {
         {!pathname.includes('/factory/list') && <PublishBotEntity area="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
-            onPress={() => router.push(`/factory/edit/new`)}
+            onPress={() => router.push(`/factory/edit?id=new`)}
             className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
             startContent={<AddIcon />}
           >

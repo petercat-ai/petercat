@@ -1,5 +1,6 @@
+'use client';
 import I18N from '@/app/utils/I18N';
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Textarea,
   Input,
@@ -36,19 +37,21 @@ import CreateButton from '@/app/user/tokens/components/CreateButton';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
-  const router = useRouter(); 
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { data: avaliableLLMs = [] } = useAvaliableLLMs();
   const { data: userTokens = [] } = useTokenList();
 
   const filteredTokens = useMemo(() => {
     if (botProfile.llm) {
-      return userTokens.filter(t => t.llm === botProfile.llm);
+      return userTokens.filter((t) => t.llm === botProfile.llm);
     }
     return userTokens;
   }, [userTokens, botProfile]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
     setBotProfile((draft: BotProfile) => {
@@ -71,7 +74,11 @@ const BotCreateFrom = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(I18N.template(I18N.components.BotCreateFrom.shanChuShiBaiE, { val1: error.message }));
+      toast.error(
+        I18N.template(I18N.components.BotCreateFrom.shanChuShiBaiE, {
+          val1: error.message,
+        }),
+      );
     }
   }, [error]);
 
@@ -80,9 +87,11 @@ const BotCreateFrom = () => {
   };
 
   const customTitle = (
-    <div className='flex'>
-      <div className='flex-1 leading-8'>{I18N.components.BotCreateFrom.ziDingYi}</div>
-      <div className='flex-0'>
+    <div className="flex">
+      <div className="flex-1 leading-8">
+        {I18N.components.BotCreateFrom.ziDingYi}
+      </div>
+      <div className="flex-0">
         <CreateButton size="sm" variant="ghost" />
       </div>
     </div>
@@ -178,28 +187,34 @@ const BotCreateFrom = () => {
                 name="llm"
                 label={I18N.components.BotCreateFrom.xuanZeDaMoXing}
                 isRequired
-                variant='bordered'
+                variant="bordered"
                 onChange={handleChange}
               >
-                {avaliableLLMs.map(llm => <SelectItem key={llm}>{llm}</SelectItem>)}
+                {avaliableLLMs.map((llm) => (
+                  <SelectItem key={llm}>{llm}</SelectItem>
+                ))}
               </Select>
             </div>
             <div className="flex-1">
               <Select
                 name="token_id"
                 label={I18N.components.BotCreateFrom.xuanZeTOK}
-                variant='bordered'
+                variant="bordered"
                 onChange={handleChange}
-                popoverProps={{style: { zIndex: 10 }}}
+                popoverProps={{ style: { zIndex: 10 } }}
               >
                 <SelectSection title={I18N.components.BotCreateFrom.guanFang}>
-                  <SelectItem key="default">{I18N.components.BotCreateFrom.shiYongPET}</SelectItem>
+                  <SelectItem key="default">
+                    {I18N.components.BotCreateFrom.shiYongPET}
+                  </SelectItem>
                 </SelectSection>
                 <SelectSection title={customTitle}>
-                  {filteredTokens.map(t => <SelectItem key={t.id} textValue={t.slug!}>
-                    <Chip color="default">{t.slug}</Chip>
-                    {t.sanitized_token}
-                  </SelectItem>)}
+                  {filteredTokens.map((t) => (
+                    <SelectItem key={t.id} textValue={t.slug!}>
+                      <Chip color="default">{t.slug}</Chip>
+                      {t.sanitized_token}
+                    </SelectItem>
+                  ))}
                 </SelectSection>
               </Select>
             </div>
@@ -217,7 +232,8 @@ const BotCreateFrom = () => {
             required
           />
           <label className="block text-sm font-medium text-gray-700 mt-4">
-            {I18N.components.BotCreateFrom.kaiChangBaiYuZhi}<InputList />
+            {I18N.components.BotCreateFrom.kaiChangBaiYuZhi}
+            <InputList />
           </label>
         </Collapse>
         <Collapse title={I18N.components.BotCreateFrom.weiXianCaoZuo}>
@@ -234,17 +250,23 @@ const BotCreateFrom = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {I18N.components.BotCreateFrom.shanChuJiQiRen}</ModalHeader>
-              <ModalBody>{I18N.components.BotCreateFrom.ninZhenDeRenXin}{botProfile?.name} {I18N.components.BotCreateFrom.ma}</ModalBody>
+                {I18N.components.BotCreateFrom.shanChuJiQiRen}
+              </ModalHeader>
+              <ModalBody>
+                {I18N.components.BotCreateFrom.ninZhenDeRenXin}
+                {botProfile?.name} {I18N.components.BotCreateFrom.ma}
+              </ModalBody>
               <ModalFooter>
                 <Button variant="light" onPress={onClose}>
-                  {I18N.components.BotCreateFrom.quXiao}</Button>
+                  {I18N.components.BotCreateFrom.quXiao}
+                </Button>
                 <Button
                   isLoading={isLoading}
                   color="danger"
                   onPress={handelDelete}
                 >
-                  {I18N.components.BotCreateFrom.queRen}</Button>
+                  {I18N.components.BotCreateFrom.queRen}
+                </Button>
               </ModalFooter>
             </>
           )}

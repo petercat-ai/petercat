@@ -1,5 +1,5 @@
-import I18N from '@/app/utils/I18N';
 'use client';
+import I18N from '@/app/utils/I18N';
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useState } from 'react';
 import {
@@ -115,7 +115,7 @@ const BotCard = (props: { bot: Bot }) => {
                 <Image
                   src="../images/debug.svg"
                   alt={I18N.components.BotCard.tiaoShi}
-                  onClick={() => router.push(`/factory/edit/${bot.id}`)}
+                  onClick={() => router.push(`/factory/edit?id=${bot.id}`)}
                   className="z-10 cursor-pointer"
                 />
               </Tooltip>
@@ -170,20 +170,26 @@ const BotCard = (props: { bot: Bot }) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {I18N.components.BotCreateFrom.shanChuJiQiRen}</ModalHeader>
+                {I18N.components.BotCreateFrom.shanChuJiQiRen}
+              </ModalHeader>
               <ModalBody>
                 <p>
-                  {I18N.components.BotCard.queRenYaoShanChu}{bot.name}{I18N.components.BotCard.maShanChuHouJiang}</p>
+                  {I18N.components.BotCard.queRenYaoShanChu}
+                  {bot.name}
+                  {I18N.components.BotCard.maShanChuHouJiang}
+                </p>
               </ModalBody>
               <ModalFooter>
                 <Button color="default" variant="light" onPress={onClose}>
-                  {I18N.components.BotCard.guanBi}</Button>
+                  {I18N.components.BotCard.guanBi}
+                </Button>
                 <Button
                   color="danger"
                   isLoading={isLoading}
                   onPress={() => onDelete(bot?.id)}
                 >
-                  {I18N.components.BotCreateFrom.queRen}</Button>
+                  {I18N.components.BotCreateFrom.queRen}
+                </Button>
               </ModalFooter>
             </>
           )}

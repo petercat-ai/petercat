@@ -21,10 +21,10 @@ import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
 import useUser from '@/app/hooks/useUser';
-import Knowledge from '../components/Knowledge';
-import KnowledgeBtn from '../components/KnowledgeBtn';
-import { BotTaskProvider } from '../components/TaskContext';
-
+import Knowledge from './components/Knowledge';
+import KnowledgeBtn from './components/KnowledgeBtn';
+import { BotTaskProvider } from './components/TaskContext';
+import { useSearchParams } from 'next/navigation';
 import 'react-toastify/dist/ReactToastify.css';
 import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
 
@@ -37,10 +37,12 @@ enum ConfigTypeEnum {
   CHAT_CONFIG = 'CHAT_CONFIG',
   MANUAL_CONFIG = 'MANUAL_CONFIG',
 }
-export default function Edit({ params }: { params: { id: string } }) {
+export default function Edit() {
   const { botProfile, setBotProfile } = useBot();
   const { data: user, status } = useUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
   const [activeTab, setActiveTab] = React.useState<ConfigTypeEnum>(
     ConfigTypeEnum.CHAT_CONFIG,
   );
@@ -102,23 +104,23 @@ export default function Edit({ params }: { params: { id: string } }) {
   }, []);
 
   const isEdit = useMemo(
-    () => (!!params?.id && params?.id !== 'new') || !!botProfile?.id,
-    [params?.id, botProfile?.id],
+    () => (!!id && id !== 'new') || !!botProfile?.id,
+    [id, botProfile?.id],
   );
 
   const botId = useMemo(() => {
-    if (!!params?.id && params?.id !== 'new') {
-      return params.id;
+    if (!!id && id !== 'new') {
+      return id;
     } else if (!!botProfile?.id) {
       return botProfile.id;
     } else {
       return undefined;
     }
-  }, [params?.id, botProfile?.id]);
+  }, [id, botProfile?.id]);
 
   const { data: config, isLoading } = useBotConfig(
-    params?.id,
-    !!params?.id && params?.id !== 'new',
+    `${id}`,
+    !!id && id !== 'new',
   );
 
   useEffect(() => {
