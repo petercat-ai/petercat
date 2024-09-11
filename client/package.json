@@ -39,6 +39,7 @@
     "framer-motion": "^10.16.15",
     "https-proxy-agent": "^7.0.2",
     "immer": "^10.0.3",
+    "js-cookie": "^3.0.5",
     "kiwi-intl": "^1.2.6-beta.0",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
