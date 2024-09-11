@@ -61,8 +61,7 @@ Various integration options, such as SDK integration into official websites or o
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
 | ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
 
-[watch full video](https://www.bilibili.com/video/BV12eHUe8EkT/)
-
+[Watch full video](https://www.youtube.com/watch?v=83Y0_q2Fskk)
 
 ## Agent Workflow
 
