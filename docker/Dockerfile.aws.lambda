@@ -1,5 +1,9 @@
 FROM public.ecr.aws/docker/library/python:3.12.0-slim-bullseye
 
+LABEL org.opencontainers.image.source=https://github.com/petercat-ai/petercat
+LABEL org.opencontainers.image.description="Petercat Container Image"
+LABEL org.opencontainers.image.licenses=MIT
+
 # Copy aws-lambda-adapter for Steaming response
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.1 /lambda-adapter /opt/extensions/lambda-adapter
 
