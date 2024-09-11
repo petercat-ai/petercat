@@ -1,30 +1,31 @@
 export default {
   page: {
     woMenLaiZiMa:
-      '我们来自蚂蚁集团支付宝体验技术部，致力于创造美而实用的产品，AI\n                          只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。',
-    xiangMuXiangXiXin: '项目详细信息请进文档查阅',
-    chaKanGengDuo: '查看更多',
-    maYiKaiYuan: '蚂蚁开源',
-    pETER: 'Peter Cat 社区',
-    liaoJieGengDuo: '了解更多',
+      '우리는 앤트그룹 알리페이 경험 기술 부서에서 왔으며, 아름답고 실용적인 제품을 만드는 데 전념하고 있습니다. AI는 단지 수단일 뿐이며, 당신의 작업에 더 많은 즐거움을 제공하는 것이 우리의 유일한 목표입니다.',
+    xiangMuXiangXiXin: '프로젝트의 자세한 정보는 문서를 참조하십시오.',
+    chaKanGengDuo: '더 보기',
+    maYiKaiYuan: '앤트 오픈소스',
+    pETER: 'Peter Cat 커뮤니티',
+    liaoJieGengDuo: '더 알아보기',
     deYiYuQiangDa:
-      '得益于强大的底层能力，您可以将任意感兴趣的代码仓库转换为答疑机器人，或体验社区中其它机器人。它们不仅能推荐优质代码仓库，还能协助用户自动提交\n                    issue。',
+      '강력한 기본 능력 덕분에 관심 있는 코드 저장소를 Q&A 봇으로 전환하거나 커뮤니티의 다른 봇을 체험할 수 있습니다. 이들은 우수한 코드 저장소를 추천할 뿐만 아니라 사용자가 issue를 자동으로 제출할 수 있도록 도와줍니다.',
     duoZhongJiChengFang:
-      '多种集成方式自由选择，如对话应用 SDK\n                            集成至官网，Github APP一键安装至 Github 仓库等',
-    duoPingTaiJiCheng: '多平台集成',
+      '대화형 애플리케이션 SDK를 공식 웹사이트에 통합하거나, Github 앱을 한 번의 클릭으로 Github 저장소에 설치하는 등 다양한 통합 방식을 자유롭게 선택할 수 있습니다.',
+    duoPingTaiJiCheng: '다중 플랫폼 통합',
     jiQiRenChuangJian:
-      '机器人创建后，所有相关Github 文档和 issue\n                            将自动入库，作为机器人的知识依据',
-    zhiShiZiDongRu: '知识自动入库',
+      '봇을 생성한 후 관련된 모든 Github 문서와 issue가 자동으로 데이터베이스에 저장되어 봇의 지식 기반으로 활용됩니다.',
+    zhiShiZiDongRu: '지식 자동 입력',
     jinXuYaoGaoZhi:
-      '仅需要告知你的仓库地址或名称，Peter Cat\n                            即可自动完成创建机器人的全部流程',
-    duiHuaJiChuangZao: '对话即创造',
+      '저장소 주소나 이름만 입력하면 Peter Cat이 봇 생성의 모든 과정을 자동으로 완료합니다.',
+    duiHuaJiChuangZao: '대화가 곧 창조입니다',
     woMenTiGongDui:
-      '我们提供对话式答疑 Agent\n                  配置系统、自托管部署方案和便捷的一体化应用\n                  SDK，让您能够为自己的 GitHub\n                  仓库一键创建智能答疑机器人，并快速集成到各类官网或项目中，\n                  为社区提供更高效的技术支持生态。',
-    liJiChangShi: '立即尝试',
-    shiZhuanWeiSheQu: '是专为社区维护者和开发者打造的智能答疑机器人解决方案',
-    xiaoMaoMiZhuNi: '小猫咪助你征服 Github',
-    wenDang: '文档',
-    gongZuoTai: '工作台',
-    yanShiAnLi: '演示案例',
+      '우리는 대화형 Q&A 에이전트 구성 시스템, 자체 호스팅 배포 솔루션 및 통합 애플리케이션 SDK를 제공하여 사용자가 자신의 GitHub 저장소에 한 번의 클릭으로 스마트 Q&A 봇을 생성하고, 이를 다양한 웹사이트나 프로젝트에 신속하게 통합할 수 있도록 지원합니다. 이를 통해 커뮤니티에 보다 효율적인 기술 지원 생태계를 제공합니다.',
+    liJiChangShi: '즉시 시도',
+    shiZhuanWeiSheQu:
+      '커뮤니티 유지보수자와 개발자를 위한 스마트 Q&A 봇 솔루션입니다.',
+    xiaoMaoMiZhuNi: 'Peter Cat이 당신의 Github 정복을 도와줍니다',
+    wenDang: '문서',
+    gongZuoTai: '작업대',
+    yanShiAnLi: '데모 사례',
   },
 };
