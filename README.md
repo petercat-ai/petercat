@@ -4,7 +4,7 @@
 
 <div  align="center">
 
-  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
+  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md) | [日本語](./README.ja-JP.md)
   
   **专为社区维护者和开发者打造的智能答疑机器人解决方案。**
 
