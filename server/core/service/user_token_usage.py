@@ -30,7 +30,7 @@ def create_token_recorder(user: User, bot: Bot):
               bot_id=bot.id,
               input_token=value['input_tokens'],
               output_token=value['output_tokens'],
-              total_tokens=value['total_tokens'],
+              total_token=value['total_tokens'],
             )
 
             user_token_usage_dao.create(token_usage)
