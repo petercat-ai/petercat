@@ -1,5 +1,6 @@
 'use client';
-import I18N from '@/app/utils/I18N';
+
+import React from 'react';
 import {
   RefObject,
   Suspense,
@@ -8,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import I18N from '@/app/utils/I18N';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -16,7 +18,7 @@ import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import LanguageSwitcher from '@/components/LangSwitcher';
-import React from 'react';
+import GitHubStars from '@/components/GitHubStars';
 
 // play same video util refresh page
 const PC_EXAMPLE_VIDEO = [
@@ -31,25 +33,6 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
-const GitHubStars = React.lazy(async () => {
-  let stars: number;
-
-  if (typeof window === 'undefined') {
-    const res = await fetch(
-      'https://api.github.com/repos/petercat-ai/petercat',
-      { cache: 'no-store' },
-    );
-    ({ stargazers_count: stars = 0 } = await res.json());
-  } else {
-    stars = parseInt(
-      document.getElementById('github-stars-wrapper')?.innerText || '0',
-      10,
-    );
-  }
-
-  return { default: () => <span id="github-stars-wrapper">{stars}</span> };
-});
-
 export default function Homepage() {
   const videoRefs = {
     banner: useRef<HTMLVideoElement>(null),
@@ -63,6 +46,18 @@ export default function Homepage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const showCaseRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<{ pc: string; mobile: string }>();
+  const [stars, setStars] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function getStars() {
+      const starsData = await GitHubStars();
+      setStars(starsData);
+    }
+
+    if (stars === null) {
+      getStars();
+    }
+  }, [stars]);
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -253,7 +248,7 @@ export default function Homepage() {
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
                   <Suspense>
-                    <GitHubStars />
+                    <span id="github-stars-wrapper">{stars}</span>
                   </Suspense>
                   stars
                 </a>

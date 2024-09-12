@@ -13,8 +13,8 @@ import {
 
 const languages = [
   { value: 'zh-CN', label: '中文简体' },
-  { value: 'en', label: ' English' },
   { value: 'zh-TW', label: '中文繁體' },
+  { value: 'en', label: ' English' },
   { value: 'ja', label: '日本語' },
   { value: 'ko', label: '한국어' },
 ];
