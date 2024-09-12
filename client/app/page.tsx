@@ -46,6 +46,18 @@ export default function Homepage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const showCaseRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<{ pc: string; mobile: string }>();
+  const [stars, setStars] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function getStars() {
+      const starsData = await GitHubStars();
+      setStars(starsData);
+    }
+
+    if (stars === null) {
+      getStars();
+    }
+  }, [stars]);
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -235,7 +247,9 @@ export default function Homepage() {
                   target="_blank"
                 >
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-                  <GitHubStars />
+                  <Suspense>
+                    <span id="github-stars-wrapper">{stars}</span>
+                  </Suspense>
                   stars
                 </a>
               </div>

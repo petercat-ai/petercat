@@ -1,5 +1,3 @@
-import React from 'react';
-
 async function fetchGitHubStars() {
   const res = await fetch('https://api.github.com/repos/petercat-ai/petercat', {
     cache: 'no-store',
@@ -8,10 +6,7 @@ async function fetchGitHubStars() {
   return stars;
 }
 
-const GitHubStars = async () => {
-  const stars = await fetchGitHubStars(); // Fetch stars on the server
-
-  return <span id="github-stars-wrapper">{stars}</span>;
-};
-
-export default GitHubStars;
+export default async function GitHubStars() {
+  const stars = await fetchGitHubStars();
+  return stars;
+}
