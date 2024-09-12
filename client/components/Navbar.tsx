@@ -87,7 +87,7 @@ export function Navbar() {
           )}
         </Tabs>
       </div>
-      <div className="flex-grow ml-[48px]">
+      <div className="flex-grow mx-[48px]">
         <Input
           onChange={handleChange}
           isClearable
@@ -113,7 +113,8 @@ export function Navbar() {
           }
         />
       </div>
-      <div className="w-[200px] ml-[48px] flex items-center">
+      <div className="ml-[48px] flex items-center">
+        {pathname !== '/' && <LanguageSwitcher theme="light" />}
         {!pathname.includes('/factory/list') && <PublishBotEntity area="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
