@@ -1,11 +1,13 @@
 
 
+from datetime import datetime
 from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from agent.llm import get_registered_llm_client, import_clients
 from auth.get_user_info import get_user_id
 from core.service.user_llm_token import UserLLMTokenService, CreateUserLLMTokenVO, get_llm_token_service
+from core.service.user_token_usage import UserTokenUsageService, get_user_token_usage_service
 
 router = APIRouter(
     prefix="/api/user",
@@ -55,3 +57,12 @@ def delete_token(
   print(f"delete_llm_token, token={token_id}, user_id={user_id}")
   llm_service.delete_llm_token(id=token_id, user_id=user_id)
   return {}
+
+@router.get("/llm_token_usages")
+def token_usage(
+  start_date: datetime,
+  end_date: datetime,
+  user_id: Annotated[str | None, Depends(get_user_id)] = None,
+  user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
+):
+  return user_token_usage_service.usage_stats(user_id=user_id, start_date=start_date, end_date=end_date)
