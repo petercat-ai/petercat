@@ -1,4 +1,5 @@
 'use client';
+import I18N from '@/app/utils/I18N';
 import { Tables } from '@/types/database.types';
 import React, { useEffect, useMemo, useState } from 'react';
 import { filter, isEmpty, map } from 'lodash';
@@ -42,14 +43,14 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
 
   useEffect(() => {
     if (editSuccess) {
-      toast.success('上架成功');
+      toast.success(I18N.components.PublishBotEntity.shangJiaChengGong);
       onClose();
     }
   }, [editSuccess]);
 
   useEffect(() => {
     if (editError) {
-      toast.error(`上架失败${editError.message}`);
+      toast.error(I18N.template(I18N.components.PublishBotEntity.shangJiaShiBaiE, { val1: editError.message }));
     }
   }, [editError]);
   return (
@@ -60,15 +61,12 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
           <Tooltip
             content={
               <span>
-                coming soon, 请先前往 GitHub
-                <a
+                {I18N.components.PublishBotEntity.cOMIN}<a
                   href="https://github.com/petercat-ai/petercat/issues"
                   target="_blank"
                 >
-                  Issue 区
-                </a>
-                给我们提一个 Issue，留下您的机器人信息
-              </span>
+                  {I18N.components.PublishBotEntity.iSSUE}</a>
+                {I18N.components.PublishBotEntity.geiWoMenTiYi}</span>
             }
           >
             <Button
@@ -78,8 +76,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
               className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
               startContent={<StoreIcon />}
             >
-              上架机器人
-            </Button>
+              {I18N.components.PublishBotEntity.shangJiaJiQiRen}</Button>
           </Tooltip>
         </>
       )}
@@ -98,14 +95,12 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                选择机器人
-              </ModalHeader>
+                {I18N.components.PublishBotEntity.xuanZeJiQiRen}</ModalHeader>
               <ModalBody className="h-[500px] h-auto">
                 {isLoading && <Spinner key="loading" />}
                 {isEmpty(botList) && !isLoading && (
                   <div key="empty" className="text-center">
-                    暂无未上架的机器人
-                  </div>
+                    {I18N.components.PublishBotEntity.zanWuWeiShangJia}</div>
                 )}
                 {map(botList, (bot: Bot) => (
                   <BotItem
@@ -132,8 +127,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
                     });
                   }}
                 >
-                  上架机器人
-                </Button>
+                  {I18N.components.PublishBotEntity.shangJiaJiQiRen}</Button>
               </ModalFooter>
             </>
           )}

@@ -19,5 +19,5 @@
   "defaultTranslateKeyApi": "Pinyin",
   "importI18N": "import I18N from '@/app/utils/I18N';",
   "ignoreDir": [],
-  "ignoreFile": []
+  "ignoreFile": ["client/components/LangSwitcher.tsx"]
 }

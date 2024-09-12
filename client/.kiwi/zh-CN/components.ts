@@ -63,4 +63,29 @@ export default {
     geiTOKE: '给 Token 取一个独一无二的标识',
     miYaoBiaoShi: '密钥标识*',
   },
+  Crash: {
+    qingChangShiShuaXin: '请尝试刷新浏览器',
+    woMenSiHuYu: '我们似乎遇到了一些导致崩溃的问题',
+  },
+  Navbar: {
+    chuangJianJiQiRen: '创建机器人',
+    qingShuRuKaPian: '请输入卡片名称',
+    kongJian: '空间',
+    shiChang: '市场',
+  },
+  PublishBotEntity: {
+    shangJiaJiQiRen: '上架机器人',
+    zanWuWeiShangJia: '暂无未上架的机器人',
+    xuanZeJiQiRen: '选择机器人',
+    geiWoMenTiYi: '给我们提一个 Issue，留下您的机器人信息',
+    iSSUE: 'Issue 区',
+    cOMIN: 'coming soon, 请先前往 GitHub',
+    shangJiaShiBaiE: '上架失败{val1}',
+    shangJiaChengGong: '上架成功',
+  },
+  User: {
+    dengChu: '登出',
+    tOKEN: 'Token 管理',
+    dengLu: '登录',
+  },
 };

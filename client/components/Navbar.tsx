@@ -1,4 +1,5 @@
 'use client';
+import I18N from '@/app/utils/I18N';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Link, Tabs, Tab, Input, Button } from '@nextui-org/react';
@@ -21,13 +22,13 @@ export function Navbar() {
   const navs = [
     {
       id: 'market',
-      label: '市场',
+      label: I18N.components.Navbar.shiChang,
       href: '/market',
       icon: <ShopIcon />,
     },
     {
       id: 'factory',
-      label: '空间',
+      label: I18N.components.Navbar.kongJian,
       href: '/factory/list',
       icon: <SpaceIcon />,
     },
@@ -94,7 +95,7 @@ export function Navbar() {
           radius="lg"
           onKeyDown={handleKeyDown}
           onClear={handleClear}
-          placeholder="请输入卡片名称"
+          placeholder={I18N.components.Navbar.qingShuRuKaPian}
           classNames={{
             input: ['bg-transparent', 'h-10'],
             inputWrapper: [
@@ -122,7 +123,7 @@ export function Navbar() {
             className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
             startContent={<AddIcon />}
           >
-            创建机器人
+            {I18N.components.Navbar.chuangJianJiQiRen}
           </Button>
         )}
         {pathname === '/' && <LanguageSwitcher />}

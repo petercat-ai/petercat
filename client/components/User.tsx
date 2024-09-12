@@ -1,4 +1,5 @@
 'use client';
+import I18N from '@/app/utils/I18N';
 import { useRouter } from 'next/navigation';
 import {
   Avatar,
@@ -24,8 +25,7 @@ export default function Profile() {
         className="min-w-[88px] px-4 h-10 inline-block transition-colors bg-[#3F3F46] text-[#FFFFFF] rounded-full leading-10 text-center"
       >
         <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-        登录
-      </Button>
+        {I18N.components.User.dengLu}</Button>
     );
   }
 
@@ -42,10 +42,10 @@ export default function Profile() {
       </DropdownTrigger>
       <DropdownMenu>
         <DropdownItem>
-          <Link href="/user/tokens">Token 管理</Link>
+          <Link href="/user/tokens">{I18N.components.User.tOKEN}</Link>
         </DropdownItem>
         <DropdownItem> 
-          <Link href={`${apiDomain}/api/auth/logout`}>登出</Link>
+          <Link href={`${apiDomain}/api/auth/logout`}>{I18N.components.User.dengChu}</Link>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
