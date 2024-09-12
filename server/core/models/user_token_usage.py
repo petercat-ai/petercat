@@ -12,3 +12,10 @@ class UserTokenUsage(BaseModel):
     input_token: Optional[int] = 0
     output_token: Optional[int] = 0
     total_token: Optional[int] = 0
+
+
+class UserTokenUsageStats(BaseModel):
+    usage_date: datetime
+    input_tokens: Optional[int] = 0
+    output_tokes: Optional[int] = 0
+    total_tokens: Optional[int] = 0

@@ -1,6 +1,7 @@
+from datetime import datetime
 from supabase.client import Client
 
-from core.models.user_token_usage import UserTokenUsage
+from core.models.user_token_usage import UserTokenUsage, UserTokenUsageStats
 from petercat_utils.db.client.supabase import get_client
 from core.dao.BaseDAO import BaseDAO
 
@@ -18,3 +19,13 @@ class UserTokenUsageDAO(BaseDAO):
             .insert(token_usage.model_dump(exclude=["id"]))
             .execute()
         )
+    
+            
+    def stats(self, user_id: str, start_date: datetime, end_date: datetime):
+        resp = self.client.rpc("get_user_stats", {
+            "filter_user_id": user_id,
+            "start_date": start_date.strftime("%Y-%m-%d"),
+            "end_date": end_date.strftime("%Y-%m-%d"),
+        }).execute()
+
+        return [UserTokenUsageStats(**stats) for stats in resp.data]
