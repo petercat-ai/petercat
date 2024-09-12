@@ -9,7 +9,8 @@
     "build:docker": "docker build -t petercat .",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"app\""
+    "format": "prettier --write \"app\"",
+    "extract-lang": "kiwi --extract app"
   },
   "engines": {
     "node": ">=18"
@@ -38,6 +39,8 @@
     "framer-motion": "^10.16.15",
     "https-proxy-agent": "^7.0.2",
     "immer": "^10.0.3",
+    "js-cookie": "^3.0.5",
+    "kiwi-intl": "^1.2.6-beta.0",
     "langchain": "^0.0.187",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
@@ -57,6 +60,7 @@
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/lodash": "^4.14.202",
+    "kiwi-clis": "^1.1.0",
     "postcss-loader": "^8.1.1",
     "prettier": "3.0.0",
     "tailwindcss": "^3.4.3"

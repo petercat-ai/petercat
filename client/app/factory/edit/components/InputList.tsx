@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import React, { useEffect, useState } from 'react';
 import { BotProfile } from '@/app/interface';
 import { Button, Input } from '@nextui-org/react';
@@ -47,7 +48,7 @@ const InputList = () => {
             variant="bordered"
             labelPlacement="outside"
             value={input}
-            placeholder="输入开场白引导问题"
+            placeholder={I18N.components.InputList.shuRuKaiChangBai}
             onChange={(e) => handleChange(index, e.target.value)}
             className="mb-2"
             endContent={
@@ -56,7 +57,7 @@ const InputList = () => {
                   onClick={() => handleRemove(index)}
                   isIconOnly
                   className="min-w-[16px] rounded-full bg-red-500 w-[16px] h-[16px] text-white"
-                  aria-label="删除"
+                  aria-label={I18N.components.InputList.shanChu}
                 >
                   <MinusIcon />
                 </Button>

@@ -1,0 +1,25 @@
+export default {
+  page: {
+    jiQiRenShangWei: '机器人尚未配置任何内容    请在完成配置后进行对话测试',
+    baoCun: '保存',
+    yuLanYuCeShi: '预览与测试',
+    shouDongPeiZhi: '手动配置',
+    duiHuaTiaoShi: '对话调试',
+    chongXinShengChengPei: '重新生成配置',
+    ziDongShengChengPei: '自动生成配置',
+    diZhiYouWu: '地址有误',
+    qingShuRuGI: '请输入 GitHub 项目地址',
+    fuZhiTOK: '复制 Token',
+    tOKEN: 'Token 已复制到剪贴板',
+    gITHU: 'Github 项目地址',
+    bangWoPeiZhiYi: '帮我配置一个答疑机器人',
+    chuCiJianMianXian:
+      '初次见面，先自我介绍一下：我是一个开源项目的机器人。你可以通过和我对话配置一个答疑机器人。',
+    shengChengShiBai: '生成失败',
+    shengChengChengGongE: '生成成功',
+    baoCunShiBaiE: '保存失败',
+    baoCunChengGong: '保存成功',
+    shengChengShiBaiC: '生成失败',
+    shengChengChengGong: '生成成功',
+  },
+};

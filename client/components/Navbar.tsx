@@ -10,6 +10,7 @@ import { SearchIcon } from '@/public/icons/SearchIcon';
 import { AddIcon } from '@/public/icons/AddIcon';
 import PublishBotEntity from './PublishBotEntity';
 import { useSearch } from '@/app/contexts/SearchContext';
+import LanguageSwitcher from '@/components/LangSwitcher';
 
 export function Navbar() {
   const { setSearch } = useSearch();
@@ -116,13 +117,14 @@ export function Navbar() {
         {!pathname.includes('/factory/list') && <PublishBotEntity area="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
-            onPress={() => router.push(`/factory/edit/new`)}
+            onPress={() => router.push(`/factory/edit?id=new`)}
             className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
             startContent={<AddIcon />}
           >
             创建机器人
           </Button>
         )}
+        {pathname === '/' && <LanguageSwitcher />}
 
         <Profile />
       </div>

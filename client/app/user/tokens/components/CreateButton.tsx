@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { Button, ButtonProps, useDisclosure } from '@nextui-org/react';
 import CreateModal from './CreateModal';
 import { useTokenList } from '@/app/hooks/useToken';
@@ -18,7 +19,7 @@ export default function CreateButton(props: ButtonProps) {
 
   return (
     <>
-      <Button {...props} onClick={() => onCreateOpen()}>创建 Token</Button>
+      <Button {...props} onClick={() => onCreateOpen()}>{I18N.components.CreateButton.chuangJianTOK}</Button>
       <CreateModal
         isOpen={createIsOpen}
         onClose={onCreateClose}

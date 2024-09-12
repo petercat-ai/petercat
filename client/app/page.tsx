@@ -1,4 +1,5 @@
 'use client';
+import I18N from '@/app/utils/I18N';
 import {
   RefObject,
   Suspense,
@@ -14,6 +15,7 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import GitHubIcon from '@/public/icons/GitHubIcon';
+import LanguageSwitcher from '@/components/LangSwitcher';
 import React from 'react';
 
 // play same video util refresh page
@@ -226,23 +228,24 @@ export default function Homepage() {
                   className="text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                   target="_blank"
                 >
-                  演示案例
+                  {I18N.app.page.yanShiAnLi}
                 </a>
                 <a
                   href="/market"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                 >
-                  工作台
+                  {I18N.app.page.gongZuoTai}
                 </a>
                 <a
                   href="https://github.com/petercat-ai/petercat/blob/main/README.md"
                   className="ml-8 text-[#f4f4f5] opacity-60 transition-opacity hover:opacity-90"
                   target="_blank"
                 >
-                  文档
+                  {I18N.app.page.wenDang}
                 </a>
               </nav>
               <div className="flex-1 flex justify-end">
+                <LanguageSwitcher />
                 <a
                   href="https://github.com/petercat-ai/petercat"
                   className="min-w-[100px] px-4 h-10 inline-block bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full leading-10 text-center mr-4"
@@ -251,7 +254,7 @@ export default function Homepage() {
                   <GitHubIcon className="inline scale-75 -translate-y-0.5" />
                   <Suspense>
                     <GitHubStars />
-                  </Suspense>{' '}
+                  </Suspense>
                   stars
                 </a>
               </div>
@@ -271,7 +274,7 @@ export default function Homepage() {
                 ref={bannerActionRef}
               >
                 <h2 className="mb-8 text-5xl leading-[64px] text-white">
-                  小猫咪助你征服 Github
+                  {I18N.app.page.xiaoMaoMiZhuNi}
                 </h2>
                 <p className="mb-8 text-xl text-white">
                   <Image
@@ -282,13 +285,13 @@ export default function Homepage() {
                     src="/images/logo-footer.svg"
                     alt="Peter Cat"
                   />
-                  是专为社区维护者和开发者打造的智能答疑机器人解决方案
+                  {I18N.app.page.shiZhuanWeiSheQu}
                 </p>
                 <a
                   className="inline-block px-8 py-3 rounded-full border-2 border-white text-white text-xl transition-transform hover:scale-105"
                   href="/market"
                 >
-                  立即尝试
+                  {I18N.app.page.liJiChangShi}
                 </a>
               </div>
             </div>
@@ -304,11 +307,7 @@ export default function Homepage() {
                   alt="Features"
                 />
                 <p className="w-1/2 ml-6 text-xl text-[#27272A] opacity-0 transition-opacity group-[.fp-completely]:opacity-100">
-                  我们提供对话式答疑 Agent
-                  配置系统、自托管部署方案和便捷的一体化应用
-                  SDK，让您能够为自己的 GitHub
-                  仓库一键创建智能答疑机器人，并快速集成到各类官网或项目中，
-                  为社区提供更高效的技术支持生态。
+                  {I18N.app.page.woMenTiGongDui}
                 </p>
                 <div
                   className="w-full relative mt-5 xl:mt-[72px] overflow-hidden"
@@ -325,11 +324,10 @@ export default function Homepage() {
                             alt="create"
                           />
                           <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
-                            对话即创造
+                            {I18N.app.page.duiHuaJiChuangZao}
                           </h3>
                           <p className="text-base xl:text-xl text-zinc-800">
-                            仅需要告知你的仓库地址或名称，Peter Cat
-                            即可自动完成创建机器人的全部流程
+                            {I18N.app.page.jinXuYaoGaoZhi}
                           </p>
                         </td>
                         <td className="relative px-5 xl:px-10 py-5 xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-500 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
@@ -340,11 +338,10 @@ export default function Homepage() {
                             alt="knowledge"
                           />
                           <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
-                            知识自动入库
+                            {I18N.app.page.zhiShiZiDongRu}
                           </h3>
                           <p className="text-base xl:text-xl text-zinc-800">
-                            机器人创建后，所有相关Github 文档和 issue
-                            将自动入库，作为机器人的知识依据
+                            {I18N.app.page.jiQiRenChuangJian}
                           </p>
                         </td>
                         <td className="relative px-5 xl:px-10 py-5 xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-700 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
@@ -355,11 +352,10 @@ export default function Homepage() {
                             alt="integrated"
                           />
                           <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
-                            多平台集成
+                            {I18N.app.page.duoPingTaiJiCheng}
                           </h3>
                           <p className="text-base xl:text-xl text-zinc-800">
-                            多种集成方式自由选择，如对话应用 SDK
-                            集成至官网，Github APP一键安装至 Github 仓库等
+                            {I18N.app.page.duoZhongJiChengFang}
                           </p>
                         </td>
                       </tr>
@@ -403,8 +399,7 @@ export default function Homepage() {
                     alt="Based on GPT4"
                   />
                   <p className="relative mb-[119px] ml-2 text-xl text-[#FEF4E1] w-[500px] mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[333ms] group-[.fp-completely]:scale-100">
-                    得益于强大的底层能力，您可以将任意感兴趣的代码仓库转换为答疑机器人，或体验社区中其它机器人。它们不仅能推荐优质代码仓库，还能协助用户自动提交
-                    issue。
+                    {I18N.app.page.deYiYuQiangDa}
                   </p>
                   <div className="absolute z-10 bottom-10 inline-block text-[#FEF4E1] text-base mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[83ms] group-[.fp-completely]:scale-100">
                     <Image
@@ -548,7 +543,7 @@ export default function Homepage() {
                   href="https://www.youtube.com/@petercat-ai"
                   target="_blank"
                 >
-                  了解更多
+                  {I18N.app.page.liaoJieGengDuo}
                 </a>
               </span>
             </div>
@@ -560,7 +555,7 @@ export default function Homepage() {
                     href="https://github.com/petercat-ai/petercat"
                     target="_blank"
                   >
-                    Peter Cat 社区
+                    {I18N.app.page.pETER}
                   </a>
                   <a
                     className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
@@ -581,7 +576,7 @@ export default function Homepage() {
                     href="https://opensource.antgroup.com"
                     target="_blank"
                   >
-                    蚂蚁开源
+                    {I18N.app.page.maYiKaiYuan}
                   </a>
                 </nav>
               </div>
@@ -596,14 +591,16 @@ export default function Homepage() {
                             href="https://github.com/petercat-ai/petercat/blob/main/README.md"
                             target="_blank"
                           >
-                            查看更多
+                            {I18N.app.page.chaKanGengDuo}
                           </a>
                           <img
                             className="mb-2 my-1.5"
                             src="/images/title_docs.svg"
                             alt="DOCS"
                           />
-                          <p className="text-xl">项目详细信息请进文档查阅</p>
+                          <p className="text-xl">
+                            {I18N.app.page.xiangMuXiangXiXin}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -702,8 +699,7 @@ export default function Homepage() {
                     >
                       <div className="flex max-w-[1400px] mx-auto items-center">
                         <p className="max-w-[560px] text-xl">
-                          我们来自蚂蚁集团支付宝体验技术部，致力于创造美而实用的产品，AI
-                          只是手段，为你的工作提供更多愉悦的价值才是我们的唯一目标。
+                          {I18N.app.page.woMenLaiZiMa}
                         </p>
                         <span className="flex-1 mx-12 h-px border-t border-[#7F7A71]" />
                         <Image
