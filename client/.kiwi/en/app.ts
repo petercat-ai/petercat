@@ -1,7 +1,7 @@
 export default {
   page: {
     woMenLaiZiMa:
-      'We are from the Ant Group Alipay Experience Technology Department, committed to creating beautiful and practical products. AI is just a means, and our only goal is to bring more pleasure and value for your work.',
+      'We are from the Ant Group Alipay AFX Department, committed to creating beautiful and practical products. AI is just a means, and our only goal is to bring more pleasure and value for your work.',
     xiangMuXiangXiXin:
       'please check the documentation for more details',
     chaKanGengDuo: 'Learn more',
