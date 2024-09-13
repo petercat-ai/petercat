@@ -59,10 +59,11 @@ jobs:
         run: npm run build
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
-      # 切换到仓库根目录以初始化 Amplify 环境
-      - name: Initialize Amplify Environment
-        run: amplify init --appId ${{ env.AMPLIFY_APP_ID }} --envName dev --region ${{ env.AWS_REGION }} --yes
-      
-      # 在根目录下发布到 Amplify
+      - name: Configure Amplify
+        run: amplify configure
+
       - name: Deploy to Amplify
-        run: amplify publish --yes
+        env:
+          AMPLIFY_APP_ID: ${{ envs.AMPLIFY_APP_ID }}
+          AMPLIFY_BRANCH: dev
+        run: amplify push --y
