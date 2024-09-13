@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.3.0",
+    "@aws-amplify/adapter-nextjs": "^1.2.17",
     "@fingerprintjs/fingerprintjs": "^4.3.0",
     "@fullpage/react-fullpage": "^0.1.42",
     "@next/bundle-analyzer": "^13.4.19",
@@ -31,6 +32,7 @@
     "@types/react-dom": "18.2.7",
     "ai": "^2.1.28",
     "autoprefixer": "10.4.14",
+    "aws-amplify": "^6.6.0",
     "axios": "^1.6.7",
     "concurrently": "^8.2.2",
     "dayjs": "^1.11.10",

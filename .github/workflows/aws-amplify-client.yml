@@ -1,0 +1,63 @@
+name: Deploy Next.js to AWS Amplify
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - .github/workflows/aws-amplify-client.yml
+      - client/**
+      - assistant/**
+
+env: 
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  NEXT_PUBLIC_API_DOMAIN: ${{ vars.NEXT_PUBLIC_API_DOMAIN }}
+  AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix: 
+        node-version: [18.x]
+    defaults:
+      run:
+        working-directory: ./client
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v2 
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
+          audience: sts.amazonaws.com
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Configure Amplify CLI
+        run: npm install -g @aws-amplify/cli
+  
+      - name: Install Dependencies
+        run: npm install
+      
+      - name: Build Amplify App
+        run: npm run build
+
+      - name: Initialize Amplify Environment
+        run: amplify init --appId ${{ env.AMPLIFY_APP_ID }} --envName dev --region ${{ env.AWS_REGION }} --yes
+        
+      - name: Deploy to Amplify
+        run: amplify publish --yes
