@@ -62,7 +62,6 @@ lui/src/style.css
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
-client/amplify/.config/local-*
 amplify/.config/local-*
 amplify/logs
 amplify/mock-data
