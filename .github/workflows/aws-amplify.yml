@@ -64,6 +64,6 @@ jobs:
 
       - name: Deploy to Amplify
         env:
-          AMPLIFY_APP_ID: ${{ envs.AMPLIFY_APP_ID }}
+          AMPLIFY_APP_ID: ${{ env.AMPLIFY_APP_ID }}
           AMPLIFY_BRANCH: dev
         run: amplify push --y
