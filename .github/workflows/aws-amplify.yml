@@ -67,7 +67,7 @@ jobs:
         id: check_branch
         run: |
           branch_name="${{ github.head_ref }}"
-          app_id="${{ vars.AMPLIFY_APP_ID }}
+          app_id="${{ vars.AMPLIFY_APP_ID }}"
 
           branch_exists=$(aws amplify list-branches --app-id $app_id --query "branches[?branchName=='$branch_name'].branchName" --output text)
           
@@ -81,7 +81,7 @@ jobs:
       - name: Start Amplify deployment
         run: |
           branch_name="${{ github.head_ref }}"
-          app_id="${{ vars.AMPLIFY_APP_ID }}
+          app_id="${{ vars.AMPLIFY_APP_ID }}"
           
           aws amplify start-deployment --app-id $app_id --branch-name $branch_name --output json > deployment.json
 
