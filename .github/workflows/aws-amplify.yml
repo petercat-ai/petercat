@@ -64,13 +64,13 @@ jobs:
   
       - name: Deploy to Amplify
         run: |
-          aws amplify create-branch --stage PULL_REQUEST --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.ref_name }} || true
-          echo "Checking for pending job on branch ${{ github.ref_name }}"
+          aws amplify create-branch --stage PULL_REQUEST --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} || true
+          echo "Checking for pending job on branch ${{ github.head_ref }}"
               while true; do
                 jobs=$(
                   aws amplify list-jobs \
                   --app-id ${{ env.AMPLIFY_APP_ID }} \
-                  --branch-name "${{ github.ref_name }}" \
+                  --branch-name "${{ github.head_ref }}" \
                   --output "json" --no-paginate
                 )
                 pending_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
@@ -78,7 +78,7 @@ jobs:
                 echo "Pending Jobs: $pending_job_count"
 
                 if [ "$pending_job_count" -gt 0 ]; then
-                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.ref_name }}. Waiting..."
+                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.head_ref }}. Waiting..."
                     sleep 10  
                 else
                   echo "All Pending Jobs done... Proceeding"
@@ -89,5 +89,5 @@ jobs:
               echo "Starting Amplify Job"
               aws amplify start-job \
               --app-id ${{ env.AMPLIFY_APP_ID }} \
-              --branch-name ${{ github.ref_name }} \
+              --branch-name ${{ github.head_ref }} \
               --job-type RELEASE
