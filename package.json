@@ -5,6 +5,7 @@
   "scripts": {
     "bootstrap": "cd client && yarn && cd ../assistant && yarn && cd ../server && bash setup_python.sh",
     "client": "cd client && yarn run dev",
+    "build": "cd client && yarn run build",
     "assistant": "cd assistant && yarn run dev",
     "server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
     "env:pull": "cd server && ./venv/bin/python3 scripts/envs.py pull",

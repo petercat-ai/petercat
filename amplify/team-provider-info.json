@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-petercat-dev-922f4-authRole",
+      "UnauthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-922f4-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-922f4-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-petercat-dev-922f4-deployment",
+      "UnauthRoleName": "amplify-petercat-dev-922f4-unauthRole",
+      "StackName": "amplify-petercat-dev-922f4",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:654654285942:stack/amplify-petercat-dev-922f4/efb58f10-718f-11ef-b723-0a3412ecef2d",
+      "AmplifyAppId": "d3fcdy1hqh8ndr"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3fcdy1hqh8ndr",
+          "type": "manual"
+        }
+      }
+    }
+  }
+}
