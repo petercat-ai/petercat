@@ -68,6 +68,6 @@ jobs:
         with:
           appId: ${{ vars.AMPLIFY_APP_ID }}
           branchName: ${GITHUB_HEAD_REF}
-          artifactPath: './build.zip'
+          artifactPath: './client/build.zip'
           region: ${{ env.AWS_REGION }}
-        working-directory: ./client
+        
