@@ -59,10 +59,12 @@ jobs:
         run: npm run build
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
-      - name: Configure Amplify
-        run: amplify init
-  
-      - name: Deploy Built Artifacts to Amplify
-        run: |
-          amplify publish --yes
-        working-directory: ./client
+      - name: deploy PR preview
+        uses: yinlinchen/amplify-preview-actions@master
+        with:
+          branch_name: ${GITHUB_HEAD_REF}
+          amplify_command: deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AmplifyAppId: ${{ env.AMPLIFY_APP_ID }}
+          AWS_REGION: ${{ env.AWS_REGION }}
