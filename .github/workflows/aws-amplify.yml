@@ -62,7 +62,7 @@ jobs:
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
       - name: Zip Build Folder
-        run: zip -r build.zip ./.next
+        run: zip -r build.zip .next/standalone .next/static
         working-directory: ./client
 
       - name: Upload Build to S3
