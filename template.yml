@@ -10,47 +10,51 @@ Globals:
 Parameters:
   PetercatEnv:
     Type: String
-    Description: Environment mark of PetercatEnv
+    Description: Environment marker for Petercat
     Default: 1
   GitHubAppID:
     Type: Number
-    Description: Github App Id
+    Description: GitHub Application ID
     Default: 1
   GithubAppsClientId:
     Type: String
-    Description: Github App Id
+    Description: GitHub Application Client ID
     Default: 1
   GitHubToken:
     Type: String
-    Description: Github Token
+    Description: GitHub Token for authentication
     Default: 1
   WebUrl:
     Type: String
-    Description: Web URL
+    Description: Web application URL
     Default: 1
   StaticUrl:
     Type: String
-    Description: Static file url
+    Description: URL for static files
     Default: 1
   APIUrl:
     Type: String
-    Description: API URL
+    Description: API endpoint URL
     Default: 1
   APIIdentifier:
     Type: String
-    Description: APIIdentifier
+    Description: Identifier for the API
     Default: 1
   FastAPISecretKey:
     Type: String
-    Description: FastAPISecretKey
+    Description: Secret key for FastAPI
     Default: 1
   GithubAppsClientSecret:
     Type: String
-    Description: Github App Id
+    Description: GitHub Application Client Secret
     Default: 1
   OpenAIAPIKey:
     Type: String
-    Description: Github App Id
+    Description: OpenAI API Key
+    Default: 1
+  OpenAIBaseUrl:
+    Type: String
+    Description: OpenAI Base URL
     Default: 1
   GeminiAPIKey:
     Type: String
@@ -58,60 +62,61 @@ Parameters:
     Default: 1
   SupabaseServiceKey:
     Type: String
-    Description: Github App Id
+    Description: Supabase Service Key
     Default: 1
   SupabaseUrl:
     Type: String
-    Description: Github App Id
+    Description: Supabase URL
     Default: 1
   TavilyAPIKey:
     Type: String
-    Description: Github App Id
+    Description: Tavily API Key
     Default: 1
   SQSQueueName:
     Type: String
-    Description: SQS Queue Name
+    Description: Name of the SQS queue
     Default: 1
   SQSQueueUrl:
     Type: String
-    Description: SQS Queue Url
+    Description: URL of the SQS queue
     Default: 1
-  Auth0Domain: 
+  Auth0Domain:
     Type: String
     Description: Auth0 Domain
     Default: 1
   Auth0ClientId:
     Type: String
-    Description: Auth0 ClientId
+    Description: Auth0 Client ID
     Default: 1
   Auth0ClientSecret:
     Type: String
-    Description: Auth0 Clientt Secret
+    Description: Auth0 Client Secret
     Default: 1
   AWSGithubSecretName:
     Type: String
-    Description: Github Secret Name Store in AWS
+    Description: Name of the GitHub secret stored in AWS Secrets Manager
     Default: 1
   AWSStaticSecretName:
     Type: String
-    Description: Static Secret Name Store in AWS
+    Description: Name of the static secret stored in AWS Secrets Manager
     Default: 1
-  AWSLLMTokenSecretName: 
+  AWSLLMTokenSecretName:
     Type: String
-    Description: AWS Secret Name Store in AWS
+    Description: Name of the LLM token secret stored in AWS Secrets Manager
     Default: 1
   AWSLLMTokenPublicName:
     Type: String
-    Description: AWS Public Name Store in AWS
+    Description: Name of the LLM public token stored in AWS Secrets Manager
     Default: 1
-  AWSStaticKeyPairId: 
+  AWSStaticKeyPairId:
     Type: String
-    Description: Static Key Pair Id
+    Description: Key Pair ID for static resources
     Default: 1
   S3TempBucketName:
     Type: String
-    Description: S3 Bucket Name
+    Description: Name of the temporary S3 bucket
     Default: 1
+
 Resources:
   FastAPIFunction:
     Type: AWS::Serverless::Function
@@ -137,6 +142,7 @@ Resources:
           API_IDENTIFIER: !Ref APIIdentifier
           FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
           OPENAI_API_KEY: !Ref OpenAIAPIKey
+          OPENAI_BASE_URL: !Ref OpenAIBaseUrl
           GEMINI_API_KEY: !Ref GeminiAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl

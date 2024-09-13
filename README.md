@@ -129,6 +129,7 @@
 | `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/`
 |  **LLM相关的 env** |
 | `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx`
+| `OPENAI_BASE_URL` | 可选 | API 请求的基础 URL。仅在使用代理或服务模拟器时指定。| `https://api.openai.com/v1`
 | `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx`
 | `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx`
 |  **注册为 Github App 的 env** |

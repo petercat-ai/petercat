@@ -121,8 +121,9 @@ The project requires environment variables to be set:
 | `API_IDENTIFIER`           | Required                                   | Auth0 API Identifier                           | `https://petercat.us.auth0.com/api/v2/`     |
 | **LLM Related Environment Variables**                                   |
 | `OPENAI_API_KEY`           | Required                                   | OpenAI API key                                 | `sk-xxxx`                                   |
-| `GEMINI_API_KEY`           | Required                                   | Gemini API key                                 | `xxxx`                                      |
-| `TAVILY_API_KEY`           | Required                                   | Tavily API key                                 | `tvly-xxxxx`                                |
+| `OPENAI_BASE_URL`          | Optional                                   | Base URL for API requests. Only specify if using a proxy or service emulator.     | `https://api.openai.com/v1`
+| `GEMINI_API_KEY`           | Optional                                   | Gemini API key                                 | `xxxx`                                      |
+| `TAVILY_API_KEY`           | Optional                                   | Tavily API key                                 | `tvly-xxxxx`                                |
 | **GitHub App Registration Environment Variables**                       |
 | `X_GITHUB_APP_ID`          | Optional                                   | GitHub App ID                                  | `123456`                                    |
 | `X_GITHUB_APPS_CLIENT_ID`  | Optional                                   | GitHub App Client ID                           | `Iv1.xxxxxxx`                               |
