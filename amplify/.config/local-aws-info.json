@@ -1,0 +1,7 @@
+{
+  "dev": {
+    "configLevel": "project",
+    "useProfile": false,
+    "awsConfigFilePath": "/Users/raohai/.amplify/awscloudformation/S0fvTJmqOe"
+  }
+}
