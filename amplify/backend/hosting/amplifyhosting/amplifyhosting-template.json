@@ -1,39 +1,39 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Branch stack creation for AWS Amplify Console",
-    "Parameters": {
-        "env": {
-            "Type": "String"
-        },
-        "appId": {
-            "Type": "String"
-        },
-        "type": {
-            "Type": "String"
-        }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.6\",\"stackType\":\"hosting-amplifyhosting\",\"metadata\":{}}",
+  "Parameters": {
+    "env": {
+      "Type": "String"
     },
-    "Conditions": {
-        "isManual": {
-            "Fn::Equals": [
-                {
-                    "Ref": "type"
-                },
-                "manual"
-            ]
-        }
+    "appId": {
+      "Type": "String"
     },
-    "Resources": {
-        "AmplifyBranch": {
-            "Condition": "isManual",
-            "Type": "AWS::Amplify::Branch",
-            "Properties": {
-                "BranchName": {
-                    "Ref": "env"
-                },
-                "AppId": {
-                    "Ref": "appId"
-                }
-            }
-        }
+    "type": {
+      "Type": "String"
     }
+  },
+  "Conditions": {
+    "isManual": {
+      "Fn::Equals": [
+        {
+          "Ref": "type"
+        },
+        "manual"
+      ]
+    }
+  },
+  "Resources": {
+    "AmplifyBranch": {
+      "Condition": "isManual",
+      "Type": "AWS::Amplify::Branch",
+      "Properties": {
+        "BranchName": {
+          "Ref": "env"
+        },
+        "AppId": {
+          "Ref": "appId"
+        }
+      }
+    }
+  }
 }
