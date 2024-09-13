@@ -104,8 +104,9 @@
 | `API_IDENTIFIER`           | 必須                                   | Auth0 API識別子                           | `https://petercat.us.auth0.com/api/v2/`     |
 | **LLM関連環境変数**                                   |
 | `OPENAI_API_KEY`           | 必須                                   | OpenAI APIキー                                 | `sk-xxxx`                                   |
-| `GEMINI_API_KEY`           | 必須                                   | Gemini APIキー                                 | `xxxx`                                      |
-| `TAVILY_API_KEY`           | 必須                                   | Tavily APIキー                                 | `tvly-xxxxx`                                |
+| `OPENAI_BASE_URL`          | オプション                  | APIリクエストのためのベースURL。プロキシやサービスエミュレーターを使用する場合のみ指定します。       | `https://api.openai.com/v1`       |
+| `GEMINI_API_KEY`           | オプション                                   | Gemini APIキー                                 | `xxxx`                                      |
+| `TAVILY_API_KEY`           | オプション                                   | Tavily APIキー                                 | `tvly-xxxxx`                                |
 | **GitHub App登録環境変数**                       |
 | `X_GITHUB_APP_ID`          | オプション                                   | GitHub App ID                                  | `123456`                                    |
 | `X_GITHUB_APPS_CLIENT_ID`  | オプション                                   | GitHub AppクライアントID                           | `Iv1.xxxxxxx`                               |
