@@ -3,7 +3,7 @@ export default {
     woMenLaiZiMa:
       'We are from the Ant Group AFX Department, committed to creating beautiful and practical products. AI is just a means, and our only goal is to bring more pleasure and value for your work.',
     xiangMuXiangXiXin:
-      'please check the documentation for more details',
+      'Please check the documentation for more details',
     chaKanGengDuo: 'Learn more',
     maYiKaiYuan: 'Ant Open Source',
     pETER: 'Peter Cat Community',
