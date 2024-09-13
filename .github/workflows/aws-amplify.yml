@@ -60,7 +60,7 @@ jobs:
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
       - name: Configure Amplify
-        run: amplify configure
+        run: amplify init
   
       - name: Deploy Built Artifacts to Amplify
         run: |
