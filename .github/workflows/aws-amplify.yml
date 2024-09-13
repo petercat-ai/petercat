@@ -65,9 +65,9 @@ jobs:
 
       - name: Publish to Amplify
         run: |
-          aws amplify create-deployment --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} --output json > deployment.json
+          aws amplify create-deployment --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name dev --output json > deployment.json
           DEPLOYMENT_ID=$(cat deployment.json | jq -r '.jobId')
           ZIP_FILE=./client/build.zip
-          aws amplify upload-files --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} --deployment-id $DEPLOYMENT_ID --source $ZIP_FILE
-          aws amplify start-deployment --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} --job-id $DEPLOYMENT_ID
+          aws amplify upload-files --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name dev --deployment-id $DEPLOYMENT_ID --source $ZIP_FILE
+          aws amplify start-deployment --app-id ${{ vars.AMPLIFY_APP_ID }} --branch-name dev --job-id $DEPLOYMENT_ID
         
