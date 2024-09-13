@@ -64,7 +64,7 @@ jobs:
   
       - name: Deploy to Amplify
         run: |
-          aws amplify create-branch --stage PREVIEW --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.ref_name }} || true
+          aws amplify create-branch --stage PULL_REQUEST --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.ref_name }} || true
           echo "Checking for pending job on branch ${{ github.ref_name }}"
               while true; do
                 jobs=$(
