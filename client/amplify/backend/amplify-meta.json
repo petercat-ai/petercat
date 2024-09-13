@@ -1,15 +1,15 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-petercat-dev-d6f98-authRole",
-      "UnauthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-d6f98-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-d6f98-authRole",
+      "AuthRoleName": "amplify-petercat-dev-c7647-authRole",
+      "UnauthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-c7647-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::654654285942:role/amplify-petercat-dev-c7647-authRole",
       "Region": "ap-northeast-1",
-      "DeploymentBucketName": "amplify-petercat-dev-d6f98-deployment",
-      "UnauthRoleName": "amplify-petercat-dev-d6f98-unauthRole",
-      "StackName": "amplify-petercat-dev-d6f98",
-      "StackId": "arn:aws:cloudformation:ap-northeast-1:654654285942:stack/amplify-petercat-dev-d6f98/5c0f5a30-717f-11ef-a7eb-069726f40753",
-      "AmplifyAppId": "dwu86qdv45on0"
+      "DeploymentBucketName": "amplify-petercat-dev-c7647-deployment",
+      "UnauthRoleName": "amplify-petercat-dev-c7647-unauthRole",
+      "StackName": "amplify-petercat-dev-c7647",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:654654285942:stack/amplify-petercat-dev-c7647/56237530-7188-11ef-a824-062b3052e3ed",
+      "AmplifyAppId": "dq9yo5b2al2tn"
     }
   },
   "hosting": {
