@@ -59,13 +59,35 @@ jobs:
         run: npm run build
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
-      - name: Initialize Amplify
-        run: |
-          amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName dev --yes
-          amplify env checkout dev
-
+      - name: Configure Amplify
+        run: amplify configure
+  
       - name: Deploy to Amplify
-        env:
-          AMPLIFY_APP_ID: ${{ env.AMPLIFY_APP_ID }}
-          AMPLIFY_BRANCH: dev
-        run: amplify push --y
+        run: |
+          aws amplify create-branch --stage PREVIEW --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.ref_name }} || true
+          echo "Checking for pending job on branch ${{ github.ref_name }}"
+              while true; do
+                jobs=$(
+                  aws amplify list-jobs \
+                  --app-id ${{ env.AMPLIFY_APP_ID }} \
+                  --branch-name "${{ github.ref_name }}" \
+                  --output "json" --no-paginate
+                )
+                pending_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
+                pending_job_count=$(echo $pending_jobs | jq 'length')
+                echo "Pending Jobs: $pending_job_count"
+
+                if [ "$pending_job_count" -gt 0 ]; then
+                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.ref_name }}. Waiting..."
+                    sleep 10  
+                else
+                  echo "All Pending Jobs done... Proceeding"
+                  break
+                fi
+              done
+
+              echo "Starting Amplify Job"
+              aws amplify start-job \
+              --app-id ${{ env.AMPLIFY_APP_ID }} \
+              --branch-name ${{ github.ref_name }} \
+              --job-type RELEASE
