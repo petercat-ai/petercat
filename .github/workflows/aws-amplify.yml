@@ -59,12 +59,15 @@ jobs:
         run: npm run build
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
-      - name: deploy PR preview
-        uses: yinlinchen/amplify-preview-actions@master
+      - name: Zip Build Folder
+        run: zip -r build.zip ./.next
+        working-directory: ./client
+
+      - name: Deploy to Amplify
+        uses: luisgreen/amplify_deployment@main
         with:
-          branch_name: ${GITHUB_HEAD_REF}
-          amplify_command: deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AmplifyAppId: ${{ env.AMPLIFY_APP_ID }}
-          AWS_REGION: ${{ env.AWS_REGION }}
+          appId: ${{ vars.AMPLIFY_APP_ID }}
+          branchName: ${GITHUB_HEAD_REF}
+          artifactPath: './build.zip'
+          region: ${{ env.AWS_REGION }}
+        working-directory: ./client
