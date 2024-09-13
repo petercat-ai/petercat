@@ -59,8 +59,10 @@ jobs:
         run: npm run build
         working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
-      - name: Configure Amplify
-        run: amplify configure
+      - name: Initialize Amplify
+        run: |
+          amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName dev --yes
+          amplify env checkout dev
 
       - name: Deploy to Amplify
         env:
