@@ -60,23 +60,23 @@ next-env.d.ts
 dist/
 lui/src/style.css
 
-#amplify-do-not-edit-begin
-amplify\#current-cloud-backend
-amplify.config/local-*
-amplifylogs
-amplifymock-data
-amplifymock-api-resources
-amplifybackend/amplify-meta.json
-amplifybackend/.temp
+#client/amplify-do-not-edit-begin
+client/amplify\#current-cloud-backend
+client/amplify.config/local-*
+client/amplifylogs
+client/amplifymock-data
+client/amplifymock-api-resources
+client/amplifybackend/client/amplify-meta.json
+client/amplifybackend/.temp
 
 node_modules/
 aws-exports.js
 awsconfiguration.json
-amplifyconfiguration.json
-amplifyconfiguration.dart
-amplify-build-config.json
-amplify-gradle-config.json
-amplifytools.xcconfig
+client/amplifyconfiguration.json
+client/amplifyconfiguration.dart
+client/amplify-build-config.json
+client/amplify-gradle-config.json
+client/amplifytools.xcconfig
 .secret-*
 **.sample
-#amplify-do-not-edit-end
+#client/amplify-do-not-edit-end

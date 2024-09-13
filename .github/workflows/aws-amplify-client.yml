@@ -62,8 +62,6 @@ jobs:
 
       - name: Initialize Amplify Environment
         run: amplify init --appId ${{ env.AMPLIFY_APP_ID }} --envName dev --region ${{ env.AWS_REGION }} --yes
-        working-directory: .
 
       - name: Deploy to Amplify
         run: amplify publish --yes
-        working-directory: .
