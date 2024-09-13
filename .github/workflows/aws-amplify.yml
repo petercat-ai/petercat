@@ -1,0 +1,93 @@
+name: Deploy Next.js to AWS Amplify
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - .github/workflows/aws-amplify.yml
+      - client/**
+      - assistant/**
+
+env: 
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  NEXT_PUBLIC_API_DOMAIN: ${{ vars.NEXT_PUBLIC_API_DOMAIN }}
+  AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix: 
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v2 
+        with:
+          path: client/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('client/**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::654654285942:role/Github-OIDC
+          audience: sts.amazonaws.com
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Configure Amplify CLI
+        run: npm install -g @aws-amplify/cli
+  
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./client  # 仅在 ./client 目录下安装 Next.js 项目的依赖项
+      
+      - name: Build Amplify App
+        run: npm run build
+        working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
+
+      - name: Configure Amplify
+        run: amplify configure
+  
+      - name: Deploy to Amplify
+        run: |
+          aws amplify create-branch --stage PULL_REQUEST --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} || true
+          echo "Checking for pending job on branch ${{ github.head_ref }}"
+              while true; do
+                jobs=$(
+                  aws amplify list-jobs \
+                  --app-id ${{ env.AMPLIFY_APP_ID }} \
+                  --branch-name "${{ github.head_ref }}" \
+                  --output "json" --no-paginate
+                )
+                pending_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
+                pending_job_count=$(echo $pending_jobs | jq 'length')
+                echo "Pending Jobs: $pending_job_count"
+
+                if [ "$pending_job_count" -gt 0 ]; then
+                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.head_ref }}. Waiting..."
+                    sleep 10  
+                else
+                  echo "All Pending Jobs done... Proceeding"
+                  break
+                fi
+              done
+
+              echo "Starting Amplify Job"
+              aws amplify start-job \
+              --app-id ${{ env.AMPLIFY_APP_ID }} \
+              --branch-name ${{ github.head_ref }} \
+              --job-type RELEASE
