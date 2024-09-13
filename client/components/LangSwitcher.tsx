@@ -19,7 +19,11 @@ const languages = [
   { value: 'ko', label: '한국어' },
 ];
 
-const LanguageSwitcher = () => {
+interface LangProps {
+  theme?: 'light' | 'dark';
+}
+const LanguageSwitcher = (props: LangProps) => {
+  const { theme = 'dark' } = props;
   const [language, setLanguage] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -67,7 +71,13 @@ const LanguageSwitcher = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <div className="bg-white/[0.15] transition-colors hover:bg-white/[0.3] text-white rounded-full w-[40px] h-[40px] mx-[16px] flex items-center justify-center cursor-pointer">
+        <div
+          className={`transition-colors rounded-full w-[40px] h-[40px] mx-[16px] flex items-center justify-center cursor-pointer  ${
+            theme === 'light'
+              ? 'bg-[#E5E7EB] hover:bg-white/[0.15]  text-gray-700'
+              : 'bg-white/[0.15] hover:bg-white/[0.3] text-white'
+          }`}
+        >
           <LangIcon style={{ width: '20px', height: '20px' }} />
         </div>
       </DropdownTrigger>

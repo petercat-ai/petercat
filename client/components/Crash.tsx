@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import React from 'react';
 
 const Crash: React.FC = () => {
@@ -11,10 +12,8 @@ const Crash: React.FC = () => {
           className="mb-4 w-24"
         />
         <p className="text-base text-gray-500">
-          我们似乎遇到了一些导致崩溃的问题
-          <br />
-          请尝试刷新浏览器
-        </p>
+          {I18N.components.Crash.woMenSiHuYu}<br />
+          {I18N.components.Crash.qingChangShiShuaXin}</p>
       </div>
     </div>
   );
