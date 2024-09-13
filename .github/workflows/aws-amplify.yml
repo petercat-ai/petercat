@@ -62,32 +62,16 @@ jobs:
       - name: Configure Amplify
         run: amplify configure
   
-      - name: Deploy to Amplify
+      - name: Deploy Built Artifacts to Amplify
         run: |
-          aws amplify create-branch --stage PULL_REQUEST --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ github.head_ref }} || true
-          echo "Checking for pending job on branch ${{ github.head_ref }}"
-              while true; do
-                jobs=$(
-                  aws amplify list-jobs \
-                  --app-id ${{ env.AMPLIFY_APP_ID }} \
-                  --branch-name "${{ github.head_ref }}" \
-                  --output "json" --no-paginate
-                )
-                pending_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
-                pending_job_count=$(echo $pending_jobs | jq 'length')
-                echo "Pending Jobs: $pending_job_count"
+          npm install -g @aws-amplify/cli
+          amplify pull --appId ${{ env.AMPLIFY_APP_ID }} --envName staging --yes
+ 
+          rm -rf amplify/backend/function/*
+          rm -rf amplify/backend/api/*
 
-                if [ "$pending_job_count" -gt 0 ]; then
-                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.head_ref }}. Waiting..."
-                    sleep 10  
-                else
-                  echo "All Pending Jobs done... Proceeding"
-                  break
-                fi
-              done
-
-              echo "Starting Amplify Job"
-              aws amplify start-job \
-              --app-id ${{ env.AMPLIFY_APP_ID }} \
-              --branch-name ${{ github.head_ref }} \
-              --job-type RELEASE
+          cp -R client/.next amplify/backend/function/nextBuild
+          cp client/next.config.js amplify/backend/function/nextBuild/
+      
+          amplify push --yes
+        working-directory: ./client
