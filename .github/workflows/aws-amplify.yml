@@ -62,6 +62,10 @@ jobs:
       - name: Configure Amplify
         run: amplify configure
 
+        # 切换到仓库根目录以初始化 Amplify 环境
+      - name: Initialize Amplify Environment
+        run: amplify init --appId ${{ env.AMPLIFY_APP_ID }} --envName dev --region ${{ env.AWS_REGION }} --yes
+      
       - name: Deploy to Amplify
         env:
           AMPLIFY_APP_ID: ${{ env.AMPLIFY_APP_ID }}
