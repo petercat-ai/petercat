@@ -80,7 +80,7 @@ export default {
     geiWoMenTiYi: '给我们提一个 Issue，留下您的机器人信息',
     iSSUE: 'Issue 区',
     cOMIN: 'coming soon, 请先前往 GitHub',
-    shangJiaShiBaiE: '上架失败{val1}',
+    shangJiaShiBaiE: '上架失败',
     shangJiaChengGong: '上架成功',
   },
   User: {

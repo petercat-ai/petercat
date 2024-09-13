@@ -23,7 +23,7 @@ export default {
     gITHU: 'GitHub 頭像',
     suiJiTouXiang: '隨機頭像',
     jiQiRenTouXiang: '機器人頭像*',
-    ziDingYi: '自訂義',
+    ziDingYi: '自定義',
     shanChuShiBaiE: '刪除失敗 ',
     shanChuChengGong: '刪除成功',
   },
@@ -48,10 +48,10 @@ export default {
   },
   BotCard: {
     guanBi: '關閉',
-    maShanChuHouJiang: '」嗎？刪除後將無法恢復，請謹慎操作。',
-    queRenYaoShanChu: '確認要刪除「',
+    maShanChuHouJiang: '」 嗎？刪除後將無法恢復，請謹慎操作。',
+    queRenYaoShanChu: '確認要刪除 「',
     gengXinZhiShi: '更新知識',
-    gengXinZhiShiKu: '更新知識庫(即將推出)',
+    gengXinZhiShiKu: '更新知識庫(Coming Soon)',
     tiaoShi: '調試',
   },
   CreateButton: {
@@ -62,5 +62,30 @@ export default {
     miYao2: '密鑰*',
     geiTOKE: '給 Token 取一個獨一無二的標識',
     miYaoBiaoShi: '密鑰標識*',
+  },
+  Crash: {
+    qingChangShiShuaXin: '請嘗試刷新瀏覽器',
+    woMenSiHuYu: '我們似乎遇到了一些導致崩潰的問題',
+  },
+  Navbar: {
+    chuangJianJiQiRen: '創建機器人',
+    qingShuRuKaPian: '請輸入卡片名稱',
+    kongJian: '空間',
+    shiChang: '市場',
+  },
+  PublishBotEntity: {
+    shangJiaJiQiRen: '上架機器人',
+    zanWuWeiShangJia: '暫無未上架的機器人',
+    xuanZeJiQiRen: '選擇機器人',
+    geiWoMenTiYi: '給我們提一個 Issue，留下您的機器人信息',
+    iSSUE: 'Issue 區',
+    cOMIN: 'coming soon, 請先前往 GitHub',
+    shangJiaShiBaiE: '上架失敗',
+    shangJiaChengGong: '上架成功',
+  },
+  User: {
+    dengChu: '登出',
+    tOKEN: 'Token 管理',
+    dengLu: '登錄',
   },
 };
