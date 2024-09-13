@@ -1,0 +1,17 @@
+{
+  "projectName": "petercar",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "client/src",
+      "DistributionDir": "client/.next",
+      "BuildCommand": "npm run-script build:client",
+      "StartCommand": "npm run-script start"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}
