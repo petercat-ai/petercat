@@ -12,6 +12,7 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   NEXT_PUBLIC_API_DOMAIN: ${{ vars.NEXT_PUBLIC_API_DOMAIN }}
   AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
 
 permissions:
   id-token: write
@@ -63,6 +64,10 @@ jobs:
         run: zip -r build.zip ./.next
         working-directory: ./client
 
+      - name: Upload Build to S3
+        run: |
+          aws s3 cp ./client/build.zip s3://${{ env.S3_BUCKET }}/builds/${{ github.sha }}.zip
+
       - name: Check if branch exists in Amplify
         id: check_branch
         run: |
@@ -82,8 +87,9 @@ jobs:
         run: |
           branch_name="${{ github.head_ref }}"
           app_id="${{ vars.AMPLIFY_APP_ID }}"
+          source_url="s3://${{ env.S3_BUCKET }}/builds/${{ github.sha }}.zip"
           
-          aws amplify start-deployment --app-id $app_id --branch-name $branch_name --file ./client/build.zip --output json > deployment.json
+          aws amplify start-deployment --app-id $app_id --branch-name $branch_name --source-url $source_url --output json > deployment.json
 
       - name: Output deployment details
         run: |
