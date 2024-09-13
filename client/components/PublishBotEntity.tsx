@@ -50,7 +50,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
 
   useEffect(() => {
     if (editError) {
-      toast.error(I18N.template(I18N.components.PublishBotEntity.shangJiaShiBaiE, { val1: editError.message }));
+      toast.error(I18N.components.PublishBotEntity.shangJiaShiBaiE);
     }
   }, [editError]);
   return (
