@@ -58,7 +58,7 @@ jobs:
                                   GithubAppsClientId=${{ secrets.X_GITHUB_APPS_CLIENT_ID }} \
                                   GithubAppsClientSecret=${{ secrets.X_GITHUB_APPS_CLIENT_SECRET }} \
                                   OpenAIAPIKey=${{ secrets.OPENAI_API_KEY }} \
-                                  OpenAIBaseUrl=${{ vars.OPENAI_BASE_URL:-"https://api.openai.com/v1" }} \
+                                  OpenAIBaseUrl=${{ vars.OPENAI_BASE_URL || 'https://api.openai.com/v1' }} \
                                   GeminiAPIKey=${{ secrets.GEMINI_API_KEY }} \
                                   SupabaseServiceKey=${{ secrets.SUPABASE_SERVICE_KEY }} \
                                   SupabaseUrl=${{ secrets.SUPABASE_URL }} \
