@@ -83,7 +83,7 @@ jobs:
           branch_name="${{ github.head_ref }}"
           app_id="${{ vars.AMPLIFY_APP_ID }}"
           
-          aws amplify start-deployment --app-id $app_id --branch-name $branch_name --output json > deployment.json
+          aws amplify start-deployment --app-id $app_id --branch-name $branch_name --file ./client/build.zip --output json > deployment.json
 
       - name: Output deployment details
         run: |
