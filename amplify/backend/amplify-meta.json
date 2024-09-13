@@ -11,5 +11,12 @@
       "StackId": "arn:aws:cloudformation:ap-northeast-1:654654285942:stack/amplify-petercat-dev-d6f98/5c0f5a30-717f-11ef-a7eb-069726f40753",
       "AmplifyAppId": "dwu86qdv45on0"
     }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "providerPlugin": "awscloudformation",
+      "type": "manual"
+    }
   }
 }
