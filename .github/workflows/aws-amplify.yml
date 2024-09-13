@@ -13,6 +13,7 @@ env:
   NEXT_PUBLIC_API_DOMAIN: ${{ vars.NEXT_PUBLIC_API_DOMAIN }}
   AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
   S3_BUCKET: ${{ vars.S3_BUCKET }}
+  NEXT_STANDALONE: "true"
 
 permissions:
   id-token: write
