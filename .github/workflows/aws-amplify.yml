@@ -14,8 +14,8 @@ env:
   AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
 
 permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
@@ -23,10 +23,7 @@ jobs:
     strategy: 
       matrix: 
         node-version: [18.x]
-    defaults:
-      run:
-        working-directory: ./client
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,8 +31,8 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2 
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: client/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('client/**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       
@@ -56,14 +53,16 @@ jobs:
   
       - name: Install Dependencies
         run: npm install
+        working-directory: ./client  # 仅在 ./client 目录下安装 Next.js 项目的依赖项
       
       - name: Build Amplify App
         run: npm run build
+        working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
 
+      # 切换到仓库根目录以初始化 Amplify 环境
       - name: Initialize Amplify Environment
         run: amplify init --appId ${{ env.AMPLIFY_APP_ID }} --envName dev --region ${{ env.AWS_REGION }} --yes
-        working-directory: .
       
+      # 在根目录下发布到 Amplify
       - name: Deploy to Amplify
         run: amplify publish --yes
-        working-directory: .
