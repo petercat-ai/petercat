@@ -1,12 +1,16 @@
 FROM public.ecr.aws/lambda/python:3.12
 
-# Copy requirements.txt
-COPY requirements.txt ${LAMBDA_TASK_ROOT}
+# Set the working directory inside the container to Lambda's task root
+WORKDIR ${LAMBDA_TASK_ROOT}
 
-# Install the specified packages
-RUN pip install -r requirements.txt
+# Copy requirements.txt first to leverage Docker's layer caching
+COPY requirements.txt .
 
-# Copy function code
-COPY . ${LAMBDA_TASK_ROOT}
-# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+# Install the specified packages into the Lambda task root
+RUN pip3 install --target "${LAMBDA_TASK_ROOT}" -r requirements.txt --no-cache-dir
+
+# Copy the rest of the application code to the Lambda task root
+COPY . .
+
+# Set the CMD to the Lambda handler
 CMD [ "handler.lambda_handler" ]
