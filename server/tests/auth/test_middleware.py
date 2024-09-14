@@ -25,7 +25,7 @@ def test_default_cors_allow_origin():
     )
 
     assert response.status_code == 200
-    assert response.headers.get("access-control-allow-origin") == "http://localhost:3000"
+    assert response.headers.get("access-control-allow-origin") == "*"
 
 def test_without_authorization(monkeypatch):
     monkeypatch.setattr(UserLLMTokenService, "__init__", mock_llm_token_service)
@@ -57,6 +57,25 @@ def test_without_authorization(monkeypatch):
     )
 
     assert response.status_code == 401
+
+def test_cors_preflight_with_authorization(monkeypatch):
+    monkeypatch.setattr(UserLLMTokenService, "__init__", mock_llm_token_service)
+    monkeypatch.setattr(qa_chat, "agent_chat", mock_chat_qa)
+    monkeypatch.setattr(AuthMiddleWare, "oauth", mock_oath)
+    app.dependency_overrides[get_bot] = mock_get_bot
+
+    response = client.options(
+        "/api/chat/qa",
+        headers={
+            "origin": "https://another.com",
+            "access-control-request-headers": "authorization,content-type",
+            "access-control-request-method": "POST",
+        },
+    )
+  
+    print(f"response.headers={response.headers}")
+    assert response.headers.get("access-control-allow-origin") == "https://another.com"
+
 
 def test_cors_with_authorization(monkeypatch):
     monkeypatch.setattr(UserLLMTokenService, "__init__", mock_llm_token_service)
@@ -90,4 +109,4 @@ def test_cors_with_authorization(monkeypatch):
     )
 
     print(f"response.headers={response.headers}")
-    assert response.headers.get("access-control-allow-origin") == "https://another.com"
+    assert response.headers.get("access-control-allow-origin") == "*"

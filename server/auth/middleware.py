@@ -1,10 +1,11 @@
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from petercat_utils import get_env_variable
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from fastapi.security import OAuth2PasswordBearer
+from starlette.datastructures import Headers
 
 from core.dao.botDAO import BotDAO
 
@@ -52,7 +53,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
     try:
       if ENVRIMENT == "development":
         return await call_next(request)
-  
+      
       # Auth 相关的直接放过
       if request.url.path.startswith("/api/auth"):
         return await call_next(request)
@@ -68,6 +69,9 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         response.headers["Vary"] = "Origin"
         return response
 
+      if request.method == "OPTIONS" and request.url.path in ANONYMOUS_USER_ALLOW_LIST:
+        return await self.preflight_response(request.headers)
+      
       # 获取 session 中的用户信息
       user = request.session.get("user") 
       if not user:
@@ -85,7 +89,14 @@ class AuthMiddleWare(BaseHTTPMiddleware):
       
         # 处理 HTTP 异常
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
-    # except Exception as e:
-        print(f"error={e}")
+    except Exception as e:
         # 处理其他异常
         return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
+
+  def preflight_response(self, request_headers: Headers) -> Response:
+        requested_origin = request_headers["origin"]
+        headers = dict(self.preflight_headers)
+
+        headers["Access-Control-Allow-Origin"] = requested_origin
+  
+        return PlainTextResponse("OK", status_code=200, headers=headers)
