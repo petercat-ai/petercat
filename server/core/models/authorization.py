@@ -1,16 +1,16 @@
 from datetime import datetime
 import json
 from pydantic import BaseModel, field_serializer
-from typing import Dict
+from typing import Dict, Optional
 
 class Authorization(BaseModel):
     token: str
     installation_id: str
     code: str
     created_at: datetime 
-    expires_at: datetime
+    expires_at: Optional[datetime] = datetime.now().isoformat()
 
-    permissions: Dict
+    permissions: Optional[Dict] = {}
 
     @field_serializer('created_at')
     def serialize_created_at(self, created_at: datetime):

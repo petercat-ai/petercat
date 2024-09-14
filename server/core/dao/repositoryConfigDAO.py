@@ -13,7 +13,6 @@ class RepositoryConfigDAO(BaseDAO):
         self.client = get_client()
 
     def create(self, data: RepositoryConfig):
-        print('supabase github_repo_config creation', data.model_dump())
         try:
             repo_config = self.client.from_("github_repo_config")\
                     .insert(data.model_dump())\

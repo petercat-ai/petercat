@@ -26,7 +26,6 @@ class AuthorizationDAO(BaseDAO):
             return {"message": "User creation failed"}
 
     def create(self, data: Authorization):
-        print('supabase github_app_authorization creation', data.model_dump())
         try:
             authorization = self.client.from_("github_app_authorization")\
                     .insert(data.model_dump())\
