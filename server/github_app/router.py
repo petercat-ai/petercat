@@ -45,6 +45,9 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+@router.get("/marketplace/purchase")
+def marketplace_purchase(marketplace_listing_plan_id: str):
+    return { "success": True } 
 
 # https://github.com/login/oauth/authorize?client_id=Iv1.c2e88b429e541264
 @router.get("/app/installation/callback")
