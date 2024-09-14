@@ -15,7 +15,7 @@ declare type Bot = Tables<'bots'>;
 
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
-export default function Home() {
+export default function Market() {
   const { search } = useSearch();
   const [visible, setVisible] = useState(false);
   const [isComplete, setComplete] = useState(false);
@@ -67,7 +67,7 @@ export default function Home() {
   return (
     <div>
       <div className="grid grid-flow-row-dense gap-8 justify-items-center px-[40px] grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        <PublishBotEntity area="list" />
+        {/* <PublishBotEntity area="list" /> */}
         {!isEmpty(bots) &&
           map(bots, (bot: Bot) => (
             <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />
