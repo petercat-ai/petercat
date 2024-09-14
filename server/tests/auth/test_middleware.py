@@ -1,4 +1,3 @@
-import json
 from fastapi.testclient import TestClient
 from agent import qa_chat
 from agent.bot.get_bot import get_bot
