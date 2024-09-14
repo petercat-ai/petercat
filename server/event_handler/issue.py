@@ -109,15 +109,20 @@ class IssueCommentEventHandler(IssueEventHandler):
 
                 repository_config = RepositoryConfigDAO()
                 repo_config = repository_config.get_by_repo_name(repo.full_name)
+                if repo_config.robot_id:
+                    bot = get_bot_by_id(repo_config.robot_id)
 
-                analysis_result = await agent_chat(
-                    ChatData(
-                        prompt=prompt, messages=messages, bot_id=repo_config.robot_id
-                    ),
-                    self.auth,
-                )
+                    analysis_result = await agent_chat(
+                        ChatData(
+                            prompt=prompt,
+                            messages=messages,
+                            bot_id=repo_config.robot_id,
+                        ),
+                        self.auth,
+                        bot,
+                    )
 
-                issue.create_comment(analysis_result["output"])
+                    issue.create_comment(analysis_result["output"])
 
         except GithubException as e:
             print(f"处理 GitHub 请求时出错：{e}")
