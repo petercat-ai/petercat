@@ -142,8 +142,17 @@ def get_user_organizations(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
         )
+
+    repository_config_dao = RepositoryConfigDAO()
+
     auth = Auth.Token(token=user.access_token)
     g = Github(auth=auth)
     github_user: AuthenticatedUser.AuthenticatedUser = g.get_user()
     orgs = github_user.get_orgs()
-    return [org.raw_data for org in orgs]
+
+    installations = repository_config_dao.query_by_orgs([org.id for org in orgs])
+
+    return {
+        "orgs": [{key: getattr(org, key) for key in ["id", "login", "avatar_url"]} for org in orgs],
+        "installations": installations,
+    }

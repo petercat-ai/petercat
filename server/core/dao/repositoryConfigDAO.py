@@ -25,6 +25,14 @@ class RepositoryConfigDAO(BaseDAO):
             print("Error: ", e)
             return False, {"message": "GithubRepoConfig creation failed"}
 
+    def query_by_orgs(self, orgs: list[str]):
+        response = self.client.table("github_repo_config")\
+            .select('*') \
+            .filter("owner_id", "in", f"({','.join(map(str, orgs))})") \
+            .execute()
+
+        return response.data
+
     def get_by_repo_name(self, repo_name: str):
         response = self.client.table("github_repo_config")\
             .select('*')\
