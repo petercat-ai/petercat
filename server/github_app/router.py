@@ -21,6 +21,7 @@ from core.models.authorization import Authorization
 from core.models.user import User
 
 from github_app.handlers import get_handler
+from github_app.purchased import PurchaseServer
 from github_app.utils import (
     get_app_installations_access_token,
     get_installation_repositories,
@@ -97,6 +98,9 @@ async def github_app_webhook(
     x_github_event: str = Header(...),
 ):
     payload = await request.json()
+    if x_github_event == "marketplace_purchase":
+        return PurchaseServer().purchased(payload)
+
     if "installation" not in payload:
         return {"success": False, "message": "Invalid Webhook request"}
 
