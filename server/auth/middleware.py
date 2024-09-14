@@ -3,6 +3,7 @@ from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from petercat_utils import get_env_variable
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.datastructures import Headers, MutableHeaders
 from starlette.responses import Response
 from fastapi.security import OAuth2PasswordBearer
 
@@ -61,8 +62,13 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         return await call_next(request)
       
       if await self.oauth(request=request):
-        return await call_next(request)
-    
+        response = await call_next(request)
+        origin = request.headers.get("origin")
+
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Vary"] = "Origin"
+        return response
+
       # 获取 session 中的用户信息
       user = request.session.get("user") 
       if not user:
