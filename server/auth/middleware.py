@@ -3,7 +3,6 @@ from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from petercat_utils import get_env_variable
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.datastructures import Headers, MutableHeaders
 from starlette.responses import Response
 from fastapi.security import OAuth2PasswordBearer
 
