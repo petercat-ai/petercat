@@ -13,7 +13,6 @@ class RepositoryConfigDAO(BaseDAO):
         self.client = get_client()
 
     def create(self, data: RepositoryConfig):
-        print('supabase github_repo_config creation', data.model_dump())
         try:
             repo_config = self.client.from_("github_repo_config")\
                     .insert(data.model_dump())\
@@ -25,6 +24,14 @@ class RepositoryConfigDAO(BaseDAO):
         except Exception as e:
             print("Error: ", e)
             return False, {"message": "GithubRepoConfig creation failed"}
+
+    def query_by_orgs(self, orgs: list[str]):
+        response = self.client.table("github_repo_config")\
+            .select('*') \
+            .filter("owner_id", "in", f"({','.join(map(str, orgs))})") \
+            .execute()
+
+        return response.data
 
     def get_by_repo_name(self, repo_name: str):
         response = self.client.table("github_repo_config")\

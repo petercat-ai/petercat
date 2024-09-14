@@ -12,7 +12,7 @@ import logging
 from fastapi.responses import RedirectResponse
 
 import time
-from github import Auth, Github
+from github import Auth, Github, AuthenticatedUser
 from auth.get_user_info import get_user
 from core.dao.authorizationDAO import AuthorizationDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
@@ -26,7 +26,7 @@ from github_app.utils import (
     get_app_installations_access_token,
     get_installation_repositories,
     get_jwt,
-    get_private_key,
+    get_private_key
 )
 
 from petercat_utils import get_env_variable
@@ -73,18 +73,24 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
             installation_id=installation_id,
             created_at=int(time.time()),
         )
-
+        
         success, message = authorization_dao.create(authorization)
-        print(f"github_app_callback: success={success}, message={message}")
 
         installed_repositories = get_installation_repositories(
             access_token=access_token["token"]
         )
+
         for repo in installed_repositories["repositories"]:
+
             repository_config = RepositoryConfig(
-                repo_name=repo["full_name"], robot_id="", created_at=int(time.time())
+                owner_id=repo["owner"]["id"],
+                repo_name=repo["full_name"],
+                repo_id=repo["id"],
+                robot_id="",
+                created_at=int(time.time())
             )
             repository_config_dao.create(repository_config)
+
 
         return RedirectResponse(
             url=f"{WEB_URL}/github/installed?message={message}", status_code=302
@@ -129,16 +135,24 @@ async def github_app_webhook(
 
 
 @router.get("/user/organizations")
-async def get_user_organizations(
+def get_user_organizations(
     user: Annotated[User | None, Depends(get_user)] = None
 ):
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
         )
+
+    repository_config_dao = RepositoryConfigDAO()
+
     auth = Auth.Token(token=user.access_token)
     g = Github(auth=auth)
-    user = g.get_user()
-    orgs = user.get_orgs()
+    github_user: AuthenticatedUser.AuthenticatedUser = g.get_user()
+    orgs = github_user.get_orgs()
 
-    return [org.raw_data for org in orgs]
+    installations = repository_config_dao.query_by_orgs([org.id for org in orgs])
+
+    return {
+        "orgs": [{key: getattr(org, key) for key in ["id", "login", "avatar_url"]} for org in orgs],
+        "installations": installations,
+    }
