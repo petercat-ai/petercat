@@ -28,6 +28,7 @@ ANONYMOUS_USER_ALLOW_LIST = [
 ]
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
+
 class AuthMiddleWare(BaseHTTPMiddleware):
 
   async def oauth(self, request: Request):
@@ -62,16 +63,8 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         return await call_next(request)
       
       if await self.oauth(request=request):
-        response = await call_next(request)
-        origin = request.headers.get("origin")
+        return await call_next(request)
 
-        response.headers["Access-Control-Allow-Origin"] = origin
-        response.headers["Vary"] = "Origin"
-        return response
-
-      if request.method == "OPTIONS" and request.url.path in ANONYMOUS_USER_ALLOW_LIST:
-        return await self.preflight_response(request.headers)
-      
       # 获取 session 中的用户信息
       user = request.session.get("user") 
       if not user:
@@ -92,11 +85,3 @@ class AuthMiddleWare(BaseHTTPMiddleware):
     except Exception as e:
         # 处理其他异常
         return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
-
-  def preflight_response(self, request_headers: Headers) -> Response:
-        requested_origin = request_headers["origin"]
-        headers = dict(self.preflight_headers)
-
-        headers["Access-Control-Allow-Origin"] = requested_origin
-  
-        return PlainTextResponse("OK", status_code=200, headers=headers)

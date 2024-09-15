@@ -25,7 +25,7 @@ def test_default_cors_allow_origin():
     )
 
     assert response.status_code == 200
-    assert response.headers.get("access-control-allow-origin") == "*"
+    assert response.headers.get("access-control-allow-origin") == "http://localhost:3000"
 
 def test_without_authorization(monkeypatch):
     monkeypatch.setattr(UserLLMTokenService, "__init__", mock_llm_token_service)
@@ -109,4 +109,4 @@ def test_cors_with_authorization(monkeypatch):
     )
 
     print(f"response.headers={response.headers}")
-    assert response.headers.get("access-control-allow-origin") == "*"
+    assert response.headers.get("access-control-allow-origin") == "https://another.com"

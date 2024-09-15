@@ -6,6 +6,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
+from auth.cors_middleware import AuthCORSMiddleWare
 
 from auth.middleware import AuthMiddleWare
 from petercat_utils import get_env_variable
@@ -51,9 +52,10 @@ app.add_middleware(
     allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
+    allow_headers="*",
 )
 
+app.add_middleware(AuthCORSMiddleWare)
 
 app.include_router(rag_router.router)
 app.include_router(bot_router.router)
