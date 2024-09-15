@@ -1,11 +1,10 @@
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse
 from petercat_utils import get_env_variable
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from fastapi.security import OAuth2PasswordBearer
-from starlette.datastructures import Headers
 
 from core.dao.botDAO import BotDAO
 
