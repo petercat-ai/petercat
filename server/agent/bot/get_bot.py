@@ -28,9 +28,7 @@ def get_bot(
     if bot.token_id:
         llm_token = llm_service.get_llm_token(id=bot.token_id)
     else:
-        llm_token = llm_token_dao.get_llm_token(free=True) \
-                if getattr(user, "anonymous", False) \
-                else llm_token_dao.get_llm_token(bot.llm)
+        llm_token = llm_token_dao.get_llm_token(bot.llm)
 
     return Bot(bot=bot, llm_token=llm_token)
 

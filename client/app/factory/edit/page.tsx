@@ -40,7 +40,7 @@ enum ConfigTypeEnum {
 }
 export default function Edit() {
   const { botProfile, setBotProfile } = useBot();
-  const { data: user, status } = useUser();
+  const { user, status } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');

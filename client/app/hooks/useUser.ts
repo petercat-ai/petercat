@@ -1,20 +1,20 @@
-'use client';
-
-import {
-  getUserInfo
-} from '@/app/services/UserController';
-import { useQuery } from '@tanstack/react-query';
+import { useUser as useAssistUser } from '@petercatai/assistant';
 import { useFingerprint } from './useFingerprint';
 
-function useUser() {
-  const { data } = useFingerprint();
 
-  return useQuery({
-    queryKey: [`user.userinfo`, data?.visitorId],
-    queryFn: async () => getUserInfo({ clientId: data?.visitorId }),
-    enabled: !!data?.visitorId,
-    retry: false,
+const API_DOMAIN = process.env.NEXT_PUBLIC_API_DOMAIN!;
+
+export default function useUser() {
+  const { data: fingerprint } = useFingerprint();
+  const { user, isLoading, actions } = useAssistUser({
+    apiDomain: API_DOMAIN,
+    fingerprint: fingerprint?.visitorId!
   });
-}
 
-export default useUser;
+  return {
+    user,
+    isLoading,
+    actions,
+    status: isLoading ? "pending" : 'success',
+  };
+}
