@@ -5,14 +5,16 @@ from agent.bot import Bot
 
 from petercat_utils.data_class import ChatData
 
-from agent.tools import issue, pull_request, sourcecode, knowledge, git_info
+from agent.tools import issue, pull_request, auth, sourcecode, knowledge, git_info
 
 
 def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
+    login_tools = auth.factory(token=auth_token)
     issue_tools = issue.factory(token=auth_token)
     pull_request_tools = pull_request.factory(token=auth_token)
 
     return {
+        "check_login": login_tools["check_login"],
         "search_knowledge": knowledge.factory(bot_id=bot.id),
         "create_issue": issue_tools["create_issue"],
         "get_issues": issue_tools["get_issues"],
