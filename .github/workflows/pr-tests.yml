@@ -20,6 +20,9 @@ env:
   REPORT_FILE: md_report.md
   WEB_URL: http://127.0.0.1:3000
   API_URL: http://127.0.0.1:8000
+  CORS_ORIGIN_WHITELIST: http://localhost:8001,http://127.0.0.1:8001,http://localhost:3000
+  PETERCAT_ENV: unittest
+
 jobs:
   build:
     runs-on: ubuntu-latest

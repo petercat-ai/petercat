@@ -125,6 +125,7 @@ Resources:
       MemorySize: 512
       Environment:
         Variables:
+          CORS_ORIGIN_WHITELIST: https://petercat.ai,https://www.petercat.ai
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
           PETERCAT_ENV: !Ref PetercatEnv
           AWS_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
