@@ -12,7 +12,8 @@ def factory(token: Optional[Auth.Token]):
     def create_issue(repo_name: str, title: str, body: str):
         """
         Create an issue in the specified GitHub repository.If an error occurs during processing,
-        Before collecting params, You MUST use `check_login` tool  to check if user is login.
+        If user not login, it will return error mesesage and login url
+        Please invite user to login if got error
 
         :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
         :param title: The title of the issue to be created

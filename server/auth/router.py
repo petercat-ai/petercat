@@ -18,7 +18,6 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 LOGIN_URL = f"{API_URL}/api/auth/login"
 
 WEB_URL =  get_env_variable("WEB_URL")
-WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 MARKET_URL = f"{WEB_URL}/market"
 
 config = Config(environ={
@@ -64,10 +63,7 @@ async def login(request: Request):
 @router.get('/logout')
 async def logout(request: Request):
     request.session.pop('user', None)
-    redirect = request.query_params.get('redirect')
-    if redirect:
-        return RedirectResponse(url=f'{redirect}', status_code=302)
-    return { "success": True }
+    return RedirectResponse(url=MARKET_URL)
 
 @router.get("/callback")
 async def callback(request: Request):
@@ -86,7 +82,7 @@ async def callback(request: Request):
         request.session['user'] = dict(data)
         supabase = get_client()
         supabase.table("profiles").upsert(data).execute()
-    return RedirectResponse(url=f'{WEB_LOGIN_SUCCESS_URL}', status_code=302)
+    return RedirectResponse(url=f'{MARKET_URL}', status_code=302)
 
 @router.get("/userinfo")
 async def userinfo(request: Request):

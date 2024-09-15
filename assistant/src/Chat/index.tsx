@@ -372,8 +372,6 @@ const Chat: FC<ChatProps> = memo(
                               {UITemplateRender({
                                 templateId: template_id,
                                 cardData: data,
-                                apiDomain: apiDomain,
-                                token: token!,
                               })}
                             </div>
                           )}

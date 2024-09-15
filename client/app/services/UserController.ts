@@ -13,8 +13,3 @@ export async function getAvaliableLLMs() {
   const response = await axios.get(`${apiDomain}/api/user/llms`, { withCredentials: true });
   return response.data;
 }
-
-export async function requestLogout() {
-  const response = await axios.get(`${apiDomain}/api/auth/logout`, { withCredentials: true });
-  return response.data;
-}
