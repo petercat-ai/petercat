@@ -26,5 +26,8 @@ class AuthCORSMiddleWare(BaseHTTPMiddleware):
         requested_origin = request.headers.get('origin')
         headers = response.headers
 
+        if requested_origin is None:
+            return headers
+
         headers["Access-Control-Allow-Origin"] = requested_origin
         return headers
