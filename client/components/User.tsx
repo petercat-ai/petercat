@@ -14,14 +14,12 @@ import GitHubIcon from '@/public/icons/GitHubIcon';
 import Link from 'next/link';
 
 export default function Profile() {
-  const router = useRouter();
-  const { data: user, status } = useUser();
-  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+  const { user, status, actions } = useUser();
 
   if (!user || status !== 'success' || user.id.startsWith('client|')) {
     return (
       <Button
-        onPress={() => router.push(`${apiDomain}/api/auth/login`)}
+        onPress={actions.doLogin}
         className="min-w-[88px] px-4 h-10 inline-block transition-colors bg-[#3F3F46] text-[#FFFFFF] rounded-full leading-10 text-center"
       >
         <GitHubIcon className="inline scale-75 -translate-y-0.5" />
@@ -44,8 +42,8 @@ export default function Profile() {
         <DropdownItem>
           <Link href="/user/tokens">{I18N.components.User.tOKEN}</Link>
         </DropdownItem>
-        <DropdownItem> 
-          <Link href={`${apiDomain}/api/auth/logout`}>{I18N.components.User.dengChu}</Link>
+        <DropdownItem onClick={actions.doLogout}> 
+          {I18N.components.User.dengChu}
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

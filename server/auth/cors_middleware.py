@@ -11,7 +11,10 @@ class AuthCORSMiddleWare(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         response = await call_next(request)
-        
+        requested_origin = request.headers.get('origin')
+        if requested_origin is None:
+            return response
+
         if request.url.path in ANONYMOUS_USER_ALLOW_LIST:
             if request.method == "OPTIONS":
                 headers = self.mutate_cors_headers(request, response)
@@ -21,11 +24,10 @@ class AuthCORSMiddleWare(BaseHTTPMiddleware):
 
                 return response
         return response
-    
+
     def mutate_cors_headers(self, request: Request, response: Response):
-        requested_origin = request.headers["origin"]
+        requested_origin = request.headers.get('origin')
         headers = response.headers
 
         headers["Access-Control-Allow-Origin"] = requested_origin
         return headers
-    
