@@ -12,6 +12,7 @@ def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
     login_tools = auth.factory(token=auth_token)
     issue_tools = issue.factory(token=auth_token)
     pull_request_tools = pull_request.factory(token=auth_token)
+    sourcecode_tools = sourcecode.factory(token=auth_token)
 
     return {
         "check_login": login_tools["check_login"],
@@ -22,7 +23,7 @@ def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
         "create_review_comment": pull_request_tools["create_review_comment"],
         "create_pr_summary": pull_request_tools["create_pr_summary"],
         "search_issues": issue_tools["search_issues"],
-        "search_code": sourcecode.search_code,
+        "search_code": sourcecode_tools["search_code"],
         "search_repo": git_info.search_repo,
     }
 
