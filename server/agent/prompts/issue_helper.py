@@ -24,7 +24,7 @@ issue_content: {issue_content}
 
 # Constraints:
 - Ensure suggestions align with the user’s needs.
-- Respect the language of the issue's title and content.
+- Respect the language of the issue's title and content. Ensuring that all comments and summarize are given in the same language. e.g., English or Chinese.
 - Output only the final result without the thought process.
 - Return the most reliable solution.
 - Do not return full content of any files.
