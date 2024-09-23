@@ -112,7 +112,7 @@ class DiscussionEventHandler:
     async def execute(self):
         try:
             action = self.event["action"]
-            if action in ["opened", "reopened"]:
+            if action in ["opened", "created"]:
                 await self.handle_discussion_event(action)
                 return {"success": True}
             else:
