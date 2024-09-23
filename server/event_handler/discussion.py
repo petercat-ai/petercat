@@ -13,6 +13,8 @@ from agent.prompts.issue_helper import (
 
 from agent.qa_chat import agent_chat
 
+BOT_NAME = "petercat-bot"
+
 
 class DiscussionEventHandler:
     event: Any
@@ -95,13 +97,14 @@ class DiscussionEventHandler:
         discussion_number = discussion["number"]
         message = Message(role="user", content=[text_block])
         repository_config = RepositoryConfigDAO()
+        print("repo_name", repo_name)
         repo_config = repository_config.get_by_repo_name(repo_name)
 
         prompt = generate_issue_prompt(
             repo_name=repo_name,
-            issue_url=discussion.html_url,
-            issue_number=discussion.number,
-            issue_content=discussion.body,
+            issue_url=discussion["html_url"],
+            issue_number=discussion["number"],
+            issue_content=discussion["body"],
         )
 
         bot = get_bot_by_id(repo_config.robot_id)
@@ -137,7 +140,7 @@ class DiscussionEventHandler:
 
 class DiscussionCommentEventHandler(DiscussionEventHandler):
     def not_mentioned_me(self):
-        return "@petercat-bot" not in self.event["comment"]["body"]
+        return f"@{BOT_NAME}" not in self.event["comment"]["body"]
 
     def get_comments(self, owner: str, repo: str, discussion_number: int):
         access_token = self.auth.token
@@ -147,14 +150,14 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
             discussion(number: $discussion_number) {
             comments(first: 100, after: $cursor) {
                 edges {
-                node {
-                    id
-                    body
-                    author {
-                    login
+                    node {
+                        id
+                        body
+                        author {
+                        login
+                        }
+                        createdAt
                     }
-                    createdAt
-                }
                 }
                 pageInfo {
                 endCursor
@@ -220,15 +223,22 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
                 comments = self.get_comments(
                     owner, self.event["repository"]["name"], discussion_number
                 )
-                print("comments", comments)
                 messages = [
                     Message(
-                        role="assistant" if comment.user.type == "Bot" else "user",
-                        content=[TextContentBlock(type="text", text=comment.body)],
+                        role=(
+                            "assistant"
+                            if comment["author"]["login"] == BOT_NAME
+                            else "user"
+                        ),
+                        content=[
+                            TextContentBlock(
+                                type="text",
+                                text=comment["body"],
+                            )
+                        ],
                     )
                     for comment in comments
                 ]
-                print("messages", messages)
                 repository_config = RepositoryConfigDAO()
                 repo_config = repository_config.get_by_repo_name(repo_name)
 
@@ -236,10 +246,9 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
 
                 prompt = generate_issue_comment_prompt(
                     repo_name=repo_name,
-                    issue_url=discussion.html_url,
+                    issue_url=discussion["html_url"],
                     issue_content=discussion_content,
                 )
-                print("promptprompt", prompt)
 
                 analysis_result = await agent_chat(
                     ChatData(
@@ -250,6 +259,7 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
                     self.auth,
                     bot,
                 )
+
                 discussion_id = await self.get_discussion_id(
                     owner, self.event["repository"]["name"], discussion_number
                 )
