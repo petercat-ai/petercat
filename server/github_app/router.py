@@ -73,15 +73,13 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
             installation_id=installation_id,
             created_at=int(time.time()),
         )
-        
+
         success, message = authorization_dao.create(authorization)
 
         installed_repositories = get_installation_repositories(
             access_token=access_token["token"]
         )
-
         for repo in installed_repositories["repositories"]:
-
             repository_config = RepositoryConfig(
                 owner_id=repo["owner"]["id"],
                 repo_name=repo["full_name"],
@@ -90,7 +88,6 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
                 created_at=int(time.time())
             )
             repository_config_dao.create(repository_config)
-
 
         return RedirectResponse(
             url=f"{WEB_URL}/github/installed?message={message}", status_code=302
@@ -109,10 +106,9 @@ async def github_app_webhook(
 
     if "installation" not in payload:
         return {"success": False, "message": "Invalid Webhook request"}
-
+    print(f"payload: {payload}")
     installation_id = payload["installation"]["id"]
     try:
-
         auth = Auth.AppAuth(
             app_id=APP_ID,
             private_key=get_private_key(
