@@ -1,9 +1,32 @@
-export const popupCenter = ({ url, title, w, h }: { url: string; title: string, w: number; h: number; }) => {
-  const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-  const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+export const popupCenter = ({
+  url,
+  title,
+  w,
+  h,
+}: {
+  url: string;
+  title: string;
+  w: number;
+  h: number;
+}) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const dualScreenLeft =
+    window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+  const dualScreenTop =
+    window.screenTop !== undefined ? window.screenTop : window.screenY;
 
-  const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-  const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+  const width = window.innerWidth
+    ? window.innerWidth
+    : document.documentElement.clientWidth
+    ? document.documentElement.clientWidth
+    : screen.width;
+  const height = window.innerHeight
+    ? window.innerHeight
+    : document.documentElement.clientHeight
+    ? document.documentElement.clientHeight
+    : screen.height;
 
   const systemZoom = width / window.screen.availWidth;
 
@@ -20,11 +43,11 @@ export const popupCenter = ({ url, title, w, h }: { url: string; title: string, 
       height=${h / systemZoom}, 
       top=${top}, 
       left=${left}
-    `
+    `,
   );
   if (newWindow && newWindow.focus) {
     newWindow.focus();
   }
 
   return newWindow;
-}
+};

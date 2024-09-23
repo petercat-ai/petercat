@@ -23,6 +23,9 @@ const Assistant = (props: AssistantProps) => {
   };
 
   const startDrag = (e: { clientY: any; preventDefault: () => void }) => {
+    if (typeof document === 'undefined') {
+      return;
+    }
     const startY = e.clientY;
     const initBottom = position.bottom;
 
