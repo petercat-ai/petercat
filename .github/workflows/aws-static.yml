@@ -52,17 +52,15 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        working-directory: ./client  # 仅在 ./client 目录下安装 Next.js 项目的依赖项
+        working-directory: ./client
 
       - name: Build Amplify App
         run: npm run build
-        working-directory: ./client  # 仅在 ./client 目录下构建 Next.js 应用程序
-
-      - name: Zip Build Folder
-        run: zip -r build.zip out
         working-directory: ./client
 
       - name: Upload Build to S3
+        working-directory: ./client
         run: |
-          aws s3 cp ./client/build.zip s3://${{ env.S3_BUCKET }}/builds/${{ github.sha }}.zip
+          aws s3 sync ./out s3://${{ env.S3_BUCKET }}
+
 
