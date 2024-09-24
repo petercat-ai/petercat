@@ -13,7 +13,7 @@ from agent.prompts.issue_helper import (
 
 from agent.qa_chat import agent_chat
 
-BOT_NAME = "petercat-bot"
+BOT_NAME = "petercat-assistant"
 
 
 class DiscussionEventHandler:
@@ -96,7 +96,6 @@ class DiscussionEventHandler:
         discussion_number = discussion["number"]
         message = Message(role="user", content=[text_block])
         repository_config = RepositoryConfigDAO()
-        print("repo_name", repo_name)
         repo_config = repository_config.get_by_repo_name(repo_name)
 
         prompt = generate_issue_prompt(
@@ -110,7 +109,7 @@ class DiscussionEventHandler:
 
         analysis_result = await agent_chat(
             ChatData(
-                prompt=prompt,
+                prompt=f"{bot.prompt}\n{prompt}",
                 messages=[message],
                 bot_id=repo_config.robot_id,
             ),
@@ -251,7 +250,7 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
 
                 analysis_result = await agent_chat(
                     ChatData(
-                        prompt=prompt,
+                        prompt=f"{bot.prompt}\n{prompt}",
                         messages=messages,
                         bot_id=repo_config.robot_id,
                     ),

@@ -53,7 +53,7 @@ smee -u https://smee.io/Q2VVS0casGnhZV -t http://127.0.0.1:8000/api/github/app/w
 
 5. 访问 [demo repository settings ](https://github.com/{ORG_NAME}/{REPO_NAME}/settings/installations)
 
-\> 配置 perter-cat 插件 [settings](https://github.com/organizations/{ORG_NAME}/settings/apps/petercat-bot) \> 
+\> 配置 perter-cat 插件 [settings](https://github.com/organizations/{ORG_NAME}/settings/apps/petercat-assistant) \> 
 Webhook URL \> 填入smee channel url, eg: https://smee.io/Q2VVS0casGnhZV 
 
 6. 在 demo repository 发起 issue 或者 pull-request，在 smee 、本地将能同步看到请求。

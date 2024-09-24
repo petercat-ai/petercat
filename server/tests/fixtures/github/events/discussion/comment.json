@@ -31,7 +31,7 @@
     },
     "created_at": "2024-09-23T17:41:20Z",
     "updated_at": "2024-09-23T17:41:20Z",
-    "body": "@petercat-bot \r\n你上一句话说了什么？",
+    "body": "@petercat-assistant \r\n你上一句话说了什么？",
     "reactions": {
       "url": "https://api.github.com/repos/petercat-ai/demo/discussions/comments/10729538/reactions",
       "total_count": 0,
