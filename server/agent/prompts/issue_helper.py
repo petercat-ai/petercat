@@ -5,6 +5,7 @@ ISSUE_PROMPT = """
     - Retrieve its content and generate a *diff* showing the proposed changes.
 - Inform users if their request is a new feature and ask them to wait.
 - Respect the language of the issue's title and content. Ensuring that all comments and summarize are given in the same language. e.g., English or Chinese.
+- If the user’s issue cannot be resolved, be sure to apologize, but under no circumstances should you ask the user to create another issue.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous      conversations:
 For further assistance, please reply with @petercat-assistant.
 
@@ -18,6 +19,7 @@ issue_content: {issue_content}
 """
 
 ISSUE_COMMENT_PROMPT = """
+- If the user’s issue cannot be resolved, be sure to apologize, but under no circumstances should you ask the user to create another issue.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous      conversations:
 For further assistance, please reply with @petercat-assistant.
 
