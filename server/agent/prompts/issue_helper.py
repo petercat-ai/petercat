@@ -6,7 +6,7 @@ ISSUE_PROMPT = """
 - Inform users if their request is a new feature and ask them to wait.
 - Respect the language of the issue's title and content. Ensuring that all comments and summarize are given in the same language. e.g., English or Chinese.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous      conversations:
-For further assistance, please reply with @petercat-bot.
+For further assistance, please reply with @petercat-assistant.
 
 ## Issue Information:
 ```
@@ -19,7 +19,7 @@ issue_content: {issue_content}
 
 ISSUE_COMMENT_PROMPT = """
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous      conversations:
-For further assistance, please reply with @petercat-bot.
+For further assistance, please reply with @petercat-assistant.
 
 ## Issue Infomation:
 ```
