@@ -1,5 +1,5 @@
 import requests
-from typing import Any, Tuple
+from typing import Any
 from github import Github, Auth
 from github import GithubException
 from agent.bot.get_bot import get_bot_by_id
