@@ -61,6 +61,6 @@ jobs:
       - name: Upload Build to S3
         working-directory: ./client
         run: |
-          aws s3 sync ./out s3://${{ env.S3_BUCKET }}
+          aws s3 sync ./out s3://${{ env.S3_BUCKET }} --content-type 'text/html'
 
 
