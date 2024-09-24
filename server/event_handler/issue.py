@@ -58,8 +58,6 @@ class IssueEventHandler:
                 repo_config = repository_config.get_by_repo_name(repo.full_name)
                 bot = get_bot_by_id(repo_config.robot_id)
 
-                print("prompt", f"{bot.prompt}\n{prompt}")
-
                 analysis_result = await agent_chat(
                     ChatData(
                         prompt=f"{bot.prompt}\n{prompt}",
