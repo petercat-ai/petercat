@@ -86,7 +86,6 @@ class DiscussionEventHandler:
             print("评论创建成功！")
         else:
             print(f"出现错误：{response.status_code}")
-            print(response.json())
 
     async def handle_discussion_event(self, action: str):
         owner = self.event["organization"]["login"]
