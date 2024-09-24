@@ -84,7 +84,7 @@ class IssueCommentEventHandler(IssueEventHandler):
             # 忽略机器人回复
             if self.event["sender"]["type"] == "Bot":
                 return {"success": True}
-            if self.event["action"] == "created":
+            if self.event["action"] in ["created", "edited"]:
                 # 如果没有 AT 我。就算了
                 if self.not_mentioned_me():
                     return {"success": True}
