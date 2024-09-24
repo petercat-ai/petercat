@@ -7,7 +7,7 @@ import BotCard from './components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import { useSearch } from '@/app/contexts/SearchContext';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 import AddBotCard from '@/components/AddBotCard';
 import { useRouter } from 'next/navigation';
 import Crash from '@/components/Crash';
@@ -15,7 +15,7 @@ import Crash from '@/components/Crash';
 declare type Bot = Tables<'bots'>;
 
 export default function List() {
-  const { search } = useSearch();
+  const { search } = useGlobal();
   let { data: bots, isLoading, error } = useBotList(true, search);
   const router = useRouter();
   if (isLoading) {
