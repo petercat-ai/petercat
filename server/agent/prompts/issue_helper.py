@@ -23,10 +23,6 @@ ISSUE_COMMENT_PROMPT = """
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
 
-## Issue Infomation:
-```
-repo_name: {repo_name}
-issue_url: {issue_url}
 issue_content: {issue_content}
 ```
 """
