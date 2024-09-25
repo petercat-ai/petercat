@@ -2,7 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 import { Navbar } from '@/components/Navbar';
-import { SearchProvider } from './contexts/SearchContext';
+import { GlobalProvider } from './contexts/GlobalContext';
 import { BotProvider } from './contexts/BotContext';
 import { usePathname } from 'next/navigation';
 import '@petercatai/assistant/style';
@@ -30,7 +30,7 @@ export default function RootLayout({
       <QueryClientProvider client={queryClient}>
         <body>
           <NextUIProvider>
-            <SearchProvider>
+            <GlobalProvider>
               <BotProvider>
                 {pathname === '/' ? (
                   children
@@ -41,7 +41,7 @@ export default function RootLayout({
                   </div>
                 )}
               </BotProvider>
-            </SearchProvider>
+            </GlobalProvider>
           </NextUIProvider>
         </body>
       </QueryClientProvider>

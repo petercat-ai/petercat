@@ -1,71 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import LangIcon from '../public/icons/LangIcon';
-import { useSearchParams } from 'next/navigation';
-import I18N from '@/app/utils/I18N';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react';
-
-const languages = [
-  { value: 'zh-CN', label: '中文简体' },
-  { value: 'zh-TW', label: '中文繁體' },
-  { value: 'en', label: ' English' },
-  { value: 'ja', label: '日本語' },
-  { value: 'ko', label: '한국어' },
-];
+import { useGlobal, languages } from '@/app/contexts/GlobalContext';
 
 interface LangProps {
   theme?: 'light' | 'dark';
 }
 const LanguageSwitcher = (props: LangProps) => {
   const { theme = 'dark' } = props;
-  const [language, setLanguage] = useState('');
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Helper function to set language and update I18N
-  const updateLanguage = (newLang: string) => {
-    setLanguage(newLang);
-    Cookies.set('language', newLang);
-    if (I18N.setLang) I18N.setLang(newLang);
-  };
-
-  // Get language from query params, cookies, or browser settings
-  useEffect(() => {
-    const langFromQuery = searchParams.get('lang');
-    const cookieLang = Cookies.get('language');
-    const browserLang = navigator.language;
-
-    const defaultLang = 'zh-CN'; // Fallback language
-
-    if (
-      langFromQuery &&
-      languages.some((lang) => lang.value === langFromQuery)
-    ) {
-      updateLanguage(langFromQuery);
-    } else if (cookieLang) {
-      updateLanguage(cookieLang);
-    } else {
-      const matchingLang =
-        languages.find((lang) => lang.value === browserLang)?.value ||
-        defaultLang;
-      updateLanguage(matchingLang);
-    }
-  }, [searchParams]);
+  const { language, setLanguage } = useGlobal();
 
   // Handle language change
   const handleLanguageChange = (newLang: string) => {
-    updateLanguage(newLang);
-
-    // Update URL query parameters
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('lang', newLang);
-    router.push(`?${newSearchParams.toString()}`);
+    setLanguage(newLang);
   };
 
   return (
