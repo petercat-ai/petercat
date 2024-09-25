@@ -113,7 +113,7 @@ const BotCard = (props: { bot: Bot }) => {
                 }}
               >
                 <Image
-                  src="../images/debug.svg"
+                  src="/images/debug.svg"
                   alt={I18N.components.BotCard.tiaoShi}
                   onClick={() => router.push(`/factory/edit?id=${bot.id}`)}
                   className="z-10 cursor-pointer"
@@ -135,7 +135,7 @@ const BotCard = (props: { bot: Bot }) => {
                 }}
               >
                 <Image
-                  src="../images/refresh.svg"
+                  src="/images/refresh.svg"
                   alt={I18N.components.BotCard.gengXinZhiShi}
                   className="z-10 cursor-pointer"
                 />

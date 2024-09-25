@@ -41,7 +41,7 @@ const BotCard = (props: {
           </div>
         </div>
         <div className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center">
-          <Image src="./images/chat.svg" />
+          <Image src="/images/chat.svg" />
         </div>
       </CardBody>
       <CardFooter className="text-small justify-between flex-col my-4 p-0 px-3 min-h-[84px]">
