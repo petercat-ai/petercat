@@ -10,11 +10,11 @@ import { SpaceIcon } from '@/public/icons/SpaceIcon';
 import { SearchIcon } from '@/public/icons/SearchIcon';
 import { AddIcon } from '@/public/icons/AddIcon';
 import PublishBotEntity from './PublishBotEntity';
-import { useSearch } from '@/app/contexts/SearchContext';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 import LanguageSwitcher from '@/components/LangSwitcher';
 
 export function Navbar() {
-  const { setSearch } = useSearch();
+  const { setSearch } = useGlobal();
   const [inputValue, setInputValue] = useState('');
 
   const router = useRouter();
@@ -56,7 +56,7 @@ export function Navbar() {
   };
   return (
     <div className="flex bg-[#F3F4F6] py-[20px] px-[24px] min-w-[900px] mb-[16px]">
-      <div className="w-[320px] flex mr-[0px]">
+      <div className="flex mr-[0px]">
         <Link href="/">
           <img src="/images/logo.svg" alt="petercat" width={115} height={32} />
         </Link>
