@@ -5,11 +5,11 @@
 
 <div align="center">
 
-  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> [Simplified Chinese](./README.md) | English
+  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">[简体中文](./README.md) | English | [日本語](./README.ja-JP.md)
 
   **An intelligent Q&A bot solution specifically designed for community maintainers and developers.**
 
- [![npm](https://img.shields.io/npm/dm/petercat-lui.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![npm](https://img.shields.io/npm/dm/@petercatai/assistant.svg)](https://www.npmjs.com/package/@petercatai/assistant)
   [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
   [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
   [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
