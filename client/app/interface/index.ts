@@ -11,4 +11,5 @@ export interface BotProfile {
   gitAvatar?: string;
   llm?: string;
   token_id?: string;
+  domain_whitelist: string[];
 }

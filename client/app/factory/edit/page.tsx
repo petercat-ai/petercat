@@ -138,6 +138,7 @@ export default function Edit() {
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
         draft.repoName = config.repo_name ?? '';
+        draft.domain_whitelist = config.domain_whitelist ?? [];
       });
   }, [config]);
 

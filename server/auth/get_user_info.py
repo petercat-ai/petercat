@@ -13,7 +13,6 @@ AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
 async def getUserInfoByToken(token):
     userinfo_url = f"https://{AUTH0_DOMAIN}/userinfo"
-    
     headers = {"authorization": f"Bearer {token}"}
     async with httpx.AsyncClient() as client:
         user_info_response = await client.get(userinfo_url, headers=headers)
@@ -26,13 +25,14 @@ async def getUserInfoByToken(token):
                 "picture": user_info.get("picture"),
                 "avatar": user_info.get("picture"),
                 "sub": user_info["sub"],
-                "sid": secrets.token_urlsafe(32)
+                "sid": secrets.token_urlsafe(32),
             }
             return data
-        else :
+        else:
             return None
 
-async def getUserAccessToken(user_id: str, provider = 'github'):
+
+async def getUserAccessToken(user_id: str, provider="github"):
     token = await get_oauth_token()
     user_accesstoken_url = f"https://{AUTH0_DOMAIN}/api/v2/users/{user_id}"
 
@@ -40,8 +40,16 @@ async def getUserAccessToken(user_id: str, provider = 'github'):
         headers = {"authorization": f"Bearer {token}"}
         user_info_response = await client.get(user_accesstoken_url, headers=headers)
         user = user_info_response.json()
-        identity = next((identity for identity in user['identities'] if identity['provider'] == provider), None)
-        return identity['access_token']
+        identity = next(
+            (
+                identity
+                for identity in user["identities"]
+                if identity["provider"] == provider
+            ),
+            None,
+        )
+        return identity["access_token"]
+
 
 async def generateAnonymousUser(clientId: str):
     token = f"client|{clientId}"
@@ -53,33 +61,36 @@ async def generateAnonymousUser(clientId: str):
         "nickname": random_name,
         "name": random_name,
         "picture": f"https://picsum.photos/seed/{seed}/100/100",
-        "sid": secrets.token_urlsafe(32)
+        "sid": secrets.token_urlsafe(32),
     }
 
     return token, data
+
 
 async def getAnonymousUserInfoByToken(token: str):
     supabase = get_client()
     rows = supabase.table("profiles").select("*").eq("id", token).execute()
     return rows.data[0] if (len(rows.data) > 0) else None
 
+
 async def get_user_id(request: Request):
-    user_info = request.session.get('user')
+    user_info = request.session.get("user")
     try:
         if user_info is None:
             return None
-        return user_info['sub'] 
+        return user_info["sub"]
 
     except Exception:
         return None
 
+
 async def get_user(request: Request) -> User | None:
-    user_info = request.session.get('user')
+    user_info = request.session.get("user")
     if user_info is None:
         return None
 
-    if user_info['sub'].startswith("client|"):
+    if user_info["sub"].startswith("client|"):
         return User(**user_info, anonymous=True)
-    
-    access_token = await getUserAccessToken(user_id=user_info['sub'])
+
+    access_token = await getUserAccessToken(user_id=user_info["sub"])
     return User(**user_info, access_token=access_token, anonymous=False)

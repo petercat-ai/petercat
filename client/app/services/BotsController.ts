@@ -6,7 +6,7 @@ import { BotProfile } from '@/app/interface';
 export declare type Bot = Tables<'bots'>;
 export declare type RAGDoc = Tables<'rag_docs'>;
 export declare type RagTask = Tables<'rag_tasks'>;
-
+export declare type GithubRepoConfig = Tables<'github_repo_config'>;
 axios.defaults.withCredentials = true;
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -77,18 +77,67 @@ export async function getChunkList(
   bot_id: string,
   page_size: number,
   page_number: number,
-): Promise<{rows:RAGDoc[],total:number}> {
+): Promise<{ rows: RAGDoc[]; total: number }> {
   const response = await axios.get(
     `${apiDomain}/api/rag/chunk/list?bot_id=${bot_id}&page_size=${page_size}&page_number=${page_number}`,
   );
   return response.data;
 }
 
-export async function getRagTask(
-  bot_id: string
-) :Promise<RagTask[]>{
+export async function getRagTask(bot_id: string): Promise<RagTask[]> {
   const response = await axios.get(
     `${apiDomain}/api/rag/task/latest?bot_id=${bot_id}`,
   );
   return response.data.data;
+}
+
+export async function getBotApprovalList(bot_id: string, status: string) {
+  const response = await axios.get(
+    `${apiDomain}/api/bot/approval/list?bot_id=${bot_id}&status=${status}`,
+  );
+  return response.data;
+}
+
+export async function publicBot(bot_id: string) {
+  return axios.post(`${apiDomain}/api/bot/deploy/market/public`, {
+    bot_id,
+  });
+}
+
+export async function takedownBot(bot_id: string) {
+  return axios.post(`${apiDomain}/api/bot/deploy/market/takedown`, {
+    bot_id,
+  });
+}
+
+export async function deployWebsite(payload: {
+  bot_id: string;
+  website_url?: string;
+}) {
+  return axios.post(`${apiDomain}/api/bot/deploy/website`, payload);
+}
+
+/**
+ * Get the repositories where the user has installed the Petercat Assistant GitHub app.
+ * @returns
+ */
+export async function getUserPeterCatAppRepos(): Promise<{
+  data: GithubRepoConfig[];
+}> {
+  const response = await axios.get(
+    `${apiDomain}/api/github/user/repos_installed_app`,
+  );
+  return response.data;
+}
+
+export interface BindBotToRepoConfig {
+  repo_id: string;
+  robot_id: string;
+}
+
+export async function bindBotToRepo(repsConfigs: BindBotToRepoConfig[]) {
+  const response = await axios.post(`${apiDomain}/api/github/repo/bind_bot`, {
+    repos: repsConfigs,
+  });
+  return response.data;
 }

@@ -15,6 +15,7 @@ export const defaultBotProfile: BotProfile = {
   helloMessage: '',
   llm: 'openai',
   token_id: 'default',
+  domain_whitelist: [],
 };
 
 const BotContext = createContext<

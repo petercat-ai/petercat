@@ -1,17 +1,25 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends, status, Query, Path
 from fastapi.responses import JSONResponse
-from auth.get_user_info import get_user_id
+from github import Github, Auth
+from auth.get_user_info import get_user, get_user_id
+from core.dao.botApprovalDAO import BotApprovalDAO
+from core.dao.botDAO import BotDAO
+from core.models.bot_approval import ApprovalStatus, BotApproval, TaskType
+from core.models.user import User
 from petercat_utils import get_client
 from typing import Annotated, Optional
 
 from bot.builder import bot_builder, bot_info_generator
-from core.type_class.bot import BotUpdateRequest, BotCreateRequest
+from core.type_class.bot import BotDeployRequest, BotUpdateRequest, BotCreateRequest
 
 router = APIRouter(
     prefix="/api/bot",
     tags=["bot"],
     responses={404: {"description": "Not found"}},
 )
+
+OFFICIAL_REPO = "petercat-ai/petercat"
 
 
 @router.get("/list")
@@ -201,3 +209,201 @@ async def delete_bot(
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
+
+
+@router.post("/deploy/market/public", status_code=200)
+async def deploy_bot_to_market(
+    body: BotDeployRequest, user: Annotated[User | None, Depends(get_user)] = None
+):
+    bot_id = body.bot_id
+    try:
+        if not user:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "您必须先使用 GitHub 登录 Petercat 才能使用此功能。",
+                },
+                status_code=500,
+            )
+        bot_dao = BotDAO()
+        bot = bot_dao.get_bot(bot_id)
+        if not bot:
+            return JSONResponse(
+                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                status_code=500,
+            )
+        if bot.public:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "机器人已公开，无需重复操作",
+                },
+                status_code=500,
+            )
+        auth = Auth.Token(token=user.access_token)
+        g = Github(auth=auth)
+        repo = g.get_repo(OFFICIAL_REPO)
+        issue_title = f"Market approval: {bot.name}"
+        issue_body = f"""Please have the project administrator review my bot; I would like to publish it on the official marketplace. Thank you.\n
+
+| bot_id     | bot_name | bot_description |
+|------------|----------|-----------------|
+| {bot.id} | {bot.name} | {bot.description} |
+        """
+        # issue = repo.create_issue(
+        #     title=issue_title, body=issue_body, labels=["approval"]
+        # )
+        issue = {"html_url": "https://github.com/petercat-ai/petercat/issues/1"}
+        bot_approval_dao = BotApprovalDAO()
+        bot_approval = BotApproval(
+            bot_id=bot.id,
+            approval_status=ApprovalStatus.OPEN,
+            task_type=TaskType.MARKET,
+            approval_path=issue["html_url"],
+            created_at=datetime.now(),
+        )
+        success, _ = bot_approval_dao.create(bot_approval)
+        if success:
+            return {"success": True, "approval_path": issue["html_url"]}
+        else:
+            raise Exception("Failed to create bot approval")
+
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
+@router.post("/deploy/market/takedown", status_code=200)
+async def takedown_bot_from_market(
+    body: BotDeployRequest, user: Annotated[User | None, Depends(get_user)] = None
+):
+    bot_id = body.bot_id
+    try:
+        if not user:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "您必须先使用 GitHub 登录 Petercat 才能使用此功能。",
+                },
+                status_code=500,
+            )
+        bot_dao = BotDAO()
+        bot = bot_dao.get_bot(bot_id)
+        if not bot:
+            return JSONResponse(
+                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                status_code=500,
+            )
+        if not bot["public"]:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "机器人未公开，无需重复操作",
+                },
+                status_code=500,
+            )
+        auth = Auth.Token(token=user.access_token)
+        g = Github(auth=auth)
+        repo = g.get_repo(OFFICIAL_REPO)
+        issue_title = f"Market approval: {bot.name}"
+        issue_body = f"""Please remove this robot from the market. Thank you.\n
+| bot_id     | bot_name    | bot_description    |
+|--------------|-----------|-----------|
+| {bot.id} | {bot.name} | {bot.description} |
+        """
+        issue = repo.create_issue(
+            title=issue_title, body=issue_body, labels=["approval"]
+        )
+        bot_approval_dao = BotApprovalDAO()
+        bot_approval = BotApproval(
+            bot_id=bot.id,
+            approval_status=ApprovalStatus.OPEN,
+            task_type=TaskType.MARKET,
+            approval_path=issue.html_url,
+            created_at=datetime.now(),
+        )
+        bot_approval_dao.create(bot_approval)
+        return {"success": True, "approval_path": issue.html_url}
+
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
+@router.post("/deploy/website", status_code=200)
+async def deploy_bot_to_market(
+    body: BotDeployRequest,
+    user: Annotated[User | None, Depends(get_user)] = None,
+):
+    bot_id = body.bot_id
+    website_url = body.website_url
+    try:
+        if not user:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "您必须先使用 GitHub 登录 Petercat 才能使用此功能。",
+                },
+                status_code=500,
+            )
+        bot_dao = BotDAO()
+        bot = bot_dao.get_bot(bot_id)
+        if not bot:
+            return JSONResponse(
+                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                status_code=500,
+            )
+        auth = Auth.Token(token=user.access_token)
+        g = Github(auth=auth)
+        repo = g.get_repo(OFFICIAL_REPO)
+        issue_title = f"Website approval : {bot.name}"
+        issue_body = f"""Please have the project administrator review my robot. I would like to deploy the robot on my website. Thank you.\n
+| bot_id     | bot_name    | bot_description    |
+|--------------|-----------|-----------|
+| {bot.id} | {bot.name} | {bot.description} |
+        \n
+
+My website: **{website_url}**
+        """
+        issue = repo.create_issue(
+            title=issue_title, body=issue_body, labels=["approval"]
+        )
+        bot_approval_dao = BotApprovalDAO()
+        bot_approval = BotApproval(
+            bot_id=bot.id,
+            approval_status=ApprovalStatus.OPEN,
+            approval_path=issue.html_url,
+            task_type=TaskType.WEBSITE,
+            created_at=datetime.now(),
+        )
+        success, _ = bot_approval_dao.create(bot_approval)
+        if success:
+            return {"success": True, "approval_path": issue.html_url}
+        else:
+            raise Exception("Failed to create bot website approval")
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
+@router.get("/approval/list")
+def get_bot_approval_config(
+    bot_id: str = Query(None, description="approval for bot id"),
+    status: Optional[ApprovalStatus] = Query(
+        None, description="approval status ,open or closed"
+    ),
+):
+    try:
+        bot_approval_dao = BotApprovalDAO()
+        (success, data) = bot_approval_dao.query_by_bot_id(bot_id)
+        if not success:
+            raise ValueError(data)
+        # filter data by status
+        if status:
+            data = list(filter(lambda x: x["approval_status"] == status.value, data))
+        return {"data": data, "status": 200}
+    except Exception as e:
+        return JSONResponse(content={"success": False, "errorMessage": e})
