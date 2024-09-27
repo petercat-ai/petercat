@@ -1,7 +1,5 @@
-from typing import Optional
 from core.dao.BaseDAO import BaseDAO
 from core.models.bot_approval import BotApproval
-from core.models.repository import RepositoryConfig
 from supabase.client import Client
 
 from petercat_utils.db.client.supabase import get_client

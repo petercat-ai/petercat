@@ -30,7 +30,7 @@ from github_app.utils import (
     get_private_key,
 )
 
-from petercat_utils import get_client, get_env_variable
+from petercat_utils import get_env_variable
 
 REGIN_NAME = get_env_variable("AWS_REGION")
 AWS_GITHUB_SECRET_NAME = get_env_variable("AWS_GITHUB_SECRET_NAME")

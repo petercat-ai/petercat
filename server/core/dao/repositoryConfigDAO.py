@@ -1,6 +1,6 @@
 from typing import List
 from core.dao.BaseDAO import BaseDAO
-from core.models.bot import RepoBindBotConfigVO, RepoBindBotRequest
+from core.models.bot import RepoBindBotConfigVO
 from core.models.repository import RepositoryConfig
 from supabase.client import Client
 

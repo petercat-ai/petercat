@@ -332,7 +332,7 @@ async def takedown_bot_from_market(
 
 
 @router.post("/deploy/website", status_code=200)
-async def deploy_bot_to_market(
+async def deploy_bot_to_website(
     body: BotDeployRequest,
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
