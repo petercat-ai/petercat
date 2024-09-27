@@ -447,8 +447,7 @@ export default function Edit() {
                       }
                     }}
                   >
-                    保存与部署
-                  </Button>
+                    {I18N.edit.page.baoCunYuBuShu}</Button>
                 </div>
               </div>
               <div className="position absolute top-[73px] left-0 w-full">

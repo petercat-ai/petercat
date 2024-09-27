@@ -22,5 +22,6 @@ export default {
     baoCunChengGong: '保存に成功しました',
     shengChengShiBaiC: '生成に失敗しました',
     shengChengChengGong: '生成に成功しました',
+    baoCunYuBuShu: '保存と展開',
   },
 };

@@ -22,5 +22,6 @@ export default {
     baoCunChengGong: 'Save Successful',
     shengChengShiBaiC: 'Generation Failed',
     shengChengChengGong: 'Generation Successful',
+    baoCunYuBuShu: 'Save and Deploy',
   },
 };

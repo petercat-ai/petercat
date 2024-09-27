@@ -156,7 +156,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       <span className="mt-[28px]">
                         <DeploySuccessIcon />
                       </span>
-                      <span>部署成功</span>
+                      <span>{I18N.DeployBotModal.index.buShuChengGong}</span>
                     </div>
                   </ModalHeader>
                   <ModalFooter className="flex justify-center items-center">
@@ -164,8 +164,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => onClose()}
                     >
-                      确认
-                    </Button>
+                      {I18N.components.BotCreateFrom.queRen}</Button>
                   </ModalFooter>
                 </>
               ) : (
@@ -175,7 +174,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       <span className="mt-[28px]">
                         <SaveSuccessIcon />
                       </span>
-                      <span>保存成功！</span>
+                      <span>{I18N.DeployBotModal.index.baoCunChengGong}</span>
                     </div>
                   </ModalHeader>
                   <ModalBody className="py-[0px]">
@@ -197,8 +196,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       variant="light"
                       onPress={() => onClose()}
                     >
-                      跳过
-                    </Button>
+                      {I18N.DeployBotModal.index.tiaoGuo}</Button>
                     <Button
                       isDisabled={deployBtnDisabled}
                       isLoading={
@@ -210,8 +208,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => handleOK()}
                     >
-                      确认
-                    </Button>
+                      {I18N.components.BotCreateFrom.queRen}</Button>
                   </ModalFooter>
                 </>
               )}

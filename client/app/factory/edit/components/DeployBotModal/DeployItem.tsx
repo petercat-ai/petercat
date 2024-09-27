@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { Checkbox } from '@nextui-org/react';
 import { useState } from 'react';
 
@@ -58,8 +59,7 @@ export const DeployItem: React.FC<IDeployItemProps> = ({
                   setIsChildrenHide(true);
                 }}
               >
-                收起
-              </span>
+                {I18N.DeployBotModal.DeployItem.shouQi}</span>
             )}
           </span>
         )}
