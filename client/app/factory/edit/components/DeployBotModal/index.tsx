@@ -9,7 +9,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Spinner,
 } from '@nextui-org/react';
 import {
   useBindBotToRepo,
@@ -25,6 +24,7 @@ import { DeployState } from './types';
 import { DeployContent } from './DeployContent';
 import { diffRepoBindResult } from './utils';
 import DeploySuccessIcon from '@/public/icons/DeploySuccessIcon';
+import Spinner from '@/components/Spinner';
 
 interface IModalProps {
   isOpen: boolean;
@@ -164,7 +164,8 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => onClose()}
                     >
-                      {I18N.components.BotCreateFrom.queRen}</Button>
+                      {I18N.components.BotCreateFrom.queRen}
+                    </Button>
                   </ModalFooter>
                 </>
               ) : (
@@ -178,9 +179,9 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                     </div>
                   </ModalHeader>
                   <ModalBody className="py-[0px]">
-                    {isGetUserReposLoading || isGetBotApprovalLoading ? (
-                      <Spinner></Spinner>
-                    ) : (
+                    <Spinner
+                      loading={isGetUserReposLoading || isGetBotApprovalLoading}
+                    >
                       <DeployContent
                         deployInfo={deployInfo}
                         websiteApproval={websiteApproval}
@@ -188,7 +189,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                         peterCatBotRepos={peterCatBotRepos}
                         onChange={handleDeployChange}
                       />
-                    )}
+                    </Spinner>
                   </ModalBody>
                   <ModalFooter className="flex justify-center items-center">
                     <Button
@@ -196,7 +197,8 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       variant="light"
                       onPress={() => onClose()}
                     >
-                      {I18N.DeployBotModal.index.tiaoGuo}</Button>
+                      {I18N.DeployBotModal.index.tiaoGuo}
+                    </Button>
                     <Button
                       isDisabled={deployBtnDisabled}
                       isLoading={
@@ -208,7 +210,8 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => handleOK()}
                     >
-                      {I18N.components.BotCreateFrom.queRen}</Button>
+                      {I18N.components.BotCreateFrom.queRen}
+                    </Button>
                   </ModalFooter>
                 </>
               )}
