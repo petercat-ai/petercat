@@ -120,6 +120,7 @@ class PullRequestEventHandler:
                     self.auth,
                     bot=bot,
                 )
+                print(f"analysis_result={analysis_result}")
                 return {"success": True}
             else:
                 return {"success": True}
