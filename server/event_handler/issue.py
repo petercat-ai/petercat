@@ -59,7 +59,9 @@ class IssueEventHandler:
 
                 analysis_result = await agent_chat(
                     ChatData(
-                        prompt=prompt, messages=[message], bot_id=repo_config.robot_id
+                        prompt=f"{bot.prompt}\n{prompt}",
+                        messages=[message],
+                        bot_id=repo_config.robot_id,
                     ),
                     self.auth,
                     bot,
@@ -75,7 +77,7 @@ class IssueEventHandler:
 
 class IssueCommentEventHandler(IssueEventHandler):
     def not_mentioned_me(self):
-        return "@petercat-bot" not in self.event["comment"]["body"]
+        return "@petercat-assistant" not in self.event["comment"]["body"]
 
     async def execute(self):
         try:
@@ -83,7 +85,7 @@ class IssueCommentEventHandler(IssueEventHandler):
             # 忽略机器人回复
             if self.event["sender"]["type"] == "Bot":
                 return {"success": True}
-            if self.event["action"] == "created":
+            if self.event["action"] in ["created", "edited"]:
                 # 如果没有 AT 我。就算了
                 if self.not_mentioned_me():
                     return {"success": True}
@@ -113,7 +115,7 @@ class IssueCommentEventHandler(IssueEventHandler):
 
                     analysis_result = await agent_chat(
                         ChatData(
-                            prompt=prompt,
+                            prompt=f"{bot.prompt}\n{prompt}",
                             messages=messages,
                             bot_id=repo_config.robot_id,
                         ),

@@ -5,7 +5,7 @@ import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import { useSearch } from '@/app/contexts/SearchContext';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 import { Assistant } from '@petercatai/assistant';
 import { useFingerprint } from '../hooks/useFingerprint';
 import PublishBotEntity from '@/components/PublishBotEntity';
@@ -16,7 +16,7 @@ declare type Bot = Tables<'bots'>;
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 
 export default function Market() {
-  const { search } = useSearch();
+  const { search } = useGlobal();
   const [visible, setVisible] = useState(false);
   const [isComplete, setComplete] = useState(false);
   const [currentBot, setCurrentBot] = useState<string>('');

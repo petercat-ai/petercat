@@ -367,18 +367,18 @@ export default function Edit() {
                         setActiveTab(`${key}` as ConfigTypeEnum)
                       }
                       classNames={{
-                        base: 'w-[230px] h-[36px]',
-                        tab: 'shadow-none w-[108px] h-[36px] px-0 py-0',
+                        base: 'min-w-[230px] h-[36px]',
+                        tab: 'shadow-none h-[36px] px-0 py-0',
                         tabContent:
-                          'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2 w-[108px] h-[36px]',
-                        cursor: 'shadow-none rounded-full w-[108px]',
+                          'group-data-[selected=true]:bg-[#FAE4CB] rounded-full px-3 py-2  h-[36px]',
+                        cursor: 'shadow-none rounded-full ',
                       }}
                     >
                       <Tab
                         key={ConfigTypeEnum.CHAT_CONFIG}
                         title={
                           <div className="flex items-center space-x-2 text-[#000] group-data-[selected=true]:text-[#000]">
-                            <ChatIcon />{' '}
+                            <ChatIcon />
                             <span className="ml-2">
                               {I18N.edit.page.duiHuaTiaoShi}
                             </span>

@@ -4,7 +4,10 @@ from petercat_utils import get_env_variable
 from github import Auth
 
 from event_handler.pull_request import PullRequestEventHandler
-from event_handler.discussion import DiscussionEventHandler
+from event_handler.discussion import (
+    DiscussionEventHandler,
+    DiscussionCommentEventHandler,
+)
 from event_handler.issue import IssueEventHandler, IssueCommentEventHandler
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
@@ -17,6 +20,7 @@ def get_handler(
     IssueCommentEventHandler,
     IssueEventHandler,
     DiscussionEventHandler,
+    DiscussionCommentEventHandler,
     None,
 ]:
     handlers = {
@@ -24,6 +28,7 @@ def get_handler(
         "issues": IssueEventHandler,
         "issue_comment": IssueCommentEventHandler,
         "discussion": DiscussionEventHandler,
+        "discussion_comment": DiscussionCommentEventHandler,
     }
     return (
         handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id)

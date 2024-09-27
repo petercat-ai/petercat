@@ -1,3 +1,4 @@
+import traceback
 from typing import Awaitable, Callable
 from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
@@ -33,18 +34,18 @@ class AuthMiddleWare(BaseHTTPMiddleware):
   async def oauth(self, request: Request):
     try:
       referer = request.headers.get('referer')
+      origin = request.headers.get('origin')
       if referer and referer.startswith(WEB_URL):
         return True
       
       token = await oauth2_scheme(request=request)
-
       if token:
         bot_dao = BotDAO()
         bot = bot_dao.get_bot(bot_id=token)
         return bot and (
           "*" in bot.domain_whitelist
           or
-          referer in bot.domain_whitelist
+          origin in bot.domain_whitelist
         )
     except HTTPException:
       return False
@@ -65,7 +66,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         return await call_next(request)
 
       # 获取 session 中的用户信息
-      user = request.session.get("user") 
+      user = request.session.get("user")
       if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
       
@@ -78,7 +79,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
     
       return await call_next(request)
     except HTTPException as e:
-      
+        print(traceback.format_exception(e))
         # 处理 HTTP 异常
         return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
     except Exception as e:

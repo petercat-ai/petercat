@@ -61,12 +61,15 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
           <Tooltip
             content={
               <span>
-                {I18N.components.PublishBotEntity.cOMIN}<a
+                {I18N.components.PublishBotEntity.cOMIN}
+                <a
                   href="https://github.com/petercat-ai/petercat/issues"
                   target="_blank"
                 >
-                  {I18N.components.PublishBotEntity.iSSUE}</a>
-                {I18N.components.PublishBotEntity.geiWoMenTiYi}</span>
+                  {I18N.components.PublishBotEntity.iSSUE}
+                </a>
+                {I18N.components.PublishBotEntity.geiWoMenTiYi}
+              </span>
             }
           >
             <Button
@@ -76,7 +79,8 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
               className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2 mr-[16px]"
               startContent={<StoreIcon />}
             >
-              {I18N.components.PublishBotEntity.shangJiaJiQiRen}</Button>
+              {I18N.components.PublishBotEntity.shangJiaJiQiRen}
+            </Button>
           </Tooltip>
         </>
       )}
@@ -95,12 +99,14 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {I18N.components.PublishBotEntity.xuanZeJiQiRen}</ModalHeader>
+                {I18N.components.PublishBotEntity.xuanZeJiQiRen}
+              </ModalHeader>
               <ModalBody className="h-[500px] h-auto">
                 {isLoading && <Spinner key="loading" />}
                 {isEmpty(botList) && !isLoading && (
                   <div key="empty" className="text-center">
-                    {I18N.components.PublishBotEntity.zanWuWeiShangJia}</div>
+                    {I18N.components.PublishBotEntity.zanWuWeiShangJia}
+                  </div>
                 )}
                 {map(botList, (bot: Bot) => (
                   <BotItem
@@ -127,7 +133,8 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
                     });
                   }}
                 >
-                  {I18N.components.PublishBotEntity.shangJiaJiQiRen}</Button>
+                  {I18N.components.PublishBotEntity.shangJiaJiQiRen}
+                </Button>
               </ModalFooter>
             </>
           )}

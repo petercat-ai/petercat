@@ -293,7 +293,7 @@ export default function Homepage() {
           </div>
           <div className="section min-w-[900px] bg-black group">
             <div className="h-screen border-box border-[20px] border-solid border-black bg-[#FEF4E1] rounded-[48px]">
-              <div className="relative h-full flex flex-col justify-center max-w-[1600px] mx-auto py-8 p-16 pt-10 xl:pt-[110px] opacity-0 transition-opacity group-[.active]:opacity-100">
+              <div className="relative h-full flex flex-col justify-center max-w-[1600px] mx-auto py-8 p-16 pt-10 2xl:pt-[110px] opacity-0 transition-opacity group-[.active]:opacity-100">
                 <Image
                   width={475}
                   height={95}
@@ -318,38 +318,38 @@ export default function Homepage() {
                             src="/images/create.svg"
                             alt="create"
                           />
-                          <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
+                          <h3 className="mt-6 mb-3 font-medium text-2xl 2xl:text-4xl text-black leading-[1.4]">
                             {I18N.app.page.duiHuaJiChuangZao}
                           </h3>
-                          <p className="text-base xl:text-xl text-zinc-800">
+                          <p className="text-base 2xl:text-xl text-zinc-800">
                             {I18N.app.page.jinXuYaoGaoZhi}
                           </p>
                         </td>
-                        <td className="relative px-5 xl:px-10 py-5 xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-500 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
+                        <td className="relative px-5 2xl:px-10 py-5 2xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-500 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
                           <Image
                             width={72}
                             height={73}
                             src="/images/knowledge.svg"
                             alt="knowledge"
                           />
-                          <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
+                          <h3 className="mt-6 mb-3 font-medium text-2xl 2xl:text-4xl text-black leading-[1.4]">
                             {I18N.app.page.zhiShiZiDongRu}
                           </h3>
-                          <p className="text-base xl:text-xl text-zinc-800">
+                          <p className="text-base 2xl:text-xl text-zinc-800">
                             {I18N.app.page.jiQiRenChuangJian}
                           </p>
                         </td>
-                        <td className="relative px-5 xl:px-10 py-5 xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-700 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
+                        <td className="relative px-5 2xl:px-10 py-5 2xl:py-[51.5px] w-[calc(100%/3)] translate-y-8 opacity-0 transition-all group-[.fp-completely]:delay-700 group-[.fp-completely]:translate-y-0 group-[.fp-completely]:opacity-100">
                           <Image
                             width={72}
                             height={73}
                             src="/images/integrated.svg"
                             alt="integrated"
                           />
-                          <h3 className="mt-6 mb-3 font-medium text-2xl xl:text-4xl text-black leading-[1.4]">
+                          <h3 className="mt-6 mb-3 font-medium text-2xl 2xl:text-4xl text-black leading-[1.4]">
                             {I18N.app.page.duoPingTaiJiCheng}
                           </h3>
-                          <p className="text-base xl:text-xl text-zinc-800">
+                          <p className="text-base 2xl:text-xl text-zinc-800">
                             {I18N.app.page.duoZhongJiChengFang}
                           </p>
                         </td>
@@ -600,7 +600,7 @@ export default function Homepage() {
                       </div>
                     </td>
                     <td
-                      className="border border-r-0 border-[#7F7A71] px-10 py-[51.5px] xl:bg-[url('/images/footer-contribution.png')] bg-contain bg-no-repeat pl-20 xl:pl-[335px]"
+                      className="border border-r-0 border-[#7F7A71] px-10 py-[51.5px] 2xl:bg-[url('/images/footer-contribution.png')] bg-contain bg-no-repeat pl-20 2xl:pl-[335px]"
                       rowSpan={2}
                     >
                       <img

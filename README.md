@@ -8,7 +8,7 @@
   
   **专为社区维护者和开发者打造的智能答疑机器人解决方案。**
 
-  [![npm](https://img.shields.io/npm/dm/petercat-lui.svg)](https://www.npmjs.com/package/petercat-lui)
+  [![npm](https://img.shields.io/npm/dm/@petercatai/assistant.svg)](https://www.npmjs.com/package/@petercatai/assistant)
   [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
   [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
   [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)

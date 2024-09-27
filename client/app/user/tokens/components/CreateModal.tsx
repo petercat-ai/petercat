@@ -24,7 +24,6 @@ export interface CreateModalProps {
 
 export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: CreateModalProps) {
   const [llmToken, setLLMToken] = useCreateToken();
-  console.log('CreateModal', { llmToken });
   useEffect(() => setLLMToken({}), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
