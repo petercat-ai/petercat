@@ -14,16 +14,17 @@ from core.models.bot import BotModel
 
 from utils.path_to_hunk import convert_patch_to_hunk
 from utils.random_str import random_str
-from agent.prompts.pull_request import get_pr_summary, get_role_prompt
+from agent.prompts.pull_request import get_role_prompt
 from agent.qa_chat import agent_chat
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
-def file_match(filename: str, patterns: List[str]): 
+
+def file_match(filename: str, patterns: List[str]):
     return any(fnmatch.fnmatch(filename, pattern) for pattern in patterns)
 
 
-class PullRequestEventHandler():
+class PullRequestEventHandler:
     event: Any
     auth: Auth.AppAuth
     g: Github
@@ -35,9 +36,9 @@ class PullRequestEventHandler():
 
     @staticmethod
     def get_file_exclusions():
-        with open('file_exclusions.yaml', 'r') as file:
+        with open("file_exclusions.yaml", "r") as file:
             config = yaml.safe_load(file)
-            return config['exclusions']
+            return config["exclusions"]
 
     @staticmethod
     def get_file_hunk(file: File):
@@ -54,42 +55,44 @@ class PullRequestEventHandler():
         return query_params.get("ref", [None])[0]
 
     def get_pull_request(self) -> tuple[PullRequest, PaginatedList[File], Repository]:
-        repo = self.g.get_repo(self.event['repository']["full_name"])
+        repo = self.g.get_repo(self.event["repository"]["full_name"])
         pr = repo.get_pull(self.event["pull_request"]["number"])
         diff = pr.get_files()
         return pr, diff, repo
 
     def get_file_diff(self, diff: PaginatedList[File]) -> str:
-        return "\n\n".join([
-            f"{file.filename}(sha: `{PullRequestEventHandler.get_file_ref(file)}`):\n{PullRequestEventHandler.get_file_hunk(file)}" 
-            for file in diff
-        ])
+        return "\n\n".join(
+            [
+                f"{file.filename}(sha: `{PullRequestEventHandler.get_file_ref(file)}`):\n{PullRequestEventHandler.get_file_hunk(file)}"
+                for file in diff
+            ]
+        )
 
     async def execute(self):
-        repo_full_name = self.event['repository']["full_name"]
+        repo_full_name = self.event["repository"]["full_name"]
         repository_config = RepositoryConfigDAO()
         repo_config = repository_config.get_by_repo_name(repo_full_name)
 
-
         # 用户尚未为仓库配置承接的 CR 机器人，不做任何事情
         if repo_config is None:
-            return { "success": True }
+            return {"success": True}
 
         try:
-            if self.event['action'] == 'opened':
+            if self.event["action"] == "opened":
                 pr, diff, repo = self.get_pull_request()
 
                 file_diff = self.get_file_diff(diff)
-                role_prompt = get_role_prompt(repo.full_name, pr.head.ref)
-                prompt = get_pr_summary(repo.full_name, pr.number, pr.title, pr.body, file_diff)
+                role_prompt = get_role_prompt(
+                    repo.full_name, pr.number, pr.title, pr.body, file_diff
+                )
 
                 print(f"file_diff={file_diff}")
-                pr_content = f'''
+                pr_content = f"""
                 ### Pr Title
                 {pr.title}
                 ### Pr Description
                 {pr.body}
-                '''
+                """
                 origin_bot = get_bot_by_id(repo_config.robot_id)
 
                 bot = Bot(
@@ -100,7 +103,7 @@ class PullRequestEventHandler():
                         name="pull_request_bot",
                         prompt=role_prompt,
                     ),
-                    llm_token=origin_bot.llm_token
+                    llm_token=origin_bot.llm_token,
                 )
 
                 analysis_result = await agent_chat(
@@ -108,21 +111,19 @@ class PullRequestEventHandler():
                         messages=[
                             Message(
                                 role="user",
-                                content=[TextContentBlock(type="text", text=prompt)]
+                                content=[
+                                    TextContentBlock(type="text", text=pr_content)
+                                ],
                             ),
-                            Message(
-                                role="user",
-                                content=[TextContentBlock(type="text", text=pr_content)]
-                            )
                         ],
                     ),
                     self.auth,
-                    bot=bot
+                    bot=bot,
                 )
                 print(f"analysis_result={analysis_result}")
-                return { "success": True }
+                return {"success": True}
             else:
-                return { "success": True }
+                return {"success": True}
 
         except GithubException as e:
             print(f"处理 GitHub 请求时出错：{e}")
