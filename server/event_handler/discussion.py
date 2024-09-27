@@ -243,8 +243,7 @@ class DiscussionCommentEventHandler(DiscussionEventHandler):
                 bot = get_bot_by_id(repo_config.robot_id)
 
                 prompt = generate_issue_comment_prompt(
-                    repo_name=repo_name,
-                    issue_url=discussion["html_url"],
+                    issue_number=discussion["number"],
                     issue_content=discussion_content,
                 )
 

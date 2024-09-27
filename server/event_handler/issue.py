@@ -104,8 +104,7 @@ class IssueCommentEventHandler(IssueEventHandler):
 
                 issue_content = f"{issue.title}: {issue.body}"
                 prompt = generate_issue_comment_prompt(
-                    repo_name=repo.full_name,
-                    issue_url=issue.url,
+                    issue_number=issue.number,
                     issue_content=issue_content,
                 )
 
