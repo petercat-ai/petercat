@@ -250,21 +250,20 @@ async def deploy_bot_to_market(
 |------------|----------|-----------------|
 | {bot.id} | {bot.name} | {bot.description} |
         """
-        # issue = repo.create_issue(
-        #     title=issue_title, body=issue_body, labels=["approval"]
-        # )
-        issue = {"html_url": "https://github.com/petercat-ai/petercat/issues/1"}
+        issue = repo.create_issue(
+            title=issue_title, body=issue_body, labels=["approval"]
+        )
         bot_approval_dao = BotApprovalDAO()
         bot_approval = BotApproval(
             bot_id=bot.id,
             approval_status=ApprovalStatus.OPEN,
             task_type=TaskType.MARKET,
-            approval_path=issue["html_url"],
+            approval_path=issue.html_url,
             created_at=datetime.now(),
         )
         success, _ = bot_approval_dao.create(bot_approval)
         if success:
-            return {"success": True, "approval_path": issue["html_url"]}
+            return {"success": True, "approval_path": issue.html_url}
         else:
             raise Exception("Failed to create bot approval")
 
