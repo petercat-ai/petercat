@@ -48,9 +48,6 @@ Review the diff for any errors or vulnerabilities in the updated files. Focus on
 - The + sign means that code has been added.
 - The - sign means that code has been removed.
 
-## File Diff:
-{file_diff}
-
 # Constraints
 - Only create comments for significant issues, such as potential logical errors, vulnerabilities, or functionality-impacting bugs and typo.
 - Absolutely avoid commenting on or evaluating any files that were not part of the current changeset (no diffs). This includes any files in the repository that have not been modified as part of the pull request.
@@ -63,12 +60,11 @@ Review the diff for any errors or vulnerabilities in the updated files. Focus on
 
 
 def get_role_prompt(
-    repo_name: str, pull_number: int, title: str, description: str, file_diff: str
+    repo_name: str, pull_number: int, title: str, description: str
 ):
     return PULL_REQUEST_ROLE.format(
         repo_name=repo_name,
         pull_number=pull_number,
         title=title,
         description=description,
-        file_diff=file_diff,
     )

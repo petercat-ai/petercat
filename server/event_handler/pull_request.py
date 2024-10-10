@@ -83,7 +83,7 @@ class PullRequestEventHandler:
 
                 file_diff = self.get_file_diff(diff)
                 role_prompt = get_role_prompt(
-                    repo.full_name, pr.number, pr.title, pr.body, file_diff
+                    repo.full_name, pr.number, pr.title, pr.body
                 )
 
                 print(f"file_diff={file_diff}")
@@ -92,6 +92,8 @@ class PullRequestEventHandler:
                 {pr.title}
                 ### Pr Description
                 {pr.body}
+                ### File Diff
+                {file_diff}
                 """
                 origin_bot = get_bot_by_id(repo_config.robot_id)
 
