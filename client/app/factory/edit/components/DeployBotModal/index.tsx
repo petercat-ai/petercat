@@ -55,9 +55,9 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     isSuccess: isDeployWebsiteSuccess,
   } = useDeployWebsite();
 
-  const { data: botApprovalList = [], isLoading: isGetBotApprovalLoading } =
+  const { data: botApprovalList, isLoading: isGetBotApprovalLoading } =
     useGetBotApprovalList(botProfile.id, 'open', isOpen);
-  const { data: peterCatBotRepos = [], isLoading: isGetUserReposLoading } =
+  const { data: peterCatBotRepos, isLoading: isGetUserReposLoading } =
     useGetUserPeterCatAppRepos(isOpen);
 
   const marketApproval =
@@ -75,10 +75,10 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
         checked: !!botProfile.domain_whitelist[0],
         targetUrl: botProfile.domain_whitelist[0],
       },
-      appInstalledRepo: peterCatBotRepos.map((item: any) => ({
+      appInstalledRepo: peterCatBotRepos?.map((item: any) => ({
         repo_id: item.repo_id,
         checked: item.robot_id === botProfile.id,
-      })),
+      }))??[],
     };
   }, [botProfile, peterCatBotRepos]);
 
@@ -193,7 +193,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                         deployInfo={deployInfo}
                         websiteApproval={websiteApproval}
                         marketApproval={marketApproval}
-                        peterCatBotRepos={peterCatBotRepos}
+                        peterCatBotRepos={peterCatBotRepos??[]}
                         onChange={handleDeployChange}
                       />
                     </Spinner>

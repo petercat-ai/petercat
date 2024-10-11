@@ -191,7 +191,7 @@ export const useGetUserPeterCatAppRepos = (enabled: boolean = true) => {
     queryKey: ['github.user.app.repos'],
     queryFn: async () => getUserPeterCatAppRepos(),
     select: (data) => data.data,
-    enabled,
+    enabled
   });
 };
 
