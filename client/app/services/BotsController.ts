@@ -125,7 +125,7 @@ export async function getUserPeterCatAppRepos(): Promise<{
   data: GithubRepoConfig[];
 }> {
   const response = await axios.get(
-    `${apiDomain}/api/github/user/repos_installed_app1`,
+    `${apiDomain}/api/github/user/repos_installed_app`,
   );
   return response.data;
 }
