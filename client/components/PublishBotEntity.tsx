@@ -46,6 +46,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
       toast.success(I18N.components.PublishBotEntity.shangJiaChengGong);
       onClose();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editSuccess]);
 
   useEffect(() => {
@@ -130,6 +131,7 @@ const PublishBotEntity = (props: { area: 'nav' | 'list' }) => {
                       id: selectedBot,
                       name: selectedBotName,
                       public: true,
+                      domain_whitelist: []
                     });
                   }}
                 >

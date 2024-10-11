@@ -166,7 +166,7 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
               }}
             >
               {peterCatBotRepos?.map((repo: GithubRepoConfig) => (
-                <div className="w-full p-[8px] bg-[#F4F4F5] rounded-[8px]">
+                <div className="w-full p-[8px] bg-[#F4F4F5] rounded-[8px]" key={repo.repo_id}>
                   <Checkbox value={repo.repo_id!}>
                     <div
                       style={{ display: 'flex', flexDirection: 'column' }}
