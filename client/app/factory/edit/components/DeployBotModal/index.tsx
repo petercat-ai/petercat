@@ -59,9 +59,11 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     useGetBotApprovalList(botProfile.id, 'open', isOpen);
   const { data: peterCatBotRepos = [], isLoading: isGetUserReposLoading } =
     useGetUserPeterCatAppRepos(isOpen);
+
   const marketApproval =
     (botApprovalList ?? []).find((item: any) => item.task_type === 'market') ??
     {};
+
   const websiteApproval =
     (botApprovalList ?? []).find((item: any) => item.task_type === 'website') ??
     {};
@@ -78,13 +80,16 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
         checked: item.robot_id === botProfile.id,
       })),
     };
-  }, [botProfile, botApprovalList, peterCatBotRepos]);
+  }, [botProfile, peterCatBotRepos]);
 
+  // init deployInfo
   useEffect(() => {
     setDeployInfo(lodash.cloneDeep(originDeployModel));
   }, [originDeployModel]);
 
   const [deployBtnDisabled, setDeployBtnDisabled] = useState(true);
+
+  // diff deployInfo and originDeployModel, if equal, set deployBtnDisabled to true
   useEffect(() => {
     if (lodash.isEqual(originDeployModel, deployInfo)) {
       setDeployBtnDisabled(true);
@@ -133,11 +138,13 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     );
     bindRepoList.length > 0 && bindBotToRepo(bindRepoList);
   };
+
   const isDeploySuccess =
     isPublicBotSuccess ||
     isUnPublicBotSuccess ||
     isDeployWebsiteSuccess ||
     isBindBotSuccess;
+
   return (
     <>
       <Modal
