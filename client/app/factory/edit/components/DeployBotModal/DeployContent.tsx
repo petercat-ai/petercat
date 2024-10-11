@@ -146,13 +146,6 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
                 .filter((item) => item.checked)
                 .map((item) => item.repo_id)}
               onChange={(selectedRepoIds: string[]) => {
-                const tempInstalledRepo = appInstalledRepo.map((item) => {
-                  let currentChecked = selectedRepoIds.includes(item.repo_id);
-                  return {
-                    ...item,
-                    checked: currentChecked,
-                  };
-                });
                 onChange({
                   ...deployInfo,
                   appInstalledRepo: appInstalledRepo.map((item) => {
