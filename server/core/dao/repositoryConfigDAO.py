@@ -51,7 +51,7 @@ class RepositoryConfigDAO(BaseDAO):
                 .execute()
             )
             if not res:
-                raise ValueError("Failed to bind bot")
+                raise ValueError("Failed to bind the bot.")
 
     def get_by_repo_name(self, repo_name: str):
         response = (

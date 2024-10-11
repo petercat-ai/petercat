@@ -265,7 +265,7 @@ async def deploy_bot_to_market(
         if success:
             return {"success": True, "approval_path": issue.html_url}
         else:
-            raise Exception("Failed to create bot approval")
+            raise Exception("Failed to create the bot approval.")
 
     except Exception as e:
         return JSONResponse(
@@ -381,7 +381,7 @@ My website: **{website_url}**
         if success:
             return {"success": True, "approval_path": issue.html_url}
         else:
-            raise Exception("Failed to create bot website approval")
+            raise Exception("Failed to create the bot website approval.")
     except Exception as e:
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
