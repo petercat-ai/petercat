@@ -229,7 +229,7 @@ async def deploy_bot_to_market(
         bot = bot_dao.get_bot(bot_id)
         if not bot:
             return JSONResponse(
-                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                content={"success": False, "errorMessage": "机器人不存在,无法操作"},
                 status_code=500,
             )
         if bot.public:
@@ -244,7 +244,7 @@ async def deploy_bot_to_market(
         g = Github(auth=auth)
         repo = g.get_repo(OFFICIAL_REPO)
         issue_title = f"Market approval: {bot.name}"
-        issue_body = f"""Please have the project administrator review my bot; I would like to publish it on the official marketplace. Thank you.\n
+        issue_body = f"""I would like to publish it on the official marketplace. Here is the information about my bot.\n
 
 | bot_id     | bot_name | bot_description |
 |------------|----------|-----------------|
@@ -273,8 +273,8 @@ async def deploy_bot_to_market(
         )
 
 
-@router.post("/deploy/market/takedown", status_code=200)
-async def takedown_bot_from_market(
+@router.post("/deploy/market/unPublic", status_code=200)
+async def unPublic_bot_from_market(
     body: BotDeployRequest, user: Annotated[User | None, Depends(get_user)] = None
 ):
     bot_id = body.bot_id
@@ -291,7 +291,7 @@ async def takedown_bot_from_market(
         bot = bot_dao.get_bot(bot_id)
         if not bot:
             return JSONResponse(
-                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                content={"success": False, "errorMessage": "机器人不存在,无法操作"},
                 status_code=500,
             )
         if not bot["public"]:
@@ -351,14 +351,14 @@ async def deploy_bot_to_website(
         bot = bot_dao.get_bot(bot_id)
         if not bot:
             return JSONResponse(
-                content={"success": False, "errorMessage": "机器人不存在,无法公开"},
+                content={"success": False, "errorMessage": "机器人不存在,无法操作"},
                 status_code=500,
             )
         auth = Auth.Token(token=user.access_token)
         g = Github(auth=auth)
         repo = g.get_repo(OFFICIAL_REPO)
-        issue_title = f"Website approval : {bot.name}"
-        issue_body = f"""Please have the project administrator review my robot. I would like to deploy the robot on my website. Thank you.\n
+        issue_title = f"Website Deployment Application : {bot.name}"
+        issue_body = f"""I would like to deploy the robot on my website. Here is the information about my bot.\n
 | bot_id     | bot_name    | bot_description    |
 |--------------|-----------|-----------|
 | {bot.id} | {bot.name} | {bot.description} |

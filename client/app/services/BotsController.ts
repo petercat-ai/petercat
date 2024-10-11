@@ -104,8 +104,8 @@ export async function publicBot(bot_id: string) {
   });
 }
 
-export async function takedownBot(bot_id: string) {
-  return axios.post(`${apiDomain}/api/bot/deploy/market/takedown`, {
+export async function unPublicBot(bot_id: string) {
+  return axios.post(`${apiDomain}/api/bot/deploy/market/unPublic`, {
     bot_id,
   });
 }

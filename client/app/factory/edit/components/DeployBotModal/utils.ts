@@ -9,7 +9,6 @@ export const diffRepoBindResult = (
   return origin
     .map((item) => {
       const currentItem = current.find((cur) => cur.repo_id === item.repo_id);
-
       if (currentItem) {
         const originChecked = item.checked;
         const curChecked = currentItem.checked;
@@ -21,8 +20,7 @@ export const diffRepoBindResult = (
           };
         }
       }
-
       return null;
     })
-    .filter((item) => item !== null);
+    .filter((item) => item !== null) as BindBotToRepoConfig[];
 };

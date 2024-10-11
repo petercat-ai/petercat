@@ -15,7 +15,7 @@ import {
   usePublicBot,
   useGetBotApprovalList,
   useGetUserPeterCatAppRepos,
-  useTakedownBot,
+  useUnPublicBot,
   useDeployWebsite,
 } from '@/app/hooks/useBot';
 import { useBot } from '@/app/contexts/BotContext';
@@ -45,10 +45,10 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     isSuccess: isPublicBotSuccess,
   } = usePublicBot();
   const {
-    takedownBot,
-    isLoading: isTakeDownBotLoading,
-    isSuccess: isTakedownBotSuccess,
-  } = useTakedownBot();
+    unPublicBot,
+    isLoading: isUnPublicBotLoading,
+    isSuccess: isUnPublicBotSuccess,
+  } = useUnPublicBot();
   const {
     deployWebsite,
     isLoading: isDeployWebsiteLoading,
@@ -107,7 +107,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
       !deployInfo.publicMarket?.checked &&
       originDeployModel.publicMarket?.checked
     ) {
-      takedownBot(botProfile.id);
+      unPublicBot(botProfile.id);
     }
     if (
       deployInfo.deployWebsite?.checked &&
@@ -135,7 +135,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   };
   const isDeploySuccess =
     isPublicBotSuccess ||
-    isTakedownBotSuccess ||
+    isUnPublicBotSuccess ||
     isDeployWebsiteSuccess ||
     isBindBotSuccess;
   return (
@@ -203,7 +203,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       isDisabled={deployBtnDisabled}
                       isLoading={
                         isPublicBotLoading ||
-                        isTakeDownBotLoading ||
+                        isUnPublicBotLoading ||
                         isDeployWebsiteLoading ||
                         isBindBotLoading
                       }

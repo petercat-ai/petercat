@@ -12,7 +12,7 @@ import {
   getRagTask,
   getUserPeterCatAppRepos,
   publicBot,
-  takedownBot,
+  unPublicBot,
   updateBot,
 } from '@/app/services/BotsController';
 import {
@@ -161,13 +161,13 @@ export function usePublicBot() {
   };
 }
 
-export function useTakedownBot() {
+export function useUnPublicBot() {
   const mutation = useMutation({
-    mutationFn: takedownBot,
+    mutationFn: unPublicBot,
   });
   return {
     data: mutation.data,
-    takedownBot: mutation.mutate,
+    unPublicBot: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,
     isSuccess: mutation.isSuccess,
