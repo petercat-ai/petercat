@@ -12,9 +12,6 @@ class TaskType(Enum):
 class ApprovalStatus(Enum):
     OPEN = "open"
     CLOSED = "closed"
-    # SUCCESS = "success"
-    # FAILED = "failed"
-    # WITHDRAW = "withdraw"
 
 
 class BotApproval(BaseModel):
