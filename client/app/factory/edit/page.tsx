@@ -1,6 +1,6 @@
 'use client';
 import I18N from '@/app/utils/I18N';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -28,6 +28,7 @@ import { BotTaskProvider } from './components/TaskContext';
 import { useSearchParams } from 'next/navigation';
 import 'react-toastify/dist/ReactToastify.css';
 import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
+import DeployBotModal from './components/DeployBotModal';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -51,6 +52,7 @@ export default function Edit() {
     VisibleTypeEnum.BOT_CONFIG,
   );
   const [gitUrl, setGitUrl] = React.useState<string>('');
+  const [deployModalIsOpen, setDeployModalIsOpen] = useState(false);
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 
   useEffect(() => {
@@ -136,6 +138,7 @@ export default function Edit() {
         draft.prompt = config.prompt || '';
         draft.public = config.public ?? false;
         draft.repoName = config.repo_name ?? '';
+        draft.domain_whitelist = config.domain_whitelist ?? [];
       });
   }, [config]);
 
@@ -162,7 +165,7 @@ export default function Edit() {
 
   useEffect(() => {
     if (createSuccess) {
-      toast.success(I18N.edit.page.shengChengChengGong);
+      setDeployModalIsOpen(true);
     }
   }, [createSuccess]);
 
@@ -174,7 +177,7 @@ export default function Edit() {
 
   useEffect(() => {
     if (editSuccess) {
-      toast.success(I18N.edit.page.baoCunChengGong);
+      setDeployModalIsOpen(true);
     }
   }, [editSuccess]);
 
@@ -396,13 +399,6 @@ export default function Edit() {
                       />
                     </Tabs>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {/* TODO 暂时关闭上架入口 */}
-                    {/* <PublicSwitcher 
-                      isSelected={!!botProfile?.public}
-                      setBotProfile={setBotProfile}
-                    /> */}
-                  </div>
                 </div>
                 <div className="h-full grow overflow-y-auto overflow-x-hidden flex h-full flex-col">
                   <div
@@ -451,8 +447,7 @@ export default function Edit() {
                       }
                     }}
                   >
-                    {I18N.edit.page.baoCun}
-                  </Button>
+                    {I18N.edit.page.baoCunYuBuShu}</Button>
                 </div>
               </div>
               <div className="position absolute top-[73px] left-0 w-full">
@@ -480,10 +475,17 @@ export default function Edit() {
                 </div>
               </div>
             </div>
+            <DeployBotModal
+              isOpen={deployModalIsOpen}
+              onClose={() => {
+                setDeployModalIsOpen(false);
+              }}
+            />
           </div>
         ) : (
           <></>
         )}
+
         {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
           <Knowledge
             botId={botProfile.id}

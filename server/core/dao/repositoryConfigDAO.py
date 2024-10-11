@@ -1,4 +1,6 @@
+from typing import List
 from core.dao.BaseDAO import BaseDAO
+from core.models.bot import RepoBindBotConfigVO
 from core.models.repository import RepositoryConfig
 from supabase.client import Client
 
@@ -16,7 +18,7 @@ class RepositoryConfigDAO(BaseDAO):
         try:
             repo_config = (
                 self.client.from_("github_repo_config")
-                .insert(data.model_dump())
+                .insert(data.model_dump(exclude=["id"]))
                 .execute()
             )
             if repo_config:
@@ -27,7 +29,7 @@ class RepositoryConfigDAO(BaseDAO):
             print("Error: ", e)
             return False, {"message": "GithubRepoConfig creation failed"}
 
-    def query_by_orgs(self, orgs: list[str]):
+    def query_by_owners(self, orgs: list[str]):
         response = (
             self.client.table("github_repo_config")
             .select("*")
@@ -36,6 +38,20 @@ class RepositoryConfigDAO(BaseDAO):
         )
 
         return response.data
+
+    def update_bot_to_repos(
+        self,
+        repos: List[RepoBindBotConfigVO],
+    ) -> bool:
+        for repo in repos:
+            res = (
+                self.client.table("github_repo_config")
+                .update({"robot_id": repo.robot_id})
+                .match({"repo_id": repo.repo_id})
+                .execute()
+            )
+            if not res:
+                raise ValueError("Failed to bind the bot.")
 
     def get_by_repo_name(self, repo_name: str):
         response = (

@@ -1,10 +1,17 @@
 from typing import Optional, List
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
+
 
 class BotCreateRequest(BaseModel):
     repo_name: str
     starters: Optional[List[str]] = None
     hello_message: Optional[str] = None
+
+
+class BotDeployRequest(BaseModel):
+    bot_id: str
+    website_url: Optional[HttpUrl] = None
+
 
 class BotUpdateRequest(BaseModel):
     id: str
@@ -17,6 +24,7 @@ class BotUpdateRequest(BaseModel):
     hello_message: Optional[str] = None
     llm: Optional[str] = None
     token_id: Optional[str] = None
+
 
 class ErrorResponse(BaseModel):
     error: str

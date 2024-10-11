@@ -21,5 +21,6 @@ export default {
     baoCunChengGong: '保存成功',
     shengChengShiBaiC: '生成失敗',
     shengChengChengGong: '生成成功',
+    baoCunYuBuShu: '保存與部署',
   },
 };

@@ -22,5 +22,6 @@ export default {
     baoCunChengGong: '저장 성공',
     shengChengShiBaiC: '생성 실패',
     shengChengChengGong: '생성 성공',
+    baoCunYuBuShu: '저장 및 배포',
   },
 };

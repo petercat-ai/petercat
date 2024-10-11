@@ -34,7 +34,6 @@ class IssueEventHandler:
         return issue, repo
 
     async def execute(self):
-
         try:
             action = self.event["action"]
             if self.event["sender"]["type"] == "Bot":
