@@ -149,7 +149,7 @@ $$;
 
 ALTER FUNCTION "public"."match_documents"("query_embedding" "public"."vector", "filter" "jsonb") OWNER TO "postgres";
 
-CREATE OR REPLACE FUNCTION "public"."match_rag_docs"("query_embedding" "public"."vector", "filter" "jsonb" DEFAULT '{}'::"jsonb") RETURNS TABLE("id" "uuid", "content" "text", "metadata" "jsonb", "embedding" "public"."vector", "similarity" double precision)
+CREATE OR REPLACE FUNCTION "public"."match_embedding_docs"("query_embedding" "public"."vector", "filter" "jsonb" DEFAULT '{}'::"jsonb") RETURNS TABLE("id" "uuid", "content" "text", "metadata" "jsonb", "embedding" "public"."vector", "similarity" double precision)
     LANGUAGE "plpgsql"
     AS $$
 #variable_conflict use_column
@@ -164,7 +164,7 @@ begin
   ) as similarity
   from rag_docs
   where metadata @> jsonb_extract_path(filter, 'metadata')
-  and bot_id = jsonb_extract_path_text(filter, 'bot_id')
+  and repo_name = jsonb_extract_path_text(filter, 'repo_name')
   order by rag_docs.embedding <=> query_embedding;
 end;
 $$;
