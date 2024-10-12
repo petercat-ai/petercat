@@ -120,11 +120,10 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
     supabase = get_client()
     is_doc_added_query = (
         supabase.table(TABLE_NAME)
-        .select("id, repo_name, commit_id, file_path, bot_id")
+        .select("id, repo_name, commit_id, file_path")
         .eq("repo_name", config.repo_name)
         .eq("commit_id", loader.commit_id)
         .eq("file_path", config.file_path)
-        .eq("bot_id", config.bot_id)
         .execute()
     )
     if not is_doc_added_query.data:
@@ -139,7 +138,6 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                 commit_id=loader.commit_id,
                 file_sha=loader.file_sha,
                 file_path=config.file_path,
-                bot_id=config.bot_id,
             )
             return store
         else:
@@ -149,7 +147,6 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                     "repo_name": config.repo_name,
                     "commit_id": loader.commit_id,
                     "file_path": config.file_path,
-                    "bot_id": config.bot_id,
                 }
                 for item in is_doc_equal_query.data
             ]
