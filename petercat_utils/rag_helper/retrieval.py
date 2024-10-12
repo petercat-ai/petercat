@@ -4,6 +4,8 @@ from typing import Any, Dict
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 
+from core.dao.botDAO import BotDAO
+
 from .github_file_loader import GithubFileLoader
 
 from ..data_class import GitDocConfig, RAGGitDocConfig, S3Config
@@ -11,7 +13,7 @@ from ..db.client.supabase import get_client
 
 
 TABLE_NAME = "rag_docs"
-QUERY_NAME = "match_rag_docs"
+QUERY_NAME = "match_embedding_docs"
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 200
 
@@ -177,7 +179,11 @@ def search_knowledge(
     bot_id: str,
     meta_filter: Dict[str, Any] = {},
 ):
-    retriever = init_retriever({"filter": {"metadata": meta_filter, "bot_id": bot_id}})
+    bot_dao = BotDAO()
+    bot = bot_dao.get_bot(bot_id)
+    retriever = init_retriever(
+        {"filter": {"metadata": meta_filter, "repo_name": bot.repo_name}}
+    )
     docs = retriever.invoke(query)
     documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
@@ -194,6 +200,8 @@ def get_chunk_list(bot_id: str, page_size: int, page_number: int):
         .offset((page_number - 1) * page_size)
         .execute()
     )
-    count_response = client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+    count_response = (
+        client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+    )
     total_count = len(count_response.data)
     return {"rows": query.data, "total": total_count}

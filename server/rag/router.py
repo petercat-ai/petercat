@@ -58,8 +58,8 @@ def add_knowledge_by_issue(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/search_knowledge", dependencies=[Depends(verify_rate_limit)])
-def search_knowledge(query: str, bot_id: str, filter: dict = {}):
-    data = retrieval.search_knowledge(query, bot_id, filter)
+def search_knowledge(query: str, repo_name: str, filter: dict = {}):
+    data = retrieval.search_knowledge(query, repo_name, filter)
     return data
 
 
