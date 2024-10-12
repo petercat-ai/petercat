@@ -187,18 +187,18 @@ def search_knowledge(
     return json_output
 
 
-def get_chunk_list(bot_id: str, page_size: int, page_number: int):
+def get_chunk_list(repo_name: str, page_size: int, page_number: int):
     client = get_client()
     query = (
         client.table(TABLE_NAME)
         .select("id, content, file_path,update_timestamp")
-        .eq("bot_id", bot_id)
+        .eq("repo_name", repo_name)
         .limit(page_size)
         .offset((page_number - 1) * page_size)
         .execute()
     )
     count_response = (
-        client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+        client.table(TABLE_NAME).select("id").eq("repo_name", repo_name).execute()
     )
     total_count = len(count_response.data)
     return {"rows": query.data, "total": total_count}

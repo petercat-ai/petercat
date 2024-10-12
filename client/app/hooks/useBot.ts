@@ -116,15 +116,15 @@ export function useBotConfigGenerator() {
 }
 
 export const useBotRAGChunkList = (
-  botId: string,
+  repoName: string,
   page_size: number,
   page_number: number,
   enabled: boolean = true,
   refetchInterval: boolean = false,
 ) => {
   return useQuery({
-    queryKey: [`rag.chunk.list`, page_number, botId],
-    queryFn: async () => getChunkList(botId, page_size, page_number),
+    queryKey: [`rag.chunk.list`, page_number, repoName],
+    queryFn: async () => getChunkList(repoName, page_size, page_number),
     select: (data) => data,
     enabled,
     retry: true,
