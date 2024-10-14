@@ -5,7 +5,7 @@ from github import Github
 import boto3
 
 from .git_doc_task import GitDocTask
-from .git_issue_task import GitIssueTask
+from .git_issue_task import GitIssueTask, create_rag_git_issue_task
 from .git_task import GitTask
 
 from ..utils.env import get_env_variable
@@ -77,15 +77,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 from_id=data["from_task_id"],
             )
         if task_type == TaskType.GIT_ISSUE:
-            return GitIssueTask(
-                id=data["id"],
-                issue_id=data["issue_id"],
-                repo_name=data["repo_name"],
-                node_type=data["node_type"],
-                bot_id=data["bot_id"],
-                status=data["status"],
-                from_id=data["from_task_id"],
-            )
+            return create_rag_git_issue_task(data)
 
 
 def trigger_task(task_type: TaskType, task_id: Optional[str]):
