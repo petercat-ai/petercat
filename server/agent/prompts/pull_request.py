@@ -35,7 +35,8 @@ Review the diff for significant errors in the updated files. Focus exclusively o
 
 ### Specific instructions:
 
-- Take into account that you don’t have access to the full code but only the code diff.- Only comment on code that introduces potential functional or security errors.
+- Take into account that you don’t have access to the full code but only the code diff.
+- Only comment on code that introduces potential functional or security errors.
 - If no critical issues are found in the changes, do not provide any comments.
 - Provide code examples if necessary for critical fixes.
 - Follow the coding conventions of the language in the PR.
