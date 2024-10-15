@@ -9,10 +9,7 @@ from ..utils.env import get_env_variable
 
 sqs = boto3.client("sqs")
 
-TABLE_NAME_MAP = {
-    TaskType.GIT_DOC: 'rag_tasks',
-    TaskType.GIT_ISSUE: 'git_issue_tasks'
-}
+TABLE_NAME_MAP = {TaskType.GIT_DOC: "rag_tasks", TaskType.GIT_ISSUE: "git_issue_tasks"}
 SQS_QUEUE_URL = get_env_variable("SQS_QUEUE_URL")
 
 
@@ -20,7 +17,15 @@ SQS_QUEUE_URL = get_env_variable("SQS_QUEUE_URL")
 class GitTask(ABC):
     type: TaskType
 
-    def __init__(self, type, repo_name, bot_id, status=TaskStatus.NOT_STARTED, from_id=None, id=None):
+    def __init__(
+        self,
+        type,
+        repo_name,
+        bot_id,
+        status=TaskStatus.NOT_STARTED,
+        from_id=None,
+        id=None,
+    ):
         self.type = type
         self.id = id
         self.from_id = from_id
@@ -41,7 +46,6 @@ class GitTask(ABC):
         data = {
             **self.extra_save_data(),
             "repo_name": self.repo_name,
-            "bot_id": self.bot_id,
             "from_task_id": self.from_id,
             "status": self.status.value,
         }
@@ -52,14 +56,16 @@ class GitTask(ABC):
         return supabase.table(self.table_name)
 
     def update_status(self, status: TaskStatus):
-        return (self.get_table()
-                .update({"status": status.value})
-                .eq("id", self.id)
-                .execute())
+        return (
+            self.get_table()
+            .update({"status": status.value})
+            .eq("id", self.id)
+            .execute()
+        )
 
     def save(self):
         res = self.get_table().insert(self.raw_data).execute()
-        self.id = res.data[0]['id']
+        self.id = res.data[0]["id"]
         return res
 
     @abstractmethod
@@ -77,8 +83,12 @@ class GitTask(ABC):
         response = sqs.send_message(
             QueueUrl=SQS_QUEUE_URL,
             DelaySeconds=10,
-            MessageBody=(json.dumps({"task_id": self.id, "task_type": self.type.value})),
+            MessageBody=(
+                json.dumps({"task_id": self.id, "task_type": self.type.value})
+            ),
         )
         message_id = response["MessageId"]
-        print(f"task_id={self.id}, task_type={self.type.value}, message_id={message_id}")
+        print(
+            f"task_id={self.id}, task_type={self.type.value}, message_id={message_id}"
+        )
         return message_id

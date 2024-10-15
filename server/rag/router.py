@@ -58,8 +58,8 @@ def add_knowledge_by_issue(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/search_knowledge", dependencies=[Depends(verify_rate_limit)])
-def search_knowledge(query: str, bot_id: str, filter: dict = {}):
-    data = retrieval.search_knowledge(query, bot_id, filter)
+def search_knowledge(query: str, repo_name: str, filter: dict = {}):
+    data = retrieval.search_knowledge(query, repo_name, filter)
     return data
 
 
@@ -90,9 +90,9 @@ def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
 
 
 @router.get("/rag/chunk/list", dependencies=[Depends(verify_rate_limit)])
-def get_chunk_list(bot_id: str = None, page_size: int = 10, page_number: int = 1):
+def get_chunk_list(repo_name: str = None, page_size: int = 10, page_number: int = 1):
     try:
-        return retrieval.get_chunk_list(bot_id, page_size, page_number)
+        return retrieval.get_chunk_list(repo_name, page_size, page_number)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 

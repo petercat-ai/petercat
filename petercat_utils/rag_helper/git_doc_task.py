@@ -19,9 +19,7 @@ def get_path_sha(repo: Repository.Repository, sha: str, path: Optional[str] = No
                 return get_path_sha(repo, item.sha, "/".join(path.split("/")[1:]))
 
 
-def add_rag_git_doc_task(config: RAGGitDocConfig,
-                         extra=None
-                         ):
+def add_rag_git_doc_task(config: RAGGitDocConfig, extra=None):
     if extra is None:
         extra = {
             "node_type": None,
@@ -46,12 +44,14 @@ def add_rag_git_doc_task(config: RAGGitDocConfig,
 
     sha = get_path_sha(repo, commit_id, config.file_path)
 
-    doc_task = GitDocTask(commit_id=commit_id,
-                          sha=sha,
-                          repo_name=config.repo_name,
-                          node_type=extra["node_type"],
-                          bot_id=config.bot_id,
-                          path=config.file_path)
+    doc_task = GitDocTask(
+        commit_id=commit_id,
+        sha=sha,
+        repo_name=config.repo_name,
+        node_type=extra["node_type"],
+        bot_id=config.bot_id,
+        path=config.file_path,
+    )
     res = doc_task.save()
     doc_task.send()
     return res
@@ -60,19 +60,26 @@ def add_rag_git_doc_task(config: RAGGitDocConfig,
 class GitDocTask(GitTask):
     node_type: GitDocTaskNodeType
 
-    def __init__(self,
-                 commit_id,
-                 node_type: GitDocTaskNodeType,
-                 sha,
-                 bot_id,
-                 path,
-                 repo_name,
-                 status=TaskStatus.NOT_STARTED,
-                 from_id=None,
-                 id=None
-                 ):
-        super().__init__(bot_id=bot_id, type=TaskType.GIT_DOC, from_id=from_id, id=id, status=status,
-                         repo_name=repo_name)
+    def __init__(
+        self,
+        commit_id,
+        node_type: GitDocTaskNodeType,
+        sha,
+        bot_id,
+        path,
+        repo_name,
+        status=TaskStatus.NOT_STARTED,
+        from_id=None,
+        id=None,
+    ):
+        super().__init__(
+            bot_id=bot_id,
+            type=TaskType.GIT_DOC,
+            from_id=from_id,
+            id=id,
+            status=status,
+            repo_name=repo_name,
+        )
         self.commit_id = commit_id
         self.node_type = GitDocTaskNodeType(node_type)
         self.sha = sha
@@ -93,17 +100,17 @@ class GitDocTask(GitTask):
 
         task_list = list(
             filter(
-                lambda item: item["path"].endswith(".md") or item["node_type"] == GitDocTaskNodeType.TREE.value,
+                lambda item: item["path"].endswith(".md")
+                or item["node_type"] == GitDocTaskNodeType.TREE.value,
                 map(
                     lambda item: {
                         "repo_name": self.repo_name,
                         "commit_id": self.commit_id,
                         "status": TaskStatus.NOT_STARTED.value,
-                        "node_type": (item.type + '').upper(),
+                        "node_type": (item.type + "").upper(),
                         "from_task_id": self.id,
                         "path": "/".join(filter(lambda s: s, [self.path, item.path])),
                         "sha": item.sha,
-                        "bot_id": self.bot_id,
                     },
                     tree_data.tree,
                 ),
@@ -114,20 +121,30 @@ class GitDocTask(GitTask):
             result = self.get_table().insert(task_list).execute()
 
             for record in result.data:
-                doc_task = GitDocTask(id=record["id"],
-                                      commit_id=record["commit_id"],
-                                      sha=record["sha"],
-                                      repo_name=record["repo_name"],
-                                      node_type=record["node_type"],
-                                      bot_id=record["bot_id"],
-                                      path=record["path"])
+                doc_task = GitDocTask(
+                    id=record["id"],
+                    commit_id=record["commit_id"],
+                    sha=record["sha"],
+                    repo_name=record["repo_name"],
+                    node_type=record["node_type"],
+                    path=record["path"],
+                )
                 doc_task.send()
 
-        return (self.get_table().update(
-            {"metadata": {"tree": list(map(lambda item: item.raw_data, tree_data.tree))},
-             "status": TaskStatus.COMPLETED.value})
-                .eq("id", self.id)
-                .execute())
+        return (
+            self.get_table()
+            .update(
+                {
+                    "metadata": {
+                        "tree": list(map(lambda item: item.raw_data, tree_data.tree)),
+                        "bot_id": self.bot_id,
+                    },
+                    "status": TaskStatus.COMPLETED.value,
+                }
+            )
+            .eq("id", self.id)
+            .execute()
+        )
 
     def handle_blob_node(self):
         retrieval.add_knowledge_by_doc(

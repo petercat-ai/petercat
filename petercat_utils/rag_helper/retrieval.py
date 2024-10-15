@@ -4,6 +4,8 @@ from typing import Any, Dict
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 
+from core.dao.botDAO import BotDAO
+
 from .github_file_loader import GithubFileLoader
 
 from ..data_class import GitDocConfig, RAGGitDocConfig, S3Config
@@ -11,7 +13,7 @@ from ..db.client.supabase import get_client
 
 
 TABLE_NAME = "rag_docs"
-QUERY_NAME = "match_rag_docs"
+QUERY_NAME = "match_embedding_docs"
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 200
 
@@ -118,11 +120,10 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
     supabase = get_client()
     is_doc_added_query = (
         supabase.table(TABLE_NAME)
-        .select("id, repo_name, commit_id, file_path, bot_id")
+        .select("id, repo_name, commit_id, file_path")
         .eq("repo_name", config.repo_name)
         .eq("commit_id", loader.commit_id)
         .eq("file_path", config.file_path)
-        .eq("bot_id", config.bot_id)
         .execute()
     )
     if not is_doc_added_query.data:
@@ -137,7 +138,6 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                 commit_id=loader.commit_id,
                 file_sha=loader.file_sha,
                 file_path=config.file_path,
-                bot_id=config.bot_id,
             )
             return store
         else:
@@ -147,7 +147,6 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                     "repo_name": config.repo_name,
                     "commit_id": loader.commit_id,
                     "file_path": config.file_path,
-                    "bot_id": config.bot_id,
                 }
                 for item in is_doc_equal_query.data
             ]
@@ -177,23 +176,29 @@ def search_knowledge(
     bot_id: str,
     meta_filter: Dict[str, Any] = {},
 ):
-    retriever = init_retriever({"filter": {"metadata": meta_filter, "bot_id": bot_id}})
+    bot_dao = BotDAO()
+    bot = bot_dao.get_bot(bot_id)
+    retriever = init_retriever(
+        {"filter": {"metadata": meta_filter, "repo_name": bot.repo_name}}
+    )
     docs = retriever.invoke(query)
     documents_as_dicts = [convert_document_to_dict(doc) for doc in docs]
     json_output = json.dumps(documents_as_dicts, ensure_ascii=False)
     return json_output
 
 
-def get_chunk_list(bot_id: str, page_size: int, page_number: int):
+def get_chunk_list(repo_name: str, page_size: int, page_number: int):
     client = get_client()
     query = (
         client.table(TABLE_NAME)
         .select("id, content, file_path,update_timestamp")
-        .eq("bot_id", bot_id)
+        .eq("repo_name", repo_name)
         .limit(page_size)
         .offset((page_number - 1) * page_size)
         .execute()
     )
-    count_response = client.table(TABLE_NAME).select("id").eq("bot_id", bot_id).execute()
+    count_response = (
+        client.table(TABLE_NAME).select("id").eq("repo_name", repo_name).execute()
+    )
     total_count = len(count_response.data)
     return {"rows": query.data, "total": total_count}

@@ -447,7 +447,8 @@ export default function Edit() {
                       }
                     }}
                   >
-                    {I18N.edit.page.baoCunYuBuShu}</Button>
+                    {I18N.edit.page.baoCunYuBuShu}
+                  </Button>
                 </div>
               </div>
               <div className="position absolute top-[73px] left-0 w-full">
@@ -489,6 +490,7 @@ export default function Edit() {
         {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
           <Knowledge
             botId={botProfile.id}
+            repoName={botProfile.repoName!}
             goBack={() => {
               setVisibleType(VisibleTypeEnum.BOT_CONFIG);
             }}

@@ -89,7 +89,6 @@ create table rag_docs
   -- per request info
   repo_name varchar,
   commit_id varchar,
-  bot_id varchar,
   file_sha varchar,
   file_path varchar
 );
@@ -99,8 +98,7 @@ create table rag_docs
 [supabase 文档教程](https://supabase.com/docs/guides/ai/vector-columns#querying-a-vector--embedding)
 
 > 建议：
-> 1. 如果 Function 的入参发生了变化，需要将该function 进行删除后重新创建。事实上建议在项目上线后创建新版本的函数，保留历史函数。
-> 2. 将函数备份在本项目中 server/sql/rag_docs.sql
+> 如果 Function 的入参发生了变化，需要将该function 进行删除后重新创建。事实上建议在项目上线后创建新版本的函数，保留历史函数。
 #### 示例
 这些 sql 可以在 SQL Editor 中执行。
 ```sql
@@ -131,7 +129,7 @@ begin
   ) as similarity
   from rag_docs
   where metadata @> jsonb_extract_path(filter, 'metadata')
-  and bot_id = jsonb_extract_path_text(filter, 'bot_id')
+  and repo_name = jsonb_extract_path_text(filter, 'repo_name')
   order by rag_docs.embedding <=> query_embedding;
 end;
 $$;
