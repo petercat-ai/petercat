@@ -54,7 +54,11 @@ def get_task_by_id(task_id):
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def get_task(task_type: TaskType, task_id: str) -> GitTask:
+def get_task(
+    task_type: TaskType,
+    task_id: str,
+    bot_id: Optional[str],
+) -> GitTask:
     supabase = get_client()
     response = (
         supabase.table(GitTask.get_table_name(task_type))
@@ -71,7 +75,7 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
                 sha=data["sha"],
                 repo_name=data["repo_name"],
                 node_type=data["node_type"],
-                bot_id=data["bot_id"],
+                bot_id=bot_id,
                 path=data["path"],
                 status=data["status"],
                 from_id=data["from_task_id"],
@@ -88,8 +92,8 @@ def get_task(task_type: TaskType, task_id: str) -> GitTask:
             )
 
 
-def trigger_task(task_type: TaskType, task_id: Optional[str]):
-    task = get_task(task_type, task_id) if task_id else get_oldest_task()
+def trigger_task(task_type: TaskType, bot_id: Optional[str], task_id: Optional[str]):
+    task = get_task(task_type, bot_id, task_id) if task_id else get_oldest_task()
     if task is None:
         return task
     return task.handle()

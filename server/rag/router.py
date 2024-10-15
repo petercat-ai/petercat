@@ -82,9 +82,9 @@ def add_git_issue_task(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
+def trigger_task(task_type: TaskType, bot_id: str, task_id: Optional[str] = None):
     try:
-        task.trigger_task(task_type, task_id)
+        task.trigger_task(task_type, task_id, bot_id)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
