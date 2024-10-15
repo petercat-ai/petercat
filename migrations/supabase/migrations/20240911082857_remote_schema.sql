@@ -169,8 +169,6 @@ begin
 end;
 $$;
 
-ALTER FUNCTION "public"."match_rag_docs"("query_embedding" "public"."vector", "filter" "jsonb") OWNER TO "postgres";
-
 CREATE OR REPLACE FUNCTION "public"."match_text"("query_embedding" "public"."vector", "match_count" integer DEFAULT NULL::integer, "filter" "jsonb" DEFAULT '{}'::"jsonb") RETURNS TABLE("id" bigint, "content" "text", "metadata" "jsonb", "similarity" double precision)
     LANGUAGE "plpgsql"
     AS $$
@@ -560,10 +558,6 @@ GRANT ALL ON FUNCTION "public"."match_docs"("query_embedding" "public"."vector",
 GRANT ALL ON FUNCTION "public"."match_documents"("query_embedding" "public"."vector", "filter" "jsonb") TO "anon";
 GRANT ALL ON FUNCTION "public"."match_documents"("query_embedding" "public"."vector", "filter" "jsonb") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."match_documents"("query_embedding" "public"."vector", "filter" "jsonb") TO "service_role";
-
-GRANT ALL ON FUNCTION "public"."match_rag_docs"("query_embedding" "public"."vector", "filter" "jsonb") TO "anon";
-GRANT ALL ON FUNCTION "public"."match_rag_docs"("query_embedding" "public"."vector", "filter" "jsonb") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."match_rag_docs"("query_embedding" "public"."vector", "filter" "jsonb") TO "service_role";
 
 GRANT ALL ON FUNCTION "public"."match_text"("query_embedding" "public"."vector", "match_count" integer, "filter" "jsonb") TO "anon";
 GRANT ALL ON FUNCTION "public"."match_text"("query_embedding" "public"."vector", "match_count" integer, "filter" "jsonb") TO "authenticated";

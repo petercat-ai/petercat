@@ -462,80 +462,6 @@ export type Database = {
         };
         Returns: unknown;
       };
-      match_antd_doc: {
-        Args: {
-          query_embedding: string;
-          filter?: Json;
-        };
-        Returns: {
-          id: string;
-          content: string;
-          metadata: Json;
-          similarity: number;
-        }[];
-      };
-      match_antd_documents: {
-        Args: {
-          query_embedding: string;
-          filter?: Json;
-        };
-        Returns: {
-          id: string;
-          content: string;
-          metadata: Json;
-          similarity: number;
-        }[];
-      };
-      match_antd_knowledge: {
-        Args: {
-          query_embedding: string;
-          filter?: Json;
-        };
-        Returns: {
-          id: string;
-          content: string;
-          metadata: Json;
-          similarity: number;
-        }[];
-      };
-      match_docs: {
-        Args: {
-          query_embedding: string;
-          match_count?: number;
-          filter?: Json;
-        };
-        Returns: {
-          id: number;
-          content: string;
-          metadata: Json;
-          similarity: number;
-        }[];
-      };
-      match_documents: {
-        Args: {
-          query_embedding: string;
-          filter?: Json;
-        };
-        Returns: {
-          id: string;
-          content: string;
-          metadata: Json;
-          similarity: number;
-        }[];
-      };
-      match_rag_docs: {
-        Args: {
-          query_embedding: string;
-          filter?: Json;
-        };
-        Returns: {
-          id: string;
-          content: string;
-          metadata: Json;
-          embedding: string;
-          similarity: number;
-        }[];
-      };
       match_embedding_docs: {
         Args: {
           query_embedding: string;
@@ -546,19 +472,6 @@ export type Database = {
           content: string;
           metadata: Json;
           embedding: string;
-          similarity: number;
-        }[];
-      };
-      match_text: {
-        Args: {
-          query_embedding: string;
-          match_count?: number;
-          filter?: Json;
-        };
-        Returns: {
-          id: number;
-          content: string;
-          metadata: Json;
           similarity: number;
         }[];
       };
