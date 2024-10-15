@@ -2,8 +2,8 @@ from langchain.tools import tool
 from petercat_utils import retrieval
 
 
-def factory(bot_id: str):
-    bot_id = bot_id
+def factory(repo_name: str):
+    repo_name = repo_name
 
     @tool(parse_docstring=True)
     def search_knowledge(
@@ -15,7 +15,7 @@ def factory(bot_id: str):
             query: The user's question.
         """
         try:
-            return retrieval.search_knowledge(query, bot_id)
+            return retrieval.search_knowledge(query, repo_name)
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
