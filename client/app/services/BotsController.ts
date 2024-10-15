@@ -79,7 +79,7 @@ export async function getChunkList(
   page_number: number,
 ): Promise<{ rows: RAGDoc[]; total: number }> {
   const response = await axios.get(
-    `${apiDomain}/api/rag/chunk/list?bot_id=${repo_name}&page_size=${page_size}&page_number=${page_number}`,
+    `${apiDomain}/api/rag/chunk/list?repo_name=${repo_name}&page_size=${page_size}&page_number=${page_number}`,
   );
   return response.data;
 }

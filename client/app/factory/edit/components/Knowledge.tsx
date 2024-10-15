@@ -20,6 +20,7 @@ import { convertToLocalTime } from '@/app/utils/time';
 import { useBotTask } from './TaskContext';
 
 type IProps = {
+  botId: string;
   repoName: string;
   goBack: () => void;
 };
@@ -78,7 +79,7 @@ const ChunkList = ({ data }: { data: RAGDoc[] }) => {
   );
 };
 
-export default function Knowledge({ repoName, goBack }: IProps) {
+export default function Knowledge({ botId, repoName, goBack }: IProps) {
   const { botProfile } = useBot();
   const [pageSize, setPageSize] = React.useState(12);
   const [pageNumber, setPageNumber] = React.useState(1);
