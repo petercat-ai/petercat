@@ -84,9 +84,9 @@ export async function getChunkList(
   return response.data;
 }
 
-export async function getRagTask(bot_id: string): Promise<RagTask[]> {
+export async function getRagTask(repo_name: string): Promise<RagTask[]> {
   const response = await axios.get(
-    `${apiDomain}/api/rag/task/latest?bot_id=${bot_id}`,
+    `${apiDomain}/api/rag/task/latest?repo_name=${repo_name}`,
   );
   return response.data.data;
 }

@@ -318,7 +318,7 @@ export default function Edit() {
           )}
           {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
             <KnowledgeBtn
-              botId={botProfile.id}
+              repoName={botProfile.repoName!}
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}

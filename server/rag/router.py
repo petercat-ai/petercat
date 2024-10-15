@@ -98,14 +98,14 @@ def get_chunk_list(repo_name: str = None, page_size: int = 10, page_number: int 
 
 
 @router.get("/rag/task/latest", dependencies=[Depends(verify_rate_limit)])
-def get_rag_task(bot_id: str):
+def get_rag_task(repo_name: str):
     # TODO: Think about hot to get correct when reload knowledge task was triggered
     try:
         supabase = get_client()
         response = (
             supabase.table("rag_tasks")
             .select("id,status,node_type,path,from_task_id,created_at", count="exact")
-            .eq("bot_id", bot_id)
+            .eq("repo_name", repo_name)
             .order("created_at", desc=True)
             .execute()
         )

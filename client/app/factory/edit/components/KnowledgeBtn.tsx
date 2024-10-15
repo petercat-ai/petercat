@@ -11,20 +11,20 @@ import RefreshIcon from '@/public/icons/RefreshIcon';
 import { useBotTask } from './TaskContext';
 
 type IProps = {
-  botId: string;
+  repoName: string;
   onClick: () => void;
   mode: 'configItem' | 'pageHeader';
 };
 
 const KnowledgeBtn = (props: IProps) => {
-  const { onClick, botId, mode } = props;
+  const { onClick, repoName, mode } = props;
   const { setTaskProfile } = useBotTask();
-  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>(!!botId);
+  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>(!!repoName);
   const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
   const [allowShowChunkList, setAllowShowChunkList] =
     React.useState<boolean>(false);
 
-  const { data: taskList } = useGetBotRagTask(botId, shouldGetTask, true);
+  const { data: taskList } = useGetBotRagTask(repoName, shouldGetTask, true);
   const taskCnt = taskList?.length ?? 0;
 
   // compute task running status by taskList
