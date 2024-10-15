@@ -16,7 +16,7 @@ def get_tools(bot: Bot, auth_token: Optional[Auth.Token]):
 
     return {
         "check_login": login_tools["check_login"],
-        "search_knowledge": knowledge.factory(bot_id=bot.id),
+        "search_knowledge": knowledge.factory(repo_name=bot.repo_name),
         "create_issue": issue_tools["create_issue"],
         "get_issues": issue_tools["get_issues"],
         "get_file_content": pull_request_tools["get_file_content"],
