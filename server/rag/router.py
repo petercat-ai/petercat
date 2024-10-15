@@ -82,9 +82,9 @@ def add_git_issue_task(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
+def trigger_task(task_type: TaskType, bot_id: str, task_id: Optional[str] = None):
     try:
-        task.trigger_task(task_type, task_id)
+        task.trigger_task(task_type, task_id, bot_id)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
@@ -98,14 +98,14 @@ def get_chunk_list(repo_name: str = None, page_size: int = 10, page_number: int 
 
 
 @router.get("/rag/task/latest", dependencies=[Depends(verify_rate_limit)])
-def get_rag_task(bot_id: str):
+def get_rag_task(repo_name: str):
     # TODO: Think about hot to get correct when reload knowledge task was triggered
     try:
         supabase = get_client()
         response = (
             supabase.table("rag_tasks")
             .select("id,status,node_type,path,from_task_id,created_at", count="exact")
-            .eq("bot_id", bot_id)
+            .eq("repo_name", repo_name)
             .order("created_at", desc=True)
             .execute()
         )
