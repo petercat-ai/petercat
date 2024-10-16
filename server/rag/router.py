@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from petercat_utils.db.client.supabase import get_client
 
 from petercat_utils.data_class import (
-    GitDocConfig,
+    RAGGitDocConfig,
     RAGGitIssueConfig,
     TaskType,
 )
@@ -28,7 +28,7 @@ router = APIRouter(
 
 
 @router.post("/rag/add_knowledge_by_doc", dependencies=[Depends(verify_rate_limit)])
-def add_knowledge_by_doc(config: GitDocConfig):
+def add_knowledge_by_doc(config: RAGGitDocConfig):
     try:
         result = retrieval.add_knowledge_by_doc(config)
         if result:
@@ -68,7 +68,7 @@ def search_knowledge(query: str, repo_name: str, filter: dict = {}):
 
 
 @router.post("/rag/add_git_doc_task", dependencies=[Depends(verify_rate_limit)])
-def add_git_doc_task(config: GitDocConfig):
+def add_git_doc_task(config: RAGGitDocConfig):
     try:
         data = git_doc_task.add_rag_git_doc_task(config)
         return data
