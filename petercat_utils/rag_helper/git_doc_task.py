@@ -43,7 +43,6 @@ def add_rag_git_doc_task(config: RAGGitDocConfig, extra=None):
             extra["node_type"] = GitDocTaskNodeType.BLOB.value
 
     sha = get_path_sha(repo, commit_id, config.file_path)
-
     doc_task = GitDocTask(
         commit_id=commit_id,
         sha=sha,
@@ -128,6 +127,7 @@ class GitDocTask(GitTask):
                     repo_name=record["repo_name"],
                     node_type=record["node_type"],
                     path=record["path"],
+                    bot_id=self.bot_id,
                 )
                 doc_task.send()
 
