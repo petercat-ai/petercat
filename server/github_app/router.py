@@ -106,7 +106,6 @@ async def github_app_webhook(
 
     if "installation" not in payload:
         return {"success": False, "message": "Invalid Webhook request"}
-    print(f"payload: {payload}")
     installation_id = payload["installation"]["id"]
     try:
         auth = Auth.AppAuth(

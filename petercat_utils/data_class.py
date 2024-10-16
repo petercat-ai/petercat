@@ -50,6 +50,7 @@ class ChatData(BaseModel):
     llm: Optional[str] = "openai"
     prompt: Optional[str] = None
     bot_id: Optional[str] = None
+    repo_name: Optional[str] = None
 
 
 class ExecuteMessage(BaseModel):

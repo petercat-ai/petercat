@@ -77,7 +77,7 @@ def get_bot_detail(
             data = (
                 supabase.table("bots")
                 .select(
-                    "id, created_at, updated_at, avatar, description, name, starters, public, hello_message"
+                    "id, created_at, updated_at, avatar, description, name, starters, public, hello_message, repo_name"
                 )
                 .eq("id", id)
                 .execute()

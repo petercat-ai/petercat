@@ -1,9 +1,10 @@
+from agent.bot.get_bot import get_bot_by_id
 from langchain.tools import tool
 from petercat_utils import retrieval
 
 
-def factory(repo_name: str):
-    repo_name = repo_name
+def factory(bot_id: str):
+    bot_id = bot_id
 
     @tool(parse_docstring=True)
     def search_knowledge(
@@ -15,6 +16,8 @@ def factory(repo_name: str):
             query: The user's question.
         """
         try:
+            bot = get_bot_by_id(bot_id)
+            repo_name = bot.repo_name if bot.repo_name else ""
             return retrieval.search_knowledge(query, repo_name)
         except Exception as e:
             print(f"An error occurred: {e}")
