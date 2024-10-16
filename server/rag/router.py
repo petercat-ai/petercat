@@ -4,7 +4,11 @@ from typing import Optional
 from fastapi import APIRouter, Depends
 from petercat_utils.db.client.supabase import get_client
 
-from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
+from petercat_utils.data_class import (
+    RAGGitDocConfig,
+    RAGGitIssueConfig,
+    TaskType,
+)
 from petercat_utils.rag_helper import (
     retrieval,
     task,
@@ -82,9 +86,9 @@ def add_git_issue_task(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_type: TaskType, bot_id: str, task_id: Optional[str] = None):
+def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
     try:
-        task.trigger_task(task_type, task_id, bot_id)
+        task.trigger_task(task_type, task_id)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 

@@ -21,7 +21,6 @@ class GitTask(ABC):
         self,
         type,
         repo_name,
-        bot_id,
         status=TaskStatus.NOT_STARTED,
         from_id=None,
         id=None,
@@ -31,7 +30,6 @@ class GitTask(ABC):
         self.from_id = from_id
         self.status = status
         self.repo_name = repo_name
-        self.bot_id = bot_id
 
     @staticmethod
     def get_table_name(type: TaskType):

@@ -164,7 +164,6 @@ def reload_knowledge(config: RAGGitDocConfig):
         commit_id=loader.commit_id,
         file_sha=loader.file_sha,
         file_path=config.file_path,
-        bot_id=config.bot_id,
     )
     return store
 
