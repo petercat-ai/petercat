@@ -4,7 +4,11 @@ from typing import Optional
 from fastapi import APIRouter, Depends
 from petercat_utils.db.client.supabase import get_client
 
-from petercat_utils.data_class import RAGGitDocConfig, RAGGitIssueConfig, TaskType
+from petercat_utils.data_class import (
+    GitDocConfig,
+    RAGGitIssueConfig,
+    TaskType,
+)
 from petercat_utils.rag_helper import (
     retrieval,
     task,
@@ -24,7 +28,7 @@ router = APIRouter(
 
 
 @router.post("/rag/add_knowledge_by_doc", dependencies=[Depends(verify_rate_limit)])
-def add_knowledge_by_doc(config: RAGGitDocConfig):
+def add_knowledge_by_doc(config: GitDocConfig):
     try:
         result = retrieval.add_knowledge_by_doc(config)
         if result:
@@ -64,7 +68,7 @@ def search_knowledge(query: str, repo_name: str, filter: dict = {}):
 
 
 @router.post("/rag/add_git_doc_task", dependencies=[Depends(verify_rate_limit)])
-def add_git_doc_task(config: RAGGitDocConfig):
+def add_git_doc_task(config: GitDocConfig):
     try:
         data = git_doc_task.add_rag_git_doc_task(config)
         return data
@@ -82,9 +86,9 @@ def add_git_issue_task(config: RAGGitIssueConfig):
 
 
 @router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_type: TaskType, bot_id: str, task_id: Optional[str] = None):
+def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
     try:
-        task.trigger_task(task_type, task_id, bot_id)
+        task.trigger_task(task_type, task_id)
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 

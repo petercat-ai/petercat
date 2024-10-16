@@ -48,7 +48,6 @@ def add_rag_git_doc_task(config: RAGGitDocConfig, extra=None):
         sha=sha,
         repo_name=config.repo_name,
         node_type=extra["node_type"],
-        bot_id=config.bot_id,
         path=config.file_path,
     )
     res = doc_task.save()
@@ -64,7 +63,6 @@ class GitDocTask(GitTask):
         commit_id,
         node_type: GitDocTaskNodeType,
         sha,
-        bot_id,
         path,
         repo_name,
         status=TaskStatus.NOT_STARTED,
@@ -72,7 +70,6 @@ class GitDocTask(GitTask):
         id=None,
     ):
         super().__init__(
-            bot_id=bot_id,
             type=TaskType.GIT_DOC,
             from_id=from_id,
             id=id,
@@ -127,7 +124,6 @@ class GitDocTask(GitTask):
                     repo_name=record["repo_name"],
                     node_type=record["node_type"],
                     path=record["path"],
-                    bot_id=self.bot_id,
                 )
                 doc_task.send()
 
@@ -137,7 +133,6 @@ class GitDocTask(GitTask):
                 {
                     "metadata": {
                         "tree": list(map(lambda item: item.raw_data, tree_data.tree)),
-                        "bot_id": self.bot_id,
                     },
                     "status": TaskStatus.COMPLETED.value,
                 }
@@ -152,7 +147,6 @@ class GitDocTask(GitTask):
                 repo_name=self.repo_name,
                 file_path=self.path,
                 commit_id=self.commit_id,
-                bot_id=self.bot_id,
             )
         )
         return self.update_status(TaskStatus.COMPLETED)

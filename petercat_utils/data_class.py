@@ -24,6 +24,7 @@ class ImageURLContentBlock(BaseModel):
     image_url: ImageURL
     type: Literal["image_url"]
 
+
 class ImageRawURLContentBlock(BaseModel):
     image_url: str
     type: Literal["image_url"]
@@ -71,7 +72,7 @@ class GitDocConfig(BaseModel):
 
 
 class RAGGitDocConfig(GitDocConfig):
-    bot_id: str
+    bot_id: Optional[str] = ""
 
 
 class GitIssueConfig(BaseModel):
