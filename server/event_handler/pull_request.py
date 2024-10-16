@@ -86,7 +86,6 @@ class PullRequestEventHandler:
                     repo.full_name, pr.number, pr.title, pr.body
                 )
 
-                print(f"file_diff={file_diff}")
                 pr_content = f"""
                 ### Pr Title
                 {pr.title}
@@ -96,7 +95,6 @@ class PullRequestEventHandler:
                 {file_diff}
                 """
                 origin_bot = get_bot_by_id(repo_config.robot_id)
-
                 bot = Bot(
                     bot=BotModel(
                         id=random_str(),
@@ -104,6 +102,7 @@ class PullRequestEventHandler:
                         description="A Robot for Pull Requst Review",
                         name="pull_request_bot",
                         prompt=role_prompt,
+                        repo_name=repo_full_name,
                     ),
                     llm_token=origin_bot.llm_token,
                 )
