@@ -6,7 +6,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 
 const nextConfig = {
-  ...process.env.NEXT_STANDALONE ? { output: "standalone" } :{},
+  ...process.env.NEXT_STANDALONE ? { output: "export", ssr: false } :{},
   webpack: (config, { dev}) => {
     config.resolve.fallback = { http: false, https: false, net: false, tls: false };
 
@@ -32,7 +32,7 @@ module.exports = withSentryConfig(nextConfig, {
   silent: false, // Can be used to suppress logs
 
   hideSourceMaps: true,
-  
+
   sourcemaps: {
     disable: true,
   },
