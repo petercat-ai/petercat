@@ -489,7 +489,6 @@ export default function Edit() {
 
         {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
           <Knowledge
-            botId={botProfile.id}
             repoName={botProfile.repoName!}
             goBack={() => {
               setVisibleType(VisibleTypeEnum.BOT_CONFIG);
