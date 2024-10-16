@@ -20,7 +20,6 @@ import { convertToLocalTime } from '@/app/utils/time';
 import { useBotTask } from './TaskContext';
 
 type IProps = {
-  botId: string;
   repoName: string;
   goBack: () => void;
 };
@@ -79,7 +78,7 @@ const ChunkList = ({ data }: { data: RAGDoc[] }) => {
   );
 };
 
-export default function Knowledge({ botId, repoName, goBack }: IProps) {
+export default function Knowledge({ repoName, goBack }: IProps) {
   const { botProfile } = useBot();
   const [pageSize, setPageSize] = React.useState(12);
   const [pageNumber, setPageNumber] = React.useState(1);
@@ -116,7 +115,11 @@ export default function Knowledge({ botId, repoName, goBack }: IProps) {
           <span>{I18N.components.Knowledge.zhiShiKuFenDuan}</span>
         </div>
         <div className="flex items-center gap-2">
-          <KnowledgeBtn botId={botId} onClick={() => {}} mode={'pageHeader'} />
+          <KnowledgeBtn
+            repoName={repoName}
+            onClick={() => {}}
+            mode={'pageHeader'}
+          />
         </div>
       </div>
       <div className="pt-[40px] py-[40px] overflow-y-auto">
