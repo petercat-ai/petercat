@@ -14,7 +14,7 @@ export const defaultBotProfile: BotProfile = {
   repoName: '',
   helloMessage: '',
   llm: 'openai',
-  token_id: 'default',
+  token_id: '',
   domain_whitelist: [],
 };
 
