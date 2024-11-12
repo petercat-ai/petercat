@@ -119,7 +119,10 @@ async def create_bot(
         res = await bot_builder(user_id, **filtered_bot_data)
         if not res:
             return JSONResponse(
-                content={"success": False, "errorMessage": "仓库不存在，生成失败"},
+                content={
+                    "success": False,
+                    "errorMessage": "Repository does not exist, generation failed.",
+                },
                 status_code=500,
             )
         return res
@@ -138,7 +141,10 @@ async def bot_generator(
         res = await bot_info_generator(user_id, **bot_data.model_dump())
         if not res:
             return JSONResponse(
-                content={"success": False, "errorMessage": "仓库不存在，生成失败"}
+                content={
+                    "success": False,
+                    "errorMessage": "Repository does not exist, generation failed.",
+                }
             )
         return JSONResponse(content={"success": True, "data": res})
     except Exception as e:
@@ -165,7 +171,7 @@ def update_bot(
         }
         if not update_fields:
             return JSONResponse(
-                content={"success": False, "errorMessage": "No fields to update"},
+                content={"success": False, "errorMessage": "No fields to update."},
                 status_code=400,
             )
 
@@ -180,7 +186,10 @@ def update_bot(
 
         if not response.data:
             return JSONResponse(
-                content={"success": False, "errorMessage": "bot 不存在，更新失败"}
+                content={
+                    "success": False,
+                    "errorMessage": "Bot does not exist, update failed.",
+                }
             )
 
         return JSONResponse(content={"success": True})
@@ -202,7 +211,10 @@ async def delete_bot(
         )
         if not response.data:
             return JSONResponse(
-                content={"success": False, "errorMessage": "bot 不存在，删除失败"}
+                content={
+                    "success": False,
+                    "errorMessage": "Bot does not exist, delete failed.",
+                }
             )
         return JSONResponse(content={"success": True})
     except Exception as e:
@@ -221,7 +233,7 @@ async def deploy_bot_to_market(
             return JSONResponse(
                 content={
                     "success": False,
-                    "errorMessage": "您必须先使用 GitHub 登录 Petercat 才能使用此功能。",
+                    "errorMessage": "You must first log in to Petercat with GitHub before you can use this function.",
                 },
                 status_code=500,
             )
@@ -229,14 +241,17 @@ async def deploy_bot_to_market(
         bot = bot_dao.get_bot(bot_id)
         if not bot:
             return JSONResponse(
-                content={"success": False, "errorMessage": "机器人不存在,无法操作"},
+                content={
+                    "success": False,
+                    "errorMessage": "Bot does not exist, cannot perform operation.",
+                },
                 status_code=500,
             )
         if bot.public:
             return JSONResponse(
                 content={
                     "success": False,
-                    "errorMessage": "机器人已公开，无需重复操作",
+                    "errorMessage": "Bot is already public, no need to repeat the operation.",
                 },
                 status_code=500,
             )
@@ -283,7 +298,7 @@ async def unPublic_bot_from_market(
             return JSONResponse(
                 content={
                     "success": False,
-                    "errorMessage": "您必须先使用 GitHub 登录 Petercat 才能使用此功能。",
+                    "errorMessage": "You must first log in to Petercat with GitHub before you can use this function.",
                 },
                 status_code=500,
             )
@@ -291,14 +306,17 @@ async def unPublic_bot_from_market(
         bot = bot_dao.get_bot(bot_id)
         if not bot:
             return JSONResponse(
-                content={"success": False, "errorMessage": "机器人不存在,无法操作"},
+                content={
+                    "success": False,
+                    "errorMessage": "Bot does not exist, cannot perform operation.",
+                },
                 status_code=500,
             )
         if not bot["public"]:
             return JSONResponse(
                 content={
                     "success": False,
-                    "errorMessage": "机器人未公开，无需重复操作",
+                    "errorMessage": "Bot is already public, no need to repeat the operation.",
                 },
                 status_code=500,
             )
