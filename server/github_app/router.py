@@ -78,7 +78,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
                 repository_config = RepositoryConfig(
                     owner_id=str(repo["owner"]["id"]),
                     repo_name=repo["full_name"],
-                    repo_id=repo["id"],
+                    repo_id=str(repo["id"]),
                     robot_id="",
                     created_at=int(time.time()),
                 )
