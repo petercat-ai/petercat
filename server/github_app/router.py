@@ -76,7 +76,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
             )
             for repo in installed_repositories["repositories"]:
                 repository_config = RepositoryConfig(
-                    owner_id=repo["owner"]["id"],
+                    owner_id=str(repo["owner"]["id"]),
                     repo_name=repo["full_name"],
                     repo_id=repo["id"],
                     robot_id="",
