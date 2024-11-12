@@ -8,7 +8,7 @@ const BaseBotCard = (props: {
 }) => {
   return (
     <Card
-      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 h-[384px] rounded-[8px]"
+      className="border-none w-full max-h-[400px] bg-[#FFF] rounded-[16px] p-2 h-[384px] rounded-[16px]"
       shadow="none"
       isPressable
       onPress={() => {
