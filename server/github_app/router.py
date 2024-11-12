@@ -90,7 +90,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
     # ignore others setup_action,such as deleted our app
     return {
         "success": False,
-        "message": f"Invalid setup_action value {setup_action}",
+        "message": f"Invalid setup_action value {setup_action},please delete the app first then re-install the app.",
     }
 
 
