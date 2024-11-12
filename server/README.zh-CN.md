@@ -8,6 +8,13 @@ PeterCat 服务端，采用 FastAPI 框架开发。使用了 supabase 作为数�
 fastapi 最佳实践请参考 https://github.com/zhanymkanov/fastapi-best-practices
 
 
+# 研发准备
+- 安装 python3.10+，推荐使用 pyenv 管理 python 版本
+- 安装 supabase CLI 工具 : https://supabase.com/docs/guides/cli/getting-started
+- 安装 AWS CLI 工具 : https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/install-cliv2.html
+  - 联系官方添加你的 AWS 账号，以便使用 AWS CLI 工具。
+  - 安装完成后控制台输入 `aws sso login` 登陆。
+
 # 功能模块
 ## 存储
 采用 [supabase](https://supabase.com) 作为数据库进行存储。
