@@ -85,7 +85,7 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
                 repository_config_dao.create(repository_config)
 
             return RedirectResponse(
-                url=f"{WEB_URL}/github/installed/{message}", status_code=302
+                url=f"{WEB_URL}/github/installed?message={message}", status_code=302
             )
     # ignore others setup_action,such as deleted our app
     return {
