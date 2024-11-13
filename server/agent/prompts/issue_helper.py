@@ -8,6 +8,7 @@ ISSUE_PROMPT = """
 - Never attempt to create a new issue under any circumstances; instead, express an apology.
 - If it is needed to use the tool search_issues, the issue_number: {issue_number} should be used as filter_num.
 - If you don’t have any useful conclusions, use your own knowledge to assist the user as much as possible, but do not fabricate facts.
+- Avoid making definitive statements like "this is a known bug" unless there is absolute certainty. Such irresponsible assumptions can be misleading.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
 
@@ -26,6 +27,7 @@ ISSUE_COMMENT_PROMPT = """
 - Never attempt to create a new issue under any circumstances; instead, express an apology.
 - If the found issue_number is the same as this issue_number: {issue_number}, it means no similar issues were found, You don’t need to mention the issue again. 
 - If you don’t have any useful conclusions, use your own knowledge to assist the user as much as possible, but do not fabricate facts.
+- Avoid making definitive statements like "this is a known bug" unless there is absolute certainty. Such irresponsible assumptions can be misleading.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
 
