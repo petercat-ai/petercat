@@ -1,31 +1,31 @@
- ## What is it?
+## 是什么
 
-Assistant is a chat assistant component with a floating bubble and draggable chat drawer.  
-![image](../imgs/image.png)
+Assistant 是一个带有浮动气泡和可拖动的聊天助手组件。  
+![image](https://github.com/user-attachments/assets/abb03434-792a-4b19-b88e-a6e91d60eb92)
 
-Clicking on the cat will expand the chat drawer.
+点击小猫后会展开聊天抽屉
 
-![image-1](../imgs/image-1.png)
+![image](https://github.com/user-attachments/assets/4d396121-ca2d-42ab-828b-80f4a529e278)
 
-## Quick Integration
+## 快速接入
 
-### Token Acquisition
+### Token 获取
 
-Visit [https://petercat.ai/](https://petercat.ai/), log into the dashboard by clicking on the login button.
+来到 [https://petercat.ai/](https://petercat.ai/) 进入工作台点击登陆
 
-![image-2](../imgs/image-2.png)
+![image](https://github.com/user-attachments/assets/35bb6659-8a8d-4894-ae4a-4869bffd9967)
 
-Click on the workspace and add a Q&A bot.
+点击空间添加答疑机器人
 
-Enter your project address to quickly generate the bot.
+输入你的项目地址,可快速生成机器人
 
-![image-3](../imgs/image-3.png)
+![image](https://github.com/user-attachments/assets/4aac8b0f-52ce-4198-b4d5-90afbfbd6fed)
 
-You can get the token here.
+token 可在这里获取
 
-![image-4](../imgs/image-4.png)
+![image](https://github.com/user-attachments/assets/36d8132a-23ed-4582-b45b-94ac9b15f34d)
 
-### Code Integration
+### 代码引入
 
 ```zsh
 npm install @petercatai/assistant
@@ -36,7 +36,7 @@ import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 
 const YourPetercataiAssistant = () => {
-  return <Assistant token="< your token >" />;
+  return <Assistant token="< 你的 token >" />;
 };
 
 function App() {
@@ -51,17 +51,17 @@ function App() {
 }
 ```
 
-For more detailed input parameters, please refer to the documentation.
+更详细的入参请参考文档
 
 [petercat/assistant/src/Assistant/index.md at main · petercat-ai/petercat](https://github.com/petercat-ai/petercat/blob/main/assistant/src/Assistant/index.md#api)
 
-## Others
+## 其他
 
-### UMD Integration
+### UMD 接入
 
-Petercat also supports UMD integration.
+petercat 同时支持 UMD 的接入方式
 
-1. External and UMD load resources
+1. external 和 UMD 加载资源
 
 ```js
 // example for umi project
@@ -78,11 +78,11 @@ export default {
 ```
 
 > [!NOTE]
-> Why external?
+> Why external ?
 >
-> Smaller, higher cache rate -> faster user experience
+> 更小、提高 cache 率 -> 更快的用户体验
 
-Here is a reference example of how to import it.
+下面是一个引入的参考例子
 
 ```html
 <head>
@@ -96,20 +96,20 @@ Here is a reference example of how to import it.
 </head>
 ```
 
-2. Load PetercatLUI
+2. 加载 PetercatLUI
 
 ```html
 <body>
   ...
-  <script>
-    PetercatLUI.initAssistant({
-      apiDomain: 'https://api.petercat.ai',
-      token: 'your-token',
-      starters: ['Introduce this project', 'View contribution guide', 'How can I get started quickly'],
-      clearMessage: true
-    });
+   <script>
+     PetercatLUI.initAssistant({
+       apiDomain: 'https://api.petercat.ai',
+       token: 'your-token',
+       starters: ['介绍下这个项目', '查看贡献指南', '我该怎样快速上手'],
+       clearMessage: true
+     });
   </script>
 </body>
 ```
 
-That's it! You can now enjoy the assistant component in your project.  
+就是这样！现在您可以在您的项目中享受助手组件了。
