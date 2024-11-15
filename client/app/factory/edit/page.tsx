@@ -23,6 +23,7 @@ import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
 import useUser from '@/app/hooks/useUser';
 import Knowledge from './components/Knowledge';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 import KnowledgeBtn from './components/KnowledgeBtn';
 import { BotTaskProvider } from './components/TaskContext';
 import { useSearchParams } from 'next/navigation';
@@ -40,6 +41,8 @@ enum ConfigTypeEnum {
   MANUAL_CONFIG = 'MANUAL_CONFIG',
 }
 export default function Edit() {
+  const { language } = useGlobal();
+
   const { botProfile, setBotProfile } = useBot();
   const { user, status } = useUser();
   const router = useRouter();
@@ -310,7 +313,10 @@ export default function Edit() {
               startContent={<AIBtnIcon />}
               isLoading={createBotLoading}
               onClick={() => {
-                getBotInfoByRepoName(botProfile?.repoName!);
+                getBotInfoByRepoName({
+                  repo_name: botProfile?.repoName!,
+                  lang: language,
+                });
               }}
             >
               {I18N.edit.page.chongXinShengChengPei}

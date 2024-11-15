@@ -19,7 +19,7 @@ async def create_bot(
     """
     Create a bot based on the specified GitHub repository.
 
-    :param repo_name: The full name of the GitHub repository (e.g., "ant-design/    ant-design").
+    :param repo_name: The full name of the GitHub repository (e.g., "ant-design/ant-design").
     :param uid: The unique identifier of the bot owner.
     :param starters: Optional. A list of opening dialogue prompts (e.g., ["介绍一下项目", "快速上手", "贡献指南"]).
     :param hello_message: Optional. A custom hello message for the bot.

@@ -7,7 +7,7 @@
     "client": "cd client && yarn run dev",
     "assistant": "cd assistant && yarn run dev",
     "server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
-    "env:pull": "server/venv/bin/python3 scripts/envs.py pull",
+    "env:pull": "cd server && ./venv/bin/python3 scripts/envs.py pull",
     "client:server": "concurrently \"yarn run server\" \"yarn run client\"",
     "assistant:server": "concurrently \"yarn run server\" \"yarn run assistant\"",
     "build:docker": "docker build -t petercat .",
