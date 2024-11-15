@@ -1,5 +1,5 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, status, Query, Path
+from fastapi import APIRouter, Request, Depends, status, Query, Path
 from fastapi.responses import JSONResponse
 from github import Github, Auth
 from auth.get_user_info import get_user, get_user_id
@@ -134,11 +134,25 @@ async def create_bot(
 
 @router.post("/config/generator", status_code=200)
 async def bot_generator(
+    request: Request,
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    lang: str = Query("en", description="Language of the bot"),
 ):
+    default_starters = [
+        request.state.i18n.get_text("starter0", lang),
+        request.state.i18n.get_text("starter1", lang),
+        request.state.i18n.get_text("starter2", lang),
+    ]
+    default_hello_message = request.state.i18n.get_text("hello_message", lang)
+    starters = bot_data.starters if bot_data.starters else default_starters
+    hello_message = (
+        bot_data.hello_message if bot_data.hello_message else default_hello_message
+    )
     try:
-        res = await bot_info_generator(user_id, **bot_data.model_dump())
+        res = await bot_info_generator(
+            user_id, bot_data.repo_name, starters, hello_message
+        )
         if not res:
             return JSONResponse(
                 content={

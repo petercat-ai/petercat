@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from auth.cors_middleware import AuthCORSMiddleWare
+from i18n.translations import I18nConfig, I18nMiddleware
 
 from auth.middleware import AuthMiddleWare
 from petercat_utils import get_env_variable
@@ -36,12 +37,11 @@ cors_origins_whitelist = get_env_variable("CORS_ORIGIN_WHITELIST") or None
 
 app = FastAPI(title="Petercat Server", version="1.0", description="Petercat.ai APIs")
 
+i18n_config = I18nConfig(default_language="en", translations_dir="i18n")
+
 app.add_middleware(AuthMiddleWare)
 
-app.add_middleware(
-    SessionMiddleware,
-    secret_key=session_secret_key
-)
+app.add_middleware(SessionMiddleware, secret_key=session_secret_key)
 
 cors_origins = (
     ["*"] if cors_origins_whitelist is None else cors_origins_whitelist.split(",")
@@ -57,6 +57,8 @@ app.add_middleware(
 
 app.add_middleware(AuthCORSMiddleWare)
 
+app.add_middleware(I18nMiddleware, i18n_config=i18n_config)
+
 app.include_router(rag_router.router)
 app.include_router(bot_router.router)
 app.include_router(auth_router.router)
@@ -70,6 +72,7 @@ app.include_router(user_router.router)
 @app.get("/")
 def home_page():
     return RedirectResponse(url=WEB_URL)
+
 
 @app.get("/api/health_checker")
 def health_checker():
