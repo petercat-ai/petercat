@@ -11,7 +11,7 @@ Assistant 是一个带有浮动气泡和可拖动的聊天助手组件。
 确保你已经安装了必要的依赖：
 
 ```bash
-npm install @petercatai/assitant
+npm install @petercatai/assistant
 ```
 
 ## 使用示例
