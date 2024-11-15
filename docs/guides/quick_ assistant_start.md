@@ -1,31 +1,32 @@
-## 是什么
+ ## What is it?
 
-Assistant 是一个带有浮动气泡和可拖动的聊天助手组件。  
+Assistant is a draggable chat assistant component with a floating bubble.
+
 ![image](https://github.com/user-attachments/assets/abb03434-792a-4b19-b88e-a6e91d60eb92)
 
-点击小猫后会展开聊天抽屉
+Clicking on the cat will expand the chat drawer.
 
 ![image](https://github.com/user-attachments/assets/4d396121-ca2d-42ab-828b-80f4a529e278)
 
-## 快速接入
+## Quick Integration
 
-### Token 获取
+### Token Acquisition
 
-来到 [https://petercat.ai/](https://petercat.ai/) 进入工作台点击登陆
+Visit [https://petercat.ai/](https://petercat.ai/), enter the workspace, and click login.
 
 ![image](https://github.com/user-attachments/assets/35bb6659-8a8d-4894-ae4a-4869bffd9967)
 
-点击空间添加答疑机器人
+Click on the space to add a Q&A bot.
 
-输入你的项目地址,可快速生成机器人
+Enter your project address to quickly generate a bot.
 
 ![image](https://github.com/user-attachments/assets/4aac8b0f-52ce-4198-b4d5-90afbfbd6fed)
 
-token 可在这里获取
+You can get the token here.
 
 ![image](https://github.com/user-attachments/assets/36d8132a-23ed-4582-b45b-94ac9b15f34d)
 
-### 代码引入
+### Code Import
 
 ```zsh
 npm install @petercatai/assistant
@@ -36,7 +37,7 @@ import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 
 const YourPetercataiAssistant = () => {
-  return <Assistant token="< 你的 token >" />;
+  return <Assistant token="<your token>" />;
 };
 
 function App() {
@@ -51,17 +52,17 @@ function App() {
 }
 ```
 
-更详细的入参请参考文档
+For more detailed parameters, please refer to the documentation.
 
 [petercat/assistant/src/Assistant/index.md at main · petercat-ai/petercat](https://github.com/petercat-ai/petercat/blob/main/assistant/src/Assistant/index.md#api)
 
-## 其他
+## Others
 
-### UMD 接入
+### UMD Integration
 
-petercat 同时支持 UMD 的接入方式
+Petercat also supports UMD integration.
 
-1. external 和 UMD 加载资源
+1. External and UMD loading resources
 
 ```js
 // example for umi project
@@ -78,11 +79,11 @@ export default {
 ```
 
 > [!NOTE]
-> Why external ?
+> Why external?
 >
-> 更小、提高 cache 率 -> 更快的用户体验
+> Smaller, higher cache rate -> Faster user experience
 
-下面是一个引入的参考例子
+Here is a reference example of an import:
 
 ```html
 <head>
@@ -96,7 +97,7 @@ export default {
 </head>
 ```
 
-2. 加载 PetercatLUI
+2. Loading PetercatLUI
 
 ```html
 <body>
@@ -105,11 +106,11 @@ export default {
      PetercatLUI.initAssistant({
        apiDomain: 'https://api.petercat.ai',
        token: 'your-token',
-       starters: ['介绍下这个项目', '查看贡献指南', '我该怎样快速上手'],
+       starters: ['Introduce this project', 'View contribution guide', 'How can I get started quickly'],
        clearMessage: true
      });
   </script>
 </body>
 ```
 
-就是这样！现在您可以在您的项目中享受助手组件了。
+That's it! Now you can enjoy the assistant component in your project.  
