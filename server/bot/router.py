@@ -145,7 +145,6 @@ async def bot_generator(
         request.state.i18n.get_text("starter2", lang),
     ]
     default_hello_message = request.state.i18n.get_text("hello_message", lang)
-    print(bot_data.starters)
     starters = bot_data.starters if bot_data.starters else default_starters
     hello_message = (
         bot_data.hello_message if bot_data.hello_message else default_hello_message
