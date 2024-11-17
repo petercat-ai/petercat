@@ -506,7 +506,7 @@ export default function Homepage() {
                     className="lg:hidden mx-auto mt-6 mb-3 scale-0 transition-transform duration-[166ms] group-[.fp-completely]:delay-[683ms] group-[.fp-completely]:scale-100"
                     width={121}
                     height={56}
-                    src="/images/title_based.svg"
+                    src="/images/title_based_m.svg"
                     alt="Based on GPT4"
                   />
                   <p className="relative mb-6 lg:mb-[119px] leading-5 lg:leading-7 lg:ml-2 text-xs lg:text-xl text-[#FEF4E1] lg:w-[500px] mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[333ms] group-[.fp-completely]:scale-100">
