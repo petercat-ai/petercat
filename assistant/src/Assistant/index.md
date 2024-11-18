@@ -25,11 +25,13 @@ export default () => {
 
   return (
     <div>
-      <a onClick={() => setToken('0553365a-edb1-435c-b69c-4c645290b86e')}>点我变token{token}</a>
+      <a onClick={() => setToken('1234')}>点我变token{token}</a>
       <Assistant
-        requestWithToken ={true}
-        token={token}
+        editBotId ={token}
+        apiUrl='/api/chat/stream_builder'
+        token='0553365a-edb1-435c-b69c-4c645290b86e'
         clearMessage={true}
+        apiUr
       />
     </div>
   );

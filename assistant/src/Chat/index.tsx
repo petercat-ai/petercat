@@ -49,10 +49,11 @@ export interface ChatProps extends BotInfo {
   drawerWidth?: number;
   prompt?: string;
   token?: string;
+  editBotId?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
   disabled?: boolean;
-  requestWithToken?: boolean;
+
   disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
@@ -71,7 +72,7 @@ const Chat: FC<ChatProps> = memo(
     disabled = false,
     hideLogo = false,
     disabledPlaceholder,
-    requestWithToken = false,
+    editBotId,
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
@@ -103,9 +104,6 @@ const Chat: FC<ChatProps> = memo(
 
     const request = useCallback(
       async (messages: any[]) => {
-        if (requestWithToken && !tokenRef?.current) {
-          return;
-        }
         const newMessages = messages
           .filter(
             (item) => item.role !== Role.tool && item.role !== Role.knowledge,
@@ -142,12 +140,13 @@ const Chat: FC<ChatProps> = memo(
           }) as Message[];
 
         try {
+          const token = editBotId || tokenRef?.current;
           const response = await streamChat(
             newMessages,
             apiDomain,
             apiUrl,
             prompt,
-            tokenRef?.current,
+            token,
           );
           return handleStream(response);
         } catch (e: any) {
@@ -160,7 +159,7 @@ const Chat: FC<ChatProps> = memo(
           );
         }
       },
-      [apiDomain, apiUrl, prompt, tokenRef?.current, requestWithToken],
+      [apiDomain, apiUrl, prompt, tokenRef?.current, editBotId],
     );
 
     useEffect(() => {
