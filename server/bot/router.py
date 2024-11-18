@@ -110,12 +110,13 @@ async def create_bot(
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
+    lang = bot_data.lang or "en"
     default_starters = [
-        request.state.i18n.get_text("starter0", bot_data.lang),
-        request.state.i18n.get_text("starter1", bot_data.lang),
-        request.state.i18n.get_text("starter2", bot_data.lang),
+        request.state.i18n.get_text("starter0", lang),
+        request.state.i18n.get_text("starter1", lang),
+        request.state.i18n.get_text("starter2", lang),
     ]
-    default_hello_message = request.state.i18n.get_text("hello_message", bot_data.lang)
+    default_hello_message = request.state.i18n.get_text("hello_message", lang)
     starters = bot_data.starters if bot_data.starters else default_starters
     hello_message = (
         bot_data.hello_message if bot_data.hello_message else default_hello_message
@@ -144,12 +145,13 @@ async def bot_generator(
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
+    lang = bot_data.lang or "en"
     default_starters = [
-        request.state.i18n.get_text("starter0", bot_data.lang),
-        request.state.i18n.get_text("starter1", bot_data.lang),
-        request.state.i18n.get_text("starter2", bot_data.lang),
+        request.state.i18n.get_text("starter0", lang),
+        request.state.i18n.get_text("starter1", lang),
+        request.state.i18n.get_text("starter2", lang),
     ]
-    default_hello_message = request.state.i18n.get_text("hello_message", bot_data.lang)
+    default_hello_message = request.state.i18n.get_text("hello_message", lang)
     starters = bot_data.starters if bot_data.starters else default_starters
     hello_message = (
         bot_data.hello_message if bot_data.hello_message else default_hello_message
