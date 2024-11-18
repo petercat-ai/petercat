@@ -16,16 +16,23 @@ npm install @petercatai/assistant
 
 ## 使用示例
 
-```tsx
-import React from 'react';
+```jsx
+import React, { useEffect, useState } from 'react';
 import { Assistant } from '@petercatai/assistant';
 
-export default () => (
-  <Assistant
-    token="36c6b04b-b619-4449-91fa-faf23ab30b80"
-    clearMessage={true}
-  />
-);
+export default () => {
+  const [token, setToken] = useState('');
+
+  return (
+    <div>
+      <a onClick={() => setToken('0553365a-edb1-435c-b69c-4c645290b86e')}>点我变token{token}</a>
+      <Assistant
+        token={token}
+        clearMessage={true}
+      />
+    </div>
+  );
+};
 ```
 ## API
 

@@ -73,10 +73,19 @@ const Chat: FC<ChatProps> = memo(
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
+    const tokenRef = useRef<string | undefined>(token);
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
     const [complete, setComplete] = useState(false);
+    useEffect(() => {
+      tokenRef.current = token;
+    }, [token]);
     const { data: detail } = useSWR(
-      token ? [`${apiDomain}/api/bot/detail?id=${token}`, token] : null,
+      tokenRef?.current
+        ? [
+            `${apiDomain}/api/bot/detail?id=${tokenRef?.current}`,
+            tokenRef?.current,
+          ]
+        : null,
       fetcher<BotInfo>,
     );
 
@@ -133,7 +142,7 @@ const Chat: FC<ChatProps> = memo(
             apiDomain,
             apiUrl,
             prompt,
-            token,
+            tokenRef?.current,
           );
           return handleStream(response);
         } catch (e: any) {
@@ -146,7 +155,7 @@ const Chat: FC<ChatProps> = memo(
           );
         }
       },
-      [apiDomain, apiUrl, prompt, token],
+      [apiDomain, apiUrl, prompt, tokenRef?.current],
     );
 
     useEffect(() => {
@@ -165,7 +174,7 @@ const Chat: FC<ChatProps> = memo(
       if (proChatRef?.current) {
         proChatRef?.current?.clearMessage();
       }
-    }, [token, prompt, proChatRef?.current]);
+    }, [tokenRef?.current, prompt, proChatRef?.current]);
 
     useEffect(() => {
       if (isEmpty(detail)) {
@@ -429,7 +438,7 @@ const Chat: FC<ChatProps> = memo(
                                 templateId: template_id,
                                 cardData: data,
                                 apiDomain: apiDomain,
-                                token: token!,
+                                token: tokenRef?.current!,
                               })}
                             </div>
                           )}

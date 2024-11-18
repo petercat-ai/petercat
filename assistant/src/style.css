@@ -1218,6 +1218,10 @@ video:where(.petercat-lui,.petercat-lui *) {
   line-height: 22px;
 }
 
+.ant-pro-chat-list-item-message-content p {
+  word-break: break-word !important;
+}
+
 .ant-pro-chat-chat-list-container {
   overflow-y: auto !important;
 }
