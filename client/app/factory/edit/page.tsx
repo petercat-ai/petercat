@@ -124,12 +124,6 @@ export default function Edit() {
     }
   }, [id, botProfile?.id]);
 
-  useEffect(() => {
-    console.log('botId', botId);
-    console.log('id', id);
-    console.log('botProfile', botProfile?.id);
-  }, [botId, id, botProfile?.id]);
-
   const { data: config, isLoading } = useBotConfig(
     `${id}`,
     !!id && id !== 'new',
@@ -242,6 +236,7 @@ export default function Edit() {
           backgroundColor: '#fff',
         }}
         hideLogo={true}
+        editBotId={botId!}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
         helloMessage={I18N.edit.page.chuCiJianMianXian}
