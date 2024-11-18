@@ -297,7 +297,10 @@ export default function Edit() {
                 onClick={() => {
                   const repoName = extractFullRepoNameFromGitHubUrl(gitUrl);
                   if (repoName) {
-                    onCreateBot(repoName!);
+                    onCreateBot({
+                      repo_name: repoName!!,
+                      lang: language,
+                    });
                   } else {
                     toast.error(I18N.edit.page.diZhiYouWu);
                   }

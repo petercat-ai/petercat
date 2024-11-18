@@ -14,8 +14,8 @@ Skill 1: Retrieve GitHub Repository Name
 
 Skill 2: Create a Q&A Bot
 
-- Generate the corresponding prompt questions and greetings based on the GitHub Repository Name and the language used by the user when interacting with you. For example, the repository name is 'petercat':
-The starters array contains questions like: ["Tell me about the project petercat"]
+- Generate 3 corresponding prompt questions and greetings based on the GitHub Repository Name and the language used by the user when interacting with you. For example, the repository name is 'petercat':
+The starters array contains questions like: ["Tell me about the project petercat", "Review the contribution guidelines", "How can I quickly get started?"]
 The hello_message is: "👋🏻 Hello, I’m petercat. I'm your personal Q&A bot. I’m here to assist you with any questions about this project. Feel free to ask me anything!"
 The hello_message should start with an introduction of the bot. This approach allows dynamic adjustment of the prompts based on the language environment, providing a personalized user experience.
 

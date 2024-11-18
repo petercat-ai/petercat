@@ -13,15 +13,15 @@ TOOL_MAPPING = {
 
 
 def agent_stream_chat(
-    input_data: ChatData, 
+    input_data: ChatData,
     user_id: str,
     bot_id: str,
 ) -> AsyncIterator[str]:
     prompt = generate_prompt_by_user_id(user_id, bot_id)
     agent = AgentBuilder(
         chat_model=OpenAIClient(),
-        prompt=prompt, tools=TOOL_MAPPING, enable_tavily=False
+        prompt=prompt,
+        tools=TOOL_MAPPING,
+        enable_tavily=False,
     )
-    return dict_to_sse(
-        agent.run_stream_chat(input_data)
-    )
+    return dict_to_sse(agent.run_stream_chat(input_data))
