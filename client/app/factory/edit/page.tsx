@@ -124,6 +124,12 @@ export default function Edit() {
     }
   }, [id, botProfile?.id]);
 
+  useEffect(() => {
+    console.log('botId', botId);
+    console.log('id', id);
+    console.log('botProfile', botProfile?.id);
+  }, [botId, id, botProfile?.id]);
+
   const { data: config, isLoading } = useBotConfig(
     `${id}`,
     !!id && id !== 'new',

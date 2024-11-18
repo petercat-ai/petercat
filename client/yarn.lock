@@ -2927,10 +2927,10 @@
   resolved "https://registry.npmjs.org/@panva/hkdf/-/hkdf-1.2.1.tgz#cb0d111ef700136f4580349ff0226bf25c853f23"
   integrity sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==
 
-"@petercatai/assistant@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.npmjs.org/@petercatai/assistant/-/assistant-1.0.9.tgz#96f2dd4a4d0713627b4a52a5ee61f742e8a2157f"
-  integrity sha512-mSyF5vwfJ6ucNAVLQvnhsTJd/QuWIRes8GDACrbhlV1iY4mW5RonrPkUL6MtNLb2PSqSxDLEv8beH4UpnJ5Wng==
+"@petercatai/assistant@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.npmjs.org/@petercatai/assistant/-/assistant-1.0.10.tgz#adc647052b32bb4d0044f03c3287cbdf96a324c9"
+  integrity sha512-176PYPPSWobqNac4qSuTFIZQ5+wJmW8PECx402dkn8uQaQ+2ylAW5Apku0UHq3JAfCdScKgZ8b18qheqH3aBfg==
   dependencies:
     "@ant-design/icons" "^5.3.5"
     "@ant-design/pro-chat" "^1.9.0"

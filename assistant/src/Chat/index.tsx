@@ -52,6 +52,7 @@ export interface ChatProps extends BotInfo {
   style?: React.CSSProperties;
   hideLogo?: boolean;
   disabled?: boolean;
+  requestWithToken?: boolean;
   disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
@@ -70,6 +71,7 @@ const Chat: FC<ChatProps> = memo(
     disabled = false,
     hideLogo = false,
     disabledPlaceholder,
+    requestWithToken = false,
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
@@ -101,6 +103,9 @@ const Chat: FC<ChatProps> = memo(
 
     const request = useCallback(
       async (messages: any[]) => {
+        if (requestWithToken && !tokenRef?.current) {
+          return;
+        }
         const newMessages = messages
           .filter(
             (item) => item.role !== Role.tool && item.role !== Role.knowledge,
@@ -155,7 +160,7 @@ const Chat: FC<ChatProps> = memo(
           );
         }
       },
-      [apiDomain, apiUrl, prompt, tokenRef?.current],
+      [apiDomain, apiUrl, prompt, tokenRef?.current, requestWithToken],
     );
 
     useEffect(() => {
