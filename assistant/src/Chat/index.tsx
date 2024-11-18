@@ -177,10 +177,6 @@ const Chat: FC<ChatProps> = memo(
                       content={
                         <div className="leftMessageContent">
                           <div className="ant-pro-chat-list-item-message-content">
-                            <div className="text-left text-[20px] font-[500] leading-[28px] font-sf">
-                              👋🏻 你好，我是{' '}
-                              {botInfo.assistantMeta?.title || BOT_INFO.name}
-                            </div>
                             <div className="text-left text-[14px] font-[500] leading-[28px] font-sf">
                               {props.message}
                             </div>

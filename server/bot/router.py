@@ -106,17 +106,24 @@ def get_bot_config(
 
 @router.post("/create", status_code=200)
 async def create_bot(
+    request: Request,
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
-    blacklist_fields = {"public"}
-    filtered_bot_data = {
-        key: value
-        for key, value in bot_data.model_dump().items()
-        if key not in blacklist_fields
-    }
+    lang = bot_data.lang or "en"
+    default_starters = [
+        request.state.i18n.get_text("starter0", lang),
+        request.state.i18n.get_text("starter1", lang),
+        request.state.i18n.get_text("starter2", lang),
+    ]
+    default_hello_message = request.state.i18n.get_text("hello_message", lang)
+    starters = bot_data.starters if bot_data.starters else default_starters
+    hello_message = (
+        bot_data.hello_message if bot_data.hello_message else default_hello_message
+    )
+
     try:
-        res = await bot_builder(user_id, **filtered_bot_data)
+        res = await bot_builder(user_id, bot_data.repo_name, starters, hello_message)
         if not res:
             return JSONResponse(
                 content={
@@ -138,12 +145,13 @@ async def bot_generator(
     bot_data: BotCreateRequest,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
+    lang = bot_data.lang or "en"
     default_starters = [
-        request.state.i18n.get_text("starter0", bot_data.lang),
-        request.state.i18n.get_text("starter1", bot_data.lang),
-        request.state.i18n.get_text("starter2", bot_data.lang),
+        request.state.i18n.get_text("starter0", lang),
+        request.state.i18n.get_text("starter1", lang),
+        request.state.i18n.get_text("starter2", lang),
     ]
-    default_hello_message = request.state.i18n.get_text("hello_message", bot_data.lang)
+    default_hello_message = request.state.i18n.get_text("hello_message", lang)
     starters = bot_data.starters if bot_data.starters else default_starters
     hello_message = (
         bot_data.hello_message if bot_data.hello_message else default_hello_message

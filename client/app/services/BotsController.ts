@@ -39,16 +39,13 @@ export async function deleteBot(id: string) {
 }
 
 // Create Bot
-export async function createBot(
-  repo_name: string,
-  starters?: string[],
-  hello_message?: string,
-) {
-  return axios.post(`${apiDomain}/api/bot/create`, {
-    repo_name,
-    starters: starters ?? [],
-    hello_message,
-  });
+export async function createBot(params: {
+  repo_name: string;
+  lang?: string;
+  starters?: string[];
+  hello_message?: string;
+}) {
+  return axios.post(`${apiDomain}/api/bot/create`, params);
 }
 
 // Update Bot
