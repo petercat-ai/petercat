@@ -27,6 +27,7 @@ export default () => {
     <div>
       <a onClick={() => setToken('0553365a-edb1-435c-b69c-4c645290b86e')}>点我变token{token}</a>
       <Assistant
+        requestWithToken ={true}
         token={token}
         clearMessage={true}
       />

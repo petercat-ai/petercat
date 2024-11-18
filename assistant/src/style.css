@@ -1049,10 +1049,6 @@ video:where(.petercat-lui,.petercat-lui *) {
   font-size: 14px;
 }
 
-.text-\[20px\] {
-  font-size: 20px;
-}
-
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
