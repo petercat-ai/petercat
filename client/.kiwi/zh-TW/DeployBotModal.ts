@@ -13,9 +13,9 @@ export default {
     shenHeZhong: '審核中...',
     buShuDaoWoDe: '部署到我的網站',
     zheJiangTiJiaoYi:
-      '這將提交一個 issue 到 Peter Cat 倉庫，待我們人工審核通過後即可完成公開。',
+      '這將提交一個 issue 到 PeterCat 倉庫，待我們人工審核通過後即可完成公開。',
     ninDeJiQiRen: '您的機器人已經公開到了市場，請前往市場查看。',
-    gongKaiDaoPE: '公開到 Peter Cat 市場',
+    gongKaiDaoPE: '公開到 PeterCat 市場',
   },
   DeployItem: {
     shouQi: '收起',

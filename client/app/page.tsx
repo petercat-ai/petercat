@@ -380,7 +380,7 @@ export default function Homepage() {
                     width={106}
                     height={20}
                     src="/images/logo-footer.svg"
-                    alt="Peter Cat"
+                    alt="PeterCat"
                   />
                   {I18N.app.page.shiZhuanWeiSheQu}
                 </p>
@@ -761,7 +761,7 @@ export default function Homepage() {
                           height={20}
                           className="mx-auto lg:mx-0"
                           src="/images/logo-footer.svg"
-                          alt="Peter Cat"
+                          alt="PeterCat"
                         />
                       </div>
                     </td>

@@ -15,7 +15,7 @@ export default {
     gITHU: 'GitHubプロジェクトのアドレス',
     bangWoPeiZhiYi: 'Q&Aボットの設定を手伝ってください',
     chuCiJianMianXian:
-      'はじめまして、私はオープンソースプロジェクトのボットです。私との対話を通じてQ&Aボットを設定できます。',
+      '👋🏻 こんにちは！初めまして、自己紹介させていただきます。私はPeterCatと申します。オープンソースプロジェクトのロボットです。私と対話することで、Q&Aロボットを設定できます。',
     shengChengShiBai: '生成に失敗しました',
     shengChengChengGongE: '生成に成功しました',
     baoCunShiBaiE: '保存に失敗しました',

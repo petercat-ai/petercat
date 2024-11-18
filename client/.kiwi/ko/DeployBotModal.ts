@@ -13,9 +13,9 @@ export default {
     shenHeZhong: '검토 중...',
     buShuDaoWoDe: '내 웹사이트에 배포',
     zheJiangTiJiaoYi:
-      '이것은 Peter Cat 저장소에 issue를 제출하게 되며, 우리 인공 검토를 통과하면 공개될 수 있습니다.',
+      '이것은 PeterCat 저장소에 issue를 제출하게 되며, 우리 인공 검토를 통과하면 공개될 수 있습니다.',
     ninDeJiQiRen: '당신의 봇이 시장에 공개되었습니다. 시장을 확인해 보세요.',
-    gongKaiDaoPE: 'Peter Cat 시장에 공개',
+    gongKaiDaoPE: 'PeterCat 시장에 공개',
   },
   DeployItem: {
     shouQi: '접기',

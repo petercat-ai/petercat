@@ -15,7 +15,7 @@ export default {
     gITHU: 'GitHub 프로젝트 주소',
     bangWoPeiZhiYi: 'Q&A 봇 설정을 도와주세요.',
     chuCiJianMianXian:
-      '처음 뵙겠습니다, 저는 오픈 소스 프로젝트 봇입니다. 저와 대화를 통해 Q&A 봇을 설정할 수 있습니다.',
+      '👋🏻 안녕하세요! 처음 뵙겠습니다. 제 소개를 하겠습니다: 저는 PeterCat입니다, 오픈소스 프로젝트의 로봇입니다. 저와 대화를 통해 질의응답 로봇을 구성할 수 있습니다.',
     shengChengShiBai: '생성 실패',
     shengChengChengGongE: '생성 성공',
     baoCunShiBaiE: '저장 실패',

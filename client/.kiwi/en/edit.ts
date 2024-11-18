@@ -15,7 +15,7 @@ export default {
     gITHU: 'GitHub Project Address',
     bangWoPeiZhiYi: 'Help me configure a Q&A bot',
     chuCiJianMianXian:
-      'Nice to meet you. Let me introduce myself: I am a bot for an open-source project. You can configure a Q&A bot through conversation with me.',
+      '👋🏻 Hello! Nice to meet you. Let me introduce myself: I am PeterCat, a robot for an open-source project. You can configure a Q&A robot by talking to me.',
     shengChengShiBai: 'Generation Failed',
     shengChengChengGongE: 'Generation Successful',
     baoCunShiBaiE: 'Save Failed',
