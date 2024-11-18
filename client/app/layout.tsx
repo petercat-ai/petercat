@@ -22,8 +22,8 @@ export default function RootLayout({
       <head>
         <title>PeterCat</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
-        <meta name="description" content="Peter Cat -- GitHub Assistant" />
-        <meta property="og:title" content="Peter Cat" />
+        <meta name="description" content="PeterCat -- GitHub Assistant" />
+        <meta property="og:title" content="PeterCat" />
         <meta property="og:image" content="/images/logo.png" />
       </head>
 
