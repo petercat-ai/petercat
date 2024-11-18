@@ -1049,10 +1049,6 @@ video:where(.petercat-lui,.petercat-lui *) {
   font-size: 14px;
 }
 
-.text-\[20px\] {
-  font-size: 20px;
-}
-
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -1216,6 +1212,10 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .leftMessageContent .ant-pro-chat-list-item-message-content p {
   line-height: 22px;
+}
+
+.ant-pro-chat-list-item-message-content p {
+  word-break: break-word !important;
 }
 
 .ant-pro-chat-chat-list-container {

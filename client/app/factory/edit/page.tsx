@@ -236,6 +236,7 @@ export default function Edit() {
           backgroundColor: '#fff',
         }}
         hideLogo={true}
+        editBotId={botId!}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
         helloMessage={I18N.edit.page.chuCiJianMianXian}
