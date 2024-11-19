@@ -92,7 +92,6 @@ export default function Edit() {
     try {
       const data = JSON.parse(response)?.data?.[0];
       if (!isEmpty(data)) {
-        debugger;
         setBotProfile((draft) => {
           draft.id = data.id;
           draft.name = data.name;
