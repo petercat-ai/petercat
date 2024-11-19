@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated
 from github import Auth
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse

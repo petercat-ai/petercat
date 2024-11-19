@@ -176,3 +176,27 @@ export AWS_REGION=ap-northeast-1
 # 生效
 source ～/.zshrc
 ```
+
+
+# Debug 模式
+vscode 选择 FastAPI debugger，自动创建 launch.json, 然后将内容替换如下：
+```json
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python 调试程序: FastAPI",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "cwd": "${workspaceFolder}/server",
+      "args": ["main:app", "--reload"],
+      "jinja": true,
+      "justMyCode": false
+    }
+  ]
+}
+```

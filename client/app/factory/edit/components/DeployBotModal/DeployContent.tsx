@@ -41,7 +41,8 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
         <span className="text-gray-500 text-[14px]">
           {isOpenApprovalStatus ? (
             <div className="flex flex-col">
-              {I18N.DeployBotModal.DeployContent.shenHeZhong}{approval_path && (
+              {I18N.DeployBotModal.DeployContent.shenHeZhong}
+              {approval_path && (
                 <a href={approval_path} target="_blank">
                   {approval_path}
                 </a>
@@ -53,7 +54,8 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
                 <span>{I18N.DeployBotModal.DeployContent.ninDeJiQiRen}</span>
               ) : (
                 <span>
-                  {I18N.DeployBotModal.DeployContent.zheJiangTiJiaoYi}</span>
+                  {I18N.DeployBotModal.DeployContent.zheJiangTiJiaoYi}
+                </span>
               )}
             </>
           )}
@@ -65,16 +67,23 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
   const renderDeployMarket = () => {
     const { deployWebsite } = deployInfo;
     const { approval_path, approval_status } = websiteApproval;
+    let isChecked = false;
+    if (deployWebsite?.checked !== undefined) {
+      isChecked = deployWebsite?.checked;
+    } else if (deployWebsite?.targetUrl) {
+      isChecked = true;
+    }
     return (
       <DeployItem
         canHide={true}
-        disabled={approval_status === 'open'}
-        checked={deployWebsite?.checked ?? !!approval_path}
+        disabled={approval_status === 'open' || !deployWebsite?.targetUrl}
+        checked={isChecked}
         defaultIsHide={!approval_path}
         key={'website'}
         title={I18N.DeployBotModal.DeployContent.buShuDaoWoDe}
         subTitle={I18N.DeployBotModal.DeployContent.dianJiKaiShiPei}
         onChange={(key, checked) => {
+          // checkBox onChange
           onChange({
             ...deployInfo,
             deployWebsite: { ...deployWebsite, checked },
@@ -93,7 +102,8 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
             type="url"
             label={
               <span className="font-sans text-[14px] font-semibold leading-[20px] text-left">
-                {I18N.DeployBotModal.DeployContent.muBiaoWangZhanYu}</span>
+                {I18N.DeployBotModal.DeployContent.muBiaoWangZhanYu}
+              </span>
             }
             value={deployInfo?.deployWebsite?.targetUrl}
             onChange={(e) => {
@@ -159,7 +169,10 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
               }}
             >
               {peterCatBotRepos?.map((repo: GithubRepoConfig) => (
-                <div className="w-full p-[8px] bg-[#F4F4F5] rounded-[8px]" key={repo.repo_id}>
+                <div
+                  className="w-full p-[8px] bg-[#F4F4F5] rounded-[8px]"
+                  key={repo.repo_id}
+                >
                   <Checkbox value={repo.repo_id!}>
                     <div
                       style={{ display: 'flex', flexDirection: 'column' }}
@@ -173,7 +186,11 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
                             item.checked && item.repo_id === repo.repo_id,
                         ) && (
                           <span className="text-[#EF4444] text-[12px]">
-                            {I18N.DeployBotModal.DeployContent.zheJiangTiHuanCang}</span>
+                            {
+                              I18N.DeployBotModal.DeployContent
+                                .zheJiangTiHuanCang
+                            }
+                          </span>
                         )}
                     </div>
                   </Checkbox>
@@ -183,11 +200,13 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
           ) : (
             <div>
               <span>
-                {I18N.DeployBotModal.DeployContent.weiNengHuoQuNin}<a
+                {I18N.DeployBotModal.DeployContent.weiNengHuoQuNin}
+                <a
                   href="https://github.com/apps/petercat-assistant"
                   target="_blank"
                 >
-                  {I18N.DeployBotModal.DeployContent.qianWangAnZhuang}</a>
+                  {I18N.DeployBotModal.DeployContent.qianWangAnZhuang}
+                </a>
               </span>
               <span>{I18N.DeployBotModal.DeployContent.shuaXin}</span>
             </div>
@@ -198,7 +217,9 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
   };
   return (
     <>
-      <span className="text-[14px] text-gray-800">{I18N.DeployBotModal.DeployContent.buShuDaoQiTa}</span>
+      <span className="text-[14px] text-gray-800">
+        {I18N.DeployBotModal.DeployContent.buShuDaoQiTa}
+      </span>
       {renderPublicMarket()}
       {renderDeployMarket()}
       {renderBindRepo()}
