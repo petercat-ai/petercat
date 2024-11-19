@@ -17,7 +17,6 @@ import {
   SelectItem,
   SelectSection,
   Chip,
-  Image,
 } from '@nextui-org/react';
 import Collapse from './Collapse';
 import { BotProfile } from '@/app/interface';
