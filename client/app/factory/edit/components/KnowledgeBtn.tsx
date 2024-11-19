@@ -19,14 +19,21 @@ type IProps = {
 const KnowledgeBtn = (props: IProps) => {
   const { onClick, repoName, mode } = props;
   const { setTaskProfile } = useBotTask();
-  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>(!!repoName);
+  const [shouldGetTask, setShouldGetTask] = React.useState<boolean>();
   const [taskLoading, setTaskLoading] = React.useState<boolean>(true);
   const [allowShowChunkList, setAllowShowChunkList] =
     React.useState<boolean>(false);
 
-  const { data: taskList } = useGetBotRagTask(repoName, shouldGetTask, true);
-  const taskCnt = taskList?.length ?? 0;
+  const { data: taskList } = useGetBotRagTask(
+    repoName,
+    // if repoName is not empty, query taskList
+    !!repoName,
+    // if task is running, query every 5s
+    // if task is completed, query once
+    taskLoading,
+  );
 
+  const taskCnt = taskList?.length ?? 0;
   // compute task running status by taskList
   useEffect(() => {
     if (!taskList) return;
@@ -43,9 +50,9 @@ const KnowledgeBtn = (props: IProps) => {
     if (completeTaskCnt > 0) {
       setAllowShowChunkList(true);
     }
-    const taskRunning = taskCnt === completeTaskCnt ? false : true;
-    setTaskLoading(taskRunning);
-    setTaskProfile({ running: taskRunning });
+    const isTaskRunning = taskList?.length === completeTaskCnt ? false : true;
+    setTaskLoading(isTaskRunning);
+    setTaskProfile({ running: isTaskRunning });
   }, [taskList]);
 
   // close the interval query
@@ -75,7 +82,7 @@ const KnowledgeBtn = (props: IProps) => {
           startContent={taskLoading ? null : <RefreshIcon />}
           onClick={(e) => {
             e.preventDefault();
-            // TODO: reload knowledge
+            // TODO: reload knowledge embedding
           }}
         >
           {taskLoading ? (

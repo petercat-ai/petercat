@@ -1,3 +1,4 @@
+import json
 from typing import List, Optional
 
 from github import Github
@@ -19,7 +20,6 @@ async def bot_info_generator(
     try:
         # Step1:Get the repository object
         repo = g.get_repo(repo_name)
-
         # Step2: Generate the prompt
         prompt = generate_prompt_by_repo_name(repo_name)
 

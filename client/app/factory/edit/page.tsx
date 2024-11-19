@@ -2,7 +2,7 @@
 import I18N from '@/app/utils/I18N';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
-import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
+import BotCreateFrom from '@/app/factory/edit/components/BotCreateForm';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -44,6 +44,7 @@ export default function Edit() {
   const { language } = useGlobal();
 
   const { botProfile, setBotProfile } = useBot();
+  console.log('botProfile', botProfile);
   const { user, status } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -91,6 +92,7 @@ export default function Edit() {
     try {
       const data = JSON.parse(response)?.data?.[0];
       if (!isEmpty(data)) {
+        debugger;
         setBotProfile((draft) => {
           draft.id = data.id;
           draft.name = data.name;
@@ -130,7 +132,7 @@ export default function Edit() {
   );
 
   useEffect(() => {
-    if (!isEmpty(config))
+    if (!isEmpty(config)) {
       setBotProfile((draft) => {
         draft.id = config.id;
         draft.name = config.name || '';
@@ -143,6 +145,7 @@ export default function Edit() {
         draft.repoName = config.repo_name ?? '';
         draft.domain_whitelist = config.domain_whitelist ?? [];
       });
+    }
   }, [config]);
 
   useEffect(() => {
@@ -157,14 +160,6 @@ export default function Edit() {
         draft.helloMessage = generatorResponseData.hello_message || '';
       });
   }, [generatorResponseData]);
-
-  const updateBot = async () => {
-    const params = {
-      ...botProfile,
-      starters: botProfile?.starters?.filter((s) => s),
-    };
-    onUpdateBot(params);
-  };
 
   useEffect(() => {
     if (createSuccess) {
@@ -206,7 +201,7 @@ export default function Edit() {
     const botInfo = createResponseData?.[0];
     if (!isEmpty(botInfo)) {
       setBotProfile((draft) => {
-        draft.repoName = botProfile.repoName;
+        draft.repoName = botInfo.repo_name;
         draft.id = botInfo.id;
         draft.name = botInfo.name;
         draft.avatar = botInfo.avatar;
@@ -282,6 +277,7 @@ export default function Edit() {
             const url = e.target.value;
             setGitUrl(url);
           }}
+          value={gitUrl}
           isDisabled={isEdit}
           required
           classNames={{ label: 'w-full' }}
@@ -328,7 +324,7 @@ export default function Edit() {
           )}
           {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
             <KnowledgeBtn
-              repoName={botProfile.repoName!}
+              repoName={botProfile.repoName}
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}
@@ -341,6 +337,14 @@ export default function Edit() {
       {isEdit && <BotCreateFrom />}
     </div>
   );
+
+  const updateBot = async () => {
+    const params = {
+      ...botProfile,
+      starters: botProfile?.starters?.filter((s) => s),
+    };
+    onUpdateBot(params);
+  };
 
   return (
     <BotTaskProvider>
