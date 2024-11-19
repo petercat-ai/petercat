@@ -44,7 +44,6 @@ export default function Edit() {
   const { language } = useGlobal();
 
   const { botProfile, setBotProfile } = useBot();
-  console.log('botProfile', botProfile);
   const { user, status } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -101,7 +100,7 @@ export default function Edit() {
           draft.description = data.description;
           draft.starters = data.starters;
           draft.public = data.public;
-          draft.repoName = data.repoName;
+          draft.repoName = data.repo_name;
           draft.helloMessage = data.hello_message;
         });
       }
