@@ -230,6 +230,7 @@ export default function Edit() {
           backgroundColor: '#fff',
         }}
         hideLogo={true}
+        // @ts-ignore
         editBotId={botId!}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
@@ -321,7 +322,9 @@ export default function Edit() {
               {I18N.edit.page.chongXinShengChengPei}
             </Button>
           )}
-          {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
+          {isEdit &&
+          activeTab === ConfigTypeEnum.MANUAL_CONFIG &&
+          botProfile.repoName ? (
             <KnowledgeBtn
               repoName={botProfile.repoName}
               onClick={() => {
@@ -329,7 +332,7 @@ export default function Edit() {
               }}
               mode={'configItem'}
             />
-          )}
+          ) : null}
         </div>
       </div>
 
