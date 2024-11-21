@@ -16,6 +16,9 @@ class BotModel(BaseModel):
     token_id: Optional[str] = ""
     created_at: datetime = datetime.now()
     domain_whitelist: Optional[list[str]] = []
+    temperature: Optional[float] = 0.2
+    n: Optional[int] = 1
+    top_p: Optional[float]
 
 
 class RepoBindBotConfigVO(BaseModel):
