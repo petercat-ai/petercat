@@ -733,9 +733,9 @@ export default function Homepage() {
                           />
                           <a
                             className="text-xl text-[#FEF4E1] hover:underline"
-                            href="mailto:antd.antgroup@gmail.com"
+                            href="mailto:petercat.assistant@gmail.com"
                           >
-                            antd.antgroup@gmail.com
+                            petercat.assistant@gmail.com
                           </a>
                         </div>
                       </div>
