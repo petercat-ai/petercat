@@ -23,6 +23,7 @@ ALLOW_LIST = [
 ]
 
 ANONYMOUS_USER_ALLOW_LIST = [
+  "/api/auth/userinfo"
   "/api/chat/qa",
   "/api/chat/stream_qa",
 ]
