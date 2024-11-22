@@ -183,7 +183,7 @@ yarn run publish:pypi
 
 ## 💼 企业版接入
 
-请把您的项目地址，使用场景，使用频率等信息发送至 [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
+请把您的项目地址，使用场景，使用频率等信息发送至 [petercat.assistant@gmail.com ](petercat.assistant@gmail.com) 
 
 
 ## 📧 反馈问题
