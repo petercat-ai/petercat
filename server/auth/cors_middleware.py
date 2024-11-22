@@ -28,6 +28,5 @@ class AuthCORSMiddleWare(BaseHTTPMiddleware):
     def mutate_cors_headers(self, request: Request, response: Response):
         requested_origin = request.headers.get('origin')
         headers = response.headers
-
         headers["Access-Control-Allow-Origin"] = requested_origin
         return headers
