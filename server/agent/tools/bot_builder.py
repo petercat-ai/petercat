@@ -8,6 +8,7 @@ from bot.builder import bot_builder
 
 g = Github()
 
+
 @tool
 async def create_bot(
     repo_name: str,
@@ -18,27 +19,30 @@ async def create_bot(
     """
     Create a bot based on the specified GitHub repository.
 
-    :param repo_name: The full name of the GitHub repository (e.g., "ant-design/    ant-design").
+    :param repo_name: The full name of the GitHub repository (e.g., "ant-design/ant-design").
     :param uid: The unique identifier of the bot owner.
     :param starters: Optional. A list of opening dialogue prompts (e.g., ["介绍一下项目", "快速上手", "贡献指南"]).
     :param hello_message: Optional. A custom hello message for the bot.
     """
     res = await bot_builder(uid, repo_name, starters, hello_message)
     if not res:
-        return JSONResponse(content={"success": False, "errorMessage": "仓库不存在，生成失败"})
+        return JSONResponse(
+            content={"success": False, "errorMessage": "Failed to create bot."}
+        )
     return res.json()
+
 
 @tool
 def edit_bot(
-        id: str,
-        uid: str,
-        avatar: Optional[str] = None,
-        name: Optional[str] = None,
-        description : Optional[str] = None,
-        prompt: Optional[str] = None,
-        starters: Optional[list[str]] = None,
-        hello_message: Optional[str] = None
-    ):
+    id: str,
+    uid: str,
+    avatar: Optional[str] = None,
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+    prompt: Optional[str] = None,
+    starters: Optional[list[str]] = None,
+    hello_message: Optional[str] = None,
+):
     """
     Modify Bot Configuration based on the given parameters.
 
@@ -54,30 +58,41 @@ def edit_bot(
     try:
         # Step1: Get the bot object
         supabase = get_client()
-        bot = supabase.table("bots").select("*").eq("id", id).eq("uid", uid).execute().data[0]
+        bot = (
+            supabase.table("bots")
+            .select("*")
+            .eq("id", id)
+            .eq("uid", uid)
+            .execute()
+            .data[0]
+        )
         if not bot:
             raise ValueError(f"Bot with ID {id} not found.")
 
         # Step2: Update the bot data
         bot_data = {
-            "name":  name if name else bot["name"],
+            "name": name if name else bot["name"],
             "description": description if description else bot["description"],
             "avatar": avatar if avatar else bot["avatar"],
             "prompt": prompt if prompt else bot["prompt"],
-            "uid": bot["uid"], 
+            "uid": bot["uid"],
             "label": "Assistant",
-            "starters": starters if isinstance(starters, list) and starters else bot["starters"],
+            "starters": (
+                starters if isinstance(starters, list) and starters else bot["starters"]
+            ),
             "public": bot["public"],
-            "hello_message": hello_message if hello_message else bot["hello_message"]
+            "hello_message": hello_message if hello_message else bot["hello_message"],
         }
-        
-        
+
         # Step3: Save the changes to the database
-        response = supabase.table("bots").update(bot_data).eq("id", id).eq("uid", uid).execute()
+        response = (
+            supabase.table("bots")
+            .update(bot_data)
+            .eq("id", id)
+            .eq("uid", uid)
+            .execute()
+        )
         return response.json()
     except Exception as e:
         print(f"An error occurred: {e}")
         return e
-   
-   
-   

@@ -233,11 +233,12 @@ const BotCreateFrom = () => {
           </label>
         </Collapse>
         <Collapse title={I18N.components.BotCreateFrom.weiXianCaoZuo}>
-          <Button
-            color="danger"
-            className="bg-[url('/images/delete.png')] h-[160px] w-[160px] bg-cover"
-            rounded-lg
-            onPress={onOpen}
+          <img
+            src="/images/delete-button.svg"
+            alt="delete bot"
+            width={160}
+            height={87}
+            onClick={onOpen}
           />
         </Collapse>
       </form>

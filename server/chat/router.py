@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated
 from github import Auth
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
@@ -36,11 +36,11 @@ def run_qa_chat(
     user: Annotated[User | None, Depends(get_user)] = None,
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
-    print(
-        f"run_qa_chat: input_data={input_data}, bot={bot}, llm={bot.llm}"
-    )
+    print(f"run_qa_chat: input_data={input_data}, bot={bot}, llm={bot.llm}")
 
-    auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
+    auth_token = (
+        Auth.Token(user.access_token) if getattr(user, "access_token", None) else None
+    )
     token_usage_recorder = create_token_recorder(user=user, bot=bot)
 
     pipeline = compose(
@@ -49,11 +49,7 @@ def run_qa_chat(
         qa_chat.agent_stream_chat,
     )
 
-    result = pipeline(
-        input_data=input_data,
-        auth_token=auth_token,
-        bot=bot
-    )
+    result = pipeline(input_data=input_data, auth_token=auth_token, bot=bot)
 
     return StreamingResponse(result, media_type="text/event-stream")
 
@@ -64,7 +60,9 @@ async def run_issue_helper(
     user: Annotated[User | None, Depends(get_user)] = None,
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
-    auth_token = Auth.Token(user.access_token) if getattr(user, 'access_token', None) else None
+    auth_token = (
+        Auth.Token(user.access_token) if getattr(user, "access_token", None) else None
+    )
     result = await qa_chat.agent_chat(
         input_data,
         auth_token,
@@ -80,12 +78,12 @@ async def run_issue_helper(
 )
 def run_bot_builder(
     input_data: ChatData,
-    bot_id: Optional[str] = None,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
     if not user_id:
         return StreamingResponse(
             generate_auth_failed_stream(), media_type="text/event-stream"
         )
+    bot_id = input_data.bot_id
     result = bot_builder.agent_stream_chat(input_data, user_id, bot_id)
     return StreamingResponse(result, media_type="text/event-stream")

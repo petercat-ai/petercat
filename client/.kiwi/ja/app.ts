@@ -5,7 +5,7 @@ export default {
     xiangMuXiangXiXin: 'プロジェクトの詳細情報はドキュメントでご確認ください',
     chaKanGengDuo: 'もっと見る',
     maYiKaiYuan: 'アントオープンソース',
-    pETER: 'Peter Cat コミュニティ',
+    pETER: 'PeterCat コミュニティ',
     liaoJieGengDuo: '詳細を知る',
     deYiYuQiangDa:
       '強力な基盤により、気になるコードリポジトリをQ&Aボットに変換したり、他のコミュニティボットを体験できます。これらは優れたコードリポジトリを推薦するだけでなく、ユーザーが自動的にissueを提出するのも支援します。',

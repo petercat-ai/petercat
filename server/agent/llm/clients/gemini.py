@@ -10,38 +10,47 @@ from petercat_utils.utils.env import get_env_variable
 
 GEMINI_API_KEY = get_env_variable("GEMINI_API_KEY")
 
+
 def parse_gemini_input(message: MessageContent):
-  match message.type:
-    case "image_url": 
-      return ImageRawURLContentBlock(image_url=message.image_url.url, type="image_url")
-    case _:
-      return message
+    match message.type:
+        case "image_url":
+            return ImageRawURLContentBlock(
+                image_url=message.image_url.url, type="image_url"
+            )
+        case _:
+            return message
+
 
 @register_llm_client("gemini")
 class GeminiClient(BaseLLMClient):
-  _client: ChatOpenAI
+    _client: ChatOpenAI
 
-  def __init__(self,
-               temperature: Optional[int] = 0.2,
-               max_tokens: Optional[int] = 1500,
-               streaming: Optional[bool] = False,
-               api_key: Optional[str] = GEMINI_API_KEY,
-              ):
-    self._client = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        temperature=temperature,
-        streaming=streaming,
-        max_tokens=max_tokens,
-        google_api_key=api_key,
-    )
-  
-  def get_client(self):
-    return self._client
-  
-  def get_tools(self, tools: List[Any]):
-    return [convert_to_genai_function_declarations(tool) for tool in tools]
-  
-  def parse_content(self, content: List[MessageContent]):
-    result = [parse_gemini_input(message=message) for message in content]
-    print(f"parse_content, content={content}, result={result}")
-    return result
+    def __init__(
+        self,
+        temperature: Optional[float] = 0.2,
+        n: Optional[int] = 1,
+        top_p: Optional[float] = None,
+        max_tokens: Optional[int] = 1500,
+        streaming: Optional[bool] = False,
+        api_key: Optional[str] = GEMINI_API_KEY,
+    ):
+        self._client = ChatGoogleGenerativeAI(
+            model="gemini-1.5-flash",
+            temperature=temperature,
+            top_p=top_p,
+            n=n,
+            streaming=streaming,
+            max_tokens=max_tokens,
+            google_api_key=api_key,
+        )
+
+    def get_client(self):
+        return self._client
+
+    def get_tools(self, tools: List[Any]):
+        return [convert_to_genai_function_declarations(tool) for tool in tools]
+
+    def parse_content(self, content: List[MessageContent]):
+        result = [parse_gemini_input(message=message) for message in content]
+        print(f"parse_content, content={content}, result={result}")
+        return result

@@ -164,7 +164,7 @@ class AgentBuilder:
                         "id": event["run_id"],
                         "type": "tool",
                         "extra": {
-                            "source": f"已调用工具: {event['name']}",
+                            "source": f"Tool Used: {event['name']}",
                             "pluginName": "GitHub",
                             "data": json.dumps(children_value, ensure_ascii=False),
                             "status": "loading",
@@ -188,7 +188,7 @@ class AgentBuilder:
                         card_data = None
 
                     extra_data = {
-                        "source": f"已调用工具: {event['name']}",
+                        "source": f"Tool Used: {event['name']}",
                         "pluginName": "GitHub",
                         "status": "success",
                     }

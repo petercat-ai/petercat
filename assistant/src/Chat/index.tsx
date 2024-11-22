@@ -10,6 +10,7 @@ import { isEmpty, map } from 'lodash';
 import React, {
   ReactNode,
   memo,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -48,9 +49,11 @@ export interface ChatProps extends BotInfo {
   drawerWidth?: number;
   prompt?: string;
   token?: string;
+  editBotId?: string;
   style?: React.CSSProperties;
   hideLogo?: boolean;
   disabled?: boolean;
+
   disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
@@ -69,13 +72,23 @@ const Chat: FC<ChatProps> = memo(
     disabled = false,
     hideLogo = false,
     disabledPlaceholder,
+    editBotId,
     getToolsResult,
   }) => {
     const proChatRef = useRef<ProChatInstance>();
+    const tokenRef = useRef<string | undefined>(token);
     const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
     const [complete, setComplete] = useState(false);
+    useEffect(() => {
+      tokenRef.current = token;
+    }, [token]);
     const { data: detail } = useSWR(
-      token ? [`${apiDomain}/api/bot/detail?id=${token}`, token] : null,
+      tokenRef?.current
+        ? [
+            `${apiDomain}/api/bot/detail?id=${tokenRef?.current}`,
+            tokenRef?.current,
+          ]
+        : null,
       fetcher<BotInfo>,
     );
 
@@ -88,6 +101,66 @@ const Chat: FC<ChatProps> = memo(
       helloMessage: helloMessage,
       starters: starters,
     });
+
+    const request = useCallback(
+      async (messages: any[]) => {
+        const newMessages = messages
+          .filter(
+            (item) => item.role !== Role.tool && item.role !== Role.knowledge,
+          )
+          .map((message) => {
+            if (message.role === Role.user) {
+              try {
+                return {
+                  role: message.role,
+                  // @ts-ignore
+                  content: JSON.parse(message?.content),
+                };
+              } catch (e) {
+                return message;
+              }
+            } else {
+              const originMessage = convertChunkToJson(
+                message?.content as string,
+              ) as any;
+              const text =
+                typeof originMessage === 'string'
+                  ? originMessage
+                  : originMessage.message;
+              return {
+                role: message.role,
+                content: [
+                  {
+                    type: 'text',
+                    text: text,
+                  },
+                ],
+              };
+            }
+          }) as Message[];
+
+        try {
+          const token = editBotId || tokenRef?.current;
+          const response = await streamChat(
+            newMessages,
+            apiDomain,
+            apiUrl,
+            prompt,
+            token,
+          );
+          return handleStream(response);
+        } catch (e: any) {
+          // 处理请求错误，例如网络错误
+          return new Response(
+            `data: ${JSON.stringify({
+              status: 'error',
+              message: e.message,
+            })}`,
+          );
+        }
+      },
+      [apiDomain, apiUrl, prompt, tokenRef?.current, editBotId],
+    );
 
     useEffect(() => {
       setBotInfo({
@@ -105,7 +178,7 @@ const Chat: FC<ChatProps> = memo(
       if (proChatRef?.current) {
         proChatRef?.current?.clearMessage();
       }
-    }, [token, prompt, proChatRef?.current]);
+    }, [tokenRef?.current, prompt, proChatRef?.current]);
 
     useEffect(() => {
       if (isEmpty(detail)) {
@@ -177,10 +250,6 @@ const Chat: FC<ChatProps> = memo(
                       content={
                         <div className="leftMessageContent">
                           <div className="ant-pro-chat-list-item-message-content">
-                            <div className="text-left text-[20px] font-[500] leading-[28px] font-sf">
-                              👋🏻 你好，我是{' '}
-                              {botInfo.assistantMeta?.title || BOT_INFO.name}
-                            </div>
                             <div className="text-left text-[14px] font-[500] leading-[28px] font-sf">
                               {props.message}
                             </div>
@@ -373,7 +442,7 @@ const Chat: FC<ChatProps> = memo(
                                 templateId: template_id,
                                 cardData: data,
                                 apiDomain: apiDomain,
-                                token: token!,
+                                token: tokenRef?.current!,
                               })}
                             </div>
                           )}
@@ -398,61 +467,7 @@ const Chat: FC<ChatProps> = memo(
               }
               return [];
             }}
-            request={async (messages) => {
-              const newMessages = messages
-                .filter(
-                  (item) =>
-                    item.role !== Role.tool && item.role !== Role.knowledge,
-                )
-                .map((message) => {
-                  if (message.role === Role.user) {
-                    try {
-                      return {
-                        role: message.role,
-                        // @ts-ignore
-                        content: JSON.parse(message?.content),
-                      };
-                    } catch (e) {
-                      return message;
-                    }
-                  } else {
-                    const originMessage = convertChunkToJson(
-                      message?.content as string,
-                    ) as any;
-                    const text =
-                      typeof originMessage === 'string'
-                        ? originMessage
-                        : originMessage.message;
-                    return {
-                      role: message.role,
-                      content: [
-                        {
-                          type: 'text',
-                          text: text,
-                        },
-                      ],
-                    };
-                  }
-                }) as Message[];
-              try {
-                const response = await streamChat(
-                  newMessages,
-                  apiDomain,
-                  apiUrl,
-                  prompt,
-                  token,
-                );
-                return handleStream(response);
-              } catch (e: any) {
-                // catch query error,such as network error. then return error response for message render
-                return new Response(
-                  `data: ${JSON.stringify({
-                    status: 'error',
-                    message: e.message,
-                  })}`,
-                );
-              }
-            }}
+            request={request}
             inputAreaRender={(
               _: ReactNode,
               onMessageSend: (message: string) => void | Promise<any>,

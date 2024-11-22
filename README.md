@@ -1,6 +1,6 @@
 ![banner](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*m23lS7sVRDgAAAAAAAAAAAAADrPSAQ/original)
 
-<h1 align="center"> Peter Cat</h1>
+<h1 align="center"> PeterCat</h1>
 
 <div  align="center">
 
@@ -29,7 +29,7 @@
 
 ### 对话即创造
 
-仅需要告知你的仓库地址或名称，Peter Cat 即可自动完成创建机器人的全部流程
+仅需要告知你的仓库地址或名称，PeterCat 即可自动完成创建机器人的全部流程
 
 ![对话即创造](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*aQ9uRoNZGe8AAAAAAAAAAAAADrPSAQ/original)
 
@@ -143,7 +143,7 @@
 
 ## 🤝 参与贡献
 
-> Peter Cat 使用 yarn 作为包管理器
+> PeterCat 使用 yarn 作为包管理器
 
 ```bash
 git clone https://github.com/petercat-ai/petercat.git
@@ -204,4 +204,4 @@ yarn run publish:pypi
 
 ## 📄 License
 
-MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
+MIT@[PeterCat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)

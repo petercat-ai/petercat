@@ -15,10 +15,10 @@ export default {
     shenHeZhong: 'Under review...',
     buShuDaoWoDe: 'Deploy to my website',
     zheJiangTiJiaoYi:
-      'This will submit an issue to the Peter Cat repository, which can be completed after our manual review.',
+      'This will submit an issue to the PeterCat repository, which can be completed after our manual review.',
     ninDeJiQiRen:
       'Your robot has been made public in the marketplace, please check it out in the market.',
-    gongKaiDaoPE: 'Publish to the Peter Cat Marketplace',
+    gongKaiDaoPE: 'Publish to the PeterCat Marketplace',
   },
   DeployItem: {
     shouQi: 'Collapse',

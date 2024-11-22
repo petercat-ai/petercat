@@ -1,7 +1,7 @@
 <img width="1785" alt="image" src="https://github.com/user-attachments/assets/50ae3bb2-e4da-4537-8df0-89a1ce23e800">
 
 
-# Peter Cat
+# PeterCat
 
 <div align="center">
 
@@ -29,7 +29,7 @@ We provide a conversational Q&A agent configuration system, self-hosted deployme
 
 ### Chatting means creating
 
-You only need to provide the address or name of your repository, and Peter Cat will automatically complete the entire process of creating a bot.
+You only need to provide the address or name of your repository, and PeterCat will automatically complete the entire process of creating a bot.
 
 ![Create with Conversations](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*aQ9uRoNZGe8AAAAAAAAAAAAADrPSAQ/original)
 
@@ -135,7 +135,7 @@ The project requires environment variables to be set:
 
 ## 🤝 Contributing
 
-> Peter Cat uses yarn as the package manager.
+> PeterCat uses yarn as the package manager.
 
 ```bash
 git clone https://github.com/petercat-ai/petercat.git
@@ -178,7 +178,7 @@ Please send your project address, usage scenarios, usage frequency, and other in
 
 ## 📧 Reporting Issues
 
-Peter Cat is still in its growth stage, and occasional “tantrums” are to be expected. Please report issues via the following channels:
+PeterCat is still in its growth stage, and occasional “tantrums” are to be expected. Please report issues via the following channels:
 
 * [Submit an Issue(https://github.com/petercat-ai/petercat/issues/new/choose)
 *  [Discussions](https://github.com/petercat-ai/petercat/discussions) 
@@ -193,4 +193,4 @@ Peter Cat is still in its growth stage, and occasional “tantrums” are to be 
 
 ## 📄 License
 
-MIT@[Peter Cat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)
+MIT@[PeterCat](https://github.com/petercat-ai/petercat/blob/main/LICENSE)

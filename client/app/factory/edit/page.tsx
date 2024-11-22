@@ -2,7 +2,7 @@
 import I18N from '@/app/utils/I18N';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Tabs, Tab, Button, Input, Avatar } from '@nextui-org/react';
-import BotCreateFrom from '@/app/factory/edit/components/BotCreateFrom';
+import BotCreateFrom from '@/app/factory/edit/components/BotCreateForm';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -23,6 +23,7 @@ import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
 import useUser from '@/app/hooks/useUser';
 import Knowledge from './components/Knowledge';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 import KnowledgeBtn from './components/KnowledgeBtn';
 import { BotTaskProvider } from './components/TaskContext';
 import { useSearchParams } from 'next/navigation';
@@ -40,6 +41,8 @@ enum ConfigTypeEnum {
   MANUAL_CONFIG = 'MANUAL_CONFIG',
 }
 export default function Edit() {
+  const { language } = useGlobal();
+
   const { botProfile, setBotProfile } = useBot();
   const { user, status } = useUser();
   const router = useRouter();
@@ -97,7 +100,7 @@ export default function Edit() {
           draft.description = data.description;
           draft.starters = data.starters;
           draft.public = data.public;
-          draft.repoName = data.repoName;
+          draft.repoName = data.repo_name;
           draft.helloMessage = data.hello_message;
         });
       }
@@ -127,7 +130,7 @@ export default function Edit() {
   );
 
   useEffect(() => {
-    if (!isEmpty(config))
+    if (!isEmpty(config)) {
       setBotProfile((draft) => {
         draft.id = config.id;
         draft.name = config.name || '';
@@ -140,6 +143,7 @@ export default function Edit() {
         draft.repoName = config.repo_name ?? '';
         draft.domain_whitelist = config.domain_whitelist ?? [];
       });
+    }
   }, [config]);
 
   useEffect(() => {
@@ -154,14 +158,6 @@ export default function Edit() {
         draft.helloMessage = generatorResponseData.hello_message || '';
       });
   }, [generatorResponseData]);
-
-  const updateBot = async () => {
-    const params = {
-      ...botProfile,
-      starters: botProfile?.starters?.filter((s) => s),
-    };
-    onUpdateBot(params);
-  };
 
   useEffect(() => {
     if (createSuccess) {
@@ -203,7 +199,7 @@ export default function Edit() {
     const botInfo = createResponseData?.[0];
     if (!isEmpty(botInfo)) {
       setBotProfile((draft) => {
-        draft.repoName = botProfile.repoName;
+        draft.repoName = botInfo.repo_name;
         draft.id = botInfo.id;
         draft.name = botInfo.name;
         draft.avatar = botInfo.avatar;
@@ -233,6 +229,8 @@ export default function Edit() {
           backgroundColor: '#fff',
         }}
         hideLogo={true}
+        // @ts-ignore
+        editBotId={botId!}
         apiUrl="/api/chat/stream_builder"
         apiDomain={API_HOST}
         helloMessage={I18N.edit.page.chuCiJianMianXian}
@@ -278,6 +276,7 @@ export default function Edit() {
             const url = e.target.value;
             setGitUrl(url);
           }}
+          value={gitUrl}
           isDisabled={isEdit}
           required
           classNames={{ label: 'w-full' }}
@@ -294,7 +293,10 @@ export default function Edit() {
                 onClick={() => {
                   const repoName = extractFullRepoNameFromGitHubUrl(gitUrl);
                   if (repoName) {
-                    onCreateBot(repoName!);
+                    onCreateBot({
+                      repo_name: repoName!!,
+                      lang: language,
+                    });
                   } else {
                     toast.error(I18N.edit.page.diZhiYouWu);
                   }
@@ -310,27 +312,40 @@ export default function Edit() {
               startContent={<AIBtnIcon />}
               isLoading={createBotLoading}
               onClick={() => {
-                getBotInfoByRepoName(botProfile?.repoName!);
+                getBotInfoByRepoName({
+                  repo_name: botProfile?.repoName!,
+                  lang: language,
+                });
               }}
             >
               {I18N.edit.page.chongXinShengChengPei}
             </Button>
           )}
-          {isEdit && activeTab === ConfigTypeEnum.MANUAL_CONFIG && (
+          {isEdit &&
+          activeTab === ConfigTypeEnum.MANUAL_CONFIG &&
+          botProfile.repoName ? (
             <KnowledgeBtn
-              repoName={botProfile.repoName!}
+              repoName={botProfile.repoName}
               onClick={() => {
                 setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
               }}
               mode={'configItem'}
             />
-          )}
+          ) : null}
         </div>
       </div>
 
       {isEdit && <BotCreateFrom />}
     </div>
   );
+
+  const updateBot = async () => {
+    const params = {
+      ...botProfile,
+      starters: botProfile?.starters?.filter((s) => s),
+    };
+    onUpdateBot(params);
+  };
 
   return (
     <BotTaskProvider>

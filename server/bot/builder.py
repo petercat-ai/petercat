@@ -19,7 +19,6 @@ async def bot_info_generator(
     try:
         # Step1:Get the repository object
         repo = g.get_repo(repo_name)
-
         # Step2: Generate the prompt
         prompt = generate_prompt_by_repo_name(repo_name)
 
@@ -31,24 +30,12 @@ async def bot_info_generator(
             "prompt": prompt,
             "uid": uid,
             "label": "Assistant",
-            "starters": (
-                starters
-                if starters
-                else [
-                    f"介绍一下 {repo.name} 这个项目",
-                    f"查看 {repo_name} 的贡献指南",
-                    "我该怎样快速上手",
-                ]
-            ),
+            "starters": starters,
             "public": False,
-            "hello_message": (
-                hello_message
-                if hello_message
-                else "我是你专属的答疑机器人，你可以问我关于当前项目的任何问题~"
-            ),
+            "hello_message": hello_message,
             "repo_name": repo_name,
             "llm": "openai",
-            "token_id": ""
+            "token_id": "",
         }
 
         return bot_data

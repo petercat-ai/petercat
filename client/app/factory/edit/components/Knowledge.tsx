@@ -136,7 +136,7 @@ export default function Knowledge({ repoName, goBack }: IProps) {
             </div>
           )}
         </MySpinner>
-        {RagDocData?.total && RagDocData?.total > 12 && (
+        {RagDocData?.total && RagDocData?.total > 12 ? (
           <Pagination
             className="flex justify-center items-center mt-[60px] p-[0] w-full"
             total={Math.ceil((RagDocData?.total ?? 0) / 12)}
@@ -145,7 +145,7 @@ export default function Knowledge({ repoName, goBack }: IProps) {
             size="lg"
             onChange={(page) => setPageNumber(page)}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

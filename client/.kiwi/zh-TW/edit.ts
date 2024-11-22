@@ -14,7 +14,7 @@ export default {
     gITHU: 'GitHub 項目地址',
     bangWoPeiZhiYi: '幫我配置一個答疑機器人',
     chuCiJianMianXian:
-      '初次見面，先自我介紹一下：我是一個開源項目的機器人。你可以通過和我對話配置一個答疑機器人。',
+      '👋🏻 初次見面，先自我介紹一下：我是 PeterCat，一個開源項目的機器人。你可以通過和我對話配置一個答疑機器人。',
     shengChengShiBai: '生成失敗',
     shengChengChengGongE: '生成成功',
     baoCunShiBaiE: '保存失敗',

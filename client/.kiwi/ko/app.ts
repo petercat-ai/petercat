@@ -5,7 +5,7 @@ export default {
     xiangMuXiangXiXin: '프로젝트의 자세한 정보는 문서를 참조하십시오.',
     chaKanGengDuo: '더 보기',
     maYiKaiYuan: '앤트 오픈소스',
-    pETER: 'Peter Cat 커뮤니티',
+    pETER: 'PeterCat 커뮤니티',
     liaoJieGengDuo: '더 알아보기',
     deYiYuQiangDa:
       '강력한 기본 능력 덕분에 관심 있는 코드 저장소를 Q&A 봇으로 전환하거나 커뮤니티의 다른 봇을 체험할 수 있습니다. 이들은 우수한 코드 저장소를 추천할 뿐만 아니라 사용자가 issue를 자동으로 제출할 수 있도록 도와줍니다.',

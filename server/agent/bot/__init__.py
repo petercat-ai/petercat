@@ -10,7 +10,12 @@ class Bot:
     def __init__(self, bot: BotModel, llm_token: LLMTokenLike):
         self._bot = bot
         self._llm_token = llm_token
-        self._llm = LLM(llm_token=llm_token)
+        self._llm = LLM(
+            llm_token=llm_token,
+            temperature=bot.temperature,
+            n=bot.n,
+            top_p=bot.top_p,
+        )
 
     @property
     def id(self):

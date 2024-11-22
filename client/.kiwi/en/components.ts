@@ -32,9 +32,9 @@ export default {
     shuRuKaiChangBai: 'Enter Opening Guiding Question',
   },
   Knowledge: {
-    zhiShiKuWeiKong: 'Knowledge Base is Empty',
-    zhiShiKuGengXin: 'Knowledge Base Updating',
-    zhiShiKuFenDuan: 'Knowledge Base Segmentation',
+    zhiShiKuWeiKong: 'Knowledge is Empty',
+    zhiShiKuGengXin: 'Knowledge Updating',
+    zhiShiKuFenDuan: 'Knowledge Segmentation',
     gengXinYu: 'Updated on',
     ziFu: 'Characters',
   },
@@ -48,7 +48,8 @@ export default {
   },
   BotCard: {
     guanBi: 'Close',
-    maShanChuHouJiang: '」? This action cannot be undone, please proceed with caution.',
+    maShanChuHouJiang:
+      '」? This action cannot be undone, please proceed with caution.',
     queRenYaoShanChu: 'Are you sure you want to delete 「',
     gengXinZhiShi: 'Update Knowledge',
     gengXinZhiShiKu: 'Update Knowledge Base (Coming Soon)',
