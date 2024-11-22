@@ -689,6 +689,20 @@ export default function Homepage() {
                   >
                     {I18N.app.page.maYiKaiYuan}
                   </a>
+                  <a
+                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                    href="/privacy"
+                    target="_blank"
+                  >
+                    {I18N.app.page.policy}
+                  </a>
+                  <a
+                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
+                    href="https://opensource.antgroup.com"
+                    target="_blank"
+                  >
+                    {I18N.app.page.service}
+                  </a>
                 </nav>
               </div>
               <table className="w-full text-[#FEF4E1]">
