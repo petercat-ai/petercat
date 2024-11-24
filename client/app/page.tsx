@@ -1,5 +1,5 @@
 'use client';
-
+import dynamic from 'next/dynamic';
 import React from 'react';
 import {
   RefObject,
@@ -12,7 +12,7 @@ import {
 import I18N from '@/app/utils/I18N';
 import Image from 'next/image';
 import Fullpage, { fullpageOptions } from '@fullpage/react-fullpage';
-import Lottie, { LottieRefCurrentProps } from 'lottie-react';
+import { LottieRefCurrentProps } from 'lottie-react';
 import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
@@ -21,6 +21,8 @@ import MenuIcon from '@/public/icons/MenuIcon';
 import StarIcon from '@/public/icons/StarIcon';
 import LanguageSwitcher from '@/components/LangSwitcher';
 import GitHubStars from '@/components/GitHubStars';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 // play same video util refresh page
 const PC_EXAMPLE_VIDEO = [
