@@ -80,7 +80,6 @@ export default {
     xuanZeJiQiRen: 'Select Bot',
     geiWoMenTiYi: 'Submit an Issue to us with your bot information',
     iSSUE: 'Issue Area',
-    cOMIN: 'coming soon, please go to GitHub first',
     shangJiaShiBaiE: 'Listing Failed ',
     shangJiaChengGong: 'Listing Successful',
   },

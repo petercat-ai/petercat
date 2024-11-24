@@ -32,7 +32,9 @@ export default function RootLayout({
           <NextUIProvider>
             <GlobalProvider>
               <BotProvider>
-                {pathname === '/' ? (
+                {pathname === '/' ||
+                pathname === '/policy' ||
+                pathname === '/terms' ? (
                   children
                 ) : (
                   <div className="flex flex-col">
