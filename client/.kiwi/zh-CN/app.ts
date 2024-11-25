@@ -5,6 +5,8 @@ export default {
     xiangMuXiangXiXin: '项目详细信息请进文档查阅',
     chaKanGengDuo: '查看更多',
     maYiKaiYuan: '蚂蚁开源',
+    service: '服务条款',
+    policy: '隐私政策',
     pETER: 'PeterCat 社区',
     liaoJieGengDuo: '了解更多',
     deYiYuQiangDa:
