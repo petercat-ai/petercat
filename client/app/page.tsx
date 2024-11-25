@@ -41,11 +41,11 @@ function Contributors() {
   return (
     <>
       <img
-        className="mb-4 my-1.5"
+        className="mx-auto lg:mx-0 mb-4 my-1.5"
         src="/images/title_contributors.svg"
         alt="CONTRIBUTORS"
       />
-      <div className="max-w-[335px] grid grid-cols-2 gap-4">
+      <div className="lg:max-w-[335px] grid grid-cols-2 gap-4">
         <a
           className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
           href="https://github.com/xingwanying"
@@ -489,7 +489,7 @@ export default function Homepage() {
           <div className="section bg-black group relative">
             <div className="mx-auto min-h-screen lg:min-h-0 p-8 lg:p-[100px] lg:pb-8 opacity-0 transition-opacity group-[.active]:opacity-100 lg:grid grid-cols-2">
               <Lottie
-                className="-mt-[80px] -ml-4 w-[300px] lg:m-0 lg:w-auto lg:absolute lg:bottom-0 lg:-right-[200px] pointer-events-none opacity-0 group-[.fp-completely]:opacity-100"
+                className="-mt-[80px] -translate-x-7 mx-auto w-[300px] lg:m-0 lg:w-auto lg:absolute lg:bottom-0 lg:-right-[200px] pointer-events-none opacity-0 group-[.fp-completely]:opacity-100"
                 animationData={LottieLightningCat}
                 autoPlay={false}
                 loop={false}
@@ -514,7 +514,7 @@ export default function Homepage() {
                   <p className="relative mb-6 lg:mb-[119px] leading-5 lg:leading-7 lg:ml-2 text-xs lg:text-xl text-[#FEF4E1] lg:w-[500px] mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[333ms] group-[.fp-completely]:scale-100">
                     {I18N.app.page.deYiYuQiangDa}
                   </p>
-                  <div className="lg:absolute z-10 bottom-10 inline-block text-[#FEF4E1] text-[15px] lg:text-base mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[83ms] group-[.fp-completely]:scale-100">
+                  <div className="absolute left-8 right-8 lg:left-auto lg:right-auto z-10 bottom-10 inline-block text-[#FEF4E1] text-[15px] lg:text-base mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[83ms] group-[.fp-completely]:scale-100">
                     <Image
                       className="my-1 mx-auto lg:mx-0"
                       width={147}
@@ -749,9 +749,9 @@ export default function Homepage() {
                           />
                           <a
                             className="text-xl text-[#FEF4E1] hover:underline"
-                            href="mailto:antd.antgroup@gmail.com"
+                            href="mailto:petercat.assistant@gmail.com"
                           >
-                            antd.antgroup@gmail.com
+                            petercat.assistant@gmail.com
                           </a>
                         </div>
                       </div>

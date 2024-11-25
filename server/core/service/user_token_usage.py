@@ -31,22 +31,25 @@ def create_token_recorder(user: User, bot: Bot):
   user_token_usage_dao = UserTokenUsageDAO()
   async def record_token_usage(generator: AsyncGenerator[Dict, None]):
     async for value in generator:
-      
-      match value['type']:
-        case "usage":
-          try:
-            token_usage = UserTokenUsage(
-              user_id=user.id if user else "Anonymous",
-              token_id=bot.token_id or "DEFAULT_TOKEN",
-              bot_id=bot.id,
-              input_token=value['input_tokens'],
-              output_token=value['output_tokens'],
-              total_token=value['total_tokens'],
-            )
+      try:
+        match value['type']:
+          case "usage":
+            try:
+              token_usage = UserTokenUsage(
+                user_id=user.id if user else "Anonymous",
+                token_id=bot.token_id or "DEFAULT_TOKEN",
+                bot_id=bot.id,
+                input_token=value['input_tokens'],
+                output_token=value['output_tokens'],
+                total_token=value['total_tokens'],
+              )
 
-            user_token_usage_dao.create(token_usage)
-          except Exception as e:
-            print(f"An error occurred: {e}")
-        case _:
-          yield value
+              user_token_usage_dao.create(token_usage)
+            except Exception as e:
+              print(f"An error occurred: {e}")
+          case _:
+            yield value
+      except Exception as e:
+        print(f"record_token_usage error: {e}")
+        yield value
   return record_token_usage

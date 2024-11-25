@@ -17,7 +17,9 @@ class OpenAIClient(BaseLLMClient):
 
     def __init__(
         self,
-        temperature: Optional[int] = 0.2,
+        temperature: Optional[float] = 0.2,
+        n: Optional[int] = 1,
+        top_p: Optional[float] = None,
         max_tokens: Optional[int] = 1500,
         streaming: Optional[bool] = False,
         api_key: Optional[str] = OPEN_API_KEY,
@@ -25,6 +27,8 @@ class OpenAIClient(BaseLLMClient):
         self._client = ChatOpenAI(
             model_name="gpt-4o",
             temperature=temperature,
+            n=n,
+            top_p=top_p,
             streaming=streaming,
             max_tokens=max_tokens,
             openai_api_key=api_key,

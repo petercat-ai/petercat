@@ -174,7 +174,7 @@ yarn run publish:pypi
 
 ## 💼 Enterprise Integration
 
-Please send your project address, usage scenarios, usage frequency, and other information to [antd.antgroup@gmail.com](antd.antgroup@gmail.com) 
+Please send your project address, usage scenarios, usage frequency, and other information to [petercat.assistant@gmail.com ](petercat.assistant@gmail.com ) 
 
 ## 📧 Reporting Issues
 

@@ -23,6 +23,7 @@ ALLOW_LIST = [
 ]
 
 ANONYMOUS_USER_ALLOW_LIST = [
+  "/api/auth/userinfo",
   "/api/chat/qa",
   "/api/chat/stream_qa",
 ]
@@ -52,8 +53,8 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         
   async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
     try:
-      if ENVRIMENT == "development":
-        return await call_next(request)
+      # if ENVRIMENT == "development":
+      #   return await call_next(request)
       
       # Auth 相关的直接放过
       if request.url.path.startswith("/api/auth"):
