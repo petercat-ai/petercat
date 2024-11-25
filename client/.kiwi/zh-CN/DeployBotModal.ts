@@ -8,7 +8,7 @@ export default {
     zheJiangTiHuanCang: '这将替换仓库原有机器人',
     dianJiKaiShiPei: '点击开始配置',
     xuanZeYaoGuanLian: '选择要关联的 GitHub 仓库',
-    qingShuRuYuMing: '请输入域名，以 https:// 开始',
+    qingShuRuYuMing: '请输入正确域名，以 https:// 开始',
     muBiaoWangZhanYu: '目标网站域名',
     shenHeZhong: '审核中...',
     buShuDaoWoDe: '部署到我的网站',
