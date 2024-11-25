@@ -8,7 +8,7 @@ export default {
     zheJiangTiHuanCang: '這將替換倉庫原有機器人',
     dianJiKaiShiPei: '點擊開始配置',
     xuanZeYaoGuanLian: '選擇要關聯的 GitHub 倉庫',
-    qingShuRuYuMing: '請輸入網域名稱，一般以 https:// 開始',
+    qingShuRuYuMing: '請輸入網域名稱，以 https:// 開始',
     muBiaoWangZhanYu: '目標網站域名',
     shenHeZhong: '審核中...',
     buShuDaoWoDe: '部署到我的網站',
