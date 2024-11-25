@@ -5,6 +5,8 @@ export default {
     xiangMuXiangXiXin: '프로젝트의 자세한 정보는 문서를 참조하십시오.',
     chaKanGengDuo: '더 보기',
     maYiKaiYuan: '앤트 오픈소스',
+    service: '이용약관',
+    policy: '개인정보 처리방침',
     pETER: 'PeterCat 커뮤니티',
     liaoJieGengDuo: '더 알아보기',
     deYiYuQiangDa:

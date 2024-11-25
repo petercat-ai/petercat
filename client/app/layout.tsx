@@ -32,10 +32,12 @@ export default function RootLayout({
           <NextUIProvider>
             <GlobalProvider>
               <BotProvider>
-                {pathname === '/' ? (
+                {pathname === '/' ||
+                pathname === '/policy' ||
+                pathname === '/agreement' ? (
                   children
                 ) : (
-                  <div className="flex flex-col">
+                  <div className="flex flex-col bg-[#F3F4F6] h-[100vh]">
                     <Navbar></Navbar>
                     <div className="pb-[40px]">{children}</div>
                   </div>

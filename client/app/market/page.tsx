@@ -8,7 +8,6 @@ import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useGlobal } from '@/app/contexts/GlobalContext';
 import { Assistant } from '@petercatai/assistant';
 import { useFingerprint } from '../hooks/useFingerprint';
-import PublishBotEntity from '@/components/PublishBotEntity';
 import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;
@@ -73,14 +72,16 @@ export default function Market() {
             <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />
           ))}
       </div>
-      <Assistant
-        apiDomain={ASSISTANT_API_HOST}
-        apiUrl="/api/chat/stream_qa"
-        showBubble={false}
-        token={currentBot}
-        isVisible={visible}
-        onClose={onClose}
-      />
+      {typeof window !== 'undefined' && (
+        <Assistant
+          apiDomain={ASSISTANT_API_HOST}
+          apiUrl="/api/chat/stream_qa"
+          showBubble={false}
+          token={currentBot}
+          isVisible={visible}
+          onClose={onClose}
+        />
+      )}
     </div>
   );
 }

@@ -219,27 +219,29 @@ export default function Edit() {
 
   const chatConfigContent = (
     <div style={{ height: 'calc(100vh - 73px)' }}>
-      <Chat
-        assistantMeta={{
-          avatar:
-            'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
-          title: 'PeterCat',
-        }}
-        style={{
-          backgroundColor: '#fff',
-        }}
-        hideLogo={true}
-        // @ts-ignore
-        editBotId={botId!}
-        apiUrl="/api/chat/stream_builder"
-        apiDomain={API_HOST}
-        helloMessage={I18N.edit.page.chuCiJianMianXian}
-        starters={[I18N.edit.page.bangWoPeiZhiYi]}
-        getToolsResult={(result) => {
-          const data = result?.data;
-          updateConfigFromChatResult(data);
-        }}
-      />
+      {typeof window !== 'undefined' && (
+        <Chat
+          assistantMeta={{
+            avatar:
+              'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+            title: 'PeterCat',
+          }}
+          style={{
+            backgroundColor: '#fff',
+          }}
+          hideLogo={true}
+          // @ts-ignore
+          editBotId={botId!}
+          apiUrl="/api/chat/stream_builder"
+          apiDomain={API_HOST}
+          helloMessage={I18N.edit.page.chuCiJianMianXian}
+          starters={[I18N.edit.page.bangWoPeiZhiYi]}
+          getToolsResult={(result) => {
+            const data = result?.data;
+            updateConfigFromChatResult(data);
+          }}
+        />
+      )}
     </div>
   );
   const manualConfigLabel = (
@@ -468,26 +470,28 @@ export default function Edit() {
               </div>
               <div className="position absolute top-[73px] left-0 w-full">
                 <div style={{ height: 'calc(100vh - 73px)' }}>
-                  <Chat
-                    hideLogo={true}
-                    assistantMeta={{
-                      avatar:
-                        botProfile?.avatar ||
-                        'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
-                      title: botProfile?.name || 'PeterCat',
-                    }}
-                    style={{
-                      backgroundColor: '#FCFCFC',
-                    }}
-                    token={botId}
-                    apiDomain={API_HOST}
-                    apiUrl="/api/chat/stream_qa"
-                    prompt={botProfile?.prompt}
-                    starters={botProfile?.starters}
-                    helloMessage={botProfile?.helloMessage}
-                    disabledPlaceholder={I18N.edit.page.jiQiRenShangWei}
-                    disabled={!isEdit}
-                  />
+                  {typeof window !== 'undefined' && (
+                    <Chat
+                      hideLogo={true}
+                      assistantMeta={{
+                        avatar:
+                          botProfile?.avatar ||
+                          'https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*YAP3SI7MMHQAAAAAAAAAAAAADrPSAQ/original',
+                        title: botProfile?.name || 'PeterCat',
+                      }}
+                      style={{
+                        backgroundColor: '#FCFCFC',
+                      }}
+                      token={botId}
+                      apiDomain={API_HOST}
+                      apiUrl="/api/chat/stream_qa"
+                      prompt={botProfile?.prompt}
+                      starters={botProfile?.starters}
+                      helloMessage={botProfile?.helloMessage}
+                      disabledPlaceholder={I18N.edit.page.jiQiRenShangWei}
+                      disabled={!isEdit}
+                    />
+                  )}
                 </div>
               </div>
             </div>
