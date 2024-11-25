@@ -4,6 +4,7 @@ import { DeployItem } from './DeployItem';
 import { BotApproval, DeployState } from './types';
 import { GithubRepoConfig } from '@/app/services/BotsController';
 import { useBot } from '@/app/contexts/BotContext';
+import { isUrl } from '@/app/utils/url';
 
 interface IDeployContentProps {
   deployInfo: DeployState;
@@ -64,7 +65,7 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
     );
   };
 
-  const renderDeployMarket = () => {
+  const renderDeployWebsite = () => {
     const { deployWebsite } = deployInfo;
     const { approval_path, approval_status } = websiteApproval;
     let isChecked = false;
@@ -116,6 +117,12 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
                 },
               });
             }}
+            isInvalid={
+              deployInfo?.deployWebsite?.targetUrl
+                ? !isUrl(deployInfo?.deployWebsite?.targetUrl)
+                : false
+            }
+            errorMessage={I18N.DeployBotModal.DeployContent.qingShuRuYuMing}
             placeholder={I18N.DeployBotModal.DeployContent.qingShuRuYuMing}
             labelPlacement="outside"
           />
@@ -221,7 +228,7 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
         {I18N.DeployBotModal.DeployContent.buShuDaoQiTa}
       </span>
       {renderPublicMarket()}
-      {renderDeployMarket()}
+      {renderDeployWebsite()}
       {renderBindRepo()}
     </>
   );

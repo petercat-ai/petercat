@@ -103,6 +103,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleOK = () => {
+    // task_1: whether to public bot
     if (
       deployInfo.publicMarket?.checked &&
       !originDeployModel.publicMarket?.checked
@@ -114,6 +115,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     ) {
       unPublicBot(botProfile.id);
     }
+    // task_2: whether to deploy website
     if (
       deployInfo.deployWebsite?.checked &&
       !originDeployModel.deployWebsite?.checked
@@ -131,6 +133,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
         website_url: undefined,
       });
     }
+    // task_3: whether to bind repo
     const bindRepoList = diffRepoBindResult(
       originDeployModel.appInstalledRepo ?? [],
       deployInfo.appInstalledRepo ?? [],

@@ -10,7 +10,7 @@ export default {
     dianJiKaiShiPei: 'Click to start configuration',
     xuanZeYaoGuanLian: 'Select the GitHub repository to associate',
     qingShuRuYuMing:
-      'Please enter the domain name, usually starting with https://',
+      'Please enter the correct domain name, usually starting with https://',
     muBiaoWangZhanYu: 'Target website domain',
     shenHeZhong: 'Under review...',
     buShuDaoWoDe: 'Deploy to my website',
