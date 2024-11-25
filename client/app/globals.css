@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+   background-color: #000 !important;
+}
+
 html, body {
   background: #000;
   min-height: 100vh !important; 
@@ -10,7 +14,7 @@ html, body {
 }
 body {
   color: #131318;
-  background: #F3F4F6;
+    background: #F3F4F6;
 }
 
 body input,

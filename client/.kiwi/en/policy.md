@@ -95,5 +95,5 @@ Please note that third-party website operators you visit, third-party services a
 To further improve user experience, we will continuously update our Services, providing updates such as version upgrades, feature upgrades, and rule upgrades. This Policy may also be updated accordingly. We will notify you of updates to this Policy through announcements, emails, or pop-up windows (collectively referred to as "Notifications"), and the updated content will take effect on the specified date in the aforementioned Notifications. If you disagree with the updated terms, you have the right to stop using the relevant services; if you continue to use our Services, it means that you are willing to accept the changed policy terms.
 
 10.	Others
-10.1.If you have any questions about this Policy, you can contact us through our customer service email (petercat.assistant@gmail.com).
+10.1.If you have any questions about this Policy, you can contact us through our customer service email <petercat.assistant@gmail.com>.
 10.2.This Policy is prepared and signed in Chinese. Any other language version of this Policy is provided for reference only. If there is any inconsistency between the other language version and the Chinese version, the Chinese version shall prevail.
