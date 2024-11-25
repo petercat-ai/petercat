@@ -601,7 +601,7 @@ export default function Homepage() {
                   </a>
                   <a
                     className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="https://opensource.antgroup.com"
+                    href="/agreement"
                     target="_blank"
                   >
                     {I18N.app.page.service}

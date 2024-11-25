@@ -34,10 +34,10 @@ export default function RootLayout({
               <BotProvider>
                 {pathname === '/' ||
                 pathname === '/policy' ||
-                pathname === '/terms' ? (
+                pathname === '/agreement' ? (
                   children
                 ) : (
-                  <div className="flex flex-col">
+                  <div className="flex flex-col bg-[#F3F4F6]">
                     <Navbar></Navbar>
                     <div className="pb-[40px]">{children}</div>
                   </div>

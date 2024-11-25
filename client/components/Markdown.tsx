@@ -1,20 +1,24 @@
 'use client';
-import React from 'react';
-import { Markdown as AntMarkdown } from '@ant-design/pro-editor';
-import { ThemeProvider } from 'antd-style';
+import React, { useEffect, useState } from 'react';
+import { remark } from 'remark';
+import html from 'remark-html';
 
 const Markdown: React.FC<{ markdownContent: string }> = ({
   markdownContent,
 }) => {
+  const [content, setContent] = useState<string>('');
+
+  useEffect(() => {
+    const processMarkdown = async () => {
+      const processedContent = await remark()
+        .use(html)
+        .process(markdownContent);
+      setContent(processedContent.toString());
+    };
+    processMarkdown();
+  }, [markdownContent]);
   return (
-    <ThemeProvider appearance="dark">
-      <AntMarkdown
-        className="ant-pro-chat-list-item-message-content"
-        style={{ overflowX: 'hidden', overflowY: 'auto' }}
-      >
-        {markdownContent}
-      </AntMarkdown>
-    </ThemeProvider>
+    <div className={`markdown`} dangerouslySetInnerHTML={{ __html: content }} />
   );
 };
 
