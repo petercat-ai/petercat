@@ -15,7 +15,7 @@ function useUser({ apiDomain, fingerprint }: { apiDomain: string; fingerprint: s
 
   const doLogin = () => {
     popupCenter({
-      url: '/user/login',
+      url: 'https://petercat-pre.ai/user/login',
       title: 'Login',
       w: 600,
       h: 400,
