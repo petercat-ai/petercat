@@ -17,6 +17,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@ant-design/pro-editor": "^1.1.1",
     "@auth0/nextjs-auth0": "^3.3.0",
     "@fingerprintjs/fingerprintjs": "^4.3.0",
     "@fullpage/react-fullpage": "^0.1.42",
@@ -27,7 +28,6 @@
     "@supabase/supabase-js": "^2.32.0",
     "@tanstack/react-query": "^5.17.19",
     "@types/node": "20.4.5",
-    "@ant-design/pro-editor": "^1.1.1",
     "@types/react": "18.2.17",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "18.2.7",
@@ -49,6 +49,7 @@
     "next": "14.0.1",
     "openai": "^4.24.7",
     "postcss": "^8.4.41",
+    "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0",
