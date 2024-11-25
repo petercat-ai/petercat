@@ -37,7 +37,7 @@ export default function RootLayout({
                 pathname === '/agreement' ? (
                   children
                 ) : (
-                  <div className="flex flex-col bg-[#F3F4F6] h-[100vh]">
+                  <div className="flex flex-col bg-[#F3F4F6] min-h-screen">
                     <Navbar></Navbar>
                     <div className="pb-[40px]">{children}</div>
                   </div>
