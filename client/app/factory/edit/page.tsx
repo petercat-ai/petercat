@@ -58,11 +58,11 @@ export default function Edit() {
   const [deployModalIsOpen, setDeployModalIsOpen] = useState(false);
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
 
-  useEffect(() => {
-    if (!user || status !== 'success' || user.id.startsWith('client|')) {
-      router.push(`${apiDomain}/api/auth/login`);
-    }
-  }, [user, status]);
+  // useEffect(() => {
+  //   if (!user || status !== 'success' || user.id.startsWith('client|')) {
+  //     router.push(`${apiDomain}/api/auth/login`);
+  //   }
+  // }, [user, status]);
 
   const {
     updateBot: onUpdateBot,
