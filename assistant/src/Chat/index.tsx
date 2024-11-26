@@ -211,7 +211,7 @@ const Chat: FC<ChatProps> = memo(
         <div className="h-full w-full flex flex-col relative">
           {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
           {disabled && (
-            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[999]" />
+            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[9]" />
           )}
           <ProChat
             className="flex-1"
