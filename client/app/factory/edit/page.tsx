@@ -72,7 +72,7 @@ export default function Edit() {
   );
   const [gitUrl, setGitUrl] = React.useState<string>('');
   const [deployModalIsOpen, setDeployModalIsOpen] = useState(false);
-  const [agreementModalIsOpen, setAgreementModalIsOpen] = useState(true);
+  const [agreementModalIsOpen, setAgreementModalIsOpen] = useState(false);
   const [agreementAccepted, setAgreementAccepted] =
     React.useState<boolean>(true);
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -91,9 +91,12 @@ export default function Edit() {
   useEffect(() => {
     if (!user || status !== 'success' || user.id.startsWith('client|')) {
       router.push(`${apiDomain}/api/auth/login`);
-    }
-    if (!user?.agreement_accepted) {
-      setAgreementModalIsOpen(true);
+    } else {
+      if (!user?.agreement_accepted) {
+        setAgreementModalIsOpen(true);
+      } else {
+        setAgreementModalIsOpen(false);
+      }
     }
   }, [user, status]);
 

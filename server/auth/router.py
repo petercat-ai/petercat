@@ -93,7 +93,6 @@ async def callback(request: Request):
 @router.get("/userinfo")
 async def userinfo(request: Request):
     user = request.session.get('user')
-
     if not user:
         data = await getAnonymousUser(request)
         return { "data": data, "status": 200}
@@ -101,6 +100,7 @@ async def userinfo(request: Request):
 
 @router.post("/accept/agreement", status_code=200)
 async def bot_generator(
+    request: Request,
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
     if not user_id:
@@ -112,10 +112,9 @@ async def bot_generator(
             status_code=401,
         )
     try:
-       
         supabase = get_client()
         response = supabase.table("profiles").update({"agreement_accepted": True}).match({"id": user_id}).execute()
-        print("response", response)
+       
         if not response.data:
             return JSONResponse(
                 content={
@@ -123,6 +122,7 @@ async def bot_generator(
                     "errorMessage": "User does not exist, accept failed.",
                 }
             )
+        request.session['user'] = response.data[0]
         return JSONResponse(content={"success": True})
     except Exception as e:
         return JSONResponse(
