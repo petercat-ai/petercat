@@ -10,7 +10,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Input,
   Avatar,
   Checkbox,
@@ -27,6 +26,7 @@ import {
   useBotCreate,
   useBotEdit,
 } from '@/app/hooks/useBot';
+import { useAgreement } from '@/app/hooks/useAgreement';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { Chat } from '@petercatai/assistant';
@@ -59,7 +59,6 @@ enum ConfigTypeEnum {
 }
 export default function Edit() {
   const { language } = useGlobal();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { botProfile, setBotProfile } = useBot();
   const { user, status } = useUser();
   const router = useRouter();
@@ -72,7 +71,8 @@ export default function Edit() {
     VisibleTypeEnum.BOT_CONFIG,
   );
   const [gitUrl, setGitUrl] = React.useState<string>('');
-  const [deployModalIsOpen, setDeployModalIsOpen] = useState(true);
+  const [deployModalIsOpen, setDeployModalIsOpen] = useState(false);
+  const [agreementModalIsOpen, setAgreementModalIsOpen] = useState(true);
   const [agreementAccepted, setAgreementAccepted] =
     React.useState<boolean>(true);
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
@@ -93,7 +93,7 @@ export default function Edit() {
       router.push(`${apiDomain}/api/auth/login`);
     }
     if (!user?.agreement_accepted) {
-      onOpen();
+      setAgreementModalIsOpen(true);
     }
   }, [user, status]);
 
@@ -111,6 +111,13 @@ export default function Edit() {
     isSuccess: createSuccess,
     error: createError,
   } = useBotCreate();
+
+  const {
+    acceptAgreement: onAcceptAgreement,
+    isLoading: acceptAgreementLoading,
+    isSuccess: acceptAgreementSuccess,
+    error: acceptAgreementError,
+  } = useAgreement();
 
   const {
     data: generatorResponseData,
@@ -191,6 +198,19 @@ export default function Edit() {
         draft.helloMessage = generatorResponseData.hello_message || '';
       });
   }, [generatorResponseData]);
+
+  useEffect(() => {
+    if (acceptAgreementSuccess) {
+      toast.error('An error has occurred');
+      setAgreementModalIsOpen(true);
+    }
+  }, [acceptAgreementError]);
+
+  useEffect(() => {
+    if (acceptAgreementSuccess) {
+      setAgreementModalIsOpen(false);
+    }
+  }, [acceptAgreementSuccess]);
 
   useEffect(() => {
     if (createSuccess) {
@@ -562,12 +582,11 @@ export default function Edit() {
             base: 'h-[560px]',
             footer: 'flex justify-between',
           }}
-          isOpen={isOpen}
+          isOpen={agreementModalIsOpen}
           isKeyboardDismissDisabled={false}
-          onOpenChange={onOpenChange}
         >
           <ModalContent>
-            {(onClose) => (
+            {() => (
               <>
                 <ModalHeader className="flex items-center justify-center">
                   <div className="flex items-center space-x-4 p-4">
@@ -593,7 +612,8 @@ export default function Edit() {
                 <ModalFooter>
                   <div className="flex-1 space-x-2 py-2 contents">
                     <Checkbox
-                      checked={agreementAccepted}
+                      defaultChecked
+                      defaultSelected
                       classNames={{
                         icon: 'bg-gray-700 text-white border-gray-700 w-[18px] h-[18px] rounded-sm p-1',
                         wrapper: 'w-[18px] h-[18px] rounded-sm',
@@ -618,16 +638,19 @@ export default function Edit() {
                         router.push('/factory/list');
                       }}
                     >
-                      取消
+                      {I18N.components.BotCreateFrom.quXiao}
                     </Button>
                     <Button
                       isDisabled={!agreementAccepted}
                       radius="full"
+                      isLoading={acceptAgreementLoading}
                       color="default"
-                      onPress={onClose}
+                      onPress={() => {
+                        onAcceptAgreement();
+                      }}
                       className="bg-gray-700 text-white "
                     >
-                      确认
+                      {I18N.components.BotCreateFrom.queRen}
                     </Button>
                   </div>
                 </ModalFooter>

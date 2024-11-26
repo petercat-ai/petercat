@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Request, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi.responses import RedirectResponse, JSONResponse
 import secrets
 from petercat_utils import get_client, get_env_variable
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
+from typing import Annotated
 
-from auth.get_user_info import generateAnonymousUser, getUserInfoByToken
+from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -97,3 +98,33 @@ async def userinfo(request: Request):
         data = await getAnonymousUser(request)
         return { "data": data, "status": 200}
     return { "data": user, "status": 200}
+
+@router.post("/accept/agreement", status_code=200)
+async def bot_generator(
+    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+):
+    if not user_id:
+        return JSONResponse(
+            content={
+                "success": False,
+                "errorMessage": "User not found",
+            },
+            status_code=401,
+        )
+    try:
+       
+        supabase = get_client()
+        response = supabase.table("profiles").update({"agreement_accepted": True}).match({"id": user_id}).execute()
+        print("response", response)
+        if not response.data:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "User does not exist, accept failed.",
+                }
+            )
+        return JSONResponse(content={"success": True})
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
