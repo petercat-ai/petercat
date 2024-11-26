@@ -604,7 +604,7 @@ export default function Homepage() {
                     href="/agreement"
                     target="_blank"
                   >
-                    {I18N.app.page.service}
+                    {I18N.app.page.agreement}
                   </a>
                 </nav>
               </div>

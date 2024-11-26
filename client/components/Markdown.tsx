@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-const Markdown: React.FC<{ markdownContent: string }> = ({
+const Markdown: React.FC<{ markdownContent: string; theme?: boolean }> = ({
   markdownContent,
+  theme = true,
 }) => {
   const [content, setContent] = useState<string>('');
 
@@ -18,7 +19,10 @@ const Markdown: React.FC<{ markdownContent: string }> = ({
     processMarkdown();
   }, [markdownContent]);
   return (
-    <div className={`markdown`} dangerouslySetInnerHTML={{ __html: content }} />
+    <div
+      className={`${theme ? 'markdown' : ''}`}
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
   );
 };
 

@@ -617,6 +617,10 @@ video:where(.petercat-lui,.petercat-lui *) {
   z-index: 999;
 }
 
+.z-\[9\] {
+  z-index: 9;
+}
+
 .m-1 {
   margin: 0.25rem;
 }
