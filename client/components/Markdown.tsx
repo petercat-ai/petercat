@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-const Markdown: React.FC<{ markdownContent: string; theme: boolean }> = ({
+const Markdown: React.FC<{ markdownContent: string; theme?: boolean }> = ({
   markdownContent,
   theme = true,
 }) => {
