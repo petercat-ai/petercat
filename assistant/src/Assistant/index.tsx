@@ -23,9 +23,6 @@ const Assistant = (props: AssistantProps) => {
   };
 
   const startDrag = (e: { clientY: any; preventDefault: () => void }) => {
-    if (typeof document === 'undefined') {
-      return;
-    }
     const startY = e.clientY;
     const initBottom = position.bottom;
 
@@ -46,6 +43,11 @@ const Assistant = (props: AssistantProps) => {
 
     e.preventDefault(); // Prevent text selection
   };
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     setChatVisible(isVisible);
@@ -60,6 +62,9 @@ const Assistant = (props: AssistantProps) => {
     },
   );
 
+  if (typeof window === 'undefined') {
+    return;
+  }
   return (
     <div className="petercat-lui-assistant">
       <div
@@ -121,6 +126,11 @@ const Assistant = (props: AssistantProps) => {
  * 命令式初始化 Assistant 组件
  */
 export function initAssistant(props: AssistantProps) {
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+  }, []);
   const elm = document.createElement('div');
 
   document.body.appendChild(elm);

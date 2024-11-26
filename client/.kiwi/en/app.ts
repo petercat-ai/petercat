@@ -5,6 +5,9 @@ export default {
     xiangMuXiangXiXin: 'Please check the documentation for more details',
     chaKanGengDuo: 'Learn more',
     maYiKaiYuan: 'Ant Open Source',
+    agreement: 'User Agreement',
+    agreementLabel: 'I have read and agree to the User Agreement',
+    policy: 'Privacy Policy',
     pETER: 'PeterCat Community',
     liaoJieGengDuo: 'Learn more',
     deYiYuQiangDa:

@@ -3,7 +3,10 @@ from typing import Union
 from petercat_utils import get_env_variable
 from github import Auth
 
-from event_handler.pull_request import PullRequestEventHandler
+from event_handler.pull_request import (
+    PullRequestEventHandler,
+    PullRequestReviewCommentEventHandler,
+)
 from event_handler.discussion import (
     DiscussionEventHandler,
     DiscussionCommentEventHandler,
@@ -21,6 +24,7 @@ def get_handler(
     IssueEventHandler,
     DiscussionEventHandler,
     DiscussionCommentEventHandler,
+    PullRequestReviewCommentEventHandler,
     None,
 ]:
     handlers = {
@@ -29,6 +33,7 @@ def get_handler(
         "issue_comment": IssueCommentEventHandler,
         "discussion": DiscussionEventHandler,
         "discussion_comment": DiscussionCommentEventHandler,
+        "pull_request_review_comment":PullRequestReviewCommentEventHandler,
     }
     return (
         handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id)

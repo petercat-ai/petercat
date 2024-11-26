@@ -71,14 +71,16 @@ export default function Market() {
             <BotCard key={bot.id} bot={bot} handleCardClick={handleCardClick} />
           ))}
       </div>
-      <Assistant
-        apiDomain={ASSISTANT_API_HOST}
-        apiUrl="/api/chat/stream_qa"
-        showBubble={false}
-        token={currentBot}
-        isVisible={visible}
-        onClose={onClose}
-      />
+      {typeof window !== 'undefined' && (
+        <Assistant
+          apiDomain={ASSISTANT_API_HOST}
+          apiUrl="/api/chat/stream_qa"
+          showBubble={false}
+          token={currentBot}
+          isVisible={visible}
+          onClose={onClose}
+        />
+      )}
     </div>
   );
 }

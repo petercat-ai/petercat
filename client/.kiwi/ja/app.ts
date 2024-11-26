@@ -5,6 +5,9 @@ export default {
     xiangMuXiangXiXin: 'プロジェクトの詳細情報はドキュメントでご確認ください',
     chaKanGengDuo: 'もっと見る',
     maYiKaiYuan: 'アントオープンソース',
+    agreement: 'ユーザー契約',
+    agreementLabel: '私は利用規約を読み、同意しました',
+    policy: 'プライバシーポリシー',
     pETER: 'PeterCat コミュニティ',
     liaoJieGengDuo: '詳細を知る',
     deYiYuQiangDa:

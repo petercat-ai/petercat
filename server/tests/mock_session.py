@@ -13,7 +13,7 @@ def create_session_cookie(data) -> str:
         b64encode(json.dumps(data).encode('utf-8')),
     ).decode('utf-8')
 
-mock_user = User(id="1", sub="1", sid="1", avatar="1", picture="1", nickname="1", access_token="1", anonymous=False)
+mock_user = User(id="1", sub="1", sid="1", avatar="1", picture="1", nickname="1", access_token="1", anonymous=False, agreement_accepted=False)
 
 def get_mock_user():
     return mock_user

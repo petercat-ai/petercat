@@ -9,7 +9,6 @@ import { ShopIcon } from '@/public/icons/ShopIcon';
 import { SpaceIcon } from '@/public/icons/SpaceIcon';
 import { SearchIcon } from '@/public/icons/SearchIcon';
 import { AddIcon } from '@/public/icons/AddIcon';
-import PublishBotEntity from './PublishBotEntity';
 import { useGlobal } from '@/app/contexts/GlobalContext';
 import LanguageSwitcher from '@/components/LangSwitcher';
 
@@ -116,7 +115,6 @@ export function Navbar() {
       </div>
       <div className="ml-[48px] flex items-center">
         {pathname !== '/' && <LanguageSwitcher theme="light" />}
-        {!pathname.includes('/factory/list') && <PublishBotEntity area="nav" />}
         {pathname.includes('/factory/list') && (
           <Button
             onPress={() => router.push(`/factory/edit?id=new`)}
