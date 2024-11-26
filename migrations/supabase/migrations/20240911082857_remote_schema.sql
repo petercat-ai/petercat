@@ -320,7 +320,8 @@ CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "name" character varying,
     "picture" character varying,
     "sid" character varying,
-    "sub" character varying
+    "sub" character varying,
+    "agreement_accepted" boolean DEFAULT false;
 );
 
 ALTER TABLE "public"."profiles" OWNER TO "postgres";

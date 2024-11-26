@@ -81,7 +81,8 @@ async def callback(request: Request):
             "name": user_info.get("name"),
             "picture": user_info.get("picture"),
             "sub": user_info["sub"],
-            "sid": secrets.token_urlsafe(32)
+            "sid": secrets.token_urlsafe(32),
+            "agreement_accepted": user_info.get("agreement_accepted"),
         }
         request.session['user'] = dict(data)
         supabase = get_client()

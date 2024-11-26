@@ -229,6 +229,7 @@ export type Database = {
           picture: string | null;
           sid: string | null;
           sub: string | null;
+          agreement_accepted: boolean | null;
         };
         Insert: {
           created_at?: string;
@@ -238,6 +239,7 @@ export type Database = {
           picture?: string | null;
           sid?: string | null;
           sub?: string | null;
+          agreement_accepted?: boolean | null;
         };
         Update: {
           created_at?: string;
@@ -247,6 +249,7 @@ export type Database = {
           picture?: string | null;
           sid?: string | null;
           sub?: string | null;
+          agreement_accepted?: boolean | null;
         };
         Relationships: [];
       };

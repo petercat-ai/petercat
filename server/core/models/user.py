@@ -8,6 +8,7 @@ class User(BaseModel):
     nickname: str
     avatar: Optional[str] = None
     picture: Optional[str]
+    agreement_token: Optional[bool] = False
 
     anonymous: Optional[bool] = True
     access_token: Optional[str] = None
