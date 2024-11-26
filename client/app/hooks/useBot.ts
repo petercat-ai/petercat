@@ -153,7 +153,7 @@ export function usePublicBot() {
     mutationFn: publicBot,
   });
   return {
-    data: mutation.data,
+    data: mutation.data?.data,
     publicBot: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,
@@ -178,7 +178,7 @@ export function useDeployWebsite() {
     mutationFn: deployWebsite,
   });
   return {
-    data: mutation.data,
+    data: mutation.data?.data,
     deployWebsite: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,
