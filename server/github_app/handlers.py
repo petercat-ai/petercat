@@ -34,6 +34,7 @@ def get_handler(
         "discussion": DiscussionEventHandler,
         "discussion_comment": DiscussionCommentEventHandler,
         "pull_request_review_comment":PullRequestReviewCommentEventHandler,
+        "pull_request_review":PullRequestReviewCommentEventHandler,
     }
     return (
         handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id)
