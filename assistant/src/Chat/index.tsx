@@ -3,7 +3,8 @@ import type {
   MetaData,
   ProChatInstance,
 } from '@ant-design/pro-chat';
-import { Bubble, Sender } from '@ant-design/x';
+import { Bubble, Prompts, Sender, useXAgent, useXChat } from '@ant-design/x';
+import { Button, Flex, GetProp, theme } from 'antd';
 import { isEmpty } from 'lodash';
 import React, {
   memo,
@@ -14,12 +15,11 @@ import React, {
   type FC,
 } from 'react';
 import useSWR from 'swr';
-
-import { Button, Flex, theme } from 'antd';
 import { NewMessageIcon } from '../icons/NewMessageIcon';
 import SignatureIcon from '../icons/SignatureIcon';
 import { UploadImageIcon } from '../icons/UploadImageIcon';
 import { Message, Role } from '../interface';
+import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import { convertChunkToJson, handleStream } from '../utils';
 import LegacyChat from './~index';
@@ -47,12 +47,12 @@ export interface ChatProps extends BotInfo {
 
 const Chat: FC<ChatProps> = memo(
   ({
-    helloMessage,
+    helloMessage = '让我们开始对话吧~',
     apiDomain = 'http://127.0.0.1:8000',
     apiUrl,
     drawerWidth = 500,
     assistantMeta,
-    starters,
+    starters = [],
     prompt,
     token,
     style,
@@ -185,6 +185,94 @@ const Chat: FC<ChatProps> = memo(
       });
     }, [detail]);
 
+    // ============================ Roles =============================
+    const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
+      const assistantIcon = assistantMeta?.avatar || BOT_INFO.avatar;
+
+      return {
+        [Role.assistant]: {
+          placement: 'start',
+          avatar: {
+            src: assistantIcon,
+          },
+          shape: 'corner',
+        },
+        suggestion: {
+          placement: 'start',
+          variant: 'borderless',
+          avatar: {
+            src: assistantIcon,
+            style: {
+              opacity: 0,
+            },
+          },
+        },
+        [Role.user]: {
+          placement: 'end',
+          shape: 'corner',
+        },
+      };
+    }, [assistantMeta]);
+
+    // ============================ Agent =============================
+    type AgentType = string | string[];
+
+    const [agent] = useXAgent<AgentType>({
+      baseURL: apiDomain,
+    });
+
+    // ============================= Chat =============================
+    type MessageType = string | React.ReactElement;
+
+    const { setMessages, parsedMessages, onRequest } = useXChat<
+      AgentType,
+      MessageType
+    >({
+      agent,
+      parser: (msg) => {
+        if (Array.isArray(msg)) {
+          return (
+            <Prompts
+              onItemClick={(item) => {
+                setMessages([]);
+                onRequest(item.data.description as string);
+              }}
+              items={starters.map((starter) => ({
+                key: starter,
+                description: starter,
+              }))}
+              vertical
+            />
+          );
+        }
+        return msg;
+      },
+    });
+
+    const resetChat = () => {
+      setMessages(
+        [
+          {
+            id: 'init',
+            status: 'success' as const,
+            message: helloMessage,
+          },
+          starters.length
+            ? {
+                id: 'suggestion',
+                status: 'success' as const,
+                message: starters,
+              }
+            : null!,
+        ].filter(Boolean),
+      );
+    };
+
+    React.useEffect(() => {
+      resetChat();
+    }, []);
+
+    // ============================ Render ============================
     const messageMinWidth = drawerWidth
       ? `calc(${drawerWidth}px - 90px)`
       : '400px';
@@ -202,13 +290,34 @@ const Chat: FC<ChatProps> = memo(
           {disabled && (
             <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[999]" />
           )}
-          <Flex vertical className="h-full">
-            <Bubble.List className="flex-auto" />
-            <div style={{ padding: designToken.paddingSM }}>
+          <Flex
+            vertical
+            className="h-full"
+            style={{ padding: designToken.paddingSM }}
+          >
+            <Bubble.List
+              className="flex-auto"
+              roles={roles}
+              items={parsedMessages.map(({ status, message, id }, index) => {
+                const role =
+                  status === 'local'
+                    ? Role.user
+                    : typeof message === 'object'
+                    ? 'suggestion'
+                    : Role.assistant;
+
+                return {
+                  key: id || `fixed_${index}`,
+                  role,
+                  content: message,
+                };
+              })}
+            />
+            <div style={{ paddingTop: designToken.paddingSM }}>
               <Sender
                 prefix={
                   <Flex gap={designToken.paddingXS}>
-                    <Button icon={<NewMessageIcon />} />
+                    <Button icon={<NewMessageIcon />} onClick={resetChat} />
                     <Button icon={<UploadImageIcon />} />
                   </Flex>
                 }
