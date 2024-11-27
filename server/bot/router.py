@@ -437,7 +437,7 @@ def get_bot_approval_config(
 ):
     try:
         bot_approval_dao = BotApprovalDAO()
-        (success, data) = bot_approval_dao.query(bot_id, status.value)
+        (success, data) = bot_approval_dao.query_by_id_status(bot_id, status.value)
         if not success:
             raise ValueError(data)
         if status:

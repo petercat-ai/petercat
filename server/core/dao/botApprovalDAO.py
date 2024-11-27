@@ -27,7 +27,7 @@ class BotApprovalDAO(BaseDAO):
             print("Error: ", e)
             return False, {"message": "approval creation failed"}
 
-    def query(self, bot_id: str, status: str):
+    def query_by_id_status(self, bot_id: str, status: str):
         try:
             bot_approval = (
                 self.client.table("bot_approval")
