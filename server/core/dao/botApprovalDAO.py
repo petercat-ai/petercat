@@ -27,12 +27,13 @@ class BotApprovalDAO(BaseDAO):
             print("Error: ", e)
             return False, {"message": "approval creation failed"}
 
-    def query_by_bot_id(self, bot_id: str):
+    def query_by_id_status(self, bot_id: str, status: str):
         try:
             bot_approval = (
                 self.client.table("bot_approval")
                 .select("*")
                 .eq("bot_id", bot_id)
+                .eq("approval_status", status)
                 .execute()
             )
             if bot_approval:
@@ -42,3 +43,19 @@ class BotApprovalDAO(BaseDAO):
         except Exception as e:
             print("Error: ", e)
             return False, {"message": "approval query failed"}
+
+    def update_approval_status(self, id: str, status: str):
+        try:
+            bot_approval = (
+                self.client.table("bot_approval")
+                .update({"approval_status": status})
+                .eq("id", id)
+                .execute()
+            )
+            if bot_approval:
+                return True, {"message": "approval updated successfully"}
+            else:
+                return False, {"message": "approval update failed"}
+        except Exception as e:
+            print("Error: ", e)
+            return False, {"message": "approval update failed"}

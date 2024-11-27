@@ -433,15 +433,32 @@ def get_bot_approval_config(
     status: Optional[ApprovalStatus] = Query(
         None, description="approval status ,open or closed"
     ),
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
         bot_approval_dao = BotApprovalDAO()
-        (success, data) = bot_approval_dao.query_by_bot_id(bot_id)
+        (success, data) = bot_approval_dao.query_by_id_status(bot_id, status.value)
         if not success:
             raise ValueError(data)
-        # filter data by status
         if status:
             data = list(filter(lambda x: x["approval_status"] == status.value, data))
+            auth = Auth.Token(token=user.access_token)
+            g = Github(auth=auth)
+            repo = g.get_repo(OFFICIAL_REPO)
+            for item in data:
+                if not item["approval_path"]:
+                    continue
+                issue_num = int(item["approval_path"].split("/")[-1])
+                issue = repo.get_issue(issue_num)
+                if issue.state == "closed":
+                    item["approval_status"] = ApprovalStatus.CLOSED
+                    # update approval status to closed
+                    bot_approval_dao.update_approval_status(
+                        item["id"], ApprovalStatus.CLOSED.value
+                    )
+        # filter again
+        data = list(filter(lambda x: x["approval_status"] == status.value, data))
+        # check data item issue is closed
         return {"data": data, "status": 200}
     except Exception as e:
         return JSONResponse(content={"success": False, "errorMessage": e})

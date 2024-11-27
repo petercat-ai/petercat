@@ -41,6 +41,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   } = useBindBotToRepo();
   const {
     publicBot,
+    data: publicBotResult,
     isLoading: isPublicBotLoading,
     isSuccess: isPublicBotSuccess,
   } = usePublicBot();
@@ -51,6 +52,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   } = useUnPublicBot();
   const {
     deployWebsite,
+    data: deployWebsiteResult,
     isLoading: isDeployWebsiteLoading,
     isSuccess: isDeployWebsiteSuccess,
   } = useDeployWebsite();
@@ -75,10 +77,11 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
         checked: !!botProfile.domain_whitelist[0],
         targetUrl: botProfile.domain_whitelist[0],
       },
-      appInstalledRepo: peterCatBotRepos?.map((item: any) => ({
-        repo_id: item.repo_id,
-        checked: item.robot_id === botProfile.id,
-      }))??[],
+      appInstalledRepo:
+        peterCatBotRepos?.map((item: any) => ({
+          repo_id: item.repo_id,
+          checked: item.robot_id === botProfile.id,
+        })) ?? [],
     };
   }, [botProfile, peterCatBotRepos]);
 
@@ -148,6 +151,25 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     isDeployWebsiteSuccess ||
     isBindBotSuccess;
 
+  const renderResultPath = (result: { approval_path: any }, text: string) => {
+    return (
+      <>
+        {result?.approval_path ? (
+          <div className="w-full flex flex-col gap-1 justify-center items-center">
+            <span>
+              {text}
+              {" "}
+              {I18N.DeployBotModal.DeployContent.shenHeZhong}
+            </span>
+            <a href={result.approval_path} target="_blank" className="block max-w-full break-words">
+              {result.approval_path}
+            </a>
+          </div>
+        ) : null}
+      </>
+    );
+  };
+
   return (
     <>
       <Modal
@@ -169,6 +191,16 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       <span>{I18N.DeployBotModal.index.buShuChengGong}</span>
                     </div>
                   </ModalHeader>
+                  <ModalBody className="py-[0px] flex flex-col gap-2 justify-center items-center">
+                    {renderResultPath(
+                      publicBotResult,
+                      I18N.DeployBotModal.DeployContent.gongKaiDaoPE,
+                    )}
+                    {renderResultPath(
+                      deployWebsiteResult,
+                      I18N.DeployBotModal.DeployContent.buShuDaoWoDe,
+                    )}
+                  </ModalBody>
                   <ModalFooter className="flex justify-center items-center">
                     <Button
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
@@ -196,7 +228,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                         deployInfo={deployInfo}
                         websiteApproval={websiteApproval}
                         marketApproval={marketApproval}
-                        peterCatBotRepos={peterCatBotRepos??[]}
+                        peterCatBotRepos={peterCatBotRepos ?? []}
                         onChange={handleDeployChange}
                       />
                     </Spinner>

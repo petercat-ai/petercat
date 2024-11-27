@@ -28,6 +28,7 @@ from github_app.utils import (
     get_installation_repositories,
     get_jwt,
     get_private_key,
+    get_user_orgs,
 )
 
 from petercat_utils import get_env_variable
@@ -145,7 +146,7 @@ def get_user_repos_installed_app_(
         auth = Auth.Token(token=user.access_token)
         g = Github(auth=auth)
         github_user = g.get_user()
-        orgs = github_user.get_orgs()
+        orgs = get_user_orgs(github_user.login, auth.token)
         repository_config_dao = RepositoryConfigDAO()
         installations = repository_config_dao.query_by_owners(
             [org.id for org in orgs] + [github_user.id]
