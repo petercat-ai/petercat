@@ -158,6 +158,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
           <div className="w-full flex flex-col gap-1 justify-center items-center">
             <span>
               {text}
+              {" "}
               {I18N.DeployBotModal.DeployContent.shenHeZhong}
             </span>
             <a href={result.approval_path} target="_blank" className="block max-w-full break-words">
