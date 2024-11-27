@@ -18,7 +18,8 @@ class BotModel(BaseModel):
     domain_whitelist: Optional[list[str]] = []
     temperature: Optional[float] = 0.2
     n: Optional[int] = 1
-    top_p: Optional[float]
+    top_p: Optional[float] = None
+    
 
 
 class RepoBindBotConfigVO(BaseModel):
