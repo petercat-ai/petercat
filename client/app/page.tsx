@@ -302,7 +302,7 @@ export default function Homepage() {
                 <Image
                   width={475}
                   height={95}
-                  className="w-[140px] h-[28px] lg:w-[475px] lg:h-[95px] lg:ml-6 mb-3 lg:mb-6 opacity-0 transition-opacity group-[.fp-completely]:opacity-100"
+                  className="w-[98px] h-[28px] lg:w-[383px] lg:h-[110px] lg:ml-6 mb-3 lg:mb-6 opacity-0 transition-opacity group-[.fp-completely]:opacity-100"
                   src="/images/title_features.svg"
                   alt="Features"
                 />
@@ -400,8 +400,8 @@ export default function Homepage() {
                 <div className="mx-auto lg:w-[650px] text-center lg:text-left">
                   <Image
                     className="hidden lg:block mb-9 relative scale-0 transition-transform duration-[166ms] group-[.fp-completely]:delay-[683ms] group-[.fp-completely]:scale-100"
-                    width={542}
-                    height={251}
+                    width={361}
+                    height={351}
                     src="/images/title_based.svg"
                     alt="Based on GPT4"
                   />
@@ -418,7 +418,7 @@ export default function Homepage() {
                   <div className="absolute left-8 right-8 lg:left-auto lg:right-auto z-10 bottom-10 inline-block text-[#FEF4E1] text-[15px] lg:text-base mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[83ms] group-[.fp-completely]:scale-100">
                     <Image
                       className="my-1 mx-auto lg:mx-0"
-                      width={147}
+                      width={168}
                       height={24}
                       src="/images/title_powered.svg"
                       alt="Powered by"
@@ -492,9 +492,9 @@ export default function Homepage() {
             </div>
             <div className="relative flex flex-col justify-center lg:max-w-[1400px] h-screen mx-auto px-4 lg:p-14 pt-8 lg:pt-[79px] opacity-0 transition-opacity group-[.active]:opacity-100">
               <Image
-                className="mx-auto mb-4 lg:mb-0 lg:mx-0 w-[144px] h-[28px] lg:w-[463px] lg:h-[90px] lg:absolute z-10 top-[8.8%] left-1/2 lg:-translate-x-1/2 duration-[583ms] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
-                width={463}
-                height={90}
+                width={279}
+                height={70}
+                className="mx-auto mb-4 lg:mb-0 lg:mx-0 w-[144px] h-[36px] lg:w-[279px] lg:h-[70px] lg:absolute z-10 top-[8.8%] left-1/2 lg:-translate-x-1/2 duration-[583ms] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
                 src="/images/title_showcase.svg"
                 alt="Showcase"
               />
