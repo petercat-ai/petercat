@@ -61,7 +61,7 @@ Various integration options, such as SDK integration into official websites or o
 
 | Issue Search                          | Issue Submit                             | Issue Reply      | 
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
-| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+| ![image](https://github.com/user-attachments/assets/f58d9b4d-ec99-4e38-ab90-37df1075c55b) | ![image](https://github.com/user-attachments/assets/f369128e-000a-40b3-89ba-e13f4375db3b) | ![image](https://github.com/user-attachments/assets/9b923269-3d6f-4ea6-82ce-4b58cb236bca) |
 
 [Watch full video](https://www.youtube.com/watch?v=83Y0_q2Fskk)
 
