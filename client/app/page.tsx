@@ -10,6 +10,7 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import HomeHeader from '@/components/HomeHeader';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
@@ -19,11 +20,26 @@ const PC_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*TmIsT7SUWPsAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*UaYESbe_mJMAAAAAAAAAAAAADuH-AQ',
 ];
+
+const PC_EXAMPLE_VIDEO_EN = [
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*Bem2RrQ_kMYAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*4cD8RYM9rPwAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*mwwRQbOza3IAAAAAAAAAAAAADrPSAQ',
+];
+
 const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*izMfSbJJXLoAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*tuaNRbG-5q4AAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*sxvhTafMlIoAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
+];
+
+const MOBILE_EXAMPLE_VIDEO_EN = [
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*yCzxQrgIGqAAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*h0oDTo5BdI4AAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*DUc0TaJVpkAAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*CjTOQKHtEnsAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*2WtmRaBv6eAAAAAAAAAAAAAADrPSAQ',
 ];
 
 function Contributors() {
@@ -109,6 +125,7 @@ export default function Homepage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const showCaseRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<{ pc: string; mobile: string }>();
+  const { language } = useGlobal();
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -233,9 +250,17 @@ export default function Homepage() {
       videoUpdateHandler,
     );
 
+    const pcVideos =
+      language === 'zh-CN' || language === 'zh-TW'
+        ? PC_EXAMPLE_VIDEO
+        : PC_EXAMPLE_VIDEO_EN;
+    const mbVideos =
+      language === 'zh-CN' || language === 'zh-TW'
+        ? MOBILE_EXAMPLE_VIDEO
+        : MOBILE_EXAMPLE_VIDEO_EN;
     setVideos({
-      pc: PC_EXAMPLE_VIDEO[Math.floor(Math.random() * 3)],
-      mobile: MOBILE_EXAMPLE_VIDEO[Math.floor(Math.random() * 4)],
+      pc: pcVideos[Math.floor(Math.random() * pcVideos?.length)],
+      mobile: mbVideos[Math.floor(Math.random() * mbVideos?.length)],
     });
 
     return () => {
@@ -247,7 +272,7 @@ export default function Homepage() {
         clearTimeout(videoRefs.pcCase.current!._timer);
       }
     };
-  }, []);
+  }, [language]);
 
   return (
     <Fullpage
