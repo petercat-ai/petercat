@@ -1,7 +1,5 @@
-![image](https://github.com/user-attachments/assets/e0dca45e-9bf2-40bd-aa9f-aa25a3495b49)
-![image](https://github.com/user-attachments/assets/ae7a1788-e580-412d-94f0-8609e63e93a7)
-
-
+![Frame 294](https://github.com/user-attachments/assets/0656ab69-4352-452b-a8f4-1c05cec108d1)
+![Frame 292](https://github.com/user-attachments/assets/49db0363-3f89-48a1-ba2b-e30bd5d083b3)
 
 # PeterCat
 
