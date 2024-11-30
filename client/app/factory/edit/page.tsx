@@ -98,7 +98,10 @@ export default function Edit() {
   }, [language]);
 
   useEffect(() => {
-    if (!user || status !== 'success' || user.id.startsWith('client|')) {
+    if (status === 'pending') {
+      return;
+    }
+    if (!user || user.id.startsWith('client|')) {
       router.push(`${apiDomain}/api/auth/login`);
     } else {
       if (!user?.agreement_accepted) {
