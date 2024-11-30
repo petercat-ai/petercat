@@ -1,3 +1,4 @@
 python3 -m venv venv
 source venv/bin/activate
-pip3 install -r requirements.txt
+python3 -m pip install --upgrade pip
+pip3 install --no-cache-dir -r requirements.txt

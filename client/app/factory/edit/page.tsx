@@ -47,6 +47,9 @@ import DeployBotModal from './components/DeployBotModal';
 import Markdown from '@/components/Markdown';
 import AgreementZhCN from '../../../.kiwi/zh-CN/agreement.md';
 import AgreementEN from '../../../.kiwi/en/agreement.md';
+import AgreementJA from '../../../.kiwi/ja/agreement.md';
+import AgreementKO from '../../../.kiwi/ko/agreement.md';
+import AgreementZhTW from '../../../.kiwi/zh-TW/agreement.md';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -81,6 +84,12 @@ export default function Edit() {
     switch (language) {
       case 'zh-CN':
         return AgreementZhCN;
+      case 'zh-TW':
+        return AgreementZhTW;
+      case 'ja':
+        return AgreementJA;
+      case 'ko':
+        return AgreementKO;
       case 'en':
         return AgreementEN;
       default:
@@ -631,30 +640,32 @@ export default function Edit() {
                       {I18N.app.page.agreementLabel}
                     </Checkbox>
                   </div>
-                  <div className="flex-1 text-right space-x-2">
-                    <Button
-                      radius="full"
-                      variant="bordered"
-                      color="default"
-                      className="border-gray-700 text-gray-700"
-                      onPress={() => {
-                        router.push('/factory/list');
-                      }}
-                    >
-                      {I18N.components.BotCreateFrom.quXiao}
-                    </Button>
-                    <Button
-                      isDisabled={!agreementAccepted}
-                      radius="full"
-                      isLoading={acceptAgreementLoading}
-                      color="default"
-                      onPress={() => {
-                        onAcceptAgreement();
-                      }}
-                      className="bg-gray-700 text-white "
-                    >
-                      {I18N.components.BotCreateFrom.queRen}
-                    </Button>
+                  <div className="flex-1 text-right">
+                    <div className="flex items-center justify-end px-4  space-x-2">
+                      <Button
+                        radius="full"
+                        variant="bordered"
+                        color="default"
+                        className="border-gray-700 text-gray-700"
+                        onPress={() => {
+                          router.push('/factory/list');
+                        }}
+                      >
+                        {I18N.components.BotCreateFrom.quXiao}
+                      </Button>
+                      <Button
+                        isDisabled={!agreementAccepted}
+                        radius="full"
+                        isLoading={acceptAgreementLoading}
+                        color="default"
+                        onPress={() => {
+                          onAcceptAgreement();
+                        }}
+                        className="bg-gray-700 text-white "
+                      >
+                        {I18N.components.BotCreateFrom.queRen}
+                      </Button>
+                    </div>
                   </div>
                 </ModalFooter>
               </>
