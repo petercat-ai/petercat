@@ -7,8 +7,8 @@ langserve
 langchain_community>=0.2.11
 langchain>=0.2.12
 langchain_google_genai
-PyGithub
-GitPython
+PyGithub==2.3.0
+GitPython>=3.1.43
 python-multipart
 httpx[socks]
 supabase
