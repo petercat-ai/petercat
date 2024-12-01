@@ -112,3 +112,4 @@ class GitDocTaskNodeType(AutoNameEnum):
 class GitIssueTaskNodeType(AutoNameEnum):
     REPO = auto()
     ISSUE = auto()
+    ISSUE_PAGE = auto()
