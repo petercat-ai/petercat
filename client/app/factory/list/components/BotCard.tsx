@@ -25,6 +25,7 @@ import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
 import CheckBadgeIcon from '@/public/icons/CheckBadgeIcon';
 import LoadingIcon from '@/public/icons/LoadingIcon';
 import { RagTask } from '@/app/services/BotsController';
+import { useKnowledgeUpdate } from '@/app/hooks/useKnowledgeUpdate';
 
 declare type Bot = Tables<'bots'>;
 
@@ -34,6 +35,8 @@ const BotCard = (props: { bot: Bot }) => {
   const router = useRouter();
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
   const { data: taskInfo } = useGetBotRagTask(bot.id, true, false);
+  const { mutate: updateKnowledge, isPending: isUpdating } =
+    useKnowledgeUpdate();
 
   useEffect(() => {
     if (isSuccess) {
@@ -66,6 +69,19 @@ const BotCard = (props: { bot: Bot }) => {
       <span className="animate-spinner-ease-spin">
         <LoadingIcon />
       </span>
+    );
+  };
+
+  const handleUpdateKnowledge = () => {
+    updateKnowledge(
+      {
+        bot_id: bot.id,
+      },
+      {
+        onSuccess: () => {
+          // TODO
+        },
+      },
     );
   };
 
@@ -124,21 +140,30 @@ const BotCard = (props: { bot: Bot }) => {
                 placement="top"
                 content={I18N.components.BotCard.gengXinZhiShiKu}
                 classNames={{
-                  base: [
-                    // arrow color
-                    'before:bg-[#3F3F46] dark:before:bg-white',
-                  ],
+                  base: ['before:bg-[#3F3F46] dark:before:bg-white'],
                   content: [
                     'py-2 px-4 rounded-lg shadow-xl text-white',
                     'bg-[#3F3F46]',
                   ],
                 }}
               >
-                <Image
-                  src="../images/refresh.svg"
-                  alt={I18N.components.BotCard.gengXinZhiShi}
-                  className="z-10 cursor-pointer"
-                />
+                {isUpdating ? (
+                  <div className="w-6 h-6 flex items-center justify-center">
+                    <span className="animate-spinner-ease-spin">
+                      <LoadingIcon />
+                    </span>
+                  </div>
+                ) : (
+                  <Image
+                    src="../images/refresh.svg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUpdateKnowledge();
+                    }}
+                    alt={I18N.components.BotCard.gengXinZhiShi}
+                    className="z-10 cursor-pointer"
+                  />
+                )}
               </Tooltip>
             </div>
           </div>

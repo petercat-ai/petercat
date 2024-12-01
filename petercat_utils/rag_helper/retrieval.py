@@ -197,3 +197,40 @@ def get_chunk_list(repo_name: str, page_size: int, page_number: int):
     )
     total_count = len(count_response.data)
     return {"rows": query.data, "total": total_count}
+
+
+def check_and_update_knowledge(config: RAGGitDocConfig):
+    # 初始化 GitHub loader 获取最新的文件信息
+    loader = init_github_file_loader(config)
+    latest_sha = loader.file_sha
+    
+    # 获取当前存储的文档
+    client = get_client()
+    existing_docs = (
+        client.table(TABLE_NAME)
+        .select("id, file_sha")
+        .eq("repo_name", config.repo_name)
+        .eq("file_path", config.file_path)
+        .execute()
+    )
+
+    if not existing_docs.data:
+        # 如果不存在文档，直接添加
+        return add_knowledge_by_doc(config)
+    
+    # 检查 SHA 是否变化
+    current_sha = existing_docs.data[0]["file_sha"]
+    
+    if current_sha == latest_sha:
+        return False
+    
+    # SHA 不同，需要更新
+    # 1. 删除旧文档
+    client.table(TABLE_NAME)\
+        .delete()\
+        .eq("repo_name", config.repo_name)\
+        .eq("file_path", config.file_path)\
+        .execute()
+        
+    # 2. 添加新文档
+    return add_knowledge_by_doc(config)
