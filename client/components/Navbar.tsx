@@ -54,7 +54,7 @@ export function Navbar() {
     setSearch('');
   };
   return (
-    <div className="flex bg-[#F3F4F6] py-[20px] px-[24px] min-w-[900px] mb-[16px]">
+    <div className="flex bg-[#F3F4F6] py-[20px] px-[24px] min-w-[900px] mb-[16px] z-[99]">
       <div className="flex mr-[0px]">
         <Link href="/">
           <img src="/images/logo.svg" alt="petercat" width={115} height={32} />
