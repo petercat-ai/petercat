@@ -26,7 +26,7 @@ import {
   useBotCreate,
   useBotEdit,
 } from '@/app/hooks/useBot';
-import { useAgreement } from '@/app/hooks/useAgreement';
+import { useAgreement, useAgreementStatus } from '@/app/hooks/useAgreement';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { isEmpty } from 'lodash';
 import { Chat } from '@petercatai/assistant';
@@ -64,6 +64,11 @@ export default function Edit() {
   const { language } = useGlobal();
   const { botProfile, setBotProfile } = useBot();
   const { user, status } = useUser();
+  const {
+    data: agreementStatus,
+    isLoading: getAgreementStatusLoading,
+    error: getAgreementStatusError,
+  } = useAgreementStatus();
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -103,14 +108,20 @@ export default function Edit() {
     }
     if (!user || user.id.startsWith('client|')) {
       router.push(`${apiDomain}/api/auth/login`);
-    } else {
-      if (!user?.agreement_accepted) {
-        setAgreementModalIsOpen(true);
-      } else {
-        setAgreementModalIsOpen(false);
-      }
     }
   }, [user, status]);
+
+  useEffect(() => {
+    if (getAgreementStatusLoading) {
+      return;
+    }
+    if (getAgreementStatusError) {
+      setAgreementModalIsOpen(true);
+    } else {
+      const agreementAccepted = agreementStatus?.data?.agreement_accepted;
+      setAgreementModalIsOpen(!agreementAccepted);
+    }
+  }, [agreementStatus, getAgreementStatusError, getAgreementStatusLoading]);
 
   const {
     updateBot: onUpdateBot,
