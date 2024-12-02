@@ -1,6 +1,11 @@
 import React from 'react';
 const SignatureIcon = (props: any) => (
-  <a href="https://petercat.ai/" className={props.className}>
+  <a
+    href="https://petercat.ai/"
+    target="_blank"
+    className={props.className}
+    rel="noopener noreferrer"
+  >
     <svg
       width="132"
       height="15"
