@@ -20,7 +20,7 @@ export async function acceptAgreement() {
   return response.data;
 }
 
-export async function getAvaliableLLMs() {
+export async function getAvailableLLMs() {
   const response = await axios.get(`${apiDomain}/api/user/llms`, {
     withCredentials: true,
   });

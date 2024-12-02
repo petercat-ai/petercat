@@ -31,7 +31,7 @@ import { useBot } from '@/app/contexts/BotContext';
 import 'react-toastify/dist/ReactToastify.css';
 import { AVATARS } from '@/app/constant/avatar';
 import { useRouter } from 'next/navigation';
-import { useAvaliableLLMs } from '@/app/hooks/useAvaliableLLMs';
+import { useAvailableLLMs } from '@/app/hooks/useAvailableLLMs';
 import { useTokenList } from '@/app/hooks/useToken';
 import CreateButton from '@/app/user/tokens/components/CreateButton';
 
@@ -39,7 +39,7 @@ const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { data: avaliableLLMs = [] } = useAvaliableLLMs();
+  const { data: availableLLMs = [] } = useAvailableLLMs();
   const { data: userTokens = [] } = useTokenList();
 
   const filteredTokens = useMemo(() => {
@@ -52,8 +52,10 @@ const BotCreateFrom = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
+    debugger;
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
+    console.log(name, value);
     setBotProfile((draft: BotProfile) => {
       // @ts-ignore
       draft[name] = value;
@@ -184,9 +186,12 @@ const BotCreateFrom = () => {
                 label={I18N.components.BotCreateFrom.xuanZeDaMoXing}
                 isRequired
                 variant="bordered"
+                defaultSelectedKeys={
+                  botProfile?.llm ? [botProfile.llm] : [availableLLMs[0]]
+                }
                 onChange={handleChange}
               >
-                {avaliableLLMs.map((llm) => (
+                {availableLLMs.map((llm) => (
                   <SelectItem key={llm}>{llm}</SelectItem>
                 ))}
               </Select>
@@ -196,11 +201,12 @@ const BotCreateFrom = () => {
                 name="token_id"
                 label={I18N.components.BotCreateFrom.xuanZeTOK}
                 variant="bordered"
+                defaultSelectedKeys={[botProfile?.token_id || '']}
                 onChange={handleChange}
                 popoverProps={{ style: { zIndex: 10 } }}
               >
                 <SelectSection title={I18N.components.BotCreateFrom.guanFang}>
-                  <SelectItem key="default">
+                  <SelectItem key="">
                     {I18N.components.BotCreateFrom.shiYongPET}
                   </SelectItem>
                 </SelectSection>
