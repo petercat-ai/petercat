@@ -52,7 +52,6 @@ const BotCreateFrom = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    debugger;
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
     console.log(name, value);
