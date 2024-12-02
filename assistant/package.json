@@ -1,6 +1,6 @@
 {
   "name": "@petercatai/assistant",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "PeterCat Assistant Application",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
