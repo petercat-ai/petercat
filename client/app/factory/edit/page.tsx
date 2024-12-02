@@ -346,7 +346,7 @@ export default function Edit() {
             const url = e.target.value;
             setGitUrl(url);
           }}
-          value={gitUrl}
+          value={gitUrl || botProfile.repoName}
           isDisabled={isEdit}
           required
           classNames={{ label: 'w-full' }}
