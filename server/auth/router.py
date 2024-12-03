@@ -108,7 +108,6 @@ async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
         response = profiles_dao.get_agreement_status(user_id=user_id)
         if not response:
             raise HTTPException(status_code=404, detail="User does not exist, accept failed.")
-        print("response", response)
         return {"success": True, "data": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
