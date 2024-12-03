@@ -24,5 +24,10 @@ export default {
     tiaoGuo: '跳過',
     baoCunChengGong: '保存成功！',
     buShuChengGong: '部署成功',
+    wanCheng: '完成',
+    tiJiaoChengGong: '提交成功',
+    shouQiBuShu: '收起',
+    buShu: '部署',
+    daKaiBuShu: '打开部署',
   },
 };

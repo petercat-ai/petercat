@@ -26,5 +26,10 @@ export default {
     tiaoGuo: 'スキップ',
     baoCunChengGong: '保存が成功しました！',
     buShuChengGong: 'デプロイが成功しました',
+    wanCheng: 'かんりょう',
+    tiJiaoChengGong: '提出が成功しました',
+    shouQiBuShu: '折りたたむ',
+    buShu: 'デプロイ',
+    daKaiBuShu: 'デプロイを開',
   },
 };

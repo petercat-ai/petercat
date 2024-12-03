@@ -224,9 +224,6 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
   };
   return (
     <>
-      <span className="text-[14px] text-gray-800">
-        {I18N.DeployBotModal.DeployContent.buShuDaoQiTa}
-      </span>
       {renderPublicMarket()}
       {renderDeployWebsite()}
       {renderBindRepo()}

@@ -27,5 +27,10 @@ export default {
     tiaoGuo: 'Skip',
     baoCunChengGong: 'Saved successfully!',
     buShuChengGong: 'Deployment successful',
+    wanCheng: 'Done',
+    tiJiaoChengGong: 'Submission Successful',
+    shouQiBuShu: 'Collapse',
+    buShu: 'Deploy',
+    daKaiBuShu: 'Open Deployment',
   },
 };

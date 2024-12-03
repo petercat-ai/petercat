@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Image,
 } from '@nextui-org/react';
 import {
   useBindBotToRepo,
@@ -31,8 +32,17 @@ interface IModalProps {
   onClose: () => void;
 }
 
+enum DeployStatusEnum {
+  HIDEDEPLOYINFO = 'HIDEDEPLOYINFO',
+  SHOWEPLOYINFO = 'PREEDIT',
+  PRESUBMIT = 'PRESUBMIT',
+}
+
 const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   const [deployInfo, setDeployInfo] = useState<DeployState>({});
+  const [deployStatus, setDeployStatus] = useState<DeployStatusEnum>(
+    DeployStatusEnum.HIDEDEPLOYINFO,
+  );
   const { botProfile } = useBot();
   const {
     bindBotToRepo,
@@ -96,7 +106,11 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (lodash.isEqual(originDeployModel, deployInfo)) {
       setDeployBtnDisabled(true);
+      deployStatus === DeployStatusEnum.PRESUBMIT &&
+        setDeployStatus(DeployStatusEnum.SHOWEPLOYINFO);
     } else {
+      deployStatus !== DeployStatusEnum.HIDEDEPLOYINFO &&
+        setDeployStatus(DeployStatusEnum.PRESUBMIT);
       setDeployBtnDisabled(false);
     }
   }, [deployInfo, originDeployModel]);
@@ -151,17 +165,96 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     isDeployWebsiteSuccess ||
     isBindBotSuccess;
 
+  const renderFooterBtn = () => {
+    if (deployStatus === DeployStatusEnum.HIDEDEPLOYINFO) {
+      return (
+        <>
+          <Button
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px]"
+            variant="light"
+            onPress={() => {
+              setDeployStatus(DeployStatusEnum.SHOWEPLOYINFO);
+            }}
+          >
+            {I18N.DeployBotModal.index.buShu}<Image src="../images/chevron-down.svg" alt={I18N.DeployBotModal.index.daKaiBuShu} />
+          </Button>
+          <Button
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
+            onPress={() => onClose()}
+          >
+            {I18N.DeployBotModal.index.wanCheng}</Button>
+        </>
+      );
+    }
+    if (deployStatus === DeployStatusEnum.SHOWEPLOYINFO) {
+      return (
+        <>
+          <Button
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px]"
+            variant="light"
+            onPress={() => {
+              setDeployStatus(DeployStatusEnum.HIDEDEPLOYINFO);
+            }}
+          >
+            {I18N.DeployBotModal.index.buShu}<Image src="../images/chevron-up.svg" alt={I18N.DeployBotModal.index.shouQiBuShu} />
+          </Button>
+          <Button
+            isDisabled={deployBtnDisabled}
+            isLoading={
+              isPublicBotLoading ||
+              isUnPublicBotLoading ||
+              isDeployWebsiteLoading ||
+              isBindBotLoading
+            }
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
+            onPress={() => handleOK()}
+          >
+            {I18N.components.BotCreateFrom.queRen}</Button>
+        </>
+      );
+    }
+    if (deployStatus === DeployStatusEnum.PRESUBMIT) {
+      return (
+        <>
+          <Button
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px]"
+            variant="light"
+            onPress={() => onClose()}
+          >
+            {I18N.DeployBotModal.index.tiaoGuo}
+          </Button>
+          <Button
+            isDisabled={deployBtnDisabled}
+            isLoading={
+              isPublicBotLoading ||
+              isUnPublicBotLoading ||
+              isDeployWebsiteLoading ||
+              isBindBotLoading
+            }
+            className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
+            onPress={() => handleOK()}
+          >
+            {I18N.components.BotCreateFrom.queRen}
+          </Button>
+        </>
+      );
+    }
+    return null;
+  };
+
   const renderResultPath = (result: { approval_path: any }, text: string) => {
     return (
       <>
         {result?.approval_path ? (
           <div className="w-full flex flex-col gap-1 justify-center items-center">
             <span>
-              {text}
-              {" "}
-              {I18N.DeployBotModal.DeployContent.shenHeZhong}
+              {text} {I18N.DeployBotModal.DeployContent.shenHeZhong}
             </span>
-            <a href={result.approval_path} target="_blank" className="block max-w-full break-words">
+            <a
+              href={result.approval_path}
+              target="_blank"
+              className="block max-w-full break-words"
+            >
               {result.approval_path}
             </a>
           </div>
@@ -188,7 +281,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       <span className="mt-[28px]">
                         <DeploySuccessIcon />
                       </span>
-                      <span>{I18N.DeployBotModal.index.buShuChengGong}</span>
+                      <span>{I18N.DeployBotModal.index.tiJiaoChengGong}</span>
                     </div>
                   </ModalHeader>
                   <ModalBody className="py-[0px] flex flex-col gap-2 justify-center items-center">
@@ -206,8 +299,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => onClose()}
                     >
-                      {I18N.components.BotCreateFrom.queRen}
-                    </Button>
+                      {I18N.DeployBotModal.index.wanCheng}</Button>
                   </ModalFooter>
                 </>
               ) : (
@@ -220,40 +312,25 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       <span>{I18N.DeployBotModal.index.baoCunChengGong}</span>
                     </div>
                   </ModalHeader>
-                  <ModalBody className="py-[0px]">
-                    <Spinner
-                      loading={isGetUserReposLoading || isGetBotApprovalLoading}
-                    >
-                      <DeployContent
-                        deployInfo={deployInfo}
-                        websiteApproval={websiteApproval}
-                        marketApproval={marketApproval}
-                        peterCatBotRepos={peterCatBotRepos ?? []}
-                        onChange={handleDeployChange}
-                      />
-                    </Spinner>
-                  </ModalBody>
-                  <ModalFooter className="flex justify-center items-center">
-                    <Button
-                      className="border-[1.5px] border-[#3F3F46] rounded-[46px]"
-                      variant="light"
-                      onPress={() => onClose()}
-                    >
-                      {I18N.DeployBotModal.index.tiaoGuo}
-                    </Button>
-                    <Button
-                      isDisabled={deployBtnDisabled}
-                      isLoading={
-                        isPublicBotLoading ||
-                        isUnPublicBotLoading ||
-                        isDeployWebsiteLoading ||
-                        isBindBotLoading
-                      }
-                      className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
-                      onPress={() => handleOK()}
-                    >
-                      {I18N.components.BotCreateFrom.queRen}
-                    </Button>
+                  {deployStatus === DeployStatusEnum.HIDEDEPLOYINFO ? null : (
+                    <ModalBody className="py-[0px]">
+                      <Spinner
+                        loading={
+                          isGetUserReposLoading || isGetBotApprovalLoading
+                        }
+                      >
+                        <DeployContent
+                          deployInfo={deployInfo}
+                          websiteApproval={websiteApproval}
+                          marketApproval={marketApproval}
+                          peterCatBotRepos={peterCatBotRepos ?? []}
+                          onChange={handleDeployChange}
+                        />
+                      </Spinner>
+                    </ModalBody>
+                  )}
+                  <ModalFooter className="justify-center items-center">
+                    {renderFooterBtn()}
                   </ModalFooter>
                 </>
               )}
