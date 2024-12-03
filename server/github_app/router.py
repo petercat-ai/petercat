@@ -28,7 +28,6 @@ from github_app.utils import (
     get_installation_repositories,
     get_jwt,
     get_private_key,
-    get_user_orgs,
 )
 
 from petercat_utils import get_env_variable
