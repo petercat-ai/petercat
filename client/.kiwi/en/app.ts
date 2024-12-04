@@ -28,7 +28,7 @@ export default {
       ' is an intelligent Q&A bot solution which designed for community maintainers and developers.',
     xiaoMaoMiZhuNi: 'Conquer GitHub with kitten power',
     wenDang: 'Documentation',
-    gongZuoTai: 'Dashboard',
+    gongZuoTai: 'Workspace',
     yanShiAnLi: 'Showcase',
   },
 };
