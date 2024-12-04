@@ -34,7 +34,8 @@ export default function RootLayout({
               <BotProvider>
                 {pathname === '/' ||
                 pathname === '/policy' ||
-                pathname === '/agreement' ? (
+                pathname === '/agreement' ||
+                pathname === '/release' ? (
                   children
                 ) : (
                   <div className="flex flex-col bg-[#F3F4F6] min-h-screen">

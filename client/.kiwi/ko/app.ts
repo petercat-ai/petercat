@@ -28,6 +28,7 @@ export default {
       '커뮤니티 유지보수자와 개발자를 위한 스마트 Q&A 봇 솔루션입니다.',
     xiaoMaoMiZhuNi: 'Peter Cat이 당신의 Github 정복을 도와줍니다',
     wenDang: '문서',
+    release: '업데이트 로그',
     gongZuoTai: '작업대',
     yanShiAnLi: '데모 사례',
   },
