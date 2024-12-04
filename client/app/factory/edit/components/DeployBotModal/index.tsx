@@ -34,7 +34,7 @@ interface IModalProps {
 
 enum DeployStatusEnum {
   HIDEDEPLOYINFO = 'HIDEDEPLOYINFO',
-  SHOWEPLOYINFO = 'PREEDIT',
+  SHOWDEPLOYINFO = 'SHOWDEPLOYINFO',
   PRESUBMIT = 'PRESUBMIT',
 }
 
@@ -107,7 +107,7 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     if (lodash.isEqual(originDeployModel, deployInfo)) {
       setDeployBtnDisabled(true);
       deployStatus === DeployStatusEnum.PRESUBMIT &&
-        setDeployStatus(DeployStatusEnum.SHOWEPLOYINFO);
+        setDeployStatus(DeployStatusEnum.SHOWDEPLOYINFO);
     } else {
       deployStatus !== DeployStatusEnum.HIDEDEPLOYINFO &&
         setDeployStatus(DeployStatusEnum.PRESUBMIT);
@@ -173,20 +173,25 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
             className="border-[1.5px] border-[#3F3F46] rounded-[46px]"
             variant="light"
             onPress={() => {
-              setDeployStatus(DeployStatusEnum.SHOWEPLOYINFO);
+              setDeployStatus(DeployStatusEnum.SHOWDEPLOYINFO);
             }}
           >
-            {I18N.DeployBotModal.index.buShu}<Image src="../images/chevron-down.svg" alt={I18N.DeployBotModal.index.daKaiBuShu} />
+            {I18N.DeployBotModal.index.buShu}
+            <Image
+              src="../images/chevron-down.svg"
+              alt={I18N.DeployBotModal.index.daKaiBuShu}
+            />
           </Button>
           <Button
             className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
             onPress={() => onClose()}
           >
-            {I18N.DeployBotModal.index.wanCheng}</Button>
+            {I18N.DeployBotModal.index.wanCheng}
+          </Button>
         </>
       );
     }
-    if (deployStatus === DeployStatusEnum.SHOWEPLOYINFO) {
+    if (deployStatus === DeployStatusEnum.SHOWDEPLOYINFO) {
       return (
         <>
           <Button
@@ -196,7 +201,11 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
               setDeployStatus(DeployStatusEnum.HIDEDEPLOYINFO);
             }}
           >
-            {I18N.DeployBotModal.index.buShu}<Image src="../images/chevron-up.svg" alt={I18N.DeployBotModal.index.shouQiBuShu} />
+            {I18N.DeployBotModal.index.buShu}
+            <Image
+              src="../images/chevron-up.svg"
+              alt={I18N.DeployBotModal.index.shouQiBuShu}
+            />
           </Button>
           <Button
             isDisabled={deployBtnDisabled}
@@ -209,7 +218,8 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
             className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
             onPress={() => handleOK()}
           >
-            {I18N.components.BotCreateFrom.queRen}</Button>
+            {I18N.components.BotCreateFrom.queRen}
+          </Button>
         </>
       );
     }
@@ -299,7 +309,8 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                       className="border-[1.5px] border-[#3F3F46] rounded-[46px] bg-[#3F3F46] text-white"
                       onPress={() => onClose()}
                     >
-                      {I18N.DeployBotModal.index.wanCheng}</Button>
+                      {I18N.DeployBotModal.index.wanCheng}
+                    </Button>
                   </ModalFooter>
                 </>
               ) : (
