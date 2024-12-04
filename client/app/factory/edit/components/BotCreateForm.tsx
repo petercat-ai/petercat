@@ -24,7 +24,7 @@ import InputList from './InputList';
 import BulbIcon from '@/public/icons/BulbIcon';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import { random } from 'lodash';
-import { useBotDelete } from '@/app/hooks/useBot';
+import { useBotDelete, useGetGitAvatar } from '@/app/hooks/useBot';
 import { ToastContainer, toast } from 'react-toastify';
 import { useBot } from '@/app/contexts/BotContext';
 
@@ -37,6 +37,7 @@ import CreateButton from '@/app/user/tokens/components/CreateButton';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
+  const { data: gitAvatar } = useGetGitAvatar(botProfile?.repoName);
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { data: availableLLMs = [] } = useAvailableLLMs();
@@ -128,7 +129,7 @@ const BotCreateFrom = () => {
                   aria-label={I18N.components.BotCreateFrom.gITHU}
                   onClick={() => {
                     setBotProfile((draft: BotProfile) => {
-                      draft.avatar = botProfile?.gitAvatar;
+                      draft.avatar = gitAvatar;
                     });
                   }}
                 >

@@ -67,6 +67,10 @@ export async function getBotInfoByRepoName(params: {
   return axios.post(`${apiDomain}/api/bot/config/generator`, params);
 }
 
+export async function getGitAvatarByRepoName(repo_name: string) {
+  return axios.get(`${apiDomain}/api/bot/git/avatar?repo_name=${repo_name}`);
+}
+
 export async function getChunkList(
   repo_name: string,
   page_size: number,

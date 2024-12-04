@@ -9,6 +9,7 @@ import {
   getBotInfoByRepoName,
   getBotList,
   getChunkList,
+  getGitAvatarByRepoName,
   getRagTask,
   getUserPeterCatAppRepos,
   publicBot,
@@ -191,7 +192,16 @@ export const useGetUserPeterCatAppRepos = (enabled: boolean = true) => {
     queryKey: ['github.user.app.repos'],
     queryFn: async () => getUserPeterCatAppRepos(),
     select: (data) => data.data,
-    enabled
+    enabled,
+  });
+};
+
+export const useGetGitAvatar = (repoName?: string) => {
+  return useQuery({
+    queryKey: ['github.repo.name', repoName],
+    queryFn: async () => getGitAvatarByRepoName(repoName!),
+    select: (data) => data.data.data,
+    enabled: !!repoName,
   });
 };
 
