@@ -28,6 +28,7 @@ export default {
       'これはコミュニティのメンテナーと開発者のために作られたQ&Aボットソリューションです',
     xiaoMaoMiZhuNi: 'Peter CatがあなたのGithub攻略を手助けします',
     wenDang: 'ドキュメント',
+    release: '更新ログ',
     gongZuoTai: '作業台',
     yanShiAnLi: 'デモケース',
   },
