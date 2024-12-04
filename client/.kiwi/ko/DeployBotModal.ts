@@ -24,5 +24,10 @@ export default {
     tiaoGuo: '건너뛰기',
     baoCunChengGong: '성공적으로 저장!',
     buShuChengGong: '배포 성공',
+    wanCheng: '완료',
+    tiJiaoChengGong: '제출이 성공했습니다',
+    shouQiBuShu: '접기',
+    buShu: '배포',
+    daKaiBuShu: '배포 열기',
   },
 };
