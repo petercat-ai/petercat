@@ -11,15 +11,15 @@ export default function Release() {
     {
       date: 'NOV 22 / 2024',
       version: '1.0.1',
-      title: '国际化支持',
-      summary: '全链路国际化支持，增加官网移动端适配，多平台集成链路产品化',
+      title: I18N.release.page.guoJiHuaZhiChi,
+      summary: I18N.release.page.quanLianLuGuoJi,
       url: 'https://link.medium.com/QOA4Ed8NUOb',
     },
     {
       date: 'SEP 6 / 2024',
       version: '1.0.0',
-      title: '外滩大会首次发布',
-      summary: '小猫咪机器人首次亮相上海外滩大会，助力开源社区答疑场景',
+      title: I18N.release.page.waiTanDaHuiShou,
+      summary: I18N.release.page.xiaoMaoMiJiQi,
       url: 'https://mp.weixin.qq.com/s/PnHVc1_yBPu2HiA2En9cAg',
     },
   ];
@@ -31,8 +31,7 @@ export default function Release() {
           {I18N.app.page.release}
         </h2>
         <p className="mb-6 lg:mb-8 text-sm px-9 lg:text-xl text-white">
-          关注
-          <Image
+          {I18N.release.page.guanZhu}<Image
             className="inline scale-85 origin-top-center"
             style={{ filter: 'saturate(0)' }}
             width={106}
@@ -40,8 +39,7 @@ export default function Release() {
             src="/images/logo-footer.svg"
             alt="PeterCat"
           />
-          最新产品新闻， 以便在新版能力发布时获取最新信息
-        </p>
+          {I18N.release.page.zuiXinChanPinXin}</p>
         <a
           className="inline-block px-5 py-2 lg:px-8 lg:py-3 rounded-full border-2 border-white text-white text-sm lg:text-xl transition-transform hover:scale-105"
           href="https://github.com/petercat-ai/petercat/releases"
