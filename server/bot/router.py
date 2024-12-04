@@ -173,6 +173,22 @@ async def bot_generator(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
 
+@router.get("/git/avatar", status_code=200)
+async def get_git_avatar(
+    repo_name: str,
+):
+    try:
+        g = Github()
+        repo = g.get_repo(repo_name)
+        avatar = repo.organization.avatar_url if repo.organization else None
+        return JSONResponse(content={"success": True, "data": avatar})
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
+
 
 @router.put("/update/{id}", status_code=200)
 def update_bot(
