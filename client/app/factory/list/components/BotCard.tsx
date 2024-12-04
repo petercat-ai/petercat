@@ -47,7 +47,7 @@ const BotInfoIconList = (props: { bot: Bot }) => {
     showHomeIcon ? I18N.components.BotCard.guanWang : undefined,
     showCartIcon ? I18N.components.Navbar.shiChang : undefined,
   ].filter(Boolean);
-  const toolTipText = I18N.template(I18N.components.BotCard.yiZaiTEX, { val1: texts.join('、') });
+  const toolTipText = I18N.template?.(I18N.components.BotCard.yiZaiTEX, { val1: texts.join('、') });
   const isSingle = texts.length === 1;
   return (
     <Tooltip
