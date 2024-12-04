@@ -7,6 +7,22 @@ import HomeHeader from '@/components/HomeHeader';
 import HomeFooter from '@/components/HomeFooter';
 
 export default function Release() {
+  const releaseNotes = [
+    {
+      date: 'NOV 22 / 2024',
+      version: '1.0.1',
+      title: '国际化支持',
+      summary: '全链路国际化支持，增加官网移动端适配，多平台集成链路产品化',
+      url: 'https://link.medium.com/QOA4Ed8NUOb',
+    },
+    {
+      date: 'SEP 6 / 2024',
+      version: '1.0.0',
+      title: '外滩大会首次发布',
+      summary: '小猫咪机器人首次亮相上海外滩大会，助力开源社区答疑场景',
+      url: 'https://mp.weixin.qq.com/s/PnHVc1_yBPu2HiA2En9cAg',
+    },
+  ];
   return (
     <div className="section bg-black">
       <HomeHeader />
@@ -33,6 +49,33 @@ export default function Release() {
         >
           GitHub Release Notes
         </a>
+      </div>
+      <div className="container mx-auto px-4">
+        {releaseNotes.map((note, index) => (
+          <div
+            key={index}
+            className="flex flex-col lg:flex-row lg:justify-between  border-t border-[#7F7A71] py-4 lg:py-8 px-5 lg:px-6"
+          >
+            <div className="flex flex-col items-start lg:w-[320px] lg:mr-[60px] lg:w-auto">
+              <p className="text-white text-sm lg:text-xl my-1 lg:my-2 lg:mr-4">
+                {note.date}
+              </p>
+              <span className="bg-[#7C3AED] text-white text-xs lg:text-sm px-2 py-1 rounded-full inline-block self-start lg:self-auto mb-2 lg:mb-0">
+                V{note.version}
+              </span>
+            </div>
+            <a
+              className="flex-1 cursor-pointer"
+              target="_blank"
+              href={note.url}
+            >
+              <h3 className="text-[#FFA700] font-solitreo text-lg lg:text-3xl my-1 lg:my-2">
+                {note.title}
+              </h3>
+              <p className="text-white text-xs lg:text-base">{note.summary}</p>
+            </a>
+          </div>
+        ))}
       </div>
       <HomeFooter />
     </div>
