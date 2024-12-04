@@ -53,6 +53,9 @@ export default {
     gengXinZhiShi: '知識を更新',
     gengXinZhiShiKu: 'ナレッジベースを更新（近日公開）',
     tiaoShi: 'デバッグ',
+    yiZaiTEX: '{val1} に展開済み',
+    guanWang: '公式ウェブサイト',
+    gITHU: ' GitHubプラットフォーム',
   },
   CreateButton: {
     chuangJianTOK: 'トークンを作成',

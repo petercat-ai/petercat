@@ -27,7 +27,13 @@ const BotCard = (props: {
           className="relative overflow-hidden w-full h-full bg-cover bg-center rounded-[8px]"
           style={{ backgroundImage: `url(${bot.avatar})` }}
         >
-          <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-[70px] rounded-[8px]"></div>
+          <div
+            className="absolute inset-0 bg-white backdrop-blur-[150px] rounded-[8px]"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, #FFFFFF 100%)',
+            }}
+          ></div>
           <div className="flex justify-center items-center h-full">
             <Image
               shadow="none"
@@ -42,6 +48,7 @@ const BotCard = (props: {
         </div>
         <div className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center">
           <Image src="./images/chat.svg" />
+          {/* TODO：添加按钮 */}
         </div>
       </CardBody>
       <CardFooter className="text-small justify-between flex-col my-4 p-0 px-3 min-h-[84px]">

@@ -4,6 +4,7 @@ import {
   deleteBot,
   deployWebsite,
   getBotApprovalList,
+  getBotBoundRepos,
   getBotConfig,
   getBotDetail,
   getBotInfoByRepoName,
@@ -31,6 +32,16 @@ export const useBotDetail = (id: string) => {
     retry: false,
   });
 };
+
+export const useGetBotBoundRepos =(id:string)=>{
+  return useQuery({
+    queryKey: [`bot.boundRepos.${id}`, id],
+    queryFn: async () => getBotBoundRepos(id),
+    select: (data) => data,
+    enabled: !!id,
+    retry: false,
+  });
+}
 
 export const useBotConfig = (id: string, enabled: boolean) => {
   return useQuery({

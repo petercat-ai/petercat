@@ -17,7 +17,11 @@ import {
   Tooltip,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { useBotDelete, useGetBotRagTask } from '@/app/hooks/useBot';
+import {
+  useBotDelete,
+  useGetBotBoundRepos,
+  useGetBotRagTask,
+} from '@/app/hooks/useBot';
 import CloudIcon from '@/public/icons/CloudIcon';
 import MinusCircleIcon from '@/public/icons/MinusCircleIcon';
 import { TaskStatus } from '@/types/task';
@@ -25,10 +29,52 @@ import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
 import CheckBadgeIcon from '@/public/icons/CheckBadgeIcon';
 import LoadingIcon from '@/public/icons/LoadingIcon';
 import { RagTask } from '@/app/services/BotsController';
+import CardGithubIcon from '@/public/icons/CardGithubIcon';
+import CardHomeIcon from '@/public/icons/CardHomeIcon';
+import CardCartIcon from '@/public/icons/CardCartIcon';
 
 declare type Bot = Tables<'bots'>;
 
+const BotInfoIconList = (props: { bot: Bot }) => {
+  const { bot } = props;
+  const { data } = useGetBotBoundRepos(bot.id);
+  // 判断机器人是否被安装到组件上
+  const showHomeIcon = bot.domain_whitelist && bot.domain_whitelist.length > 0;
+  const showCartIcon = bot.public;
+  const showGithubIcon = data && Array.isArray(data) && data.length > 0;
+  const texts = [
+    showGithubIcon ? I18N.components.BotCard.gITHU : '',
+    showHomeIcon ? I18N.components.BotCard.guanWang : undefined,
+    showCartIcon ? I18N.components.Navbar.shiChang : undefined,
+  ].filter(Boolean);
+  const toolTipText = I18N.template(I18N.components.BotCard.yiZaiTEX, { val1: texts.join('、') });
+  const isSingle = texts.length === 1;
+  return (
+    <Tooltip
+      content={toolTipText}
+      classNames={{
+        base: [
+          // arrow color
+          'before:bg-[#3F3F46] dark:before:bg-white',
+        ],
+        content: ['py-2 px-4 rounded-lg  shadow-xl text-white', 'bg-[#3F3F46]'],
+      }}
+    >
+      <div className="flex flex-row">
+        <div className="z-[9]">{showGithubIcon && <CardGithubIcon />}</div>
+        <div className={`${isSingle ? '' : '-ml-1.5'} z-[8]`}>
+          {showHomeIcon && <CardHomeIcon />}
+        </div>
+        <div className={`${isSingle ? '' : '-ml-1.5'} z-[7]`}>
+          {showCartIcon && <CardCartIcon />}
+        </div>
+      </div>
+    </Tooltip>
+  );
+};
+
 const BotCard = (props: { bot: Bot }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { bot } = props;
   const router = useRouter();
@@ -82,7 +128,13 @@ const BotCard = (props: { bot: Bot }) => {
             className="relative overflow-hidden w-full h-full bg-cover bg-center rounded-[8px]"
             style={{ backgroundImage: `url(${bot.avatar})` }}
           >
-            <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-[70px] rounded-[8px]"></div>
+            <div
+              className="absolute inset-0 bg-white backdrop-blur-[150px] rounded-[8px]"
+              style={{
+                background:
+                  'linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, #FFFFFF 100%)',
+              }}
+            ></div>
             <div className="flex justify-center items-center h-full">
               <Image
                 shadow="none"
@@ -94,9 +146,21 @@ const BotCard = (props: { bot: Bot }) => {
                 src={bot.avatar!}
               />
             </div>
+            <div
+              className={`${
+                isHovered ? 'opacity-0' : 'hover:opacity-100'
+              } transition-all absolute bottom-0 w-full flex items-center justify-center`}
+            >
+              <BotInfoIconList bot={bot}></BotInfoIconList>
+            </div>
           </div>
-          <div className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full h-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center">
-            <div className="flex items-center gap-10">
+          <div
+            className="z-10 opacity-0 rounded-[8px] hover:opacity-100 w-full backdrop-blur-xl transition-all bg-gradient-to-b from-[rgba(255,255,255,0.65)] to-white absolute flex items-center justify-center"
+            style={{ height: 'calc(100% - 24px)' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="flex items-center gap-10 mt-[12px]">
               <Tooltip
                 showArrow
                 placement="top"

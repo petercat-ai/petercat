@@ -53,6 +53,9 @@ export default {
     gengXinZhiShi: '지식 업데이트',
     gengXinZhiShiKu: '지식 베이스 업데이트(Coming Soon)',
     tiaoShi: '디버그',
+    yiZaiTEX: '{val1}에서 이미 배포됨',
+    guanWang: '공식 웹사이트',
+    gITHU: ' GitHub 플랫폼',
   },
   CreateButton: {
     chuangJianTOK: '토큰 생성',

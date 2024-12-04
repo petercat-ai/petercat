@@ -5,6 +5,7 @@ from github import Github, Auth
 from auth.get_user_info import get_user, get_user_id
 from core.dao.botApprovalDAO import BotApprovalDAO
 from core.dao.botDAO import BotDAO
+from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.bot_approval import ApprovalStatus, BotApproval, TaskType
 from core.models.user import User
 from petercat_utils import get_client
@@ -62,6 +63,18 @@ def get_bot_list(
     except Exception as e:
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
+@router.get("/bound_to_repository")
+def get_bot_bind_repository(bot_id: str):
+    try:
+        repository_config = RepositoryConfigDAO()
+        repo_config_list = repository_config.get_by_bot_id(bot_id)
+        return {"data": repo_config_list, "status": 200}
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=404
         )
 
 

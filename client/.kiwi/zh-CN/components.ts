@@ -53,6 +53,9 @@ export default {
     gengXinZhiShi: '更新知识',
     gengXinZhiShiKu: '更新知识库(Coming Soon)',
     tiaoShi: '调试',
+    yiZaiTEX: '已在{val1}部署',
+    guanWang: '官网',
+    gITHU: ' GitHub 平台',
   },
   CreateButton: {
     chuangJianTOK: '创建 Token',
