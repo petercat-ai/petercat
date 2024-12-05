@@ -26,8 +26,8 @@ import CloudIcon from '@/public/icons/CloudIcon';
 import MinusCircleIcon from '@/public/icons/MinusCircleIcon';
 import { TaskStatus } from '@/types/task';
 import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
-import CheckBadgeIcon from '@/public/icons/CheckBadgeIcon';
-import LoadingIcon from '@/public/icons/LoadingIcon';
+import KnowledgeTaskCompleteIcon from '@/public/icons/CheckBadgeIcon';
+import KnowledgeTaskRunningIcon from '@/public/icons/LoadingIcon';
 import { RagTask } from '@/app/services/BotsController';
 import CardGithubIcon from '@/public/icons/CardGithubIcon';
 import CardHomeIcon from '@/public/icons/CardHomeIcon';
@@ -47,7 +47,9 @@ const BotInfoIconList = (props: { bot: Bot }) => {
     showHomeIcon ? I18N.components.BotCard.guanWang : undefined,
     showCartIcon ? I18N.components.Navbar.shiChang : undefined,
   ].filter(Boolean);
-  const toolTipText = I18N.template?.(I18N.components.BotCard.yiZaiTEX, { val1: texts.join('、') });
+  const toolTipText = I18N.template?.(I18N.components.BotCard.yiZaiTEX, {
+    val1: texts.join('、'),
+  });
   const isSingle = texts.length === 1;
   return (
     <Tooltip
@@ -79,7 +81,7 @@ const BotCard = (props: { bot: Bot }) => {
   const { bot } = props;
   const router = useRouter();
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
-  const { data: taskInfo } = useGetBotRagTask(bot.id, true, false);
+  const { data: taskInfo } = useGetBotRagTask(bot.repo_name!, false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -103,14 +105,14 @@ const BotCard = (props: { bot: Bot }) => {
       ? TaskStatus.COMPLETED
       : 'others';
     if (status === TaskStatus.COMPLETED) {
-      return <CheckBadgeIcon />;
+      return <KnowledgeTaskCompleteIcon />;
     }
     if (status === TaskStatus.ERROR) {
       return <ErrorBadgeIcon />;
     }
     return (
       <span className="animate-spinner-ease-spin">
-        <LoadingIcon />
+        <KnowledgeTaskRunningIcon />
       </span>
     );
   };
@@ -213,9 +215,6 @@ const BotCard = (props: { bot: Bot }) => {
               {bot.name}
             </span>
             <div className="flex items-center gap-2 shrink-0">
-              <div className="w-[32px] h-[32px] p-[7px] flex items-center rounded-[16px] bg-[#F4F4F5]">
-                {bot.public ? <CloudIcon /> : <MinusCircleIcon />}
-              </div>
               <div className="w-[32px] h-[32px] p-[7px] flex items-center rounded-[16px] bg-[#F4F4F5]">
                 {renderTaskStatusIcon(taskInfo ?? [])}
               </div>

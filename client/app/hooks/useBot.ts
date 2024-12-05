@@ -146,14 +146,13 @@ export const useBotRAGChunkList = (
 
 export const useGetBotRagTask = (
   repoName: string,
-  enabled: boolean = true,
   refetchInterval: boolean = true,
 ) => {
   return useQuery({
     queryKey: [`rag.task`, repoName],
     queryFn: async () => getRagTask(repoName),
     select: (data) => data,
-    enabled,
+    enabled:!!repoName,
     retry: true,
     refetchInterval: refetchInterval ? 3 * 1000 : undefined,
   });

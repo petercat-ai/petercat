@@ -34,7 +34,7 @@ def get_bot_list(
     try:
         supabase = get_client()
         query = supabase.table("bots").select(
-            "id, created_at, updated_at, avatar, description, name, public, starters, uid"
+            "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
         )
         if personal == "true":
             if not user_id:
@@ -44,7 +44,7 @@ def get_bot_list(
             query = (
                 supabase.table("bots")
                 .select(
-                    "id, created_at, updated_at, avatar, description, name, public, starters, uid"
+                    "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
                 )
                 .filter("name", "like", f"%{name}%")
             )
