@@ -16,6 +16,13 @@ export async function getBotDetail(id: string): Promise<Bot[]> {
   return response.data.data;
 }
 
+export async function getBotBoundRepos(id: string): Promise<GithubRepoConfig[]> {
+  const response = await axios.get(
+    `${apiDomain}/api/bot/bound_to_repository?bot_id=${id}`,
+  );
+  return response.data.data;
+}
+
 // Get current user's bot profile by id
 export async function getBotConfig(id: string): Promise<Bot[]> {
   const response = await axios.get(`${apiDomain}/api/bot/config?id=${id}`);

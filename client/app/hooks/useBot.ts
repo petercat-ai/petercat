@@ -4,6 +4,7 @@ import {
   deleteBot,
   deployWebsite,
   getBotApprovalList,
+  getBotBoundRepos,
   getBotConfig,
   getBotDetail,
   getBotInfoByRepoName,
@@ -32,6 +33,16 @@ export const useBotDetail = (id: string) => {
     retry: false,
   });
 };
+
+export const useGetBotBoundRepos =(id:string)=>{
+  return useQuery({
+    queryKey: [`bot.boundRepos.${id}`, id],
+    queryFn: async () => getBotBoundRepos(id),
+    select: (data) => data,
+    enabled: !!id,
+    retry: false,
+  });
+}
 
 export const useBotConfig = (id: string, enabled: boolean) => {
   return useQuery({
@@ -136,14 +147,13 @@ export const useBotRAGChunkList = (
 
 export const useGetBotRagTask = (
   repoName: string,
-  enabled: boolean = true,
   refetchInterval: boolean = true,
 ) => {
   return useQuery({
     queryKey: [`rag.task`, repoName],
     queryFn: async () => getRagTask(repoName),
     select: (data) => data,
-    enabled,
+    enabled:!!repoName,
     retry: true,
     refetchInterval: refetchInterval ? 3 * 1000 : undefined,
   });

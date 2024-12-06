@@ -54,6 +54,9 @@ export default {
     gengXinZhiShi: 'Update Knowledge',
     gengXinZhiShiKu: 'Update Knowledge Base (Coming Soon)',
     tiaoShi: 'Debug',
+    yiZaiTEX: 'Already deployed on {val1}',
+    guanWang: 'Official website',
+    gITHU: ' GitHub platform',
   },
   CreateButton: {
     chuangJianTOK: 'Create Token',
