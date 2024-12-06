@@ -1,9 +1,9 @@
 import Lottie from 'lottie-react';
 import React, { useMemo } from 'react';
 
-const Fork = require('../../assets/fork.json');
-const Commit = require('../../assets/commit.json');
-const Star = require('../../assets/star.json');
+import * as Commit from '../../assets/commit.json';
+import * as Fork from '../../assets/fork.json';
+import * as Star from '../../assets/star.json';
 
 interface GitInsightIconProps {
   type?: 'fork' | 'commit' | 'star';

@@ -10,7 +10,8 @@
       "@@/*": [".dumi/tmp/*"],
       "lui": ["src"],
       "lui/*": ["src/*", "*"]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [".dumirc.ts", "src/**/*"]
 }
