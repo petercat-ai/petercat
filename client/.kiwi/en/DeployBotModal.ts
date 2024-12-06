@@ -20,7 +20,7 @@ export default {
       'Your robot has been made public in the marketplace, please check it out in the market.',
     gongKaiDaoPE: 'Publish to the PeterCat Marketplace',
     meiZhaoDaoXiangYao:"Can't find the repository with PeterCat Assistant installed? ",
-    dianJiCiChu:'Click here',
+    dianJiCiChu:'Click here ',
     shouQuanAnZhuangG:"Authorize organization for PeterCat"
   },
   DeployItem: {
