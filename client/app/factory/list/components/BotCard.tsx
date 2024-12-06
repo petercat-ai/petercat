@@ -22,8 +22,6 @@ import {
   useGetBotBoundRepos,
   useGetBotRagTask,
 } from '@/app/hooks/useBot';
-import CloudIcon from '@/public/icons/CloudIcon';
-import MinusCircleIcon from '@/public/icons/MinusCircleIcon';
 import { TaskStatus } from '@/types/task';
 import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
 import KnowledgeTaskCompleteIcon from '@/public/icons/CheckBadgeIcon';
@@ -38,7 +36,6 @@ declare type Bot = Tables<'bots'>;
 const BotInfoIconList = (props: { bot: Bot }) => {
   const { bot } = props;
   const { data } = useGetBotBoundRepos(bot.id);
-  // 判断机器人是否被安装到组件上
   const showHomeIcon = bot.domain_whitelist && bot.domain_whitelist.length > 0;
   const showCartIcon = bot.public;
   const showGithubIcon = data && Array.isArray(data) && data.length > 0;
