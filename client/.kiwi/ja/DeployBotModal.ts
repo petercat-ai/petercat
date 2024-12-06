@@ -18,6 +18,9 @@ export default {
     ninDeJiQiRen:
       'あなたのロボットはすでに市場に公開されています。市場をご覧ください。',
     gongKaiDaoPE: 'Peter Cat市場に公開',
+    meiZhaoDaoXiangYao:'PeterCat Assistant がインストールされたリポジトリが見つかりませんか？',
+    dianJiCiChu:'こちらをクリック',
+    shouQuanAnZhuangG:'PeterCat に組織を承認'
   },
   DeployItem: {
     shouQi: '折りたたむ',
