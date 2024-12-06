@@ -79,3 +79,12 @@ class RepositoryConfigDAO(BaseDAO):
         repo_configs = [RepositoryConfig(**repo) for repo in response.data]
 
         return repo_configs
+
+    def delete_by_repo_ids(self, repo_ids: list):
+        response = (
+            self.client.table("github_repo_config")
+            .delete()
+            .in_("repo_id", repo_ids)
+            .execute()
+        )
+        return response
