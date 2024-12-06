@@ -276,10 +276,11 @@ const MyBotDeployModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
   return (
     <>
       <Modal
-        isDismissable={false}
+        isDismissable={true}
+        isKeyboardDismissDisabled={true}
         isOpen={isOpen}
+        size="xl"
         onClose={onClose}
-        hideCloseButton={true}
       >
         <ModalContent>
           {(onClose) => (

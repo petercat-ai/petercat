@@ -16,6 +16,9 @@ export default {
       '这将提交一个 issue 到 PeterCat\n                  仓库，待我们人工审核通过后即可完成公开。',
     ninDeJiQiRen: '您的机器人已经公开到了市场，请前往市场查看。',
     gongKaiDaoPE: '公开到 PeterCat 市场',
+    meiZhaoDaoXiangYao:"没找到已安装 PeterCat Assistant 机器人的仓库？",
+    dianJiCiChu:'点击此处',
+    shouQuanAnZhuangG:"授权组织给 PeterCat"
   },
   DeployItem: {
     shouQi: '收起',
