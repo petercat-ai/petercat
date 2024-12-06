@@ -1,5 +1,5 @@
-<img width="1785" alt="image" src="https://github.com/user-attachments/assets/50ae3bb2-e4da-4537-8df0-89a1ce23e800">
-
+![Frame 294](https://github.com/user-attachments/assets/0656ab69-4352-452b-a8f4-1c05cec108d1)
+![Frame 292](https://github.com/user-attachments/assets/49db0363-3f89-48a1-ba2b-e30bd5d083b3)
 
 # PeterCat
 

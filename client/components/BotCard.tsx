@@ -27,7 +27,13 @@ const BotCard = (props: {
           className="relative overflow-hidden w-full h-full bg-cover bg-center rounded-[8px]"
           style={{ backgroundImage: `url(${bot.avatar})` }}
         >
-          <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-[70px] rounded-[8px]"></div>
+          <div
+            className="absolute inset-0 bg-white backdrop-blur-[150px] rounded-[8px]"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, #FFFFFF 100%)',
+            }}
+          ></div>
           <div className="flex justify-center items-center h-full">
             <Image
               shadow="none"
@@ -50,7 +56,6 @@ const BotCard = (props: {
             {bot.name}
           </span>
         </div>
-
         <div className="flex-1 w-full border-zinc-100/50 text-left text-gray-400 font-[400] text-[14px] leading-[22px]">
           <p className="my-0 overflow-hidden text-ellipsis line-clamp-2">
             {bot.description}

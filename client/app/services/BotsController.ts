@@ -16,6 +16,13 @@ export async function getBotDetail(id: string): Promise<Bot[]> {
   return response.data.data;
 }
 
+export async function getBotBoundRepos(id: string): Promise<GithubRepoConfig[]> {
+  const response = await axios.get(
+    `${apiDomain}/api/bot/bound_to_repository?bot_id=${id}`,
+  );
+  return response.data.data;
+}
+
 // Get current user's bot profile by id
 export async function getBotConfig(id: string): Promise<Bot[]> {
   const response = await axios.get(`${apiDomain}/api/bot/config?id=${id}`);
@@ -65,6 +72,10 @@ export async function getBotInfoByRepoName(params: {
   hello_message?: string;
 }) {
   return axios.post(`${apiDomain}/api/bot/config/generator`, params);
+}
+
+export async function getGitAvatarByRepoName(repo_name: string) {
+  return axios.get(`${apiDomain}/api/bot/git/avatar?repo_name=${repo_name}`);
 }
 
 export async function getChunkList(

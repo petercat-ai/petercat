@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Solitreo';
+  src: url('https://mdn.alipayobjects.com/huamei_j8gzmo/afts/file/A*o3yfRIN_sHgAAAAAAAAAAAAADrPSAQ/Solitreo-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
    background-color: #000 !important;
 }
@@ -22,7 +29,7 @@ body textarea {
 }
 
 a {
-  color: #2d7bd4;
+  color: #1D4ED8;
   text-decoration: none;
 }
 
@@ -239,3 +246,4 @@ div.fp-watermark {
   }
 
 }
+

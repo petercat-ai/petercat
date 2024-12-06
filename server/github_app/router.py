@@ -130,7 +130,7 @@ async def github_app_webhook(
 
 
 @router.get("/user/repos_installed_app")
-def get_user_repos_installed_app_(
+def get_user_repos_installed_app(
     user: Annotated[User | None, Depends(get_user)] = None
 ):
     """

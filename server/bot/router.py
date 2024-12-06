@@ -5,6 +5,7 @@ from github import Github, Auth
 from auth.get_user_info import get_user, get_user_id
 from core.dao.botApprovalDAO import BotApprovalDAO
 from core.dao.botDAO import BotDAO
+from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.bot_approval import ApprovalStatus, BotApproval, TaskType
 from core.models.user import User
 from petercat_utils import get_client
@@ -33,7 +34,7 @@ def get_bot_list(
     try:
         supabase = get_client()
         query = supabase.table("bots").select(
-            "id, created_at, updated_at, avatar, description, name, public, starters, uid"
+            "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
         )
         if personal == "true":
             if not user_id:
@@ -43,7 +44,7 @@ def get_bot_list(
             query = (
                 supabase.table("bots")
                 .select(
-                    "id, created_at, updated_at, avatar, description, name, public, starters, uid"
+                    "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
                 )
                 .filter("name", "like", f"%{name}%")
             )
@@ -65,6 +66,18 @@ def get_bot_list(
         )
 
 
+@router.get("/bound_to_repository")
+def get_bot_bind_repository(bot_id: str):
+    try:
+        repository_config = RepositoryConfigDAO()
+        repo_config_list = repository_config.get_by_bot_id(bot_id)
+        return {"data": repo_config_list, "status": 200}
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=404
+        )
+
+
 @router.get("/detail")
 def get_bot_detail(
     id: Optional[str] = Query(None, description="Filter bots by personal category")
@@ -77,7 +90,7 @@ def get_bot_detail(
             data = (
                 supabase.table("bots")
                 .select(
-                    "id, created_at, updated_at, avatar, description, name, starters, public, hello_message, repo_name"
+                    "id, created_at, updated_at, avatar, description, name, starters, public, hello_message, repo_name, llm, token_id"
                 )
                 .eq("id", id)
                 .execute()
@@ -172,6 +185,22 @@ async def bot_generator(
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
+
+@router.get("/git/avatar", status_code=200)
+async def get_git_avatar(
+    repo_name: str,
+):
+    try:
+        g = Github()
+        repo = g.get_repo(repo_name)
+        avatar = repo.organization.avatar_url if repo.organization else None
+        return JSONResponse(content={"success": True, "data": avatar})
+    except Exception as e:
+        return JSONResponse(
+            content={"success": False, "errorMessage": str(e)}, status_code=500
+        )
+
+
 
 
 @router.put("/update/{id}", status_code=200)
@@ -433,15 +462,32 @@ def get_bot_approval_config(
     status: Optional[ApprovalStatus] = Query(
         None, description="approval status ,open or closed"
     ),
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
         bot_approval_dao = BotApprovalDAO()
-        (success, data) = bot_approval_dao.query_by_bot_id(bot_id)
+        (success, data) = bot_approval_dao.query_by_id_status(bot_id, status.value)
         if not success:
             raise ValueError(data)
-        # filter data by status
         if status:
             data = list(filter(lambda x: x["approval_status"] == status.value, data))
+            auth = Auth.Token(token=user.access_token)
+            g = Github(auth=auth)
+            repo = g.get_repo(OFFICIAL_REPO)
+            for item in data:
+                if not item["approval_path"]:
+                    continue
+                issue_num = int(item["approval_path"].split("/")[-1])
+                issue = repo.get_issue(issue_num)
+                if issue.state == "closed":
+                    item["approval_status"] = ApprovalStatus.CLOSED
+                    # update approval status to closed
+                    bot_approval_dao.update_approval_status(
+                        item["id"], ApprovalStatus.CLOSED.value
+                    )
+        # filter again
+        data = list(filter(lambda x: x["approval_status"] == status.value, data))
+        # check data item issue is closed
         return {"data": data, "status": 200}
     except Exception as e:
         return JSONResponse(content={"success": False, "errorMessage": e})

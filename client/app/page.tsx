@@ -10,6 +10,8 @@ import LottieLightningCat from '@/app/assets/lightning_cat.json';
 import LottieHelixCat from '@/app/assets/helix_cat.json';
 import LottieOctopusCat from '@/app/assets/octopus_cat.json';
 import HomeHeader from '@/components/HomeHeader';
+import HomeFooter from '@/components/HomeFooter';
+import { useGlobal } from '@/app/contexts/GlobalContext';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
@@ -19,6 +21,13 @@ const PC_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*TmIsT7SUWPsAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*UaYESbe_mJMAAAAAAAAAAAAADuH-AQ',
 ];
+
+const PC_EXAMPLE_VIDEO_EN = [
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*Bem2RrQ_kMYAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*4cD8RYM9rPwAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*mwwRQbOza3IAAAAAAAAAAAAADrPSAQ',
+];
+
 const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*izMfSbJJXLoAAAAAAAAAAAAADuH-AQ',
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*tuaNRbG-5q4AAAAAAAAAAAAADuH-AQ',
@@ -26,75 +35,13 @@ const MOBILE_EXAMPLE_VIDEO = [
   'https://gw.alipayobjects.com/v/huamei_ghirdt/afts/video/A*wFfqQ6XBd2EAAAAAAAAAAAAADuH-AQ',
 ];
 
-function Contributors() {
-  return (
-    <>
-      <img
-        className="mx-auto lg:mx-0 mb-4 my-1.5"
-        src="/images/title_contributors.svg"
-        alt="CONTRIBUTORS"
-      />
-      <div className="lg:max-w-[335px] grid grid-cols-2 gap-4">
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/xingwanying"
-          target="_blank"
-        >
-          xingwanying
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/RaoHai"
-          target="_blank"
-        >
-          RaoHai
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/ch-liuzhide"
-          target="_blank"
-        >
-          ch-liuzhide
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/PeachScript"
-          target="_blank"
-        >
-          PeachScript
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/golevkadesign"
-          target="_blank"
-        >
-          golevkadesign
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/MadratJerry"
-          target="_blank"
-        >
-          MadratJerry
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/AirBobby"
-          target="_blank"
-        >
-          AirBobby
-        </a>
-        <a
-          className="text-xl text-[#FEF4E1] tracking-widest font-extralight hover:underline"
-          href="https://github.com/alichengyue"
-          target="_blank"
-        >
-          alichengyue
-        </a>
-      </div>
-    </>
-  );
-}
+const MOBILE_EXAMPLE_VIDEO_EN = [
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*yCzxQrgIGqAAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*h0oDTo5BdI4AAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*DUc0TaJVpkAAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*CjTOQKHtEnsAAAAAAAAAAAAADrPSAQ',
+  'https://gw.alipayobjects.com/v/huamei_j8gzmo/afts/video/A*2WtmRaBv6eAAAAAAAAAAAAAADrPSAQ',
+];
 
 export default function Homepage() {
   const videoRefs = {
@@ -109,6 +56,7 @@ export default function Homepage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const showCaseRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<{ pc: string; mobile: string }>();
+  const { language } = useGlobal();
 
   const scrollHandler = useCallback<
     NonNullable<fullpageOptions['onScrollOverflow']>
@@ -233,9 +181,17 @@ export default function Homepage() {
       videoUpdateHandler,
     );
 
+    const pcVideos =
+      language === 'zh-CN' || language === 'zh-TW'
+        ? PC_EXAMPLE_VIDEO
+        : PC_EXAMPLE_VIDEO_EN;
+    const mbVideos =
+      language === 'zh-CN' || language === 'zh-TW'
+        ? MOBILE_EXAMPLE_VIDEO
+        : MOBILE_EXAMPLE_VIDEO_EN;
     setVideos({
-      pc: PC_EXAMPLE_VIDEO[Math.floor(Math.random() * 3)],
-      mobile: MOBILE_EXAMPLE_VIDEO[Math.floor(Math.random() * 4)],
+      pc: pcVideos[Math.floor(Math.random() * pcVideos?.length)],
+      mobile: mbVideos[Math.floor(Math.random() * mbVideos?.length)],
     });
 
     return () => {
@@ -247,7 +203,7 @@ export default function Homepage() {
         clearTimeout(videoRefs.pcCase.current!._timer);
       }
     };
-  }, []);
+  }, [language]);
 
   return (
     <Fullpage
@@ -302,7 +258,7 @@ export default function Homepage() {
                 <Image
                   width={475}
                   height={95}
-                  className="w-[140px] h-[28px] lg:w-[475px] lg:h-[95px] lg:ml-6 mb-3 lg:mb-6 opacity-0 transition-opacity group-[.fp-completely]:opacity-100"
+                  className="w-[98px] h-[28px] lg:w-[383px] lg:h-[110px] lg:ml-6 mb-3 lg:mb-6 opacity-0 transition-opacity group-[.fp-completely]:opacity-100"
                   src="/images/title_features.svg"
                   alt="Features"
                 />
@@ -400,8 +356,8 @@ export default function Homepage() {
                 <div className="mx-auto lg:w-[650px] text-center lg:text-left">
                   <Image
                     className="hidden lg:block mb-9 relative scale-0 transition-transform duration-[166ms] group-[.fp-completely]:delay-[683ms] group-[.fp-completely]:scale-100"
-                    width={542}
-                    height={251}
+                    width={361}
+                    height={351}
                     src="/images/title_based.svg"
                     alt="Based on GPT4"
                   />
@@ -418,7 +374,7 @@ export default function Homepage() {
                   <div className="absolute left-8 right-8 lg:left-auto lg:right-auto z-10 bottom-10 inline-block text-[#FEF4E1] text-[15px] lg:text-base mix-blend-difference scale-0 transition-transform duration-[83ms] group-[.fp-completely]:delay-[83ms] group-[.fp-completely]:scale-100">
                     <Image
                       className="my-1 mx-auto lg:mx-0"
-                      width={147}
+                      width={168}
                       height={24}
                       src="/images/title_powered.svg"
                       alt="Powered by"
@@ -492,9 +448,9 @@ export default function Homepage() {
             </div>
             <div className="relative flex flex-col justify-center lg:max-w-[1400px] h-screen mx-auto px-4 lg:p-14 pt-8 lg:pt-[79px] opacity-0 transition-opacity group-[.active]:opacity-100">
               <Image
-                className="mx-auto mb-4 lg:mb-0 lg:mx-0 w-[144px] h-[28px] lg:w-[463px] lg:h-[90px] lg:absolute z-10 top-[8.8%] left-1/2 lg:-translate-x-1/2 duration-[583ms] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
-                width={463}
-                height={90}
+                width={279}
+                height={70}
+                className="mx-auto mb-4 lg:mb-0 lg:mx-0 w-[144px] h-[36px] lg:w-[279px] lg:h-[70px] lg:absolute z-10 top-[8.8%] left-1/2 lg:-translate-x-1/2 duration-[583ms] opacity-0 transition-opacity group-[.fp-completely]:delay-[1333ms] group-[.fp-completely]:opacity-100"
                 src="/images/title_showcase.svg"
                 alt="Showcase"
               />
@@ -561,131 +517,7 @@ export default function Homepage() {
                 </a>
               </span>
             </div>
-            <footer className="bg-black">
-              <div className="px-10">
-                <nav className=" grid grid-cols-2 gap-3 lg:flex justify-between items-center max-w-[1400px] mx-auto py-[21px]">
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="https://github.com/petercat-ai/petercat"
-                    target="_blank"
-                  >
-                    {I18N.app.page.pETER}
-                  </a>
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="https://ant-design.antgroup.com/index-cn"
-                    target="_blank"
-                  >
-                    Ant Design
-                  </a>
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="https://makojs.dev/"
-                    target="_blank"
-                  >
-                    Mako
-                  </a>
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="https://opensource.antgroup.com"
-                    target="_blank"
-                  >
-                    {I18N.app.page.maYiKaiYuan}
-                  </a>
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="/policy"
-                    target="_blank"
-                  >
-                    {I18N.app.page.policy}
-                  </a>
-                  <a
-                    className="text-base text-[#F4F4F5]/[0.6] transition-colors hover:text-[#F4F4F5]"
-                    href="/agreement"
-                    target="_blank"
-                  >
-                    {I18N.app.page.service}
-                  </a>
-                </nav>
-              </div>
-              <table className="w-full text-[#FEF4E1]">
-                <tbody>
-                  <tr>
-                    <td className="w-1/2 border border-l-0 border-[#7F7A71] p-8 lg:px-10 lg:py-[51.5px]">
-                      <div className="lg:flex justify-end">
-                        <div className="relative flex-1 pb-[72px] lg:pb-0 max-w-[660px] text-center lg:text-left">
-                          <a
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:static lg:float-right whitespace-nowrap mt-4 py-3 px-8 text-xl text-[#FEF4E1] rounded-full border-2 border-white/[0.4] transition-all hover:border-white/[0.8] hover:scale-105"
-                            href="https://github.com/petercat-ai/petercat/blob/main/README.md"
-                            target="_blank"
-                          >
-                            {I18N.app.page.chaKanGengDuo}
-                          </a>
-                          <img
-                            className="mx-auto lg:mx-0 mb-2 my-1.5"
-                            src="/images/title_docs.svg"
-                            alt="DOCS"
-                          />
-                          <p className="text-xl">
-                            {I18N.app.page.xiangMuXiangXiXin}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      className="hidden lg:table-cell border border-r-0 border-[#7F7A71] px-10 py-[51.5px] 2xl:bg-[url('/images/footer-contribution.png')] bg-contain bg-no-repeat pl-20 2xl:pl-[335px]"
-                      rowSpan={2}
-                    >
-                      <Contributors />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-l-0 border-[#7F7A71] p-8 lg:px-10 lg:py-[51.5px]">
-                      <div className="lg:flex justify-end">
-                        <div className="flex-1 max-w-[660px] text-center lg:text-left">
-                          <img
-                            className="mx-auto lg:mx-0 mb-2 my-1.5"
-                            src="/images/title_contact.svg"
-                            alt="CONTACT"
-                          />
-                          <a
-                            className="text-xl text-[#FEF4E1] hover:underline"
-                            href="mailto:petercat.assistant@gmail.com"
-                          >
-                            petercat.assistant@gmail.com
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="lg:hidden">
-                    <td className="border border-l-0 border-[#7F7A71] pt-[290px] p-8 text-center bg-[url('/images/footer-contribution.png')] bg-[length:300px] bg-no-repeat bg-top">
-                      <Contributors />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className="border-t border-[#7F7A71] p-8 lg:px-10 lg:py-[51.5px]"
-                      colSpan={2}
-                    >
-                      <div className="lg:flex max-w-[1400px] mx-auto items-center">
-                        <p className="max-w-[560px] text-xl">
-                          {I18N.app.page.woMenLaiZiMa}
-                        </p>
-                        <span className="block flex-1 my-12 lg:my-0 lg:mx-12 h-px border-t border-[#7F7A71]" />
-                        <Image
-                          width={106}
-                          height={20}
-                          className="mx-auto lg:mx-0"
-                          src="/images/logo-footer.svg"
-                          alt="PeterCat"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </footer>
+            <HomeFooter />
           </div>
         </Fullpage.Wrapper>
       )}

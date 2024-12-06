@@ -1,5 +1,5 @@
-<img width="1785" alt="image" src="https://github.com/user-attachments/assets/50ae3bb2-e4da-4537-8df0-89a1ce23e800">
-
+![Frame 294](https://github.com/user-attachments/assets/0656ab69-4352-452b-a8f4-1c05cec108d1)
+![Frame 292](https://github.com/user-attachments/assets/49db0363-3f89-48a1-ba2b-e30bd5d083b3)
 
 # PeterCat
 
@@ -31,35 +31,35 @@ We provide a conversational Q&A agent configuration system, self-hosted deployme
 
 You only need to provide the address or name of your repository, and PeterCat will automatically complete the entire process of creating a bot.
 
-![Create with Conversations](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*aQ9uRoNZGe8AAAAAAAAAAAAADrPSAQ/original)
+![image](https://github.com/user-attachments/assets/51d1a8f8-faa1-46a9-bbf0-fbec13f63156)
 
 ### Automated Knowledge Base
 
 After the bot is created, all relevant GitHub documentation and issues will be automatically added to the knowledge base as the bot's knowledge source.
 
-![Automated Knowledge Base](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*hkkFSaR1UqgAAAAAAAAAAAAADrPSAQ/original)
+![image](https://github.com/user-attachments/assets/ff6623e3-e951-4f99-8501-3da6016333a6)
 
 ### Multi-Platform Integration
 
 Various integration options, such as SDK integration into official websites or one-click installation of the GitHub App into GitHub repositories.
 
-| ![Website](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
+| ![image](https://github.com/user-attachments/assets/15efe5e7-1383-44d8-986f-ff73fe055f44)| ![image](https://github.com/user-attachments/assets/bc49132a-f8c8-42d6-8bc0-d516cb3f7c9e)|
 |:----------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|
 
 ### More than QA Robot
 
 | project information Query                | Discussion Reply                          
 | ----------------------------------------- | --------------------------------------- | 
-| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331)|
+| ![1732787419202-6fb9ceb7-8fd5-4361-b4e1-df2e0e9c365e](https://github.com/user-attachments/assets/82aa3e44-00db-4f64-82aa-5a8139c02de3) | ![image](https://github.com/user-attachments/assets/a4b79596-3336-4a5e-b0ce-2740129ba27b) |
 
 
 | PR Summary       | Code Review     | 
 | ----------------------------------------- | --------------------------------------- | 
-| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
+| ![image](https://github.com/user-attachments/assets/aa0ef55f-b143-4695-81b0-0ebc397a24da) | ![image](https://github.com/user-attachments/assets/9dad164e-96c8-4649-a936-7965049a99f4)｜
 
 | Issue Search                          | Issue Submit                             | Issue Reply      | 
 | ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
-| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+| ![image](https://github.com/user-attachments/assets/f58d9b4d-ec99-4e38-ab90-37df1075c55b) | ![image](https://github.com/user-attachments/assets/f369128e-000a-40b3-89ba-e13f4375db3b) | ![image](https://github.com/user-attachments/assets/9b923269-3d6f-4ea6-82ce-4b58cb236bca) |
 
 [Watch full video](https://www.youtube.com/watch?v=83Y0_q2Fskk)
 

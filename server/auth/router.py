@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Request, HTTPException, status
-from fastapi.responses import RedirectResponse
+from core.dao.profilesDAO import ProfilesDAO
+from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi.responses import RedirectResponse, JSONResponse
 import secrets
 from petercat_utils import get_client, get_env_variable
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
+from typing import Annotated, Optional
 
-from auth.get_user_info import generateAnonymousUser, getUserInfoByToken
+from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -81,7 +83,8 @@ async def callback(request: Request):
             "name": user_info.get("name"),
             "picture": user_info.get("picture"),
             "sub": user_info["sub"],
-            "sid": secrets.token_urlsafe(32)
+            "sid": secrets.token_urlsafe(32),
+            "agreement_accepted": user_info.get("agreement_accepted"),
         }
         request.session['user'] = dict(data)
         supabase = get_client()
@@ -91,8 +94,38 @@ async def callback(request: Request):
 @router.get("/userinfo")
 async def userinfo(request: Request):
     user = request.session.get('user')
-
     if not user:
         data = await getAnonymousUser(request)
         return { "data": data, "status": 200}
     return { "data": user, "status": 200}
+
+@router.get("/agreement/status")
+async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
+    if not user_id:
+        raise HTTPException(status_code=401, detail="User not found")
+    try:
+        profiles_dao = ProfilesDAO()
+        response = profiles_dao.get_agreement_status(user_id=user_id)
+        if not response:
+            raise HTTPException(status_code=404, detail="User does not exist, accept failed.")
+        return {"success": True, "data": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+@router.post("/accept/agreement", status_code=200)
+async def bot_generator(
+    request: Request,
+    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+):
+    if not user_id:
+        raise HTTPException(status_code=401, detail="User not found")
+    try:
+        profiles_dao = ProfilesDAO()
+        response = profiles_dao.accept_agreement(user_id=user_id)
+        if response:
+            request.session['user'] = response
+            return JSONResponse(content={"success": True})
+        else:
+            raise HTTPException(status_code=400, detail="User update failed")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
