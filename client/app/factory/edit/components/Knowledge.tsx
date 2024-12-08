@@ -59,7 +59,9 @@ const ChunkCard = ({ update_timestamp, content, file_path }: RAGDoc) => {
               <ModalHeader className="flex flex-col gap-1">
                 {file_path}
               </ModalHeader>
-              <ModalBody>{content}</ModalBody>
+              <ModalBody>
+                <div className="w-full break-words">{content}</div>
+              </ModalBody>
             </>
           )}
         </ModalContent>
@@ -83,11 +85,7 @@ export default function Knowledge({ repoName, goBack }: IProps) {
   const [pageSize, setPageSize] = React.useState(12);
   const [pageNumber, setPageNumber] = React.useState(1);
   const { taskProfile } = useBotTask();
-  const {
-    data: RagDocData,
-    isPending,
-    isLoading: isListLoading,
-  } = useBotRAGChunkList(
+  const { data: RagDocData, isFetching } = useBotRAGChunkList(
     repoName,
     pageSize,
     pageNumber,
@@ -123,8 +121,8 @@ export default function Knowledge({ repoName, goBack }: IProps) {
         </div>
       </div>
       <div className="pt-[40px] py-[40px] overflow-y-auto">
-        <MySpinner loading={isPending || isListLoading}>
-          {list.length > 0 || isPending ? (
+        <MySpinner loading={isFetching}>
+          {list.length > 0 || isFetching ? (
             <ChunkList data={list}></ChunkList>
           ) : (
             <div className="flex justify-center items-center h-full">
@@ -144,6 +142,9 @@ export default function Knowledge({ repoName, goBack }: IProps) {
             page={pageNumber}
             size="lg"
             onChange={(page) => setPageNumber(page)}
+            classNames={{
+              cursor: 'bg-gray-700',
+            }}
           />
         ) : null}
       </div>

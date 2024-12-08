@@ -1,5 +1,5 @@
 import secrets
-from typing import Annotated
+from typing import Annotated, Optional
 
 from authlib.integrations.starlette_client import OAuth
 from fastapi import APIRouter, Request, HTTPException, status, Depends
@@ -7,6 +7,7 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from starlette.config import Config
 
 from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
+from core.dao.profilesDAO import ProfilesDAO
 from env import API_URL, WEB_URL
 from petercat_utils import get_client, get_env_variable
 
@@ -104,33 +105,34 @@ async def userinfo(request: Request):
     return {"data": user, "status": 200}
 
 
+@router.get("/agreement/status")
+async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
+    if not user_id:
+        raise HTTPException(status_code=401, detail="User not found")
+    try:
+        profiles_dao = ProfilesDAO()
+        response = profiles_dao.get_agreement_status(user_id=user_id)
+        if not response:
+            raise HTTPException(status_code=404, detail="User does not exist, accept failed.")
+        return {"success": True, "data": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
 @router.post("/accept/agreement", status_code=200)
 async def bot_generator(
         request: Request,
         user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
     if not user_id:
-        return JSONResponse(
-            content={
-                "success": False,
-                "errorMessage": "User not found",
-            },
-            status_code=401,
-        )
+        raise HTTPException(status_code=401, detail="User not found")
     try:
-        supabase = get_client()
-        response = supabase.table("profiles").update({"agreement_accepted": True}).match({"id": user_id}).execute()
-
-        if not response.data:
-            return JSONResponse(
-                content={
-                    "success": False,
-                    "errorMessage": "User does not exist, accept failed.",
-                }
-            )
-        request.session['user'] = response.data[0]
-        return JSONResponse(content={"success": True})
+        profiles_dao = ProfilesDAO()
+        response = profiles_dao.accept_agreement(user_id=user_id)
+        if response:
+            request.session['user'] = response
+            return JSONResponse(content={"success": True})
+        else:
+            raise HTTPException(status_code=400, detail="User update failed")
     except Exception as e:
-        return JSONResponse(
-            content={"success": False, "errorMessage": str(e)}, status_code=500
-        )
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

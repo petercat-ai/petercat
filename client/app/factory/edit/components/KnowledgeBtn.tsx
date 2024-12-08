@@ -26,8 +26,6 @@ const KnowledgeBtn = (props: IProps) => {
 
   const { data: taskList } = useGetBotRagTask(
     repoName,
-    // if repoName is not empty, query taskList
-    !!repoName,
     // if task is running, query every 5s
     // if task is completed, query once
     taskLoading,

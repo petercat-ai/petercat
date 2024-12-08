@@ -218,15 +218,19 @@ export const DeployContent: React.FC<IDeployContentProps> = ({
               <span>{I18N.DeployBotModal.DeployContent.shuaXin}</span>
             </div>
           )}
+          <div className="font-PingFangSC underline-none text-[#6B7280] mt-[16px]">
+            {I18N.DeployBotModal.DeployContent.meiZhaoDaoXiangYao}<a
+              href="https://github.com/settings/connections/applications/Ov23liiNROqv6drzyqhU"
+              target="_blank"
+            >
+              {I18N.DeployBotModal.DeployContent.dianJiCiChu}</a>
+            {I18N.DeployBotModal.DeployContent.shouQuanAnZhuangG}</div>
         </div>
       </DeployItem>
     );
   };
   return (
     <>
-      <span className="text-[14px] text-gray-800">
-        {I18N.DeployBotModal.DeployContent.buShuDaoQiTa}
-      </span>
       {renderPublicMarket()}
       {renderDeployWebsite()}
       {renderBindRepo()}

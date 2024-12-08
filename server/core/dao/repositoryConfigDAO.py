@@ -66,3 +66,25 @@ class RepositoryConfigDAO(BaseDAO):
         repo_config = response.data[0]
 
         return RepositoryConfig(**repo_config)
+
+    def get_by_bot_id(self, bot_id: str):
+        response = (
+            self.client.table("github_repo_config")
+            .select("*")
+            .eq("robot_id", bot_id)
+            .execute()
+        )
+        if not response.data or not response.data[0]:
+            return None
+        repo_configs = [RepositoryConfig(**repo) for repo in response.data]
+
+        return repo_configs
+
+    def delete_by_repo_ids(self, repo_ids: list):
+        response = (
+            self.client.table("github_repo_config")
+            .delete()
+            .in_("repo_id", repo_ids)
+            .execute()
+        )
+        return response

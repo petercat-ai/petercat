@@ -4,11 +4,13 @@ import {
   deleteBot,
   deployWebsite,
   getBotApprovalList,
+  getBotBoundRepos,
   getBotConfig,
   getBotDetail,
   getBotInfoByRepoName,
   getBotList,
   getChunkList,
+  getGitAvatarByRepoName,
   getRagTask,
   getUserPeterCatAppRepos,
   publicBot,
@@ -31,6 +33,16 @@ export const useBotDetail = (id: string) => {
     retry: false,
   });
 };
+
+export const useGetBotBoundRepos =(id:string)=>{
+  return useQuery({
+    queryKey: [`bot.boundRepos.${id}`, id],
+    queryFn: async () => getBotBoundRepos(id),
+    select: (data) => data,
+    enabled: !!id,
+    retry: false,
+  });
+}
 
 export const useBotConfig = (id: string, enabled: boolean) => {
   return useQuery({
@@ -135,14 +147,13 @@ export const useBotRAGChunkList = (
 
 export const useGetBotRagTask = (
   repoName: string,
-  enabled: boolean = true,
   refetchInterval: boolean = true,
 ) => {
   return useQuery({
     queryKey: [`rag.task`, repoName],
     queryFn: async () => getRagTask(repoName),
     select: (data) => data,
-    enabled,
+    enabled:!!repoName,
     retry: true,
     refetchInterval: refetchInterval ? 3 * 1000 : undefined,
   });
@@ -191,7 +202,16 @@ export const useGetUserPeterCatAppRepos = (enabled: boolean = true) => {
     queryKey: ['github.user.app.repos'],
     queryFn: async () => getUserPeterCatAppRepos(),
     select: (data) => data.data,
-    enabled
+    enabled,
+  });
+};
+
+export const useGetGitAvatar = (repoName?: string) => {
+  return useQuery({
+    queryKey: ['github.repo.name', repoName],
+    queryFn: async () => getGitAvatarByRepoName(repoName!),
+    select: (data) => data.data.data,
+    enabled: !!repoName,
   });
 };
 

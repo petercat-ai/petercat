@@ -16,6 +16,9 @@ export default {
       '이것은 PeterCat 저장소에 issue를 제출하게 되며, 우리 인공 검토를 통과하면 공개될 수 있습니다.',
     ninDeJiQiRen: '당신의 봇이 시장에 공개되었습니다. 시장을 확인해 보세요.',
     gongKaiDaoPE: 'PeterCat 시장에 공개',
+    meiZhaoDaoXiangYao:'PeterCat Assistant가 설치된 저장소를 찾을 수 없습니까?',
+    dianJiCiChu:'여기를 클릭하세요',
+    shouQuanAnZhuangG:'PeterCat에 조직 권한 부여'
   },
   DeployItem: {
     shouQi: '접기',
@@ -24,5 +27,10 @@ export default {
     tiaoGuo: '건너뛰기',
     baoCunChengGong: '성공적으로 저장!',
     buShuChengGong: '배포 성공',
+    wanCheng: '완료',
+    tiJiaoChengGong: '제출이 성공했습니다',
+    shouQiBuShu: '접기',
+    buShu: '배포',
+    daKaiBuShu: '배포 열기',
   },
 };
