@@ -50,48 +50,10 @@ router = APIRouter(
 # https://github.com/login/oauth/authorize?client_id=Iv1.c2e88b429e541264
 @router.get("/app/installation/callback")
 def github_app_callback(code: str, installation_id: str, setup_action: str):
-    authorization_dao = AuthorizationDAO()
-    repository_config_dao = RepositoryConfigDAO()
-    if setup_action == "install":
-        if authorization_dao.exists(installation_id=installation_id):
-            message = (f"Installation_id {installation_id} Exists",)
-            return RedirectResponse(
-                url=f"{WEB_URL}/github/installed/{message}", status_code=302
-            )
-        else:
-            jwt = get_jwt()
-            access_token = get_app_installations_access_token(
-                installation_id=installation_id, jwt=jwt
-            )
-            print(f"get_app_installations_access_token: {access_token}")
-            authorization = Authorization(
-                **access_token,
-                code=code,
-                installation_id=installation_id,
-                created_at=int(time.time()),
-            )
-            success, message = authorization_dao.create(authorization)
-            installed_repositories = get_installation_repositories(
-                access_token=access_token["token"]
-            )
-            for repo in installed_repositories["repositories"]:
-                repository_config = RepositoryConfig(
-                    owner_id=str(repo["owner"]["id"]),
-                    repo_name=repo["full_name"],
-                    repo_id=str(repo["id"]),
-                    robot_id="",
-                    created_at=int(time.time()),
-                )
-                repository_config_dao.create(repository_config)
-
-            return RedirectResponse(
-                url=f"{WEB_URL}/github/installed?message={message}", status_code=302
-            )
-    # ignore others setup_action,such as deleted our app
-    return {
-        "success": False,
-        "message": f"Invalid setup_action value {setup_action},please delete the app first then re-install the app.",
-    }
+    return RedirectResponse(
+        url=f"{WEB_URL}/github/installed?installation_id={installation_id}&setup_action={setup_action}&code={code}",
+        status_code=302,
+    )
 
 
 @router.post("/app/webhook")
