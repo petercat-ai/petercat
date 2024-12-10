@@ -1,14 +1,12 @@
 import json
 from typing import Any, Dict
 
-
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 
 from .github_file_loader import GithubFileLoader
 from ..data_class import GitDocConfig, RAGGitDocConfig, S3Config
 from ..db.client.supabase import get_client
-
 
 TABLE_NAME = "rag_docs"
 QUERY_NAME = "match_embedding_docs"
@@ -118,15 +116,16 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
     supabase = get_client()
     is_doc_added_query = (
         supabase.table(TABLE_NAME)
-        .select("id, repo_name, commit_id, file_path")
+        .select("id")
         .eq("repo_name", config.repo_name)
         .eq("commit_id", loader.commit_id)
         .eq("file_path", config.file_path)
+        .limit(1)
         .execute()
     )
     if not is_doc_added_query.data:
         is_doc_equal_query = (
-            supabase.table(TABLE_NAME).select("*").eq("file_sha", loader.file_sha)
+            supabase.table(TABLE_NAME).select("id").eq("file_sha", loader.file_sha).limit(1)
         ).execute()
         if not is_doc_equal_query.data:
             # If there is no file with the same file_sha, perform embedding.
@@ -139,6 +138,18 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
             )
             return store
         else:
+            # Prioritize obtaining the minimal set of records to avoid overlapping with the original records.
+            minimum_repeat_result = supabase.rpc('count_rag_docs_by_sha', {'file_sha_input': loader.file_sha}).execute()
+            target_filter = minimum_repeat_result.data[0]
+            # Copy the minimal set
+            insert_docs = (
+                supabase.table(TABLE_NAME)
+                .select("*")
+                .eq("repo_name", target_filter['repo_name'])
+                .eq("file_path", target_filter['file_path'])
+                .eq("file_sha", target_filter['file_sha'])
+                .execute()
+            )
             new_commit_list = [
                 {
                     **{k: v for k, v in item.items() if k != "id"},
@@ -146,7 +157,7 @@ def add_knowledge_by_doc(config: RAGGitDocConfig):
                     "commit_id": loader.commit_id,
                     "file_path": config.file_path,
                 }
-                for item in is_doc_equal_query.data
+                for item in insert_docs.data
             ]
             insert_result = supabase.table(TABLE_NAME).insert(new_commit_list).execute()
             return insert_result
@@ -169,9 +180,9 @@ def reload_knowledge(config: RAGGitDocConfig):
 
 
 def search_knowledge(
-    query: str,
-    repo_name: str,
-    meta_filter: Dict[str, Any] = {},
+        query: str,
+        repo_name: str,
+        meta_filter: Dict[str, Any] = {},
 ):
     retriever = init_retriever(
         {"filter": {"metadata": meta_filter, "repo_name": repo_name}}

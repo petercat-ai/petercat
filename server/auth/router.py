@@ -1,13 +1,15 @@
-from core.dao.profilesDAO import ProfilesDAO
-from fastapi import APIRouter, Request, HTTPException, status, Depends
-from fastapi.responses import RedirectResponse, JSONResponse
 import secrets
-from petercat_utils import get_client, get_env_variable
-from starlette.config import Config
-from authlib.integrations.starlette_client import OAuth
 from typing import Annotated, Optional
 
+from authlib.integrations.starlette_client import OAuth
+from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi.responses import RedirectResponse, JSONResponse
+from starlette.config import Config
+
 from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
+from core.dao.profilesDAO import ProfilesDAO
+from env import API_URL, WEB_URL
+from petercat_utils import get_client, get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -15,11 +17,9 @@ API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
 CLIENT_SECRET = get_env_variable("AUTH0_CLIENT_SECRET")
 
-API_URL =  get_env_variable("API_URL")
 CALLBACK_URL = f"{API_URL}/api/auth/callback"
 LOGIN_URL = f"{API_URL}/api/auth/login"
 
-WEB_URL =  get_env_variable("WEB_URL")
 WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 MARKET_URL = f"{WEB_URL}/market"
 
@@ -43,6 +43,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
 async def getAnonymousUser(request: Request):
     clientId = request.query_params.get("clientId")
     if not clientId:
@@ -54,6 +55,7 @@ async def getAnonymousUser(request: Request):
     request.session['user'] = data
     return data
 
+
 @router.get("/login")
 async def login(request: Request):
     if CLIENT_ID is None:
@@ -63,13 +65,15 @@ async def login(request: Request):
     redirect_response = await oauth.auth0.authorize_redirect(request, redirect_uri=CALLBACK_URL)
     return redirect_response
 
+
 @router.get('/logout')
 async def logout(request: Request):
     request.session.pop('user', None)
     redirect = request.query_params.get('redirect')
     if redirect:
         return RedirectResponse(url=f'{redirect}', status_code=302)
-    return { "success": True }
+    return {"success": True}
+
 
 @router.get("/callback")
 async def callback(request: Request):
@@ -91,13 +95,15 @@ async def callback(request: Request):
         supabase.table("profiles").upsert(data).execute()
     return RedirectResponse(url=f'{WEB_LOGIN_SUCCESS_URL}', status_code=302)
 
+
 @router.get("/userinfo")
 async def userinfo(request: Request):
     user = request.session.get('user')
     if not user:
         data = await getAnonymousUser(request)
-        return { "data": data, "status": 200}
-    return { "data": user, "status": 200}
+        return {"data": data, "status": 200}
+    return {"data": user, "status": 200}
+
 
 @router.get("/agreement/status")
 async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
@@ -112,10 +118,11 @@ async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
+
 @router.post("/accept/agreement", status_code=200)
 async def bot_generator(
-    request: Request,
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+        request: Request,
+        user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
     if not user_id:
         raise HTTPException(status_code=401, detail="User not found")
