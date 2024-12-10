@@ -1,5 +1,4 @@
 set check_function_bodies = off;
-
 CREATE OR REPLACE FUNCTION public.get_user_stats(filter_user_id text, start_date date, end_date date)
  RETURNS TABLE(usage_date date, input_tokens bigint, output_tokens bigint, total_tokens bigint)
  LANGUAGE plpgsql
@@ -17,7 +16,4 @@ BEGIN
         AND u.date <= end_date
     GROUP BY u.date;
 END;
-$function$
-;
-
-
+$function$;
