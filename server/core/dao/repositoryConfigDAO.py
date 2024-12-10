@@ -1,4 +1,4 @@
-from typing import List
+from typing import Counter, List
 from core.dao.BaseDAO import BaseDAO
 from core.models.bot import RepoBindBotConfigVO
 from core.models.repository import RepositoryConfig
@@ -31,15 +31,41 @@ class RepositoryConfigDAO(BaseDAO):
     def create_batch(self, data_list: List[RepositoryConfig]):
         try:
             records_data = [data.model_dump(exclude=["id"]) for data in data_list]
-            repo_config = (
-                self.client.from_("github_repo_config").insert(records_data).execute()
+            repo_ids = [data.repo_id for data in data_list]
+
+            # 查询现有的 repo_id
+            response = (
+                self.client.table("github_repo_config")
+                .select("repo_id")
+                .in_("repo_id", repo_ids)
+                .execute()
             )
-            if repo_config:
-                return True, {
-                    "message": "GithubRepoConfig records created successfully"
+            existing_repo_ids = (
+                {record["repo_id"] for record in response.data}
+                if response.data
+                else set()
+            )
+
+            # 筛选出未存在的记录
+            new_records_data = [
+                data
+                for data in records_data
+                if data["repo_id"] not in existing_repo_ids
+            ]
+
+            if not new_records_data:
+                return False, {
+                    "message": "No new GithubRepoConfig records to insert, all repo_ids already exist"
                 }
-            else:
-                return False, {"message": "GithubRepoConfig batch creation failed"}
+
+            # 执行插入操作
+            repo_config_result = (
+                self.client.table("github_repo_config")
+                .insert(new_records_data)
+                .execute()
+            )
+
+            return repo_config_result
         except Exception as e:
             print(f"Error: {e}")
             return False, {"message": f"GithubRepoConfig batch creation failed: {e}"}
