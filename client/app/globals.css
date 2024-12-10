@@ -247,3 +247,9 @@ div.fp-watermark {
 
 }
 
+ .hover-reverse-colors:hover * {
+      stroke: #fff;
+  }
+  .hover-reverse-colors:hover {
+      fill: #DD1010;
+  }
