@@ -11,22 +11,15 @@ from fastapi import (
 import logging
 from fastapi.responses import RedirectResponse
 
-import time
 from github import Auth, Github
 from auth.get_user_info import get_user
-from core.dao.authorizationDAO import AuthorizationDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.bot import RepoBindBotRequest
-from core.models.repository import RepositoryConfig
-from core.models.authorization import Authorization
 from core.models.user import User
 
 from github_app.handlers import get_handler
 from github_app.purchased import PurchaseServer
 from github_app.utils import (
-    get_app_installations_access_token,
-    get_installation_repositories,
-    get_jwt,
     get_private_key,
 )
 
