@@ -1,6 +1,6 @@
 'use client';
 import I18N from '@/app/utils/I18N';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, Key } from 'react';
 import {
   Tabs,
   Tab,
@@ -10,9 +10,11 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Input,
   Avatar,
   Checkbox,
+  Autocomplete,
+  AutocompleteItem,
+  Input,
 } from '@nextui-org/react';
 import Image from 'next/image';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateForm';
@@ -28,20 +30,19 @@ import {
 } from '@/app/hooks/useBot';
 import { useAgreement, useAgreementStatus } from '@/app/hooks/useAgreement';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import { isEmpty } from 'lodash';
+import { isEmpty, map, size } from 'lodash';
 import { Chat } from '@petercatai/assistant';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
 import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
-import useUser from '@/app/hooks/useUser';
+import { useUser, useUserRepos } from '@/app/hooks/useUser';
 import Knowledge from './components/Knowledge';
 import { useGlobal } from '@/app/contexts/GlobalContext';
 import KnowledgeBtn from './components/KnowledgeBtn';
 import { BotTaskProvider } from './components/TaskContext';
 import { useSearchParams } from 'next/navigation';
-import 'react-toastify/dist/ReactToastify.css';
 import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
 import DeployBotModal from './components/DeployBotModal';
 import Markdown from '@/components/Markdown';
@@ -50,6 +51,8 @@ import AgreementEN from '../../../.kiwi/en/agreement.md';
 import AgreementJA from '../../../.kiwi/ja/agreement.md';
 import AgreementKO from '../../../.kiwi/ko/agreement.md';
 import AgreementZhTW from '../../../.kiwi/zh-TW/agreement.md';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -78,7 +81,7 @@ export default function Edit() {
   const [visibleType, setVisibleType] = React.useState<VisibleTypeEnum>(
     VisibleTypeEnum.BOT_CONFIG,
   );
-  const [gitUrl, setGitUrl] = React.useState<string>('');
+  const [gitRepoName, setGitRepoName] = React.useState<string>('');
   const [deployModalIsOpen, setDeployModalIsOpen] = useState(false);
   const [agreementModalIsOpen, setAgreementModalIsOpen] = useState(false);
   const [agreementAccepted, setAgreementAccepted] =
@@ -179,6 +182,8 @@ export default function Edit() {
     () => (!!id && id !== 'new') || !!botProfile?.id,
     [id, botProfile?.id],
   );
+
+  const { data: repos } = useUserRepos(!isEdit);
 
   const botId = useMemo(() => {
     if (!!id && id !== 'new') {
@@ -323,46 +328,64 @@ export default function Edit() {
       )}
     </div>
   );
-  const manualConfigLabel = (
-    <div className="flex justify-between">
-      <span>{I18N.edit.page.gITHU}</span>
-      {botProfile.id && (
-        <CopyToClipboard
-          text={botProfile.id}
-          onCopy={() => {
-            toast.success(I18N.edit.page.tOKEN);
-          }}
-        >
-          {/* @ts-ignore */}
-          <span className="text-xs text-gray-500 cursor-pointer">
-            {I18N.edit.page.fuZhiTOK}
-          </span>
-        </CopyToClipboard>
-      )}
-    </div>
-  );
 
   const manualConfigContent = (
     <div className="h-full px-10 py-10 overflow-x-hidden overflow-y-scroll">
-      <div className="px-[46px]">
-        <Input
-          type="text"
-          variant="bordered"
-          name="repo_name"
-          label={manualConfigLabel}
-          disabled={isEdit}
-          placeholder={I18N.edit.page.qingShuRuGI}
-          labelPlacement="outside"
-          onChange={(e) => {
-            const url = e.target.value;
-            setGitUrl(url);
-          }}
-          value={gitUrl || botProfile.repoName}
-          isDisabled={isEdit}
-          required
-          classNames={{ label: 'w-full' }}
-          className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
+      <div className="flex justify-between">
+        <span>{I18N.edit.page.gITHU}</span>
+        {botProfile.id && (
+          <CopyToClipboard
+            text={botProfile.id}
+            onCopy={() => {
+              toast.success(I18N.edit.page.tOKEN);
+            }}
+          >
+            {/* @ts-ignore */}
+            <span className="text-xs text-gray-500 cursor-pointer">
+              {I18N.edit.page.fuZhiTOK}
+            </span>
+          </CopyToClipboard>
+        )}
+      </div>
+      <div>
+        {!isEdit ? (
+          <Autocomplete
+            name="repo_name"
+            isRequired
+            defaultItems={repos}
+            allowsEmptyCollection
+            onInputChange={(value: string) => {
+              const repoName = extractFullRepoNameFromGitHubUrl(value);
+              setGitRepoName(repoName || '');
+            }}
+            onSelectionChange={(key) => {
+              setGitRepoName(`${key}`);
+            }}
+            allowsCustomValue
+            defaultInputValue={gitRepoName || botProfile.repoName}
+            variant="bordered"
+            className="mt-1 mb-6 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            label={I18N.edit.page.qingShuRuGI}
+          >
+            {map(repos, (item) => (
+              <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>
+            ))}
+          </Autocomplete>
+        ) : (
+          <Input
+            type="text"
+            variant="bordered"
+            name="repo_name"
+            placeholder={I18N.edit.page.qingShuRuGI}
+            labelPlacement="outside"
+            value={gitRepoName || botProfile.repoName}
+            isDisabled={isEdit}
+            required
+            classNames={{ label: 'w-full' }}
+            className="mt-1 mb-6 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        )}
+
         <div className="flex items-center gap-4">
           {!isEdit ? (
             <div className="w-full text-center">
@@ -372,7 +395,7 @@ export default function Edit() {
                 startContent={<AIBtnIcon />}
                 isLoading={createBotLoading}
                 onClick={() => {
-                  const repoName = extractFullRepoNameFromGitHubUrl(gitUrl);
+                  const repoName = gitRepoName || botProfile.repoName;
                   if (repoName) {
                     onCreateBot({
                       repo_name: repoName!!,

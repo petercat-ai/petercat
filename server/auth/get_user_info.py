@@ -11,6 +11,7 @@ from petercat_utils import get_client, get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
+
 async def getUserInfoByToken(token):
     userinfo_url = f"https://{AUTH0_DOMAIN}/userinfo"
     headers = {"authorization": f"Bearer {token}"}

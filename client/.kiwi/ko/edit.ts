@@ -9,10 +9,10 @@ export default {
     chongXinShengChengPei: '구성 다시 생성',
     ziDongShengChengPei: '구성 자동 생성',
     diZhiYouWu: '주소 오류',
-    qingShuRuGI: 'GitHub 프로젝트 주소를 입력하십시오.',
+    qingShuRuGI: 'GitHub 프로젝트 이름을 입력하거나 선택하세요',
     fuZhiTOK: '토큰 복사',
     tOKEN: '토큰이 클립보드에 복사되었습니다.',
-    gITHU: 'GitHub 프로젝트 주소',
+    gITHU: 'GitHub 프로젝트 이름',
     bangWoPeiZhiYi: 'Q&A 봇 설정을 도와주세요.',
     chuCiJianMianXian:
       '👋🏻 안녕하세요! 처음 뵙겠습니다. 제 소개를 하겠습니다: 저는 PeterCat입니다, 오픈소스 프로젝트의 로봇입니다. 저와 대화를 통해 질의응답 로봇을 구성할 수 있습니다.',
