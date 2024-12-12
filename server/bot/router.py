@@ -30,6 +30,7 @@ def get_bot_list(
     ),
     name: Optional[str] = Query(None, description="Filter bots by name"),
     user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
         supabase = get_client()
@@ -39,21 +40,35 @@ def get_bot_list(
         if personal == "true":
             if not user_id:
                 return {"data": [], "personal": personal}
-            query = query.eq("uid", user_id).order("updated_at", desc=True)
-        if name:
-            query = (
-                supabase.table("bots")
-                .select(
-                    "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
-                )
-                .filter("name", "like", f"%{name}%")
-            )
 
-        query = (
-            query.eq("public", True).order("updated_at", desc=True)
-            if not personal or personal != "true"
-            else query
-        )
+            auth = Auth.Token(token=user.access_token)
+            g = Github(auth=auth)
+            github_user = g.get_user()
+            orgs = github_user.get_orgs()
+            repository_config_dao = RepositoryConfigDAO()
+            bots = repository_config_dao.query_by_owners(
+                [org.id for org in orgs] + [github_user.id]
+            )
+            bot_ids = [bot["robot_id"] for bot in bots]
+            bot_ids_str = ",".join(map(str, bot_ids))  # 将 bots ID 列表转换为字符串
+            or_clause = f"uid.eq.{user_id},id.in.({bot_ids_str})"
+
+            # 添加过滤条件
+            query = (
+                query.or_(or_clause).order("updated_at", desc=True)
+                if not name
+                else query.or_(or_clause)
+                .filter("name", "like", f"%{name}%")
+                .order("updated_at", desc=True)
+            )
+        else:
+            query = (
+                query.eq("public", True).order("updated_at", desc=True)
+                if not name
+                else query.eq("public", True)
+                .filter("name", "like", f"%{name}%")
+                .order("updated_at", desc=True)
+            )
 
         data = query.execute()
         if not data or not data.data:
@@ -186,6 +201,7 @@ async def bot_generator(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
 
+
 @router.get("/git/avatar", status_code=200)
 async def get_git_avatar(
     repo_name: str,
@@ -199,8 +215,6 @@ async def get_git_avatar(
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
-
-
 
 
 @router.put("/update/{id}", status_code=200)

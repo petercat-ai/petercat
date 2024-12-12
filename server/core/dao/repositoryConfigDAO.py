@@ -74,8 +74,22 @@ class RepositoryConfigDAO(BaseDAO):
         try:
             response = (
                 self.client.table("github_repo_config")
-                .select("*")
+                .select("robot_id")
                 .filter("owner_id", "in", f"({','.join(map(str, orgs))})")
+                .execute()
+            )
+            return response.data
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+
+    def query_bot_id_by_owners(self, orgs: List[str]):
+        try:
+            response = (
+                self.client.table("github_repo_config")
+                .select("robot_id")
+                .filter("owner_id", "in", f"({','.join(map(str, orgs))})")
+                .filter("robot_id", "isnot", None)
                 .execute()
             )
             return response.data
