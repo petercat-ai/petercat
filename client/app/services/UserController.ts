@@ -27,6 +27,13 @@ export async function getAgreementStatus() {
   return response.data;
 }
 
+export async function getUserRepos() {
+  const response = await axios.get(`${apiDomain}/api/auth/repos`, {
+    withCredentials: true,
+  });
+  return response.data;
+}
+
 export async function getAvailableLLMs() {
   const response = await axios.get(`${apiDomain}/api/user/llms`, {
     withCredentials: true,
