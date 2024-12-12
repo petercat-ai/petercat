@@ -34,7 +34,7 @@ export const useBotDetail = (id: string) => {
   });
 };
 
-export const useGetBotBoundRepos =(id:string)=>{
+export const useGetBotBoundRepos = (id: string) => {
   return useQuery({
     queryKey: [`bot.boundRepos.${id}`, id],
     queryFn: async () => getBotBoundRepos(id),
@@ -42,7 +42,7 @@ export const useGetBotBoundRepos =(id:string)=>{
     enabled: !!id,
     retry: false,
   });
-}
+};
 
 export const useBotConfig = (id: string, enabled: boolean) => {
   return useQuery({
@@ -153,7 +153,7 @@ export const useGetBotRagTask = (
     queryKey: [`rag.task`, repoName],
     queryFn: async () => getRagTask(repoName),
     select: (data) => data,
-    enabled:!!repoName,
+    enabled: !!repoName,
     retry: true,
     refetchInterval: refetchInterval ? 3 * 1000 : undefined,
   });

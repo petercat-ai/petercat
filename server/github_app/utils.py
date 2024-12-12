@@ -58,16 +58,3 @@ def get_installation_repositories(access_token: str):
         },
     )
     return resp.json()
-
-
-def get_user_orgs(username, access_token: str):
-    url = f"https://api.github.com/users/{username}/orgs"
-    resp = requests.get(
-        url,
-        headers={
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {access_token}",
-        },
-    )
-    return resp.json()

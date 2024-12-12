@@ -83,6 +83,19 @@ class RepositoryConfigDAO(BaseDAO):
             print(f"Error: {e}")
             return None
 
+    def query_bot_id_by_owners(self, orgs: List[str]):
+        try:
+            response = (
+                self.client.table("github_repo_config")
+                .select("robot_id")
+                .filter("owner_id", "in", f"({','.join(map(str, orgs))})")
+                .execute()
+            )
+            return response.data
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+
     def update_bot_to_repos(self, repos: List[RepoBindBotConfigVO]) -> bool:
         try:
             for repo in repos:
