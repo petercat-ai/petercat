@@ -29,7 +29,6 @@ def get_bot_list(
         None, description="Filter bots by personal category"
     ),
     name: Optional[str] = Query(None, description="Filter bots by name"),
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
@@ -38,20 +37,25 @@ def get_bot_list(
             "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
         )
         if personal == "true":
-            if not user_id:
+            if not user or not user.access_token:
                 return {"data": [], "personal": personal}
-
+            user_id = user.id
             auth = Auth.Token(token=user.access_token)
             g = Github(auth=auth)
             github_user = g.get_user()
             orgs = github_user.get_orgs()
             repository_config_dao = RepositoryConfigDAO()
-            bots = repository_config_dao.query_by_owners(
+            bots = repository_config_dao.query_bot_id_by_owners(
                 [org.id for org in orgs] + [github_user.id]
             )
-            bot_ids = [bot["robot_id"] for bot in bots]
+            bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
             bot_ids_str = ",".join(map(str, bot_ids))  # 将 bots ID 列表转换为字符串
-            or_clause = f"uid.eq.{user_id},id.in.({bot_ids_str})"
+
+            or_clause = (
+                f"uid.eq.{user_id},id.in.({bot_ids_str})"
+                if bot_ids_str
+                else f"uid.eq.{user_id}"
+            )
 
             # 添加过滤条件
             query = (

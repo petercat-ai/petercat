@@ -74,7 +74,7 @@ class RepositoryConfigDAO(BaseDAO):
         try:
             response = (
                 self.client.table("github_repo_config")
-                .select("robot_id")
+                .select("*")
                 .filter("owner_id", "in", f"({','.join(map(str, orgs))})")
                 .execute()
             )
@@ -89,7 +89,6 @@ class RepositoryConfigDAO(BaseDAO):
                 self.client.table("github_repo_config")
                 .select("robot_id")
                 .filter("owner_id", "in", f"({','.join(map(str, orgs))})")
-                .filter("robot_id", "isnot", None)
                 .execute()
             )
             return response.data
