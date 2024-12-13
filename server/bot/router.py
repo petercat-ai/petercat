@@ -36,48 +36,38 @@ def get_bot_list(
         query = supabase.table("bots").select(
             "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
         )
+
         if personal == "true":
             if not user or not user.access_token:
                 return {"data": [], "personal": personal}
-            user_id = user.id
+
             auth = Auth.Token(token=user.access_token)
-            g = Github(auth=auth)
-            github_user = g.get_user()
-            orgs = github_user.get_orgs()
+            github_user = Github(auth=auth).get_user()
+            orgs_ids = [org.id for org in github_user.get_orgs()]
+            bot_ids = []
+
             repository_config_dao = RepositoryConfigDAO()
             bots = repository_config_dao.query_bot_id_by_owners(
-                [org.id for org in orgs] + [github_user.id]
-            )
-            bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
-            bot_ids_str = ",".join(map(str, bot_ids))  # 将 bots ID 列表转换为字符串
-
-            or_clause = (
-                f"uid.eq.{user_id},id.in.({bot_ids_str})"
-                if bot_ids_str
-                else f"uid.eq.{user_id}"
+                orgs_ids + [github_user.id]
             )
 
-            # 添加过滤条件
-            query = (
-                query.or_(or_clause).order("updated_at", desc=True)
-                if not name
-                else query.or_(or_clause)
-                .filter("name", "like", f"%{name}%")
-                .order("updated_at", desc=True)
+            if bots:
+                bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
+
+            or_clause = f"uid.eq.{user.id}" + (
+                f",id.in.({','.join(map(str, bot_ids))})" if bot_ids else ""
             )
+            query = query.or_(or_clause)
         else:
-            query = (
-                query.eq("public", True).order("updated_at", desc=True)
-                if not name
-                else query.eq("public", True)
-                .filter("name", "like", f"%{name}%")
-                .order("updated_at", desc=True)
-            )
+            query = query.eq("public", True)
 
+        if name:
+            query = query.filter("name", "like", f"%{name}%")
+
+        query = query.order("updated_at", desc=True)
         data = query.execute()
-        if not data or not data.data:
-            return {"data": [], "personal": personal}
-        return {"data": data.data, "personal": personal}
+
+        return {"data": data.data if data and data.data else [], "personal": personal}
 
     except Exception as e:
         return JSONResponse(
