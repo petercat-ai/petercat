@@ -1,4 +1,3 @@
-import json
 from github import Github
 from core.dao.profilesDAO import ProfilesDAO
 from fastapi import APIRouter, Request, HTTPException, status, Depends
