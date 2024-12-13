@@ -27,24 +27,10 @@ cp server/.env.example server/.env
 cp client/.env.example client/.env
 ```
 
-### 第四步：更新 `.env` 文件
-打开 `.env` 文件并更新必要的键值。您可以使用任何文本编辑器，例如 `vim`、`emacs`、`vscode` 或 `nano`：
+### 第四步：使用 docker compose 在本地启动 supabase
 
 ```bash
-vim server/.env
-```
-
-对于本地开发，只需配置 Supabase 和 OpenAI 设置：
-
-```bash
-# Supabase 项目 URL，获取路径：https://supabase.com/dashboard/project/_/settings/database
-SUPABASE_URL=https://{{YOUR_PROJECT_ID}}.supabase.co
-
-# Supabase 项目 API 密钥，`anon public`
-SUPABASE_SERVICE_KEY=xxxx.yyyyy.zzzzz
-
-# OpenAI API 密钥
-OPENAI_API_KEY=sk-xxxx
+yarn run docker
 ```
 
 ### 第五步：初始化数据库结构
@@ -63,33 +49,11 @@ cd migrations
 brew install supabase/tap/supabase
 ```
 
-#### 第五步 5.3：连接到远程项目  
-要连接到 Supabase 项目，您需要输入数据库密码。您可以在 [Supabase 控制面板](https://supabase.com/dashboard/project/_/settings/database) 中找到该密码：
-
-```bash
-supabase link --project-ref {YOUR_PROJECT_ID}
-```
-
-如果连接成功，您将看到类似以下的输出：
-
-```
-Enter your database password (or leave blank to skip):
-Connecting to remote database...
-Finished supabase link.
-Local config differs from linked project. Try updating supabase/config.toml
-[api]
-enabled = true
-port = 54321
-schemas = ["public", "graphql_public"]
-extra_search_path = ["public", "extensions"]
-max_rows = 1000
-```
-
-#### 第五步 5.4：执行迁移
+#### 第五步 5.3：执行迁移
 将数据库迁移应用到您的远程数据库：
 
 ```bash
-supabase db push
+supabase db push --db-url "postgres://postgres.your-tenant-id:your-super-secret-and-long-postgres-password@127.0.0.1:5432/postgres"
 ``` 
 
 如果成功，您将看到类似以下的输出：

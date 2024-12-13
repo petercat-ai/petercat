@@ -71,11 +71,13 @@ def home_page():
 
 @app.get("/api/health_checker")
 def health_checker():
+    supabase_url = get_env_variable("SUPABASE_URL")
     return {
         "ENVIRONMENT": ENVIRONMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
         "CALLBACK_URL": CALLBACK_URL,
+        "supabase_url": supabase_url,
     }
 
 
@@ -84,8 +86,8 @@ if __name__ == "__main__":
         uvicorn.run(
             "main:app",
             host="0.0.0.0",
-            port=int(os.environ.get("PORT", "8080")),
+            port=int(os.environ.get("PETERCAT_PORT", "8080")),
             reload=True,
         )
     else:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080")))
