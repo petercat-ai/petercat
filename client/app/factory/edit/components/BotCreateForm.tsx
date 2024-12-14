@@ -34,6 +34,7 @@ import { useRouter } from 'next/navigation';
 import { useAvailableLLMs } from '@/app/hooks/useAvailableLLMs';
 import { useTokenList } from '@/app/hooks/useToken';
 import CreateButton from '@/app/user/tokens/components/CreateButton';
+import DeleteButtonIcon from '@/public/icons/DeleteButtonIcon';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
@@ -239,13 +240,9 @@ const BotCreateFrom = () => {
           </label>
         </Collapse>
         <Collapse title={I18N.components.BotCreateFrom.weiXianCaoZuo}>
-          <img
-            src="/images/delete-button.svg"
-            alt="delete bot"
-            width={160}
-            height={87}
-            onClick={onOpen}
-          />
+          <div onClick={onOpen}>
+            <DeleteButtonIcon />
+          </div>
         </Collapse>
       </form>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

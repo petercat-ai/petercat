@@ -8,10 +8,10 @@ export default {
     chongXinShengChengPei: '重新生成配置',
     ziDongShengChengPei: '自動生成配置',
     diZhiYouWu: '地址有誤',
-    qingShuRuGI: '請輸入 GitHub 項目地址',
+    qingShuRuGI: '請輸入或選擇 GitHub 項目名稱',
     fuZhiTOK: '複製 Token',
     tOKEN: 'Token 已複製到剪貼板',
-    gITHU: 'GitHub 項目地址',
+    gITHU: 'GitHub 項目名稱',
     bangWoPeiZhiYi: '幫我配置一個答疑機器人',
     chuCiJianMianXian:
       '👋🏻 初次見面，先自我介紹一下：我是 PeterCat，一個開源項目的機器人。你可以通過和我對話配置一個答疑機器人。',
