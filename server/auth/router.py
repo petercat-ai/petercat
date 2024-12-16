@@ -1,19 +1,18 @@
-from github import Github
-from core.dao.profilesDAO import ProfilesDAO
-from fastapi import APIRouter, Request, HTTPException, status, Depends
-from fastapi.responses import RedirectResponse, JSONResponse
 import secrets
-from petercat_utils import get_client, get_env_variable
-from starlette.config import Config
-from authlib.integrations.starlette_client import OAuth
 from typing import Annotated, Optional
 
+from authlib.integrations.starlette_client import OAuth
+from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi.responses import RedirectResponse, JSONResponse
+from github import Github
+from starlette.config import Config
+
+from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
 from auth.get_user_info import (
-    generateAnonymousUser,
     getUserAccessToken,
-    getUserInfoByToken,
-    get_user_id,
 )
+from core.dao.profilesDAO import ProfilesDAO
+from petercat_utils import get_client, get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 
@@ -26,6 +25,7 @@ CALLBACK_URL = f"{API_URL}/api/auth/callback"
 LOGIN_URL = f"{API_URL}/api/auth/login"
 
 WEB_URL = get_env_variable("WEB_URL")
+
 WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 MARKET_URL = f"{WEB_URL}/market"
 
@@ -133,8 +133,8 @@ async def get_agreement_status(user_id: Optional[str] = Depends(get_user_id)):
 
 @router.post("/accept/agreement", status_code=200)
 async def bot_generator(
-    request: Request,
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+        request: Request,
+        user_id: Annotated[str | None, Depends(get_user_id)] = None,
 ):
     if not user_id:
         raise HTTPException(status_code=401, detail="User not found")

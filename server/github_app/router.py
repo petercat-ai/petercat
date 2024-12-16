@@ -1,4 +1,6 @@
+import logging
 from typing import Annotated
+
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -8,27 +10,24 @@ from fastapi import (
     Request,
     status,
 )
-import logging
 from fastapi.responses import RedirectResponse
-
 from github import Auth, Github
+
 from auth.get_user_info import get_user
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.bot import RepoBindBotRequest
 from core.models.user import User
-
+from env import WEB_URL
 from github_app.handlers import get_handler
 from github_app.purchased import PurchaseServer
 from github_app.utils import (
     get_private_key,
 )
-
 from petercat_utils import get_env_variable
 
 REGIN_NAME = get_env_variable("AWS_REGION")
 AWS_GITHUB_SECRET_NAME = get_env_variable("AWS_GITHUB_SECRET_NAME")
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
-WEB_URL = get_env_variable("WEB_URL")
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
@@ -51,9 +50,9 @@ def github_app_callback(code: str, installation_id: str, setup_action: str):
 
 @router.post("/app/webhook")
 async def github_app_webhook(
-    request: Request,
-    background_tasks: BackgroundTasks,
-    x_github_event: str = Header(...),
+        request: Request,
+        background_tasks: BackgroundTasks,
+        x_github_event: str = Header(...),
 ):
     payload = await request.json()
     if x_github_event == "marketplace_purchase":
@@ -86,7 +85,7 @@ async def github_app_webhook(
 
 @router.get("/user/repos_installed_app")
 def get_user_repos_installed_app(
-    user: Annotated[User | None, Depends(get_user)] = None
+        user: Annotated[User | None, Depends(get_user)] = None
 ):
     """
     Get github user installed app repositories which saved in platform database.
@@ -116,8 +115,8 @@ def get_user_repos_installed_app(
 
 @router.post("/repo/bind_bot", status_code=200)
 def bind_bot_to_repo(
-    request: RepoBindBotRequest,
-    user: Annotated[User | None, Depends(get_user)] = None,
+        request: RepoBindBotRequest,
+        user: Annotated[User | None, Depends(get_user)] = None,
 ):
     if user is None:
         raise HTTPException(
