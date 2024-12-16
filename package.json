@@ -14,8 +14,7 @@
     "build:docker": "docker build -t petercat .",
     "build:pypi": "rm -rf dist && python3 -m build",
     "publish:test": "python3 -m twine upload --repository petercat-utils dist/* ",
-    "publish:pypi": "python3 -m twine upload --repository pypi dist/* ",
-    "docker": "docker compose --env-file server/.env -f docker/docker-compose.yml up -d"
+    "publish:pypi": "python3 -m twine upload --repository pypi dist/* "
   },
   "engines": {
     "node": "^18 || >=20"

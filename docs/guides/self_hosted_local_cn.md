@@ -16,18 +16,7 @@ git clone https://github.com/petercat-ai/petercat.git
 yarn run bootstrap
 ```
 
-### 第三步：复制 `.env.example` 文件
-复制服务器环境配置示例文件：
-
-```bash
-cp server/.env.local.example server/.env
-```
-复制客户端环境配置示例文件：
-```bash
-cp client/.env.local.example client/.env
-```
-
-### 第四步：在本地启动 supabase
+### 第三步：在本地启动 supabase
 
 参考 https://supabase.com/docs/guides/self-hosting/docker#installing-and-running-supabase
 
@@ -47,6 +36,20 @@ docker compose pull
 # Start the services (in detached mode)
 docker compose up -d
 ```
+
+### 第四步：复制 `.env.example` 文件
+复制客户端环境配置示例文件：
+```bash
+cp client/.env.local.example client/.env
+```
+
+复制服务器环境配置示例文件：
+
+```bash
+cp server/.env.local.example server/.env
+```
+
+打开 `server/.env` 文件，把 `SERVICE_ROLE_KEY` 字段改成从 supabase 的 `docker/.env` 文件的 `SERVICE_ROLE_KEY` 的值
 
 ### 第五步：初始化数据库结构
 
@@ -91,7 +94,7 @@ Finished supabase db push.
 yarn run server:local
 ```
 
-通过在浏览器中打开 `http://127.0.0.1:8000/api/health_checker` 检查服务器是否正在运行。
+通过在浏览器中打开 `http://127.0.0.1:8001/api/health_checker` 检查服务器是否正在运行。
 
 ### 第七步：启动客户端
 使用以下命令启动客户端：

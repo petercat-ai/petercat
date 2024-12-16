@@ -17,18 +17,7 @@ Install all necessary dependencies using Yarn:
 yarn run bootstrap
 ```
 
-### Step 3: Copy the `.env.example` Files
-Copy the server environment configuration example file:
-
-```bash
-cp server/.env.local.example server/.env
-```
-Copy the client environment configuration example file:
-```bash
-cp client/.env.local.example client/.env
-```
-
-### Step 4: Start Supabase Locally
+### Step 3: Start Supabase Locally
 
 Refer to [Supabase Self-Hosting Guide](https://supabase.com/docs/guides/self-hosting/docker#installing-and-running-supabase):
 
@@ -48,6 +37,19 @@ docker compose pull
 # Start the services (in detached mode)
 docker compose up -d
 ```
+
+### Step 4: Copy the `.env.example` Files
+Copy the client environment configuration example file:
+```bash
+cp client/.env.local.example client/.env
+```
+
+Copy the server environment configuration example file:
+```bash
+cp server/.env.local.example server/.env
+```
+
+Open the `server/.env` file and update the `SERVICE_ROLE_KEY` field to match the value of `SERVICE_ROLE_KEY` from the `docker/.env` file in Supabase.
 
 ### Step 5: Initialize Database Schema
 
