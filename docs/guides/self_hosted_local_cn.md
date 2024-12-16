@@ -20,17 +20,32 @@ yarn run bootstrap
 复制服务器环境配置示例文件：
 
 ```bash
-cp server/.env.example server/.env
+cp server/.env.local.example server/.env
 ```
 复制客户端环境配置示例文件：
 ```bash
-cp client/.env.example client/.env
+cp client/.env.local.example client/.env
 ```
 
-### 第四步：使用 docker compose 在本地启动 supabase
+### 第四步：在本地启动 supabase
 
-```bash
-yarn run docker
+参考 https://supabase.com/docs/guides/self-hosting/docker#installing-and-running-supabase
+
+```
+# Get the code
+git clone --depth 1 https://github.com/supabase/supabase
+
+# Go to the docker folder
+cd supabase/docker
+
+# Copy the fake env vars
+cp .env.example .env
+
+# Pull the latest images
+docker compose pull
+
+# Start the services (in detached mode)
+docker compose up -d
 ```
 
 ### 第五步：初始化数据库结构
@@ -53,6 +68,7 @@ brew install supabase/tap/supabase
 将数据库迁移应用到您的远程数据库：
 
 ```bash
+# postgres db url 在第四步的 .env 文件中可以找到
 supabase db push --db-url "postgres://postgres.your-tenant-id:your-super-secret-and-long-postgres-password@127.0.0.1:5432/postgres"
 ``` 
 
@@ -72,7 +88,7 @@ Finished supabase db push.
 使用以下命令启动服务器：
 
 ```bash
-yarn run server
+yarn run server:local
 ```
 
 通过在浏览器中打开 `http://127.0.0.1:8000/api/health_checker` 检查服务器是否正在运行。

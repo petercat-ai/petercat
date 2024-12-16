@@ -1,5 +1,5 @@
 ```
-# Self-Hosting Guide
+# Self-Hosting
 
 ## Local Installation
 
@@ -11,30 +11,45 @@ git clone https://github.com/petercat-ai/petercat.git
 ``` 
 
 ### Step 2: Install Dependencies
-Install all required dependencies using Yarn:
+Install all necessary dependencies using Yarn:
 
 ```bash
 yarn run bootstrap
 ```
 
-### Step 3: Copy `.env.example` Files
+### Step 3: Copy the `.env.example` Files
 Copy the server environment configuration example file:
 
 ```bash
-cp server/.env.example server/.env
+cp server/.env.local.example server/.env
 ```
 Copy the client environment configuration example file:
 ```bash
-cp client/.env.example client/.env
+cp client/.env.local.example client/.env
 ```
 
-### Step 4: Start Supabase Locally with Docker Compose
+### Step 4: Start Supabase Locally
+
+Refer to [Supabase Self-Hosting Guide](https://supabase.com/docs/guides/self-hosting/docker#installing-and-running-supabase):
 
 ```bash
-yarn run docker
+# Get the code
+git clone --depth 1 https://github.com/supabase/supabase
+
+# Go to the docker folder
+cd supabase/docker
+
+# Copy the fake env vars
+cp .env.example .env
+
+# Pull the latest images
+docker compose pull
+
+# Start the services (in detached mode)
+docker compose up -d
 ```
 
-### Step 5: Initialize the Database Schema
+### Step 5: Initialize Database Schema
 
 #### Step 5.1: Navigate to the Migrations Folder
 Navigate to the `migrations` folder to prepare for database setup:
@@ -44,20 +59,21 @@ cd migrations
 ```
 
 #### Step 5.2: Install Supabase CLI
-Install the Supabase CLI following the instructions in the [Supabase Getting Started Guide](https://supabase.com/docs/guides/cli/getting-started):
+Install the Supabase CLI following the [Supabase Getting Started Guide](https://supabase.com/docs/guides/cli/getting-started):
 
 ```bash
 brew install supabase/tap/supabase
 ```
 
-#### Step 5.3: Apply Migrations
+#### Step 5.3: Run Migrations
 Apply the database migrations to your remote database:
 
 ```bash
+# The postgres db URL can be found in the .env file from Step 4
 supabase db push --db-url "postgres://postgres.your-tenant-id:your-super-secret-and-long-postgres-password@127.0.0.1:5432/postgres"
 ``` 
 
-If successful, you will see output similar to the following:
+If successful, you should see output similar to the following:
 
 ```
 Connecting to remote database...
@@ -73,10 +89,10 @@ Finished supabase db push.
 Start the server with the following command:
 
 ```bash
-yarn run server
+yarn run server:local
 ```
 
-Check if the server is running by opening `http://127.0.0.1:8000/api/health_checker` in your browser.
+Verify the server is running by opening `http://127.0.0.1:8001/api/health_checker` in your browser.
 
 ### Step 7: Start the Client
 Start the client with the following command:
@@ -85,5 +101,5 @@ Start the client with the following command:
 yarn run client
 ```
 
-You can check the client service by opening `http://127.0.0.1:3000` in your browser.
+Verify the client service by opening `http://127.0.0.1:3000` in your browser.
 ```
