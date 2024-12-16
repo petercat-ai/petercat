@@ -201,6 +201,7 @@ export default function Edit() {
   );
 
   useEffect(() => {
+    console.log('config', config);
     if (!isEmpty(config)) {
       setBotProfile((draft) => {
         draft.id = config.id;

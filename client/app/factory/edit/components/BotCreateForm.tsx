@@ -30,7 +30,6 @@ import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { AVATARS } from '@/app/constant/avatar';
-import { useRouter } from 'next/navigation';
 import { useAvailableLLMs } from '@/app/hooks/useAvailableLLMs';
 import { useTokenList } from '@/app/hooks/useToken';
 import CreateButton from '@/app/user/tokens/components/CreateButton';
@@ -39,7 +38,6 @@ import DeleteButtonIcon from '@/public/icons/DeleteButtonIcon';
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
   const { data: gitAvatar } = useGetGitAvatar(botProfile?.repoName);
-  const router = useRouter();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { data: availableLLMs = [] } = useAvailableLLMs();
   const { data: userTokens = [] } = useTokenList();
@@ -56,7 +54,6 @@ const BotCreateFrom = () => {
   ) => {
     const name = e.target.name as keyof Omit<BotProfile, 'starters'>;
     const value = e.target.value;
-    console.log(name, value);
     setBotProfile((draft: BotProfile) => {
       // @ts-ignore
       draft[name] = value;
@@ -69,9 +66,7 @@ const BotCreateFrom = () => {
     if (isSuccess) {
       toast.success(I18N.components.BotCreateFrom.shanChuChengGong);
       onClose();
-      setTimeout(() => {
-        router.push('/factory/list');
-      }, 1000);
+      window.location.href = '/factory/list';
     }
   }, [isSuccess]);
 
@@ -84,6 +79,10 @@ const BotCreateFrom = () => {
   const handelDelete = () => {
     deleteBot(botProfile?.id!);
   };
+
+  useEffect(() => {
+    console.log('botProfile', botProfile);
+  }, [botProfile]);
 
   const customTitle = (
     <div className="flex">
