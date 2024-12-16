@@ -116,7 +116,7 @@ def get_bot_config(
     id: Optional[str] = Query(None, description="Filter bots by personal category"),
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
-    if not user or not user.access_token:
+    if not user or not user.access_token or not id:
         return {"data": []}
     try:
         auth = Auth.Token(token=user.access_token)
