@@ -7,7 +7,7 @@
     "client": "cd client && yarn run dev",
     "assistant": "cd assistant && yarn run dev",
     "server": "cd server && ./venv/bin/python3 -m uvicorn main:app --reload",
-    "server:local": "cd server && python3 -m uvicorn main:app --port 8001 --reload",
+    "server:local": "cd server && ./venv/bin/python3 -m uvicorn main:app --port 8001 --reload",
     "env:pull": "cd server && ./venv/bin/python3 scripts/envs.py pull",
     "client:server": "concurrently \"yarn run server\" \"yarn run client\"",
     "assistant:server": "concurrently \"yarn run server\" \"yarn run assistant\"",
