@@ -114,12 +114,25 @@ def get_bot_detail(
 @router.get("/config")
 def get_bot_config(
     id: Optional[str] = Query(None, description="Filter bots by personal category"),
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
+    if not user or not user.access_token or not id:
+        return {"data": []}
     try:
+        auth = Auth.Token(token=user.access_token)
+        github_user = Github(auth=auth).get_user()
+        orgs_ids = [org.id for org in github_user.get_orgs()]
+        bot_ids = []
+
+        repository_config_dao = RepositoryConfigDAO()
+        bots = repository_config_dao.query_bot_id_by_owners(orgs_ids + [github_user.id])
+
+        bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
+        bot_ids.append(id)
+
         supabase = get_client()
         data = (
-            supabase.table("bots").select("*").eq("id", id).eq("uid", user_id).execute()
+            supabase.table("bots").select("*").eq("id", id).in_("id", bot_ids).execute()
         )
         return {"data": data.data, "status": 200}
     except Exception as e:
