@@ -1,6 +1,5 @@
 'use client';
 import I18N from '@/app/utils/I18N';
-import { useRouter } from 'next/navigation';
 import {
   Avatar,
   Button,

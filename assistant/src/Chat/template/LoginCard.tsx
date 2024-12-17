@@ -4,8 +4,8 @@ import { Button } from 'antd';
 import GitHubIcon from '../../icons/GitHubIcon';
 import useUser from '../../hooks/useUser';
 
-const LoginCard = ({ apiDomain, token }: { apiDomain: string; token: string; }) => {
-  const { user, isLoading, actions } = useUser({ apiDomain, fingerprint: token });
+const LoginCard = ({ apiDomain, webDomain, token }: { apiDomain: string; webDomain?: string; token: string; }) => {
+  const { user, isLoading, actions } = useUser({ apiDomain, webDomain, fingerprint: token });
 
   if (isLoading) {
     return <Button disabled loading>Loading...</Button>

@@ -112,8 +112,8 @@
 */
 
 *:where(.petercat-lui,.petercat-lui *),
-:where(.petercat-lui,.petercat-lui *)::before,
-:where(.petercat-lui,.petercat-lui *)::after {
+::before:where(.petercat-lui,.petercat-lui *),
+::after:where(.petercat-lui,.petercat-lui *) {
   box-sizing: border-box;
   /* 1 */
   border-width: 0;
@@ -124,8 +124,8 @@
   /* 2 */
 }
 
-:where(.petercat-lui,.petercat-lui *)::before,
-:where(.petercat-lui,.petercat-lui *)::after {
+::before:where(.petercat-lui,.petercat-lui *),
+::after:where(.petercat-lui,.petercat-lui *) {
   --tw-content: '';
 }
 
@@ -378,8 +378,8 @@ progress:where(.petercat-lui,.petercat-lui *) {
 Correct the cursor style of increment and decrement buttons in Safari.
 */
 
-:where(.petercat-lui,.petercat-lui *) ::-webkit-inner-spin-button,
-:where(.petercat-lui,.petercat-lui *) ::-webkit-outer-spin-button {
+::-webkit-inner-spin-button:where(.petercat-lui,.petercat-lui *),
+::-webkit-outer-spin-button:where(.petercat-lui,.petercat-lui *) {
   height: auto;
 }
 
@@ -399,7 +399,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 Remove the inner padding in Chrome and Safari on macOS.
 */
 
-:where(.petercat-lui,.petercat-lui *) ::-webkit-search-decoration {
+::-webkit-search-decoration:where(.petercat-lui,.petercat-lui *) {
   -webkit-appearance: none;
 }
 
@@ -408,7 +408,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 2. Change font properties to `inherit` in Safari.
 */
 
-:where(.petercat-lui,.petercat-lui *) ::-webkit-file-upload-button {
+::-webkit-file-upload-button:where(.petercat-lui,.petercat-lui *) {
   -webkit-appearance: button;
   /* 1 */
   font: inherit;
@@ -481,15 +481,15 @@ textarea:where(.petercat-lui,.petercat-lui *) {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-:where(.petercat-lui,.petercat-lui *) input::-moz-placeholder, :where(.petercat-lui,.petercat-lui *) textarea::-moz-placeholder {
+input::-moz-placeholder:where(.petercat-lui,.petercat-lui *), textarea::-moz-placeholder:where(.petercat-lui,.petercat-lui *) {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
   /* 2 */
 }
 
-:where(.petercat-lui,.petercat-lui *) input::placeholder,
-:where(.petercat-lui,.petercat-lui *) textarea::placeholder {
+input::placeholder:where(.petercat-lui,.petercat-lui *),
+textarea::placeholder:where(.petercat-lui,.petercat-lui *) {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -545,7 +545,7 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden]:where(:not([hidden="until-found"])):where(.petercat-lui,.petercat-lui *) {
+[hidden]:where(.petercat-lui,.petercat-lui *) {
   display: none;
 }
 

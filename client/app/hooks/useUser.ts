@@ -10,6 +10,7 @@ export const useUser = () => {
   const { data: fingerprint } = useFingerprint();
   const { user, isLoading, actions } = useAssistUser({
     apiDomain: API_DOMAIN,
+    webDomain: '',
     fingerprint: fingerprint?.visitorId!,
   });
 
