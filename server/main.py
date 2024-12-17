@@ -71,13 +71,11 @@ def home_page():
 
 @app.get("/api/health_checker")
 def health_checker():
-    supabase_url = get_env_variable("SUPABASE_URL")
     return {
         "ENVIRONMENT": ENVIRONMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
-        "CALLBACK_URL": CALLBACK_URL,
-        "supabase_url": supabase_url,
+        "CALLBACK_URL": CALLBACK_URL
     }
 
 

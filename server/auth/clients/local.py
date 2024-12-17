@@ -6,6 +6,7 @@ from auth.clients.base import BaseAuthClient
 
 PETERCAT_LOCAL_UID = get_env_variable("PETERCAT_LOCAL_UID")
 PETERCAT_LOCAL_UNAME = get_env_variable("PETERCAT_LOCAL_UNAME")
+PETERCAT_LOCAL_GITHUB_TOKEN = get_env_variable("PETERCAT_LOCAL_GITHUB_TOKEN")
 WEB_URL = get_env_variable("WEB_URL")
 WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 
@@ -21,7 +22,7 @@ class LocalClient(BaseAuthClient):
   
     return RedirectResponse(url=f"{WEB_LOGIN_SUCCESS_URL}", status_code=302)
   
-  async def get_user_info(user_id):
+  async def get_user_info(self, user_id):
     token = PETERCAT_LOCAL_UID
     username = PETERCAT_LOCAL_UNAME
     seed = token[:4]
@@ -36,3 +37,6 @@ class LocalClient(BaseAuthClient):
       "agreement_accepted": False,
     }
 
+
+  async def get_access_token(self, user_id):
+    return PETERCAT_LOCAL_GITHUB_TOKEN
