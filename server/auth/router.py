@@ -1,47 +1,25 @@
-import secrets
 from typing import Annotated, Optional
 
-from authlib.integrations.starlette_client import OAuth
-from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi import APIRouter, Request, HTTPException, Depends
 from fastapi.responses import RedirectResponse, JSONResponse
 from github import Github
-from starlette.config import Config
 
-from auth.get_user_info import generateAnonymousUser, getUserInfoByToken, get_user_id
-from auth.get_user_info import (
-    getUserAccessToken,
-)
+
+from auth.clients import get_auth_client
+from auth.clients.base import BaseAuthClient
+from auth.get_user_info import get_user_id
 from core.dao.profilesDAO import ProfilesDAO
 from petercat_utils import get_client, get_env_variable
 
-AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
-
-API_AUDIENCE = get_env_variable("API_IDENTIFIER")
-CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
-CLIENT_SECRET = get_env_variable("AUTH0_CLIENT_SECRET")
-
 API_URL = get_env_variable("API_URL")
+WEB_URL = get_env_variable("WEB_URL")
+
 CALLBACK_URL = f"{API_URL}/api/auth/callback"
 LOGIN_URL = f"{API_URL}/api/auth/login"
-
-WEB_URL = get_env_variable("WEB_URL")
 
 WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 MARKET_URL = f"{WEB_URL}/market"
 
-config = Config(
-    environ={
-        "AUTH0_CLIENT_ID": CLIENT_ID,
-        "AUTH0_CLIENT_SECRET": CLIENT_SECRET,
-    }
-)
-
-oauth = OAuth(config)
-oauth.register(
-    name="auth0",
-    server_metadata_url=f"https://{AUTH0_DOMAIN}/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid email profile"},
-)
 
 router = APIRouter(
     prefix="/api/auth",
@@ -49,32 +27,9 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-
-async def getAnonymousUser(request: Request):
-    clientId = request.query_params.get("clientId")
-    if not clientId:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing clientId"
-        )
-    token, data = await generateAnonymousUser(clientId)
-
-    supabase = get_client()
-    supabase.table("profiles").upsert(data).execute()
-    request.session["user"] = data
-    return data
-
-
 @router.get("/login")
-async def login(request: Request):
-    if CLIENT_ID is None:
-        return {
-            "message": "enviroments CLIENT_ID and CLIENT_SECRET required.",
-        }
-    redirect_response = await oauth.auth0.authorize_redirect(
-        request, redirect_uri=CALLBACK_URL
-    )
-    return redirect_response
-
+async def login(request: Request, auth_client = Depends(get_auth_client)):
+    return await auth_client.login(request)
 
 @router.get("/logout")
 async def logout(request: Request):
@@ -86,31 +41,20 @@ async def logout(request: Request):
 
 
 @router.get("/callback")
-async def callback(request: Request):
-    auth0_token = await oauth.auth0.authorize_access_token(request)
-    user_info = await getUserInfoByToken(token=auth0_token["access_token"])
-
+async def callback(request: Request, auth_client: BaseAuthClient = Depends(get_auth_client)):
+    user_info = await auth_client.get_user_info(request)
     if user_info:
-        data = {
-            "id": user_info["sub"],
-            "nickname": user_info.get("nickname"),
-            "name": user_info.get("name"),
-            "picture": user_info.get("picture"),
-            "sub": user_info["sub"],
-            "sid": secrets.token_urlsafe(32),
-            "agreement_accepted": user_info.get("agreement_accepted"),
-        }
-        request.session["user"] = dict(data)
+        request.session["user"] = dict(user_info)
         supabase = get_client()
-        supabase.table("profiles").upsert(data).execute()
+        supabase.table("profiles").upsert(user_info).execute()
     return RedirectResponse(url=f"{WEB_LOGIN_SUCCESS_URL}", status_code=302)
 
 
 @router.get("/userinfo")
-async def userinfo(request: Request):
+async def userinfo(request: Request, auth_client: BaseAuthClient = Depends(get_auth_client)):
     user = request.session.get("user")
     if not user:
-        data = await getAnonymousUser(request)
+        data = await auth_client.anonymouseLogin(request)
         return {"data": data, "status": 200}
     return {"data": user, "status": 200}
 
@@ -151,11 +95,11 @@ async def bot_generator(
 
 
 @router.get("/repos")
-async def get_user_repos(user_id: Optional[str] = Depends(get_user_id)):
+async def get_user_repos(user_id: Optional[str] = Depends(get_user_id), auth_client: BaseAuthClient = Depends(get_auth_client)):
     if not user_id:
         raise HTTPException(status_code=401, detail="User not found")
     try:
-        access_token = await getUserAccessToken(user_id=user_id)
+        access_token = await auth_client.get_access_token(user_id=user_id)
         g = Github(access_token)
         user = g.get_user()
         repos = user.get_repos()

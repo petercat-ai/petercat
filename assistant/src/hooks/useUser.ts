@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { popupCenter } from '../utils/popcenter';
 import { useEffect } from 'react';
 
-function useUser({ apiDomain, fingerprint }: { apiDomain: string; fingerprint: string }) {
+function useUser({ apiDomain, webDomain = 'https://petercat.ai', fingerprint }: { apiDomain: string; fingerprint: string; webDomain?: string }) {
   const { data: user, isLoading, mutate } = useSWR(
     ['user.info'],
     async () => getUserInfo(apiDomain, { clientId: fingerprint }),
@@ -14,8 +14,9 @@ function useUser({ apiDomain, fingerprint }: { apiDomain: string; fingerprint: s
 
 
   const doLogin = () => {
+    console.log('call do Login', webDomain);
     popupCenter({
-      url: 'https://petercat.ai/user/login',
+      url: `${webDomain}/user/login`,
       title: 'Login',
       w: 600,
       h: 400,
