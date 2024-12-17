@@ -43,7 +43,6 @@ async def logout(request: Request):
 @router.get("/callback")
 async def callback(request: Request, auth_client: BaseAuthClient = Depends(get_auth_client)):
     user_info = await auth_client.get_user_info(request)
-    print(f"user_info={user_info}")
     if user_info:
         request.session["user"] = dict(user_info)
         supabase = get_client()
@@ -96,12 +95,11 @@ async def bot_generator(
 
 
 @router.get("/repos")
-async def get_user_repos(user_id: Optional[str] = Depends(get_user_id)):
+async def get_user_repos(user_id: Optional[str] = Depends(get_user_id), auth_client: BaseAuthClient = Depends(get_auth_client)):
     if not user_id:
         raise HTTPException(status_code=401, detail="User not found")
     try:
-        client = get_auth_client()
-        access_token = await client.get_access_token(user_id=user_id)
+        access_token = await auth_client.get_access_token(user_id=user_id)
         g = Github(access_token)
         user = g.get_user()
         repos = user.get_repos()

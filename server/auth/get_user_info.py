@@ -1,14 +1,11 @@
-from fastapi import Request
+from fastapi import Depends, Request
 from auth.clients import get_auth_client
+from auth.clients.base import BaseAuthClient
 from core.models.user import User
 
 from petercat_utils import get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
-
-async def getUserAccessToken(user_id: str, provider="github"):
-    auth_client = get_auth_client()
-    return await auth_client.get_access_token(user_id=user_id, provider=provider)
 
 async def get_user_id(request: Request):
     user_info = request.session.get("user")
@@ -21,7 +18,7 @@ async def get_user_id(request: Request):
         return None
 
 
-async def get_user(request: Request) -> User | None:
+async def get_user(request: Request, auth_client: BaseAuthClient = Depends(get_auth_client)) -> User | None:
     user_info = request.session.get("user")
     if user_info is None:
         return None
@@ -29,5 +26,5 @@ async def get_user(request: Request) -> User | None:
     if user_info["sub"].startswith("client|"):
         return User(**user_info, anonymous=True)
 
-    access_token = await getUserAccessToken(user_id=user_info["sub"])
+    access_token = await auth_client.get_access_token(user_id=user_info["sub"])
     return User(**user_info, access_token=access_token, anonymous=False)
