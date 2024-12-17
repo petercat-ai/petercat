@@ -20,16 +20,16 @@ export function Navbar() {
   const pathname = usePathname();
   const navs = [
     {
-      id: 'market',
-      label: I18N.components.Navbar.shiChang,
-      href: '/market',
-      icon: <ShopIcon />,
-    },
-    {
       id: 'factory',
       label: I18N.components.Navbar.kongJian,
       href: '/factory/list',
       icon: <SpaceIcon />,
+    },
+    {
+      id: 'market',
+      label: I18N.components.Navbar.shiChang,
+      href: '/market',
+      icon: <ShopIcon />,
     },
   ];
 
