@@ -14,8 +14,12 @@ def query_list(
 ):
     try:
         supabase = get_client()
-        query = supabase.table("bots").select(
-            "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
+        query = (
+            supabase.rpc("get_bots_with_profiles_and_github")
+            if personal == "true"
+            else supabase.table("bots").select(
+                "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
+            )
         )
 
         if personal == "true":
@@ -47,6 +51,12 @@ def query_list(
 
         query = query.order("updated_at", desc=True)
         data = query.execute()
+        if data.data:
+            unique_data = {}
+            for item in data.data:
+                unique_data[item["id"]] = item
+            deduplicated_list = list(unique_data.values())
+            return deduplicated_list
         return data.data
     except Exception as e:
         print(f"query list error: {e}")
