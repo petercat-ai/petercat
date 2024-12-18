@@ -29,36 +29,45 @@ def get_bot_list(
         None, description="Filter bots by personal category"
     ),
     name: Optional[str] = Query(None, description="Filter bots by name"),
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
         supabase = get_client()
         query = supabase.table("bots").select(
             "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
         )
+
         if personal == "true":
-            if not user_id:
+            if not user or not user.access_token:
                 return {"data": [], "personal": personal}
-            query = query.eq("uid", user_id).order("updated_at", desc=True)
-        if name:
-            query = (
-                supabase.table("bots")
-                .select(
-                    "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
-                )
-                .filter("name", "like", f"%{name}%")
+
+            auth = Auth.Token(token=user.access_token)
+            github_user = Github(auth=auth).get_user()
+            orgs_ids = [org.id for org in github_user.get_orgs()]
+            bot_ids = []
+
+            repository_config_dao = RepositoryConfigDAO()
+            bots = repository_config_dao.query_bot_id_by_owners(
+                orgs_ids + [github_user.id]
             )
 
-        query = (
-            query.eq("public", True).order("updated_at", desc=True)
-            if not personal or personal != "true"
-            else query
-        )
+            if bots:
+                bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
 
+            or_clause = f"uid.eq.{user.id}" + (
+                f",id.in.({','.join(map(str, bot_ids))})" if bot_ids else ""
+            )
+            query = query.or_(or_clause)
+        else:
+            query = query.eq("public", True)
+
+        if name:
+            query = query.filter("name", "like", f"%{name}%")
+
+        query = query.order("updated_at", desc=True)
         data = query.execute()
-        if not data or not data.data:
-            return {"data": [], "personal": personal}
-        return {"data": data.data, "personal": personal}
+
+        return {"data": data.data if data and data.data else [], "personal": personal}
 
     except Exception as e:
         return JSONResponse(
@@ -105,12 +114,25 @@ def get_bot_detail(
 @router.get("/config")
 def get_bot_config(
     id: Optional[str] = Query(None, description="Filter bots by personal category"),
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
+    if not user or not user.access_token or not id:
+        return {"data": []}
     try:
+        auth = Auth.Token(token=user.access_token)
+        github_user = Github(auth=auth).get_user()
+        orgs_ids = [org.id for org in github_user.get_orgs()]
+        bot_ids = []
+
+        repository_config_dao = RepositoryConfigDAO()
+        bots = repository_config_dao.query_bot_id_by_owners(orgs_ids + [github_user.id])
+
+        bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
+        bot_ids.append(id)
+
         supabase = get_client()
         data = (
-            supabase.table("bots").select("*").eq("id", id).eq("uid", user_id).execute()
+            supabase.table("bots").select("*").eq("id", id).in_("id", bot_ids).execute()
         )
         return {"data": data.data, "status": 200}
     except Exception as e:
@@ -186,6 +208,7 @@ async def bot_generator(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
 
+
 @router.get("/git/avatar", status_code=200)
 async def get_git_avatar(
     repo_name: str,
@@ -199,8 +222,6 @@ async def get_git_avatar(
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
         )
-
-
 
 
 @router.put("/update/{id}", status_code=200)

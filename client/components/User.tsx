@@ -1,6 +1,5 @@
 'use client';
 import I18N from '@/app/utils/I18N';
-import { useRouter } from 'next/navigation';
 import {
   Avatar,
   Button,
@@ -9,7 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
-import useUser from '../app/hooks/useUser';
+import { useUser } from '../app/hooks/useUser';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import Link from 'next/link';
 
@@ -23,13 +22,14 @@ export default function Profile() {
         className="min-w-[88px] px-4 h-10 inline-block transition-colors bg-[#3F3F46] text-[#FFFFFF] rounded-full leading-10 text-center"
       >
         <GitHubIcon className="inline scale-75 -translate-y-0.5" />
-        {I18N.components.User.dengLu}</Button>
+        {I18N.components.User.dengLu}
+      </Button>
     );
   }
 
   const avatar = (
     <Dropdown className="cursor-pointer">
-      <DropdownTrigger >
+      <DropdownTrigger>
         <Avatar
           src={user.picture!}
           alt={user.name!}
@@ -42,7 +42,7 @@ export default function Profile() {
         <DropdownItem>
           <Link href="/user/tokens">{I18N.components.User.tOKEN}</Link>
         </DropdownItem>
-        <DropdownItem onClick={actions.doLogout}> 
+        <DropdownItem onClick={actions.doLogout}>
           {I18N.components.User.dengChu}
         </DropdownItem>
       </DropdownMenu>

@@ -163,36 +163,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      github_app_authorization: {
-        Row: {
-          code: string | null;
-          created_at: string;
-          expires_at: string | null;
-          id: number;
-          installation_id: string | null;
-          permissions: Json | null;
-          token: string | null;
-        };
-        Insert: {
-          code?: string | null;
-          created_at?: string;
-          expires_at?: string | null;
-          id?: number;
-          installation_id?: string | null;
-          permissions?: Json | null;
-          token?: string | null;
-        };
-        Update: {
-          code?: string | null;
-          created_at?: string;
-          expires_at?: string | null;
-          id?: number;
-          installation_id?: string | null;
-          permissions?: Json | null;
-          token?: string | null;
-        };
-        Relationships: [];
-      };
       github_repo_config: {
         Row: {
           created_at: string;

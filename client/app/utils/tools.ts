@@ -13,10 +13,11 @@ export const extractParametersByTools = (content: string) => {
   return null;
 };
 
-export const extractFullRepoNameFromGitHubUrl = (githubUrl: string) => {
+export const extractFullRepoNameFromGitHubUrl = (input: string) => {
   try {
-    const regex = /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)(\/.*)?$/;
-    const match = githubUrl.match(regex);
+    // Use a regex that matches both full URLs and `username/reponame` format.
+    const regex = /^(?:https:\/\/github\.com\/)?([^\/]+)\/([^\/]+)(?:\/.*)?$/;
+    const match = input.match(regex);
 
     if (match && match[1] && match[2]) {
       return `${match[1]}/${match[2]}`;
@@ -24,7 +25,7 @@ export const extractFullRepoNameFromGitHubUrl = (githubUrl: string) => {
       return null;
     }
   } catch (error) {
-    console.error('Error parsing GitHub URL:', error);
+    console.error('Error parsing input:', error);
     return null;
   }
 };
