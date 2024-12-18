@@ -7,11 +7,11 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 
 from petercat_utils.utils.env import get_env_variable
-from utils.get_private_key import get_private_key
+from utils.private_key import get_private_key
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")
-AWS_GITHUB_SECRET_NAME = get_env_variable("AWS_GITHUB_SECRET_NAME")
-REGIN_NAME = get_env_variable("AWS_REGION")
+X_GITHUB_SECRET_NAME = get_env_variable("X_GITHUB_SECRET_NAME")
+REGION_NAME = get_env_variable("AWS_REGION")
 
 
 def get_jwt():
@@ -24,7 +24,7 @@ def get_jwt():
         "iss": APP_ID,
     }
 
-    pem = get_private_key(region_name=REGIN_NAME, secret_id=AWS_GITHUB_SECRET_NAME)
+    pem = get_private_key(secret_id=X_GITHUB_SECRET_NAME)
     private_key = serialization.load_pem_private_key(
         pem.encode("utf-8"), password=None, backend=default_backend()
     )
