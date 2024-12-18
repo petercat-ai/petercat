@@ -11,6 +11,7 @@ export async function streamChat(
   apiUrl = '/api/chat/stream_qa',
   prompt = '',
   token = '',
+  signal?: AbortSignal 
 ): Promise<Response> {
   return fetch(`${apiDomain}${apiUrl}`, {
     method: 'POST',
@@ -26,6 +27,7 @@ export async function streamChat(
       prompt: prompt,
       bot_id: token,
     }),
+    signal
   });
 }
 

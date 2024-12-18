@@ -5,16 +5,17 @@ export enum Status {
   end = 'end',
 }
 
-export enum ContentType {
-  text = 'text',
-  img = 'img',
-  component = 'component',
-  slot = 'slot',
+export enum MessageTypeEnum {
+  TEXT = 'text',
+  IMAGE_URL = 'image_url',
 }
 
 export enum Role {
   system = 'system',
+  init = 'init',
   assistant = 'assistant',
+  loading='loading',
+  starter = 'starter',
   user = 'user',
   tool = 'tool',
   knowledge = 'knowledge',
@@ -43,12 +44,12 @@ interface ImageURL {
 
 export interface ImageURLContentBlock {
   image_url: ImageURL;
-  type: 'image_url';
+  type: MessageTypeEnum.IMAGE_URL;
 }
 
 export interface TextContentBlock {
   text: string;
-  type: 'text';
+  type: MessageTypeEnum.TEXT;
 }
 
 export type MessageContent = ImageURLContentBlock | TextContentBlock;
@@ -63,7 +64,7 @@ export interface IMessage {
   parentId?: string; // ID of the parent message
   uid: string; // User UUID
   content: string; // Content text
-  contentType: ContentType; // Type of content
+  contentType: MessageTypeEnum; // Type of content
   componentId?: string; // If contentType is of component type, componentId is the component's ID
   role: Role; // Role type
   ext?: IExtraInfo[]; // Additional information such as execution process/intermediate state
