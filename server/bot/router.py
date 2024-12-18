@@ -3,6 +3,7 @@ from fastapi import APIRouter, Request, Depends, status, Query, Path
 from fastapi.responses import JSONResponse
 from github import Github, Auth
 from auth.get_user_info import get_user, get_user_id
+from bot.list import query_list
 from core.dao.botApprovalDAO import BotApprovalDAO
 from core.dao.botDAO import BotDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
@@ -32,42 +33,9 @@ def get_bot_list(
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
     try:
-        supabase = get_client()
-        query = supabase.table("bots").select(
-            "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
-        )
+        data = query_list(name, user.id, user.access_token, personal)
 
-        if personal == "true":
-            if not user or not user.access_token:
-                return {"data": [], "personal": personal}
-
-            auth = Auth.Token(token=user.access_token)
-            github_user = Github(auth=auth).get_user()
-            orgs_ids = [org.id for org in github_user.get_orgs()]
-            bot_ids = []
-
-            repository_config_dao = RepositoryConfigDAO()
-            bots = repository_config_dao.query_bot_id_by_owners(
-                orgs_ids + [github_user.id]
-            )
-
-            if bots:
-                bot_ids = [bot["robot_id"] for bot in bots if bot["robot_id"]]
-
-            or_clause = f"uid.eq.{user.id}" + (
-                f",id.in.({','.join(map(str, bot_ids))})" if bot_ids else ""
-            )
-            query = query.or_(or_clause)
-        else:
-            query = query.eq("public", True)
-
-        if name:
-            query = query.filter("name", "like", f"%{name}%")
-
-        query = query.order("updated_at", desc=True)
-        data = query.execute()
-
-        return {"data": data.data if data and data.data else [], "personal": personal}
+        return {"data": data if data else [], "personal": personal}
 
     except Exception as e:
         return JSONResponse(
