@@ -17,11 +17,7 @@ import {
   Tooltip,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import {
-  useBotDelete,
-  useGetBotBoundRepos,
-  useGetBotRagTask,
-} from '@/app/hooks/useBot';
+import { useBotDelete, useGetBotRagTask } from '@/app/hooks/useBot';
 import { TaskStatus } from '@/types/task';
 import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
 import KnowledgeTaskCompleteIcon from '@/public/icons/CheckBadgeIcon';
@@ -33,12 +29,17 @@ import CardCartIcon from '@/public/icons/CardCartIcon';
 
 declare type Bot = Tables<'bots'>;
 
-const BotInfoIconList = (props: { bot: Bot }) => {
+interface BotInfo extends Bot {
+  github_installed?: boolean;
+  picture?: string;
+  nickname?: string;
+}
+
+const BotInfoIconList = (props: { bot: BotInfo }) => {
   const { bot } = props;
-  const { data } = useGetBotBoundRepos(bot.id);
   const showHomeIcon = bot.domain_whitelist && bot.domain_whitelist.length > 0;
   const showCartIcon = bot.public;
-  const showGithubIcon = data && Array.isArray(data) && data.length > 0;
+  const showGithubIcon = bot.github_installed;
   const texts = [
     showGithubIcon ? I18N.components.BotCard.gITHU : '',
     showHomeIcon ? I18N.components.BotCard.guanWang : undefined,

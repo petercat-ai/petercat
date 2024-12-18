@@ -21,6 +21,8 @@ def query_list(
                 "id, created_at, updated_at, avatar, description, name, public, starters, uid, repo_name"
             )
         )
+        if name:
+            query = query.filter("name", "like", f"%{name}%")
 
         if personal == "true":
             if not access_token or not user_id:
@@ -45,9 +47,6 @@ def query_list(
             query = query.or_(or_clause)
         else:
             query = query.eq("public", True)
-
-        if name:
-            query = query.filter("name", "like", f"%{name}%")
 
         query = query.order("updated_at", desc=True)
         data = query.execute()
