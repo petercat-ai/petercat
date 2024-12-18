@@ -157,7 +157,7 @@ const InputAreaRender = (props: {
   return (
     <Form
       form={form}
-      className="relative px-[12px] py-[10px] m-[12px] rounded-[10px] lui-input-area bg-[#f1f1f1]"
+      className="relative px-[12px] py-[10px] rounded-[10px] lui-input-area bg-[#f1f1f1]"
       style={{ opacity: disabled ? 0.6 : 1 }}
     >
       {disabled && disabledPlaceholder && (

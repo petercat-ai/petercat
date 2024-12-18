@@ -11,14 +11,14 @@ import { Highlight } from '@ant-design/pro-editor';
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
-import { IExtraInfo, Status } from '../interface';
+import { IToolExtraInfo, IToolStatus } from '../interface';
 
-const getColorClass = (status: Status) => {
+const getColorClass = (status: IToolStatus) => {
   const colorClasses = {
-    [Status.loading]: 'text-blue-600',
-    [Status.success]: 'text-green-600',
-    [Status.end]: 'text-gray-500',
-    [Status.error]: 'text-red-600',
+    [IToolStatus.loading]: 'text-blue-600',
+    [IToolStatus.success]: 'text-green-600',
+    [IToolStatus.end]: 'text-gray-500',
+    [IToolStatus.error]: 'text-red-600',
   };
 
   // Return the class, or a default value if the status is undefined
@@ -35,8 +35,8 @@ const safeJsonParse = (jsonString: string) => {
 };
 
 export interface ThoughtChainProps {
-  content?: IExtraInfo;
-  status?: Status;
+  content?: IToolExtraInfo;
+  status?: IToolStatus;
   source?: string;
   timeCost?: string;
 }
@@ -101,25 +101,25 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
             return <UnorderedListOutlined className="text-gray-900 text-xs" />;
           }
           switch (status) {
-            case Status.success:
+            case IToolStatus.success:
               return (
                 <CheckCircleOutlined
                   className={`text-xs ${getColorClass(status!)}`}
                 />
               );
-            case Status.loading:
+            case IToolStatus.loading:
               return (
                 <LoadingOutlined
                   className={`text-xs ${getColorClass(status!)}`}
                 />
               );
-            case Status.error:
+            case IToolStatus.error:
               return (
                 <CloseCircleOutlined
                   className={`text-xs ${getColorClass(status!)}`}
                 />
               );
-            case Status.end:
+            case IToolStatus.end:
               return (
                 <ExclamationCircleOutlined
                   className={`text-xs ${getColorClass(status!)}`}

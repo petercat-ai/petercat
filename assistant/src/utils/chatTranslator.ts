@@ -1,13 +1,5 @@
 import { forEach } from 'lodash';
-interface Tool {
-  type: string;
-  extra: {
-    source: string;
-    pluginName: string;
-    data: string;
-    status: string;
-  };
-}
+import { ITool, MessageContent, MessageTypeEnum } from '../interface';
 
 /**
  * parse stream chunk data to lui message json
@@ -16,7 +8,7 @@ interface Tool {
  */
 export const convertChunkToJson = (rawData: string) => {
   const chunks = rawData?.trim()?.split('\n\n');
-  const tools: Tool[] = [];
+  const tools: ITool[] = [];
   const messages: string[] = [];
   const errors: string[] = [];
 
@@ -47,6 +39,35 @@ export const convertChunkToJson = (rawData: string) => {
     errors.push(error.message);
     return { tools, message: messages.join(''), errors };
   }
+};
+
+export const parseStreamChunk = (
+  origin: MessageContent[],
+  rawData: string,
+): MessageContent[] => {
+  let tool = origin.find((item) => item.type === MessageTypeEnum.TOOL);
+  let message = origin.find((item) => item.type === MessageTypeEnum.TEXT);
+  let error = origin.find((item) => item.type === MessageTypeEnum.ERROR);
+  try {
+    const parsedChunk = JSON.parse(rawData);
+    if (parsedChunk.type === 'tool') {
+      tool = parsedChunk;
+    } else if (parsedChunk.type === 'message') {
+      message = {
+        type: MessageTypeEnum.TEXT,
+        text: (message?.text ?? '') + parsedChunk.content,
+      };
+    } else if (parsedChunk.status === 'error') {
+      console.warn('assistant error info:', parsedChunk.message);
+      error = {
+        type: MessageTypeEnum.ERROR,
+        error: message?.text + parsedChunk.content,
+      };
+    }
+  } catch (e: any) {
+    error = { type: MessageTypeEnum.ERROR, error: e.message };
+  }
+  return [tool, message, error].filter((item) => !!item);
 };
 
 export const handleStream = async (response: Response) => {

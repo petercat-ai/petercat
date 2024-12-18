@@ -1,23 +1,28 @@
 // import type { MetaData } from '@ant-design/pro-chat';
 import { Bubble, useXAgent, useXChat, XStream } from '@ant-design/x';
+import { MessageInfo } from '@ant-design/x/es/useXChat';
 import { Flex, GetProp, theme } from 'antd';
 import { isEmpty } from 'lodash';
 import React, { memo, useEffect, useRef, useState, type FC } from 'react';
 import useSWR from 'swr';
 import SignatureIcon from '../icons/SignatureIcon';
 import {
+  IContentMessage,
   ImageURLContentBlock,
-  Message,
+  ITool,
   MessageTypeEnum,
   Role,
 } from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import StarterList from '../StarterList';
+import ThoughtChain from '../ThoughtChain';
+import { parseStreamChunk } from '../utils';
 import InputArea from './components/InputAreaRender';
 import LoadingStart from './components/LoadingStart';
 import MarkdownRender from './components/MarkdownRender';
 import UserContent from './components/UserContent';
+import { UITemplateRender } from './template';
 import LegacyChat from './~index';
 
 export interface MetaData {
@@ -63,13 +68,6 @@ export interface ChatProps extends BotInfo {
   getToolsResult?: (response: any) => void;
 }
 
-const transText2Message = (role: Role, text: string): Message => {
-  return {
-    role: role,
-    content: [{ type: MessageTypeEnum.TEXT, text }],
-  };
-};
-
 const Chat: FC<ChatProps> = memo(
   ({
     helloMessage = '让我们开始对话吧~',
@@ -89,12 +87,12 @@ const Chat: FC<ChatProps> = memo(
   }) => {
     const { token: designToken } = theme.useToken();
     const tokenRef = useRef<string | undefined>(token);
-    const [requestStatus, setRequestStatus] = useState<
-      'loading' | 'success' | 'error'
-    >('success');
     useEffect(() => {
       tokenRef.current = token;
     }, [token]);
+    const messageMinWidth = drawerWidth
+      ? `calc(${drawerWidth}px - 90px)`
+      : '400px';
     const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>({
       assistantMeta: {
         avatar: assistantMeta?.avatar,
@@ -127,10 +125,10 @@ const Chat: FC<ChatProps> = memo(
     };
 
     // ============================ Agent =============================
-    const [agent] = useXAgent<Message>({
+    const [agent] = useXAgent<IContentMessage>({
       baseURL: apiDomain,
       request: async (
-        { message, messages },
+        { message, messages = [] },
         { onError, onUpdate, onSuccess },
       ) => {
         onUpdate({
@@ -139,36 +137,41 @@ const Chat: FC<ChatProps> = memo(
         });
         console.log('message list are', messages);
         console.log('message is', message);
-        console.log('props', token, apiUrl, prompt, editBotId);
-        if (!messages) {
-          return;
-        }
-        const newMessages = messages.filter(
-          (item) => item.role !== Role.tool && item.role !== Role.knowledge,
-        );
-        let res = transText2Message(Role.assistant, '');
+        const newMessages = messages
+          .filter(
+            (item) => item.role !== Role.tool && item.role !== Role.knowledge,
+          )
+          .map((item) => {
+            return {
+              ...item,
+              content: item.content.filter(
+                (item) =>
+                  item.type !== MessageTypeEnum.ERROR &&
+                  item.type !== MessageTypeEnum.TOOL,
+              ),
+            };
+          });
+        let res: IContentMessage = { role: Role.assistant, content: [] };
         try {
-          // TODO:check this when change bot
-          const token = editBotId || tokenRef?.current;
           const response = await streamChat(
             newMessages,
             apiDomain,
             apiUrl,
             prompt,
-            token,
+            editBotId || tokenRef?.current,
             resetController().signal,
           );
           if (response.body instanceof ReadableStream) {
             console.log('stream response is', response);
             for await (const chunk of XStream({
-              // Todo：合并信息
               readableStream: response.body!,
             })) {
-              console.log('chunk is', JSON.stringify(chunk));
-              res = transText2Message(
-                Role.assistant,
-                chunk.data ?? JSON.stringify(chunk),
-              );
+              const resContent = parseStreamChunk(res.content, chunk.data);
+
+              res = {
+                role: Role.assistant,
+                content: resContent,
+              };
               onUpdate(res);
             }
           } else {
@@ -188,15 +191,18 @@ const Chat: FC<ChatProps> = memo(
     });
 
     // ============================= Chat =============================
-    const { setMessages, messages, onRequest } = useXChat<Message, Message>({
+    const { setMessages, messages, onRequest } = useXChat<
+      IContentMessage,
+      IContentMessage
+    >({
       agent,
     });
 
     const resetChat = () => {
-      const initMessages = [
+      const initMessages: MessageInfo<IContentMessage>[] = [
         {
           id: 'init',
-          status: 'success' as const,
+          status: 'success',
           message: {
             role: Role.init,
             content: [
@@ -232,7 +238,7 @@ const Chat: FC<ChatProps> = memo(
     }, [currentBotInfo]);
 
     // ============================ Event ============================
-    const handleSendMessage = (message: Message) => {
+    const handleSendMessage = (message: IContentMessage) => {
       setMessages((prev) =>
         prev.filter((info) => info.id !== 'init' && info.id !== 'suggestion'),
       );
@@ -256,42 +262,9 @@ const Chat: FC<ChatProps> = memo(
     }, [botDetail]);
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
-      // const assistantIcon =
-      //   currentBotInfo.assistantMeta?.avatar || BOT_INFO.avatar;
       const { title, avatar = BOT_INFO.avatar } =
         currentBotInfo.assistantMeta ?? {};
       return {
-        [Role.assistant]: {
-          classNames: {
-            avatar: 'petercat-avatar',
-            header: 'petercat-header',
-            content: 'petercat-content-start',
-          },
-          placement: 'start',
-          avatar: {
-            src: avatar,
-          },
-          header: <div>{title}</div>,
-          messageRender: (items) => {
-            console.log('++++assistant', items);
-            try {
-              return (
-                <>
-                  {/* @ts-ignore */}
-                  {items.content.map((item, index) => (
-                    <MarkdownRender key={index} content={item.text} />
-                  ))}
-                </>
-              );
-            } catch (e) {
-              console.log('items', items);
-            }
-          },
-          shape: 'corner',
-          typing: {
-            step: 5,
-          },
-        },
         [Role.init]: {
           classNames: {
             avatar: 'petercat-avatar',
@@ -312,22 +285,6 @@ const Chat: FC<ChatProps> = memo(
               console.log('init items', e);
               console.log('init items', items);
             }
-          },
-        },
-        [Role.loading]: {
-          classNames: {
-            avatar: 'petercat-avatar',
-            header: 'petercat-header',
-          },
-          placement: 'start',
-          avatar: {
-            src: avatar,
-          },
-          header: <div>{title}</div>,
-          variant: 'borderless',
-          messageRender: () => {
-            // TODO:设置一个超时时间
-            return <LoadingStart loop={true}></LoadingStart>;
           },
         },
         [Role.starter]: {
@@ -360,6 +317,71 @@ const Chat: FC<ChatProps> = memo(
             }
           },
         },
+        [Role.assistant]: {
+          classNames: {
+            avatar: 'petercat-avatar',
+            header: 'petercat-header',
+          },
+          placement: 'start',
+          avatar: {
+            src: avatar,
+          },
+          variant: 'borderless',
+          header: <>{title}</>,
+          messageRender: (items)=> {
+            // 这里是 IMessageContent
+            console.log('++++assistant++++', items);
+            const tool = items.find(item=>item.type === )
+            try {
+              return (
+                <>
+                  {/* @ts-ignore */}
+                  {items.content.map((item: IContentMessage, index: number) => {
+                    const { extra } = item.content as ITool;
+                    getToolsResult?.(extra);
+                    const { data, status, source, template_id } = extra;
+                    return (
+                      <>
+                        {item.type === MessageTypeEnum.TOOL && (
+                          <ThoughtChain
+                            key={index}
+                            content={extra}
+                            status={status}
+                            source={source}
+                          />
+                        )}
+                        {item.type === 'text' && (
+                          <MarkdownRender
+                            className="petercat-content-start"
+                            content={item.text}
+                          />
+                        )}
+                        {template_id && (
+                          <div
+                            style={{ maxWidth: messageMinWidth }}
+                            className="transition-all duration-300 ease-in-out"
+                          >
+                            {UITemplateRender({
+                              templateId: template_id,
+                              cardData: data,
+                              apiDomain: apiDomain,
+                              token: tokenRef?.current ?? '',
+                            })}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })}
+                </>
+              );
+            } catch (e) {
+              console.log('items', items);
+            }
+          },
+          typing: {
+            step: 5,
+          },
+        },
         [Role.user]: {
           classNames: {
             avatar: 'petercat-avatar',
@@ -385,6 +407,22 @@ const Chat: FC<ChatProps> = memo(
             }
           },
         },
+        [Role.loading]: {
+          classNames: {
+            avatar: 'petercat-avatar',
+            header: 'petercat-header',
+          },
+          placement: 'start',
+          avatar: {
+            src: avatar,
+          },
+          header: <div>{title}</div>,
+          variant: 'borderless',
+          messageRender: () => {
+            // TODO:设置一个超时时间
+            return <LoadingStart loop={true}></LoadingStart>;
+          },
+        },
       };
     }, [currentBotInfo]);
     // ============================ Render ============================
@@ -405,7 +443,7 @@ const Chat: FC<ChatProps> = memo(
           <Flex
             vertical
             className="h-full"
-            style={{ padding: designToken.paddingSM }}
+            style={{ padding: designToken.padding }}
           >
             <Bubble.List
               className="flex-auto"

@@ -23,7 +23,7 @@ import { UITemplateRender } from './template/index';
 import SignatureIcon from '../icons/SignatureIcon';
 import {
   ImageURLContentBlock,
-  Message,
+  IContentMessage,
   MessageContent,
   Role,
 } from '../interface';
@@ -138,7 +138,7 @@ const Chat: FC<ChatProps> = memo(
                 ],
               };
             }
-          }) as Message[];
+          }) as IContentMessage[];
 
         try {
           const token = editBotId || tokenRef?.current;
