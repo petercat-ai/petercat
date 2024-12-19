@@ -98,7 +98,7 @@ sam deploy \
     --config-file .aws/petercat-ap-southeast.toml \
     --parameter-overrides APIUrl=$API_URL \
                           WebUrl=$WEB_URL \
-                          AWSSecretName=$AWS_GITHUB_SECRET_NAME \
+                          AWSSecretName=$X_GITHUB_SECRET_NAME \
                           S3TempBucketName=$S3_TEMP_BUCKET_NAME \
                           GitHubAppID=$X_GITHUB_APP_ID \
                           GithubAppsClientId=$X_GITHUB_APPS_CLIENT_ID \

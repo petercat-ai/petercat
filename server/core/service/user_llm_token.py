@@ -6,13 +6,13 @@ from petercat_utils import get_env_variable
 from core.dao.userLLmTokenDAO import UserLLMTokenDAO
 from core.models.user_llm_token import UserLLMToken
 
-from utils.get_private_key import get_private_key
+from utils.private_key import get_private_key
 from utils.rsa import decrypt_token, encrypt_token
 from utils.sanitize_token import sanitize_token
 
-REGIN_NAME = get_env_variable("AWS_REGION")
-AWS_LLM_TOKEN_SECRET_NAME = get_env_variable("AWS_LLM_TOKEN_SECRET_NAME")
-AWS_LLM_TOKEN_PUBLIC_NAME = get_env_variable("AWS_LLM_TOKEN_PUBLIC_NAME")
+REGION_NAME = get_env_variable("AWS_REGION")
+LLM_TOKEN_SECRET_NAME = get_env_variable("LLM_TOKEN_SECRET_NAME")
+LLM_TOKEN_PUBLIC_NAME = get_env_variable("LLM_TOKEN_PUBLIC_NAME")
 
 class CreateUserLLMTokenVO(BaseModel):
   user_id: Optional[str] = None
@@ -30,7 +30,7 @@ class UserLLMTokenService():
 
   def create_llm_token(self, create_llm_token_data: CreateUserLLMTokenVO):
 
-    public_key = get_private_key(REGIN_NAME, AWS_LLM_TOKEN_PUBLIC_NAME)
+    public_key = get_private_key(LLM_TOKEN_PUBLIC_NAME)
     encrypted_token = encrypt_token(public_key.encode('utf-8'), create_llm_token_data.token)
 
     encrypted_token = base64.b64encode(encrypted_token).decode('utf-8')
@@ -46,7 +46,7 @@ class UserLLMTokenService():
     self.llm_token_dao.create(llm_token_model)
 
   def get_llm_token(self, id: str, user_id: Optional[str] = None) -> UserLLMTokenVO:
-    private_key_str = get_private_key(REGIN_NAME, AWS_LLM_TOKEN_SECRET_NAME)
+    private_key_str = get_private_key(LLM_TOKEN_SECRET_NAME)
 
     token_model = self.llm_token_dao.get_by_id(id=id, user_id=user_id)
     encrypted_token = base64.b64decode(token_model.encrypted_token.encode('utf-8'))
