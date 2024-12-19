@@ -36,3 +36,7 @@
   width: 100%;
   height: 100%;
 }
+
+.ant-bubble-content {
+  min-height: 0 !important;
+}
