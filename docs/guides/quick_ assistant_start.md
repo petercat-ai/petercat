@@ -37,7 +37,7 @@ import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 
 const YourPetercataiAssistant = () => {
-  return <Assistant token="<your token>" apiDomain="https://api.petercat.ai" />;
+  return <Assistant token="<your token>" showBubble={true} isVisible={false} apiDomain="https://api.petercat.ai" />;
 };
 
 function App() {
