@@ -199,6 +199,7 @@ const Chat: FC<ChatProps> = memo(
     });
 
     const resetChat = () => {
+      abortController?.abort();
       const initMessages: MessageInfo<IContentMessage>[] = [
         {
           id: 'init',
@@ -306,11 +307,11 @@ const Chat: FC<ChatProps> = memo(
           messageRender: (items) => {
             try {
               // @ts-ignore
-              const starters = items.content.map((item) => item.text);
+              const botStarters = items.content.map((item) => item.text);
               return (
                 <StarterList
                   className="ml-[52px]"
-                  starters={starters}
+                  starters={botStarters}
                   onClick={(item) => {
                     handleSendMessage({
                       role: Role.user,
@@ -460,23 +461,24 @@ const Chat: FC<ChatProps> = memo(
         >
           <div className="h-full w-full flex flex-col relative">
             {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
-            {disabled && (
-              <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[9]" />
-            )}
             <Flex vertical className="h-full">
               <Bubble.List
                 style={{ flex: '1 1 0', padding: designToken.padding }}
                 roles={roles}
-                items={messages.map(({ status, message, id }, index) => {
-                  const role = message.role;
-                  const key = id || `fixed_${index}`;
-                  return {
-                    key,
-                    role,
-                    content: { ...message, status, id },
-                    typing: false,
-                  };
-                })}
+                items={
+                  disabled
+                    ? []
+                    : messages.map(({ status, message, id }, index) => {
+                        const role = message.role;
+                        const key = id || `fixed_${index}`;
+                        return {
+                          key,
+                          role,
+                          content: { ...message, status, id },
+                          typing: false,
+                        };
+                      })
+                }
               />
               <div style={{ padding: designToken.paddingSM }}>
                 <InputArea
