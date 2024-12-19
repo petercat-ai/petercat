@@ -1,9 +1,8 @@
 from typing import Optional
 
-from github import Github
+from github import Github, Auth
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils import get_client
-from github import Github, Auth
 
 
 def query_list(

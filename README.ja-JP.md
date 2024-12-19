@@ -87,11 +87,11 @@
 | `WEB_URL`                  | 必須                                   | フロントエンドウェブサービスのドメイン            | `https://petercat.ai`                       |
 | `STATIC_URL`               | 必須                                   | 静的リソースドメイン                        | `https://static.petercat.ai`                |
 | **AWS関連環境変数**                                  |
-| `AWS_GITHUB_SECRET_NAME`          | 必須                                   | AWSシークレットファイル名                          | `prod/githubapp/petercat/pem`               |
-| `AWS_STATIC_SECRET_NAME` | オプション | AWSが管理するCloudFrontのプライベートキーの名前。設定されている場合、CloudFrontの署名付きURLが使用され、リソースが保護されます。詳細については、[AWSドキュメント](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)を参照してください。 | `prod/petercat/static` |
-| `AWS_LLM_TOKEN_SECRET_NAME` | オプション | AWSが管理するLLM署名プライベートキーの名前。設定されている場合、PetercatはRSAアルゴリズムを使用してユーザーのLLMトークンを管理します。 | `prod/petercat/llm` |
-| `AWS_LLM_TOKEN_PUBLIC_NAME` | オプション | AWSが管理するLLM署名公開キーの名前。設定されている場合、PetercatはRSAアルゴリズムを使用してユーザーのLLMトークンを管理します。 | `prod/petercat/llm/pub` |
-| `AWS_STATIC_KEYPAIR_ID` | オプション | AWS CloudFrontのキーID。設定されている場合、CloudFrontの署名付きURLが使用され、リソースが保護されます。詳細については、[AWSドキュメント](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)を参照してください。 | `APKxxxxxxxx` |
+| `X_GITHUB_SECRET_NAME`          | 必須                                   | AWSシークレットファイル名                          | `prod/githubapp/petercat/pem`               |
+| `STATIC_SECRET_NAME` | オプション | AWSが管理するCloudFrontのプライベートキーの名前。設定されている場合、CloudFrontの署名付きURLが使用され、リソースが保護されます。詳細については、[AWSドキュメント](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)を参照してください。 | `prod/petercat/static` |
+| `LLM_TOKEN_SECRET_NAME` | オプション | AWSが管理するLLM署名プライベートキーの名前。設定されている場合、PetercatはRSAアルゴリズムを使用してユーザーのLLMトークンを管理します。 | `prod/petercat/llm` |
+| `LLM_TOKEN_PUBLIC_NAME` | オプション | AWSが管理するLLM署名公開キーの名前。設定されている場合、PetercatはRSAアルゴリズムを使用してユーザーのLLMトークンを管理します。 | `prod/petercat/llm/pub` |
+| `STATIC_KEYPAIR_ID` | オプション | AWS CloudFrontのキーID。設定されている場合、CloudFrontの署名付きURLが使用され、リソースが保護されます。詳細については、[AWSドキュメント](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)を参照してください。 | `APKxxxxxxxx` |
 | `S3_TEMP_BUCKET_NAME`      | 必須                                   | 一時的な画像ファイル用のAWS S3バケット                 | `xxx-temp`                                  |
 | `SQS_QUEUE_URL`            | 必須                                   | AWS SQSキューURL                             | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **Supabase関連環境変数**                              |

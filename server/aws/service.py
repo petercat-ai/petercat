@@ -5,22 +5,22 @@ from petercat_utils import get_env_variable
 import rsa
 from datetime import datetime, timedelta
 
-from utils.get_private_key import get_private_key
+from utils.private_key import get_private_key
 from .schemas import ImageMetaData
 from .constants import S3_TEMP_BUCKET_NAME, STATIC_URL
 from .exceptions import UploadError
 
-REGIN_NAME = get_env_variable("AWS_REGION")
-AWS_STATIC_SECRET_NAME = get_env_variable("AWS_STATIC_SECRET_NAME")
-AWS_STATIC_KEYPAIR_ID = get_env_variable("AWS_STATIC_KEYPAIR_ID")
+REGION_NAME = get_env_variable("AWS_REGION")
+STATIC_SECRET_NAME = get_env_variable("STATIC_SECRET_NAME")
+STATIC_KEYPAIR_ID = get_env_variable("STATIC_KEYPAIR_ID")
 
 def rsa_signer(message):
-    private_key_str = get_private_key(REGIN_NAME, AWS_STATIC_SECRET_NAME)
+    private_key_str = get_private_key(STATIC_SECRET_NAME)
     private_key = rsa.PrivateKey.load_pkcs1(private_key_str.encode('utf-8'))
     return rsa.sign(message, private_key, 'SHA-1')
 
 def create_signed_url(url, expire_minutes=60) -> str:
-    cloudfront_signer = CloudFrontSigner(AWS_STATIC_KEYPAIR_ID, rsa_signer)
+    cloudfront_signer = CloudFrontSigner(STATIC_KEYPAIR_ID, rsa_signer)
     
     # 设置过期时间
     expire_date = datetime.now() + timedelta(minutes=expire_minutes)
@@ -65,7 +65,7 @@ def upload_image_to_s3(file, metadata: ImageMetaData, s3_client):
         # you need to redirect your static domain to your s3 bucket domain
         s3_url = f"{STATIC_URL}/{s3_key}"
         signed_url = create_signed_url(url=s3_url, expire_minutes=60) \
-            if (AWS_STATIC_SECRET_NAME and AWS_STATIC_KEYPAIR_ID) \
+            if (STATIC_SECRET_NAME and STATIC_KEYPAIR_ID) \
                 else s3_url
         return {"message": "File uploaded successfully", "url": signed_url }
     except Exception as e:
