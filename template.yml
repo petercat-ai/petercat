@@ -92,23 +92,23 @@ Parameters:
     Type: String
     Description: Auth0 Client Secret
     Default: 1
-  AWSGithubSecretName:
+  GithubSecretName:
     Type: String
     Description: Name of the GitHub secret stored in AWS Secrets Manager
     Default: 1
-  AWSStaticSecretName:
+  StaticSecretName:
     Type: String
     Description: Name of the static secret stored in AWS Secrets Manager
     Default: 1
-  AWSLLMTokenSecretName:
+  LLMTokenSecretName:
     Type: String
     Description: Name of the LLM token secret stored in AWS Secrets Manager
     Default: 1
-  AWSLLMTokenPublicName:
+  LLMTokenPublicName:
     Type: String
     Description: Name of the LLM public token stored in AWS Secrets Manager
     Default: 1
-  AWSStaticKeyPairId:
+  StaticKeyPairId:
     Type: String
     Description: Key Pair ID for static resources
     Default: 1
@@ -127,11 +127,11 @@ Resources:
         Variables:
           AWS_LWA_INVOKE_MODE: RESPONSE_STREAM
           PETERCAT_ENV: !Ref PetercatEnv
-          X_GITHUB_SECRET_NAME: !Ref AWSGithubSecretName
-          STATIC_SECRET_NAME: !Ref AWSStaticSecretName
-          LLM_TOKEN_SECRET_NAME: !Ref AWSLLMTokenSecretName 
-          LLM_TOKEN_PUBLIC_NAME: !Ref AWSLLMTokenPublicName
-          STATIC_KEYPAIR_ID: !Ref AWSStaticKeyPairId
+          X_GITHUB_SECRET_NAME: !Ref GithubSecretName
+          STATIC_SECRET_NAME: !Ref StaticSecretName
+          LLM_TOKEN_SECRET_NAME: !Ref LLMTokenSecretName 
+          LLM_TOKEN_PUBLIC_NAME: !Ref LLMTokenPublicName
+          STATIC_KEYPAIR_ID: !Ref StaticKeyPairId
           S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
           API_URL: !Ref APIUrl
           WEB_URL: !Ref WebUrl
