@@ -56,7 +56,6 @@ export const parseStreamChunk = (
   let error = origin.find((item) => item.type === MessageTypeEnum.ERROR);
   try {
     const parsedChunk = JSON.parse(rawData);
-    console.log('parsedChunk', parsedChunk);
     if (parsedChunk.type === 'tool') {
       tool = parsedChunk as ITool;
     } else if (parsedChunk.type === 'message') {

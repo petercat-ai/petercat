@@ -148,12 +148,14 @@ const Chat: FC<ChatProps> = memo(
             editBotId || tokenRef?.current,
             resetController().signal,
           );
+          if (!response.ok) {
+            throw new Error(await response.json());
+          }
           if (response.body instanceof ReadableStream) {
             for await (const chunk of XStream({
               readableStream: response.body!,
             })) {
               const resContent = parseStreamChunk(res.content, chunk.data);
-
               res = {
                 role: Role.assistant,
                 content: resContent,
@@ -161,16 +163,27 @@ const Chat: FC<ChatProps> = memo(
               onUpdate(res);
             }
           } else {
-            return {
+            res = {
               role: Role.assistant,
               content: [
-                { type: MessageTypeEnum.TEXT, text: String(response.json()) },
+                {
+                  type: MessageTypeEnum.TEXT,
+                  text: JSON.stringify(await response.json()),
+                },
               ],
             };
           }
         } catch (e: any) {
-          // 处理请求错误，例如网络错误
-          onError(e);
+          console.error('Error:', e);
+          if (e.name === 'AbortError') {
+            // ignore abort error
+            // onError(e);
+          } else {
+            res = {
+              role: Role.assistant,
+              content: [{ type: MessageTypeEnum.ERROR, text: e.message }],
+            };
+          }
         }
         onSuccess(res);
       },
@@ -185,7 +198,6 @@ const Chat: FC<ChatProps> = memo(
     });
 
     const resetChat = () => {
-      abortController?.abort();
       const initMessages: MessageInfo<IContentMessage>[] = [
         {
           id: 'init',
@@ -220,7 +232,10 @@ const Chat: FC<ChatProps> = memo(
     };
 
     useEffect(() => {
-      resetChat();
+      resetController();
+      setTimeout(() => {
+        resetChat();
+      }, 0);
     }, [currentBotInfo]);
 
     // ============================ Event ============================
@@ -358,7 +373,7 @@ const Chat: FC<ChatProps> = memo(
                     )}
                     {errorContent && (
                       <div className="petercat-content-start text-red-700">
-                        ops...似乎出了点问题。
+                        ops..., {errorContent.text}
                       </div>
                     )}
                     {extra?.template_id && message.status === 'success' && (
@@ -479,11 +494,10 @@ const Chat: FC<ChatProps> = memo(
                     handleSendMessage(message);
                   }}
                   onClear={() => {
-                    resetController();
                     resetChat();
                   }}
                   onStop={() => {
-                    abortController?.abort();
+                    abortController?.abort('user cancel');
                   }}
                 />
               </div>
