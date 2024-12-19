@@ -112,8 +112,8 @@
 */
 
 *:where(.petercat-lui,.petercat-lui *),
-::before:where(.petercat-lui,.petercat-lui *),
-::after:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *)::before,
+:where(.petercat-lui,.petercat-lui *)::after {
   box-sizing: border-box;
   /* 1 */
   border-width: 0;
@@ -124,8 +124,8 @@
   /* 2 */
 }
 
-::before:where(.petercat-lui,.petercat-lui *),
-::after:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *)::before,
+:where(.petercat-lui,.petercat-lui *)::after {
   --tw-content: '';
 }
 
@@ -378,8 +378,8 @@ progress:where(.petercat-lui,.petercat-lui *) {
 Correct the cursor style of increment and decrement buttons in Safari.
 */
 
-::-webkit-inner-spin-button:where(.petercat-lui,.petercat-lui *),
-::-webkit-outer-spin-button:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *) ::-webkit-inner-spin-button,
+:where(.petercat-lui,.petercat-lui *) ::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -399,7 +399,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 Remove the inner padding in Chrome and Safari on macOS.
 */
 
-::-webkit-search-decoration:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *) ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -408,7 +408,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 2. Change font properties to `inherit` in Safari.
 */
 
-::-webkit-file-upload-button:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *) ::-webkit-file-upload-button {
   -webkit-appearance: button;
   /* 1 */
   font: inherit;
@@ -481,15 +481,15 @@ textarea:where(.petercat-lui,.petercat-lui *) {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-input::-moz-placeholder:where(.petercat-lui,.petercat-lui *), textarea::-moz-placeholder:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *) input::-moz-placeholder, :where(.petercat-lui,.petercat-lui *) textarea::-moz-placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
   /* 2 */
 }
 
-input::placeholder:where(.petercat-lui,.petercat-lui *),
-textarea::placeholder:where(.petercat-lui,.petercat-lui *) {
+:where(.petercat-lui,.petercat-lui *) input::placeholder,
+:where(.petercat-lui,.petercat-lui *) textarea::placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -545,8 +545,12 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden]:where(.petercat-lui,.petercat-lui *) {
+[hidden]:where(:not([hidden="until-found"])):where(.petercat-lui,.petercat-lui *) {
   display: none;
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
 
 .visible {
@@ -609,24 +613,12 @@ video:where(.petercat-lui,.petercat-lui *) {
   top: -9px;
 }
 
-.top-\[24px\] {
-  top: 24px;
-}
-
 .z-\[999\] {
   z-index: 999;
 }
 
-.z-\[9\] {
-  z-index: 9;
-}
-
 .m-1 {
   margin: 0.25rem;
-}
-
-.m-\[12px\] {
-  margin: 12px;
 }
 
 .mx-auto {
@@ -639,12 +631,12 @@ video:where(.petercat-lui,.petercat-lui *) {
   margin-bottom: 0.5rem;
 }
 
-.mb-1 {
-  margin-bottom: 0.25rem;
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 
-.ml-\[72px\] {
-  margin-left: 72px;
+.ml-\[52px\] {
+  margin-left: 52px;
 }
 
 .mr-4 {
@@ -653,6 +645,10 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-\[2px\] {
+  margin-top: 2px;
 }
 
 .mt-px {
@@ -669,10 +665,6 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .hidden {
   display: none;
-}
-
-.h-24 {
-  height: 6rem;
 }
 
 .h-6 {
@@ -697,10 +689,6 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .h-\[40px\] {
   height: 40px;
-}
-
-.h-\[50\%\] {
-  height: 50%;
 }
 
 .h-full {
@@ -982,6 +970,10 @@ video:where(.petercat-lui,.petercat-lui *) {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-opacity-75 {
+  --tw-bg-opacity: 0.75;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -989,10 +981,6 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .p-0 {
   padding: 0px;
-}
-
-.p-3 {
-  padding: 0.75rem;
 }
 
 .p-\[16px\] {
@@ -1041,10 +1029,6 @@ video:where(.petercat-lui,.petercat-lui *) {
   text-align: center;
 }
 
-.font-sf {
-  font-family: SF Pro;
-}
-
 .text-\[10px\] {
   font-size: 10px;
 }
@@ -1064,10 +1048,6 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .leading-\[22px\] {
   line-height: 22px;
-}
-
-.leading-\[28px\] {
-  line-height: 28px;
 }
 
 .text-black {
