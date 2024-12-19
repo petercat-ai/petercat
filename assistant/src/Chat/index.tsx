@@ -75,7 +75,7 @@ const Chat: FC<ChatProps> = memo(
     apiUrl,
     drawerWidth = 500,
     assistantMeta,
-    starters = [],
+    starters,
     prompt,
     token,
     style,
@@ -93,15 +93,7 @@ const Chat: FC<ChatProps> = memo(
     const messageMinWidth = drawerWidth
       ? `calc(${drawerWidth}px - 90px)`
       : '400px';
-    const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>({
-      assistantMeta: {
-        avatar: assistantMeta?.avatar,
-        title: assistantMeta?.title,
-        backgroundColor: assistantMeta?.backgroundColor,
-      },
-      helloMessage: helloMessage,
-      starters: starters,
-    });
+    const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>();
     const { data: botDetail, isValidating } = useSWR(
       tokenRef?.current
         ? [
@@ -127,16 +119,11 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Agent =============================
     const [agent] = useXAgent<IContentMessage>({
       baseURL: apiDomain,
-      request: async (
-        { message, messages = [] },
-        { onError, onUpdate, onSuccess },
-      ) => {
+      request: async ({ messages = [] }, { onError, onUpdate, onSuccess }) => {
         onUpdate({
           role: Role.loading,
           content: [],
         });
-        console.log('message list are', messages);
-        console.log('message is', message);
         const newMessages = messages
           .filter(
             (item) => item.role !== Role.tool && item.role !== Role.knowledge,
@@ -162,7 +149,6 @@ const Chat: FC<ChatProps> = memo(
             resetController().signal,
           );
           if (response.body instanceof ReadableStream) {
-            console.log('stream response is', response);
             for await (const chunk of XStream({
               readableStream: response.body!,
             })) {
@@ -215,7 +201,7 @@ const Chat: FC<ChatProps> = memo(
           },
         },
       ];
-      if (currentBotInfo.starters?.length) {
+      if (currentBotInfo?.starters?.length) {
         initMessages.push({
           id: 'suggestion',
           status: 'success' as const,
@@ -230,7 +216,6 @@ const Chat: FC<ChatProps> = memo(
           },
         });
       }
-      console.log('setMessages', initMessages);
       setMessages(initMessages);
     };
 
@@ -277,7 +262,7 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
       const { title, avatar = BOT_INFO.avatar } =
-        currentBotInfo.assistantMeta ?? {};
+        currentBotInfo?.assistantMeta ?? {};
       return {
         [Role.init]: {
           classNames: {
@@ -341,7 +326,6 @@ const Chat: FC<ChatProps> = memo(
           variant: 'borderless',
           header: <>{title}</>,
           messageRender: (message: any) => {
-            console.log('++++assistant++++', message);
             try {
               const toolContent = message.content.find(
                 (i: MessageContent) => i.type === 'tool',
@@ -442,6 +426,7 @@ const Chat: FC<ChatProps> = memo(
         },
       };
     }, [currentBotInfo]);
+
     // ============================ Render ============================
     return (
       <div
