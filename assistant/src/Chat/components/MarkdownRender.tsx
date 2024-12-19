@@ -1,8 +1,6 @@
-import markdownit from 'markdown-it';
 /* eslint-disable react/no-danger */
+import { Markdown } from '@ant-design/pro-editor';
 import React from 'react';
-
-const md = markdownit({ html: true, breaks: true });
 
 interface IProps {
   className?: string;
@@ -10,12 +8,11 @@ interface IProps {
 }
 
 const MarkdownRender = (props: IProps) => (
-  <>
-    {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
-    <div
-      className={props.className}
-      dangerouslySetInnerHTML={{ __html: md.render(props.content) }}
-    />
-  </>
+  <Markdown
+    className="ant-pro-chat-list-item-message-content"
+    style={{ overflowX: 'hidden', overflowY: 'auto' }}
+  >
+    {props.content}
+  </Markdown>
 );
 export default MarkdownRender;

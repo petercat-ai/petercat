@@ -1,5 +1,11 @@
 import { forEach } from 'lodash';
-import { ITool, MessageContent, MessageTypeEnum } from '../interface';
+import {
+  IErrorMessage,
+  ITool,
+  MessageContent,
+  MessageTypeEnum,
+  TextContentBlock,
+} from '../interface';
 
 /**
  * parse stream chunk data to lui message json
@@ -50,24 +56,27 @@ export const parseStreamChunk = (
   let error = origin.find((item) => item.type === MessageTypeEnum.ERROR);
   try {
     const parsedChunk = JSON.parse(rawData);
+    console.log('parsedChunk', parsedChunk);
     if (parsedChunk.type === 'tool') {
-      tool = parsedChunk;
+      tool = parsedChunk as ITool;
     } else if (parsedChunk.type === 'message') {
       message = {
         type: MessageTypeEnum.TEXT,
+        // @ts-ignore
         text: (message?.text ?? '') + parsedChunk.content,
-      };
+      } as TextContentBlock;
     } else if (parsedChunk.status === 'error') {
       console.warn('assistant error info:', parsedChunk.message);
       error = {
         type: MessageTypeEnum.ERROR,
-        error: message?.text + parsedChunk.content,
+        // @ts-ignore
+        text: (error?.text ?? '') + parsedChunk.message,
       };
     }
   } catch (e: any) {
-    error = { type: MessageTypeEnum.ERROR, error: e.message };
+    error = { type: MessageTypeEnum.ERROR, text: e.message } as IErrorMessage;
   }
-  return [tool, message, error].filter((item) => !!item);
+  return [tool, message, error].filter((item) => !!item) as MessageContent[];
 };
 
 export const handleStream = async (response: Response) => {

@@ -58,7 +58,7 @@ export interface ITool {
 
 export interface IErrorMessage {
   type: MessageTypeEnum.ERROR;
-  error: string;
+  text: string;
 }
 
 export type MessageContent = ImageURLContentBlock | TextContentBlock | ITool | IErrorMessage;

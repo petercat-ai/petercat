@@ -1,4 +1,3 @@
-// import type { MetaData } from '@ant-design/pro-chat';
 import { Bubble, useXAgent, useXChat, XStream } from '@ant-design/x';
 import { MessageInfo } from '@ant-design/x/es/useXChat';
 import { Flex, GetProp, theme } from 'antd';
@@ -9,7 +8,7 @@ import SignatureIcon from '../icons/SignatureIcon';
 import {
   IContentMessage,
   ImageURLContentBlock,
-  ITool,
+  MessageContent,
   MessageTypeEnum,
   Role,
 } from '../interface';
@@ -21,9 +20,10 @@ import { parseStreamChunk } from '../utils';
 import InputArea from './components/InputAreaRender';
 import LoadingStart from './components/LoadingStart';
 import MarkdownRender from './components/MarkdownRender';
+import MySpinner from './components/MySpinner';
 import UserContent from './components/UserContent';
+import './index.css';
 import { UITemplateRender } from './template';
-import LegacyChat from './~index';
 
 export interface MetaData {
   /**
@@ -102,7 +102,7 @@ const Chat: FC<ChatProps> = memo(
       helloMessage: helloMessage,
       starters: starters,
     });
-    const { data: botDetail } = useSWR(
+    const { data: botDetail, isValidating } = useSWR(
       tokenRef?.current
         ? [
             `${apiDomain}/api/bot/detail?id=${tokenRef?.current}`,
@@ -276,14 +276,14 @@ const Chat: FC<ChatProps> = memo(
             src: avatar,
           },
           header: <>{title}</>,
-          messageRender: (items) => {
+          messageRender: (message) => {
             try {
               // @ts-ignore
-              const hello = items.content[0].text;
+              const hello = message.content[0].text;
               return <MarkdownRender content={hello} />;
             } catch (e) {
               console.log('init items', e);
-              console.log('init items', items);
+              console.log('init items', message);
             }
           },
         },
@@ -328,54 +328,61 @@ const Chat: FC<ChatProps> = memo(
           },
           variant: 'borderless',
           header: <>{title}</>,
-          messageRender: (items)=> {
-            // 这里是 IMessageContent
-            console.log('++++assistant++++', items);
-            const tool = items.find(item=>item.type === )
+          messageRender: (message: any) => {
+            console.log('++++assistant++++', message);
             try {
+              const toolContent = message.content.find(
+                (i: MessageContent) => i.type === 'tool',
+              );
+              const extra = toolContent?.extra;
+              getToolsResult?.(extra);
+              const textContent = message.content.find(
+                (i: MessageContent) => i.type === MessageTypeEnum.TEXT,
+              );
+              const errorContent = message.content.find(
+                (i: MessageContent) => i.type === MessageTypeEnum.ERROR,
+              );
               return (
                 <>
                   {/* @ts-ignore */}
-                  {items.content.map((item: IContentMessage, index: number) => {
-                    const { extra } = item.content as ITool;
-                    getToolsResult?.(extra);
-                    const { data, status, source, template_id } = extra;
-                    return (
-                      <>
-                        {item.type === MessageTypeEnum.TOOL && (
-                          <ThoughtChain
-                            key={index}
-                            content={extra}
-                            status={status}
-                            source={source}
-                          />
-                        )}
-                        {item.type === 'text' && (
-                          <MarkdownRender
-                            className="petercat-content-start"
-                            content={item.text}
-                          />
-                        )}
-                        {template_id && (
-                          <div
-                            style={{ maxWidth: messageMinWidth }}
-                            className="transition-all duration-300 ease-in-out"
-                          >
-                            {UITemplateRender({
-                              templateId: template_id,
-                              cardData: data,
-                              apiDomain: apiDomain,
-                              token: tokenRef?.current ?? '',
-                            })}
-                          </div>
-                        )}
-                      </>
-                    );
-                  })}
+                  <>
+                    {extra && (
+                      <div className="mb-2">
+                        <ThoughtChain
+                          content={extra}
+                          status={extra.status}
+                          source={extra.source}
+                        />
+                      </div>
+                    )}
+                    {textContent && (
+                      <div className="petercat-content-start">
+                        <MarkdownRender content={textContent.text} />
+                      </div>
+                    )}
+                    {errorContent && (
+                      <div className="petercat-content-start text-red-700">
+                        ops...似乎出了点问题。
+                      </div>
+                    )}
+                    {extra?.template_id && message.status === 'success' && (
+                      <div
+                        style={{ maxWidth: messageMinWidth }}
+                        className="transition-all duration-300 ease-in-out"
+                      >
+                        {UITemplateRender({
+                          templateId: extra.template_id,
+                          cardData: extra.data,
+                          apiDomain: apiDomain,
+                          token: tokenRef?.current ?? '',
+                        })}
+                      </div>
+                    )}
+                  </>
                 </>
               );
             } catch (e) {
-              console.log('items', items);
+              console.log('items', message);
             }
           },
           typing: {
@@ -389,10 +396,10 @@ const Chat: FC<ChatProps> = memo(
             content: 'petercat-content-end',
           },
           placement: 'end',
-          messageRender: (items) => {
+          messageRender: (message) => {
             try {
               // @ts-ignore
-              const { images, text } = items.content.reduce(
+              const { images, text } = message.content.reduce(
                 (acc: any, item: any) => {
                   if (item.type === 'image_url') acc.images.push(item);
                   else if (item.type === 'text') acc.text += item.text;
@@ -403,7 +410,7 @@ const Chat: FC<ChatProps> = memo(
               return <UserContent images={images} text={text} />;
             } catch (e) {
               console.log('user items', e);
-              console.log('user items', items);
+              console.log('user items', message);
             }
           },
         },
@@ -419,7 +426,6 @@ const Chat: FC<ChatProps> = memo(
           header: <div>{title}</div>,
           variant: 'borderless',
           messageRender: () => {
-            // TODO:设置一个超时时间
             return <LoadingStart loop={true}></LoadingStart>;
           },
         },
@@ -435,62 +441,61 @@ const Chat: FC<ChatProps> = memo(
           height: '100%',
         }}
       >
-        <div className="h-full w-full flex flex-col relative">
-          {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
-          {disabled && (
-            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[9]" />
-          )}
-          <Flex
-            vertical
-            className="h-full"
-            style={{ padding: designToken.padding }}
-          >
-            <Bubble.List
-              className="flex-auto"
-              roles={roles}
-              items={messages.map(({ status, message, id }, index) => {
-                const role = message.role;
-                console.log('-------', status, message);
-                const key = id || `fixed_${index}`;
-                return {
-                  key,
-                  role,
-                  content: { ...message, status, id },
-                  typing: false,
-                };
-              })}
-            />
-            <div style={{ paddingTop: designToken.paddingSM }}>
-              <InputArea
-                apiDomain={apiDomain}
-                disabled={disabled}
-                disabledPlaceholder={disabledPlaceholder}
-                isShowStop={agent.isRequesting()}
-                onMessageSend={(contentStr) => {
-                  const message = {
-                    role: Role.user,
-                    content: JSON.parse(contentStr),
+        <MySpinner
+          loading={!botDetail && isValidating}
+          spinner={<LoadingStart loop={true} />}
+        >
+          <div className="h-full w-full flex flex-col relative">
+            {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
+            {disabled && (
+              <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[9]" />
+            )}
+            <Flex vertical className="h-full">
+              <Bubble.List
+                style={{ flex: '1 1 0', padding: designToken.padding }}
+                roles={roles}
+                items={messages.map(({ status, message, id }, index) => {
+                  const role = message.role;
+                  const key = id || `fixed_${index}`;
+                  return {
+                    key,
+                    role,
+                    content: { ...message, status, id },
+                    typing: false,
                   };
-                  handleSendMessage(message);
-                }}
-                onClear={() => {
-                  resetController();
-                  resetChat();
-                  // TODO: handle this
-                }}
-                onStop={() => {
-                  // TODO: handle this
-                  abortController?.abort();
-                }}
+                })}
               />
-            </div>
-          </Flex>
-        </div>
+              <div style={{ padding: designToken.paddingSM }}>
+                <InputArea
+                  apiDomain={apiDomain}
+                  disabled={disabled}
+                  disabledPlaceholder={disabledPlaceholder}
+                  isShowStop={agent.isRequesting()}
+                  onMessageSend={(contentStr) => {
+                    if (agent.isRequesting()) {
+                      return;
+                    }
+                    const message = {
+                      role: Role.user,
+                      content: JSON.parse(contentStr),
+                    };
+                    handleSendMessage(message);
+                  }}
+                  onClear={() => {
+                    resetController();
+                    resetChat();
+                  }}
+                  onStop={() => {
+                    abortController?.abort();
+                  }}
+                />
+              </div>
+            </Flex>
+          </div>
+        </MySpinner>
       </div>
     );
   },
 );
-
-(Chat as any).LegacyChat = LegacyChat;
 
 export default Chat;
