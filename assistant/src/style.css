@@ -549,6 +549,10 @@ video:where(.petercat-lui,.petercat-lui *) {
   display: none;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .visible {
   visibility: visible;
 }
@@ -609,16 +613,8 @@ video:where(.petercat-lui,.petercat-lui *) {
   top: -9px;
 }
 
-.top-\[24px\] {
-  top: 24px;
-}
-
 .z-\[999\] {
   z-index: 999;
-}
-
-.z-\[9\] {
-  z-index: 9;
 }
 
 .m-1 {
@@ -649,6 +645,10 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-\[2px\] {
+  margin-top: 2px;
 }
 
 .mt-px {
@@ -689,10 +689,6 @@ video:where(.petercat-lui,.petercat-lui *) {
 
 .h-\[40px\] {
   height: 40px;
-}
-
-.h-\[50\%\] {
-  height: 50%;
 }
 
 .h-full {
@@ -972,6 +968,10 @@ video:where(.petercat-lui,.petercat-lui *) {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-opacity-75 {
+  --tw-bg-opacity: 0.75;
 }
 
 .object-cover {

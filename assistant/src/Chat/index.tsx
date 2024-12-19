@@ -296,8 +296,7 @@ const Chat: FC<ChatProps> = memo(
               const hello = message.content[0].text;
               return <MarkdownRender content={hello} />;
             } catch (e) {
-              console.log('init items', e);
-              console.log('init items', message);
+              console.error('init items', e);
             }
           },
         },
@@ -326,8 +325,7 @@ const Chat: FC<ChatProps> = memo(
                 ></StarterList>
               );
             } catch (e) {
-              console.log('starter items', e);
-              console.log('starter items', items);
+              console.error('starter items', e);
             }
           },
         },
@@ -396,7 +394,7 @@ const Chat: FC<ChatProps> = memo(
                 </>
               );
             } catch (e) {
-              console.log('items', message);
+              console.error('items', message);
             }
           },
           typing: {
@@ -423,8 +421,7 @@ const Chat: FC<ChatProps> = memo(
               );
               return <UserContent images={images} text={text} />;
             } catch (e) {
-              console.log('user items', e);
-              console.log('user items', message);
+              console.error('user items', e);
             }
           },
         },
