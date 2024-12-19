@@ -233,7 +233,7 @@ const Chat: FC<ChatProps> = memo(
       setMessages(initMessages);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
       resetChat();
     }, [currentBotInfo]);
 
@@ -244,6 +244,18 @@ const Chat: FC<ChatProps> = memo(
       );
       onRequest(message);
     };
+
+    useEffect(() => {
+      setCurrentBotInfo({
+        assistantMeta: {
+          avatar: assistantMeta?.avatar,
+          title: assistantMeta?.title,
+          backgroundColor: assistantMeta?.backgroundColor,
+        },
+        helloMessage: helloMessage,
+        starters: starters,
+      });
+    }, [assistantMeta, helloMessage, starters]);
 
     useEffect(() => {
       if (isEmpty(botDetail)) {
@@ -260,6 +272,7 @@ const Chat: FC<ChatProps> = memo(
         starters: info.starters,
       });
     }, [botDetail]);
+
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
       const { title, avatar = BOT_INFO.avatar } =
