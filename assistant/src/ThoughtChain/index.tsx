@@ -11,14 +11,14 @@ import { Highlight } from '@ant-design/pro-editor';
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
-import { IExtraInfo, Status } from '../interface';
+import { IToolExtraInfo, IToolStatus } from '../interface';
 
-const getColorClass = (status: Status) => {
+const getColorClass = (status: IToolStatus) => {
   const colorClasses = {
-    [Status.loading]: 'text-blue-600',
-    [Status.success]: 'text-green-600',
-    [Status.end]: 'text-gray-500',
-    [Status.error]: 'text-red-600',
+    [IToolStatus.loading]: 'text-blue-600',
+    [IToolStatus.success]: 'text-green-600',
+    [IToolStatus.end]: 'text-gray-500',
+    [IToolStatus.error]: 'text-red-600',
   };
 
   // Return the class, or a default value if the status is undefined
@@ -35,8 +35,8 @@ const safeJsonParse = (jsonString: string) => {
 };
 
 export interface ThoughtChainProps {
-  content?: IExtraInfo;
-  status?: Status;
+  content?: IToolExtraInfo;
+  status?: IToolStatus;
   source?: string;
   timeCost?: string;
 }
@@ -62,7 +62,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
             </span>
           ) : (
             <span
-              className={`flex items-center justify-between text-xs min-w-[90px] ${getColorClass(
+              className={`flex items-center justify-between text-xs min-w-[90px] mt-[2px] ${getColorClass(
                 status!,
               )}`}
             >
@@ -89,48 +89,46 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   }, []);
 
   return (
-    <div className="petercat-lui">
-      <Collapse
-        size="small"
-        items={items}
-        activeKey={activeKey}
-        onChange={onChange}
-        style={{ maxWidth: '100%' }}
-        expandIcon={(panelProps) => {
-          if (panelProps.isActive) {
-            return <UnorderedListOutlined className="text-gray-900 text-xs" />;
-          }
-          switch (status) {
-            case Status.success:
-              return (
-                <CheckCircleOutlined
-                  className={`text-xs ${getColorClass(status!)}`}
-                />
-              );
-            case Status.loading:
-              return (
-                <LoadingOutlined
-                  className={`text-xs ${getColorClass(status!)}`}
-                />
-              );
-            case Status.error:
-              return (
-                <CloseCircleOutlined
-                  className={`text-xs ${getColorClass(status!)}`}
-                />
-              );
-            case Status.end:
-              return (
-                <ExclamationCircleOutlined
-                  className={`text-xs ${getColorClass(status!)}`}
-                />
-              );
-            default:
-              return '';
-          }
-        }}
-      />
-    </div>
+    <Collapse
+      size="small"
+      items={items}
+      activeKey={activeKey}
+      onChange={onChange}
+      style={{ maxWidth: '100%'}}
+      expandIcon={(panelProps) => {
+        if (panelProps.isActive) {
+          return <UnorderedListOutlined className="text-gray-900 text-xs" />;
+        }
+        switch (status) {
+          case IToolStatus.success:
+            return (
+              <CheckCircleOutlined
+                className={`text-xs ${getColorClass(status!)}`}
+              />
+            );
+          case IToolStatus.loading:
+            return (
+              <LoadingOutlined
+                className={`text-xs ${getColorClass(status!)}`}
+              />
+            );
+          case IToolStatus.error:
+            return (
+              <CloseCircleOutlined
+                className={`text-xs ${getColorClass(status!)}`}
+              />
+            );
+          case IToolStatus.end:
+            return (
+              <ExclamationCircleOutlined
+                className={`text-xs ${getColorClass(status!)}`}
+              />
+            );
+          default:
+            return '';
+        }
+      }}
+    />
   );
 };
 
