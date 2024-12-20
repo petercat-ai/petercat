@@ -52,7 +52,7 @@ const HomeHeader = () => {
           {I18N.app.page.yanShiAnLi}
         </a>
         <a
-          href="/market"
+          href="/factory/list"
           className="mt-8 text-white lg:mt-0 lg:ml-8 lg:text-[#f4f4f5] lg:opacity-60 transition-opacity hover:opacity-90"
         >
           {I18N.app.page.gongZuoTai}
@@ -63,6 +63,12 @@ const HomeHeader = () => {
           target="_blank"
         >
           {I18N.app.page.wenDang}
+        </a>
+        <a
+          href="/release"
+          className="mt-8 text-white lg:mt-0 lg:ml-8 lg:text-[#f4f4f5] lg:opacity-60 transition-opacity hover:opacity-90"
+        >
+          {I18N.app.page.release}
         </a>
         <a
           className="mt-8 text-white lg:hidden"

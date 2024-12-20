@@ -24,22 +24,22 @@ import InputList from './InputList';
 import BulbIcon from '@/public/icons/BulbIcon';
 import GitHubIcon from '@/public/icons/GitHubIcon';
 import { random } from 'lodash';
-import { useBotDelete } from '@/app/hooks/useBot';
+import { useBotDelete, useGetGitAvatar } from '@/app/hooks/useBot';
 import { ToastContainer, toast } from 'react-toastify';
 import { useBot } from '@/app/contexts/BotContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { AVATARS } from '@/app/constant/avatar';
-import { useRouter } from 'next/navigation';
-import { useAvaliableLLMs } from '@/app/hooks/useAvaliableLLMs';
+import { useAvailableLLMs } from '@/app/hooks/useAvailableLLMs';
 import { useTokenList } from '@/app/hooks/useToken';
 import CreateButton from '@/app/user/tokens/components/CreateButton';
+import DeleteButtonIcon from '@/public/icons/DeleteButtonIcon';
 
 const BotCreateFrom = () => {
   const { botProfile, setBotProfile } = useBot();
-  const router = useRouter();
+  const { data: gitAvatar } = useGetGitAvatar(botProfile?.repoName);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { data: avaliableLLMs = [] } = useAvaliableLLMs();
+  const { data: availableLLMs = [] } = useAvailableLLMs();
   const { data: userTokens = [] } = useTokenList();
 
   const filteredTokens = useMemo(() => {
@@ -66,9 +66,7 @@ const BotCreateFrom = () => {
     if (isSuccess) {
       toast.success(I18N.components.BotCreateFrom.shanChuChengGong);
       onClose();
-      setTimeout(() => {
-        router.push('/factory/list');
-      }, 1000);
+      window.location.href = '/factory/list';
     }
   }, [isSuccess]);
 
@@ -81,6 +79,10 @@ const BotCreateFrom = () => {
   const handelDelete = () => {
     deleteBot(botProfile?.id!);
   };
+
+  useEffect(() => {
+    console.log('botProfile', botProfile);
+  }, [botProfile]);
 
   const customTitle = (
     <div className="flex">
@@ -127,7 +129,7 @@ const BotCreateFrom = () => {
                   aria-label={I18N.components.BotCreateFrom.gITHU}
                   onClick={() => {
                     setBotProfile((draft: BotProfile) => {
-                      draft.avatar = botProfile?.gitAvatar;
+                      draft.avatar = gitAvatar;
                     });
                   }}
                 >
@@ -184,9 +186,12 @@ const BotCreateFrom = () => {
                 label={I18N.components.BotCreateFrom.xuanZeDaMoXing}
                 isRequired
                 variant="bordered"
+                defaultSelectedKeys={
+                  botProfile?.llm ? [botProfile.llm] : [availableLLMs[0]]
+                }
                 onChange={handleChange}
               >
-                {avaliableLLMs.map((llm) => (
+                {availableLLMs.map((llm) => (
                   <SelectItem key={llm}>{llm}</SelectItem>
                 ))}
               </Select>
@@ -196,11 +201,12 @@ const BotCreateFrom = () => {
                 name="token_id"
                 label={I18N.components.BotCreateFrom.xuanZeTOK}
                 variant="bordered"
+                defaultSelectedKeys={[botProfile?.token_id || '']}
                 onChange={handleChange}
                 popoverProps={{ style: { zIndex: 10 } }}
               >
                 <SelectSection title={I18N.components.BotCreateFrom.guanFang}>
-                  <SelectItem key="default">
+                  <SelectItem key="">
                     {I18N.components.BotCreateFrom.shiYongPET}
                   </SelectItem>
                 </SelectSection>
@@ -233,13 +239,9 @@ const BotCreateFrom = () => {
           </label>
         </Collapse>
         <Collapse title={I18N.components.BotCreateFrom.weiXianCaoZuo}>
-          <img
-            src="/images/delete-button.svg"
-            alt="delete bot"
-            width={160}
-            height={87}
-            onClick={onOpen}
-          />
+          <div onClick={onOpen}>
+            <DeleteButtonIcon />
+          </div>
         </Collapse>
       </form>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

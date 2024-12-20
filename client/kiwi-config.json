@@ -1,9 +1,7 @@
 {
   "fileType": "ts",
   "srcLang": "zh-CN",
-  "distLangs": [
-    "en-US"
-  ],
+  "distLangs": ["en-US"],
   "googleApiKey": "",
   "baiduApiKey": {
     "appId": "",
@@ -19,5 +17,8 @@
   "defaultTranslateKeyApi": "Pinyin",
   "importI18N": "import I18N from '@/app/utils/I18N';",
   "ignoreDir": [],
-  "ignoreFile": ["client/components/LangSwitcher.tsx"]
+  "ignoreFile": [
+    "client/components/LangSwitcher.tsx",
+    "client/app/contexts/GlobalContext.tsx"
+  ]
 }

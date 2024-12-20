@@ -1,19 +1,17 @@
 from fastapi.testclient import TestClient
-from petercat_utils import get_env_variable
+
+from env import ENVIRONMENT, WEB_URL, API_URL
 from main import app
 
-API_URL = get_env_variable("API_URL")
-WEB_URL = get_env_variable("WEB_URL")
-ENVRIMENT = get_env_variable("PETERCAT_ENV", "development")
-
 client = TestClient(app)
+
 
 def test_health_checker():
     response = client.get("/api/health_checker")
     assert response.status_code == 200
     assert response.json() == {
-        'ENVRIMENT': ENVRIMENT,
-        'API_URL': API_URL,
-        'CALLBACK_URL': f'{API_URL}/api/auth/callback',
-        'WEB_URL': WEB_URL,
+        "ENVIRONMENT": ENVIRONMENT,
+        "API_URL": API_URL,
+        "CALLBACK_URL": f"{API_URL}/api/auth/callback",
+        "WEB_URL": WEB_URL,
     }

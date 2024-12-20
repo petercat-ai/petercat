@@ -10,7 +10,10 @@ ISSUE_PROMPT = """
 - If you don’t have any useful conclusions, use your own knowledge to assist the user as much as possible, but do not fabricate facts.
 - Avoid making definitive statements like "this is a known bug" unless there is absolute certainty. Such irresponsible assumptions can be misleading.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
+<details>
+<summary>🪧 Tips</summary>
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
+</details>
 
 ## Issue Information:
 ```
@@ -29,7 +32,10 @@ ISSUE_COMMENT_PROMPT = """
 - If you don’t have any useful conclusions, use your own knowledge to assist the user as much as possible, but do not fabricate facts.
 - Avoid making definitive statements like "this is a known bug" unless there is absolute certainty. Such irresponsible assumptions can be misleading.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
+<details>
+<summary>🪧 Tips</summary>
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
+</details>
 
 issue_content: {issue_content}
 issue_number: {issue_number}

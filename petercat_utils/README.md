@@ -112,11 +112,11 @@
 | `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
 | `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` 
 |  **AWS 相关环境变量** |
-| `AWS_GITHUB_SECRET_NAME` | 必选 |  AWS 托管的 Github 私钥文件名 | `prod/githubapp/petercat/pem`
-| `AWS_STATIC_SECRET_NAME` | 可选 | AWS 托管的 CloudFront 签名私钥名称。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `prod/petercat/static` |
-| `AWS_LLM_TOKEN_SECRET_NAME` | 可选 | AWS 托管的 llm 签名私钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm` |
-| `AWS_LLM_TOKEN_PUBLIC_NAME` | 可选 | AWS 托管的 llm 签名公钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm/pub` |
-| `AWS_STATIC_KEYPAIR_ID` | 可选 | AWS CloudFront 的 Key Pair ID。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `APKxxxxxxxx` |
+| `X_GITHUB_SECRET_NAME` | 必选 |  AWS 托管的 Github 私钥文件名 | `prod/githubapp/petercat/pem`
+| `STATIC_SECRET_NAME` | 可选 | AWS 托管的 CloudFront 签名私钥名称。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `prod/petercat/static` |
+| `LLM_TOKEN_SECRET_NAME` | 可选 | AWS 托管的 llm 签名私钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm` |
+| `LLM_TOKEN_PUBLIC_NAME` | 可选 | AWS 托管的 llm 签名公钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm/pub` |
+| `STATIC_KEYPAIR_ID` | 可选 | AWS CloudFront 的 Key Pair ID。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `APKxxxxxxxx` |
 | `S3_TEMP_BUCKET_NAME` | 可选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` 
 | `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`
 | **SUPABASE 相关 env** |

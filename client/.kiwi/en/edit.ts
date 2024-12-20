@@ -9,10 +9,10 @@ export default {
     chongXinShengChengPei: 'Regenerate Configuration',
     ziDongShengChengPei: 'Automatically Generate Configuration',
     diZhiYouWu: 'Invalid Address',
-    qingShuRuGI: 'Please enter the GitHub project URL',
+    qingShuRuGI: 'Please enter or select the GitHub project name',
     fuZhiTOK: 'Copy Token',
     tOKEN: 'Token has been copied to clipboard',
-    gITHU: 'GitHub Project URL',
+    gITHU: 'GitHub project name',
     bangWoPeiZhiYi: 'Help me create a Q&A bot',
     chuCiJianMianXian:
       '👋🏻 Hello! Nice to meet you. Let me introduce myself: I am PeterCat, a robot for an open-source project. You can create a Q&A robot by talking to me.',

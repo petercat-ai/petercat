@@ -34,6 +34,33 @@ export type Database = {
   };
   public: {
     Tables: {
+      bot_approval: {
+        Row: {
+          approval_path: string | null;
+          approval_status: string | null;
+          bot_id: string | null;
+          created_at: string;
+          id: string;
+          task_type: string | null;
+        };
+        Insert: {
+          approval_path?: string | null;
+          approval_status?: string | null;
+          bot_id?: string | null;
+          created_at?: string;
+          id?: string;
+          task_type?: string | null;
+        };
+        Update: {
+          approval_path?: string | null;
+          approval_status?: string | null;
+          bot_id?: string | null;
+          created_at?: string;
+          id?: string;
+          task_type?: string | null;
+        };
+        Relationships: [];
+      };
       bots: {
         Row: {
           avatar: string | null;
@@ -44,11 +71,15 @@ export type Database = {
           id: string;
           label: string | null;
           llm: string | null;
+          n: number | null;
           name: string;
           prompt: string | null;
           public: boolean | null;
           repo_name: string | null;
           starters: string[] | null;
+          temperature: number | null;
+          token_id: string | null;
+          top_p: number | null;
           uid: string | null;
           updated_at: string | null;
         };
@@ -61,11 +92,15 @@ export type Database = {
           id?: string;
           label?: string | null;
           llm?: string | null;
+          n?: number | null;
           name?: string;
           prompt?: string | null;
           public?: boolean | null;
           repo_name?: string | null;
           starters?: string[] | null;
+          temperature?: number | null;
+          token_id?: string | null;
+          top_p?: number | null;
           uid?: string | null;
           updated_at?: string | null;
         };
@@ -78,11 +113,15 @@ export type Database = {
           id?: string;
           label?: string | null;
           llm?: string | null;
+          n?: number | null;
           name?: string;
           prompt?: string | null;
           public?: boolean | null;
           repo_name?: string | null;
           starters?: string[] | null;
+          temperature?: number | null;
+          token_id?: string | null;
+          top_p?: number | null;
           uid?: string | null;
           updated_at?: string | null;
         };
@@ -124,60 +163,30 @@ export type Database = {
         };
         Relationships: [];
       };
-      github_app_authorization: {
-        Row: {
-          code: string | null;
-          created_at: string;
-          expires_at: string | null;
-          id: number;
-          installation_id: string | null;
-          permissions: Json | null;
-          token: string | null;
-        };
-        Insert: {
-          code?: string | null;
-          created_at?: string;
-          expires_at?: string | null;
-          id?: number;
-          installation_id?: string | null;
-          permissions?: Json | null;
-          token?: string | null;
-        };
-        Update: {
-          code?: string | null;
-          created_at?: string;
-          expires_at?: string | null;
-          id?: number;
-          installation_id?: string | null;
-          permissions?: Json | null;
-          token?: string | null;
-        };
-        Relationships: [];
-      };
       github_repo_config: {
         Row: {
           created_at: string;
           id: string;
-          repo_name: string | null;
-          robot_id: string | null;
           owner_id: string | null;
           repo_id: string | null;
+          repo_name: string | null;
+          robot_id: string | null;
         };
         Insert: {
           created_at?: string;
           id?: string;
-          repo_name?: string | null;
-          robot_id?: string | null;
           owner_id?: string | null;
           repo_id?: string | null;
+          repo_name?: string | null;
+          robot_id?: string | null;
         };
         Update: {
           created_at?: string;
           id?: string;
-          repo_name?: string | null;
-          robot_id?: string | null;
           owner_id?: string | null;
           repo_id?: string | null;
+          repo_name?: string | null;
+          robot_id?: string | null;
         };
         Relationships: [];
       };
@@ -222,6 +231,7 @@ export type Database = {
       };
       profiles: {
         Row: {
+          agreement_accepted: boolean | null;
           created_at: string;
           id: string;
           name: string | null;
@@ -229,9 +239,9 @@ export type Database = {
           picture: string | null;
           sid: string | null;
           sub: string | null;
-          agreement_accepted: boolean | null;
         };
         Insert: {
+          agreement_accepted?: boolean | null;
           created_at?: string;
           id: string;
           name?: string | null;
@@ -239,9 +249,9 @@ export type Database = {
           picture?: string | null;
           sid?: string | null;
           sub?: string | null;
-          agreement_accepted?: boolean | null;
         };
         Update: {
+          agreement_accepted?: boolean | null;
           created_at?: string;
           id?: string;
           name?: string | null;
@@ -249,7 +259,6 @@ export type Database = {
           picture?: string | null;
           sid?: string | null;
           sub?: string | null;
-          agreement_accepted?: boolean | null;
         };
         Relationships: [];
       };
@@ -263,7 +272,7 @@ export type Database = {
           file_sha: string | null;
           id: string;
           metadata: Json | null;
-          repo_name: string | null;
+          repo_name: string;
           update_timestamp: string | null;
         };
         Insert: {
@@ -275,7 +284,7 @@ export type Database = {
           file_sha?: string | null;
           id?: string;
           metadata?: Json | null;
-          repo_name?: string | null;
+          repo_name: string;
           update_timestamp?: string | null;
         };
         Update: {
@@ -287,7 +296,7 @@ export type Database = {
           file_sha?: string | null;
           id?: string;
           metadata?: Json | null;
-          repo_name?: string | null;
+          repo_name?: string;
           update_timestamp?: string | null;
         };
         Relationships: [];
@@ -403,26 +412,62 @@ export type Database = {
         };
         Relationships: [];
       };
-      user_token_usage: {
+      user_rate_limit: {
         Row: {
           created_at: string;
-          id: number;
+          id: string;
           last_request: string | null;
           request_count: number | null;
           user_id: string | null;
         };
         Insert: {
           created_at?: string;
-          id?: number;
+          id?: string;
           last_request?: string | null;
           request_count?: number | null;
           user_id?: string | null;
         };
         Update: {
           created_at?: string;
-          id?: number;
+          id?: string;
           last_request?: string | null;
           request_count?: number | null;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
+      user_token_usage: {
+        Row: {
+          bot_id: string | null;
+          created_at: string;
+          date: string | null;
+          id: string;
+          input_token: number | null;
+          output_token: number | null;
+          token_id: string | null;
+          total_token: number | null;
+          user_id: string | null;
+        };
+        Insert: {
+          bot_id?: string | null;
+          created_at?: string;
+          date?: string | null;
+          id?: string;
+          input_token?: number | null;
+          output_token?: number | null;
+          token_id?: string | null;
+          total_token?: number | null;
+          user_id?: string | null;
+        };
+        Update: {
+          bot_id?: string | null;
+          created_at?: string;
+          date?: string | null;
+          id?: string;
+          input_token?: number | null;
+          output_token?: number | null;
+          token_id?: string | null;
+          total_token?: number | null;
           user_id?: string | null;
         };
         Relationships: [];
@@ -432,6 +477,30 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      binary_quantize:
+        | {
+            Args: {
+              '': string;
+            };
+            Returns: unknown;
+          }
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: unknown;
+          };
+      count_rag_docs_by_sha: {
+        Args: {
+          file_sha_input: string;
+        };
+        Returns: {
+          count: number;
+          file_sha: string;
+          repo_name: string;
+          file_path: string;
+        }[];
+      };
       execute_sql: {
         Args: {
           query: string;
@@ -453,7 +522,82 @@ export type Database = {
           hello_message: string;
         }[];
       };
+      get_bot_stats: {
+        Args: {
+          filter_bot_id: string;
+        };
+        Returns: {
+          call_cnt: number;
+        }[];
+      };
+      get_user_stats: {
+        Args: {
+          filter_user_id: string;
+          start_date: string;
+          end_date: string;
+        };
+        Returns: {
+          usage_date: string;
+          input_tokens: number;
+          output_tokens: number;
+          total_tokens: number;
+        }[];
+      };
+      halfvec_avg: {
+        Args: {
+          '': number[];
+        };
+        Returns: unknown;
+      };
+      halfvec_out: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      halfvec_send: {
+        Args: {
+          '': unknown;
+        };
+        Returns: string;
+      };
+      halfvec_typmod_in: {
+        Args: {
+          '': unknown[];
+        };
+        Returns: number;
+      };
+      hnsw_bit_support: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      hnsw_halfvec_support: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      hnsw_sparsevec_support: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
       hnswhandler: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      ivfflat_bit_support: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      ivfflat_halfvec_support: {
         Args: {
           '': unknown;
         };
@@ -465,6 +609,38 @@ export type Database = {
         };
         Returns: unknown;
       };
+      l2_norm:
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: number;
+          }
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: number;
+          };
+      l2_normalize:
+        | {
+            Args: {
+              '': string;
+            };
+            Returns: string;
+          }
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: unknown;
+          }
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: unknown;
+          };
       match_embedding_docs: {
         Args: {
           query_embedding: string;
@@ -491,18 +667,43 @@ export type Database = {
           similarity: number;
         }[];
       };
+      sparsevec_out: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      sparsevec_send: {
+        Args: {
+          '': unknown;
+        };
+        Returns: string;
+      };
+      sparsevec_typmod_in: {
+        Args: {
+          '': unknown[];
+        };
+        Returns: number;
+      };
       vector_avg: {
         Args: {
           '': number[];
         };
         Returns: string;
       };
-      vector_dims: {
-        Args: {
-          '': string;
-        };
-        Returns: number;
-      };
+      vector_dims:
+        | {
+            Args: {
+              '': string;
+            };
+            Returns: number;
+          }
+        | {
+            Args: {
+              '': unknown;
+            };
+            Returns: number;
+          };
       vector_norm: {
         Args: {
           '': string;
@@ -526,321 +727,6 @@ export type Database = {
           '': unknown[];
         };
         Returns: number;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-  storage: {
-    Tables: {
-      buckets: {
-        Row: {
-          allowed_mime_types: string[] | null;
-          avif_autodetection: boolean | null;
-          created_at: string | null;
-          file_size_limit: number | null;
-          id: string;
-          name: string;
-          owner: string | null;
-          owner_id: string | null;
-          public: boolean | null;
-          updated_at: string | null;
-        };
-        Insert: {
-          allowed_mime_types?: string[] | null;
-          avif_autodetection?: boolean | null;
-          created_at?: string | null;
-          file_size_limit?: number | null;
-          id: string;
-          name: string;
-          owner?: string | null;
-          owner_id?: string | null;
-          public?: boolean | null;
-          updated_at?: string | null;
-        };
-        Update: {
-          allowed_mime_types?: string[] | null;
-          avif_autodetection?: boolean | null;
-          created_at?: string | null;
-          file_size_limit?: number | null;
-          id?: string;
-          name?: string;
-          owner?: string | null;
-          owner_id?: string | null;
-          public?: boolean | null;
-          updated_at?: string | null;
-        };
-        Relationships: [];
-      };
-      migrations: {
-        Row: {
-          executed_at: string | null;
-          hash: string;
-          id: number;
-          name: string;
-        };
-        Insert: {
-          executed_at?: string | null;
-          hash: string;
-          id: number;
-          name: string;
-        };
-        Update: {
-          executed_at?: string | null;
-          hash?: string;
-          id?: number;
-          name?: string;
-        };
-        Relationships: [];
-      };
-      objects: {
-        Row: {
-          bucket_id: string | null;
-          created_at: string | null;
-          id: string;
-          last_accessed_at: string | null;
-          metadata: Json | null;
-          name: string | null;
-          owner: string | null;
-          owner_id: string | null;
-          path_tokens: string[] | null;
-          updated_at: string | null;
-          user_metadata: Json | null;
-          version: string | null;
-        };
-        Insert: {
-          bucket_id?: string | null;
-          created_at?: string | null;
-          id?: string;
-          last_accessed_at?: string | null;
-          metadata?: Json | null;
-          name?: string | null;
-          owner?: string | null;
-          owner_id?: string | null;
-          path_tokens?: string[] | null;
-          updated_at?: string | null;
-          user_metadata?: Json | null;
-          version?: string | null;
-        };
-        Update: {
-          bucket_id?: string | null;
-          created_at?: string | null;
-          id?: string;
-          last_accessed_at?: string | null;
-          metadata?: Json | null;
-          name?: string | null;
-          owner?: string | null;
-          owner_id?: string | null;
-          path_tokens?: string[] | null;
-          updated_at?: string | null;
-          user_metadata?: Json | null;
-          version?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'objects_bucketId_fkey';
-            columns: ['bucket_id'];
-            isOneToOne: false;
-            referencedRelation: 'buckets';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      s3_multipart_uploads: {
-        Row: {
-          bucket_id: string;
-          created_at: string;
-          id: string;
-          in_progress_size: number;
-          key: string;
-          owner_id: string | null;
-          upload_signature: string;
-          user_metadata: Json | null;
-          version: string;
-        };
-        Insert: {
-          bucket_id: string;
-          created_at?: string;
-          id: string;
-          in_progress_size?: number;
-          key: string;
-          owner_id?: string | null;
-          upload_signature: string;
-          user_metadata?: Json | null;
-          version: string;
-        };
-        Update: {
-          bucket_id?: string;
-          created_at?: string;
-          id?: string;
-          in_progress_size?: number;
-          key?: string;
-          owner_id?: string | null;
-          upload_signature?: string;
-          user_metadata?: Json | null;
-          version?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 's3_multipart_uploads_bucket_id_fkey';
-            columns: ['bucket_id'];
-            isOneToOne: false;
-            referencedRelation: 'buckets';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      s3_multipart_uploads_parts: {
-        Row: {
-          bucket_id: string;
-          created_at: string;
-          etag: string;
-          id: string;
-          key: string;
-          owner_id: string | null;
-          part_number: number;
-          size: number;
-          upload_id: string;
-          version: string;
-        };
-        Insert: {
-          bucket_id: string;
-          created_at?: string;
-          etag: string;
-          id?: string;
-          key: string;
-          owner_id?: string | null;
-          part_number: number;
-          size?: number;
-          upload_id: string;
-          version: string;
-        };
-        Update: {
-          bucket_id?: string;
-          created_at?: string;
-          etag?: string;
-          id?: string;
-          key?: string;
-          owner_id?: string | null;
-          part_number?: number;
-          size?: number;
-          upload_id?: string;
-          version?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 's3_multipart_uploads_parts_bucket_id_fkey';
-            columns: ['bucket_id'];
-            isOneToOne: false;
-            referencedRelation: 'buckets';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey';
-            columns: ['upload_id'];
-            isOneToOne: false;
-            referencedRelation: 's3_multipart_uploads';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      can_insert_object: {
-        Args: {
-          bucketid: string;
-          name: string;
-          owner: string;
-          metadata: Json;
-        };
-        Returns: undefined;
-      };
-      extension: {
-        Args: {
-          name: string;
-        };
-        Returns: string;
-      };
-      filename: {
-        Args: {
-          name: string;
-        };
-        Returns: string;
-      };
-      foldername: {
-        Args: {
-          name: string;
-        };
-        Returns: string[];
-      };
-      get_size_by_bucket: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          size: number;
-          bucket_id: string;
-        }[];
-      };
-      list_multipart_uploads_with_delimiter: {
-        Args: {
-          bucket_id: string;
-          prefix_param: string;
-          delimiter_param: string;
-          max_keys?: number;
-          next_key_token?: string;
-          next_upload_token?: string;
-        };
-        Returns: {
-          key: string;
-          id: string;
-          created_at: string;
-        }[];
-      };
-      list_objects_with_delimiter: {
-        Args: {
-          bucket_id: string;
-          prefix_param: string;
-          delimiter_param: string;
-          max_keys?: number;
-          start_after?: string;
-          next_token?: string;
-        };
-        Returns: {
-          name: string;
-          id: string;
-          metadata: Json;
-          updated_at: string;
-        }[];
-      };
-      operation: {
-        Args: Record<PropertyKey, never>;
-        Returns: string;
-      };
-      search: {
-        Args: {
-          prefix: string;
-          bucketname: string;
-          limits?: number;
-          levels?: number;
-          offsets?: number;
-          search?: string;
-          sortcolumn?: string;
-          sortorder?: string;
-        };
-        Returns: {
-          name: string;
-          id: string;
-          updated_at: string;
-          created_at: string;
-          last_accessed_at: string;
-          metadata: Json;
-        }[];
       };
     };
     Enums: {
@@ -932,4 +818,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
   ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+  : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema['CompositeTypes']
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+  ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
   : never;

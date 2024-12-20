@@ -6,37 +6,28 @@ import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useGlobal } from '@/app/contexts/GlobalContext';
-import { Assistant } from '@petercatai/assistant';
+import { Assistant, useUser } from '@petercatai/assistant';
 import { useFingerprint } from '../hooks/useFingerprint';
 import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;
 
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN!;
 
 export default function Market() {
   const { search } = useGlobal();
   const [visible, setVisible] = useState(false);
   const [isComplete, setComplete] = useState(false);
   const [currentBot, setCurrentBot] = useState<string>('');
-  const { data: bots, isLoading, error } = useBotList(false, search);
-  const [userInfo, setUserInfo] = useState<string | null>(null);
   const { data } = useFingerprint();
-
-  useEffect(() => {
-    setUserInfo(sessionStorage.getItem('userInfo'));
-  }, []);
+  const { user, isLoading: userLoading } = useUser({ apiDomain, fingerprint: data?.visitorId || '' });
+  const { data: bots, isLoading, error } = useBotList(false, search, !!user);
 
   const isOpening = useMemo(
-    () => !userInfo && (isLoading || !isComplete),
-    [isComplete, isLoading, userInfo],
+    () => !user && (userLoading || isLoading || !isComplete),
+    [isComplete, userLoading, isLoading, user],
   );
-
-  useEffect(() => {
-    if (data) {
-      sessionStorage.setItem('userInfo', JSON.stringify(data?.visitorId));
-    }
-  }, [data]);
 
   const handleCardClick = (id: string) => {
     setVisible(true);

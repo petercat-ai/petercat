@@ -27,6 +27,7 @@ export default {
     shiZhuanWeiSheQu: '是专为社区维护者和开发者打造的智能答疑机器人解决方案',
     xiaoMaoMiZhuNi: '小猫咪助你征服 Github',
     wenDang: '文档',
+    release: '更新日志',
     gongZuoTai: '工作台',
     yanShiAnLi: '演示案例',
   },

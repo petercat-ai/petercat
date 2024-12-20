@@ -1,34 +1,29 @@
 import os
 
-from fastapi.responses import RedirectResponse
 import uvicorn
-
 from fastapi import FastAPI
-from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-from auth.cors_middleware import AuthCORSMiddleWare
-from i18n.translations import I18nConfig, I18nMiddleware
-
-from auth.middleware import AuthMiddleWare
-from petercat_utils import get_env_variable
-
+from fastapi.responses import RedirectResponse
+from starlette.middleware.sessions import SessionMiddleware
 
 # Import fastapi routers
 from auth import router as auth_router
+from auth.cors_middleware import AuthCORSMiddleWare
+from auth.middleware import AuthMiddleWare
+from aws import router as aws_router
 from bot import router as bot_router
 from chat import router as chat_router
+from env import ENVIRONMENT, API_URL, WEB_URL
+from github_app import router as github_app_router
+from i18n.translations import I18nConfig, I18nMiddleware
+from petercat_utils import get_env_variable
 from rag import router as rag_router
 from task import router as task_router
-from github_app import router as github_app_router
-from aws import router as aws_router
 from user import router as user_router
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
 CLIENT_ID = get_env_variable("AUTH0_CLIENT_ID")
-API_URL = get_env_variable("API_URL")
-WEB_URL = get_env_variable("WEB_URL")
-ENVRIMENT = get_env_variable("PETERCAT_ENV", "development")
 CALLBACK_URL = f"{API_URL}/api/auth/callback"
 
 is_dev = bool(get_env_variable("IS_DEV"))
@@ -77,10 +72,10 @@ def home_page():
 @app.get("/api/health_checker")
 def health_checker():
     return {
-        "ENVRIMENT": ENVRIMENT,
+        "ENVIRONMENT": ENVIRONMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
-        "CALLBACK_URL": CALLBACK_URL,
+        "CALLBACK_URL": CALLBACK_URL
     }
 
 
@@ -89,8 +84,8 @@ if __name__ == "__main__":
         uvicorn.run(
             "main:app",
             host="0.0.0.0",
-            port=int(os.environ.get("PORT", "8080")),
+            port=int(os.environ.get("PETERCAT_PORT", "8080")),
             reload=True,
         )
     else:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080")))

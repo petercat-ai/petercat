@@ -30,7 +30,10 @@ Provider your response in markdown with the following content. follow the user's
   - **Changes**: A markdown table of files and their summaries. Group files with similar changes together into a single row to save space.
 
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
+<details>
+<summary>🪧 Tips</summary>
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
+</details>
 
 ## Task 2: Code Review
 
@@ -105,7 +108,10 @@ pr_content: {pr_content}
 - Never attempt to create a new issue or PR under any circumstances; instead, express an apology.
 - If you don’t have any useful conclusions, use your own knowledge to assist the user as much as possible, but do not fabricate facts.
 - At the end of the conversation, be sure to include the following wording and adhere to the language used in previous conversations:
+<details>
+<summary>🪧 Tips</summary>
 For further assistance, please describe your question in the comments and @petercat-assistant to start a conversation with me.
+</details>
 """
 
 

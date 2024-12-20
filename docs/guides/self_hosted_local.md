@@ -1,6 +1,7 @@
+```
 # Self-Hosting
 
-## Install Locally 
+## Local Installation
 
 ### Step 1: Clone the Repository
 Clone the project repository to your local machine:
@@ -10,89 +11,71 @@ git clone https://github.com/petercat-ai/petercat.git
 ``` 
 
 ### Step 2: Install Dependencies
-Install all required dependencies using Yarn:
+Install all necessary dependencies using Yarn:
 
 ```bash
 yarn run bootstrap
 ```
 
-### Step 3: Copy the `.env.example` Files
-Copy the server environment configuration example files:
+### Step 3: Start Supabase Locally
+
+Refer to [Supabase Self-Hosting Guide](https://supabase.com/docs/guides/self-hosting/docker#installing-and-running-supabase):
 
 ```bash
-cp server/.env.example server/.env
+# Get the code
+git clone --depth 1 https://github.com/supabase/supabase
+
+# Go to the docker folder
+cd supabase/docker
+
+# Copy the fake env vars
+cp .env.example .env
+
+# Pull the latest images
+docker compose pull
+
+# Start the services (in detached mode)
+docker compose up -d
 ```
-Copy the Client environment configuration example files:
+
+### Step 4: Copy the `.env.example` Files
+Copy the client environment configuration example file:
 ```bash
-cp client/.env.example client/.env
+cp client/.env.local.example client/.env
 ```
 
-### Step 4: Update the `.env` Files
-Open the `.env` file and update the necessary keys. You can use any text editor, like `vim`, `emacs`, `vscode`, or `nano`:
-
+Copy the server environment configuration example file:
 ```bash
-vim server/.env
+cp server/.env.local.example server/.env
 ```
 
-For local development, configure only the Supabase and OpenAI settings:
+Open the `server/.env` file and update the `SERVICE_ROLE_KEY` field to match the value of `SERVICE_ROLE_KEY` from the `docker/.env` file in Supabase.
 
-```bash
-# Supabase Project URL from https://supabase.com/dashboard/project/_/settings/database
-SUPABASE_URL=https://{{YOUR_PROJECT_ID}}.supabase.co
-
-# Supabase Project API key for `anon public`
-SUPABASE_SERVICE_KEY=xxxx.yyyyy.zzzzz
-
-# OpenAI API key
-OPENAI_API_KEY=sk-xxxx
-```
-
-### Step 5: Initialize the Database Structure
+### Step 5: Initialize Database Schema
 
 #### Step 5.1: Navigate to the Migrations Folder
-Navigate to the `migrations` folder to prepare for the database setup:
+Navigate to the `migrations` folder to prepare for database setup:
 
 ```bash
 cd migrations
 ```
 
 #### Step 5.2: Install Supabase CLI
-Install the Supabase CLI following the instructions on [Supabase's Getting Started Guide](https://supabase.com/docs/guides/cli/getting-started):
+Install the Supabase CLI following the [Supabase Getting Started Guide](https://supabase.com/docs/guides/cli/getting-started):
 
 ```bash
 brew install supabase/tap/supabase
 ```
 
-#### Step 5.3: Link to the Remote Project  
-To connect to the Supabase project, you'll need to enter the database password. You can find this password in the [Supabase Dashboard](https://supabase.com/dashboard/project/_/settings/database):
-
-```bash
-supabase link --project-ref {YOUR_PROJECT_ID}
-```
-
-If the connection is successful, you'll see output like this:
-
-```
-Enter your database password (or leave blank to skip):
-Connecting to remote database...
-Finished supabase link.
-Local config differs from linked project. Try updating supabase/config.toml
-[api]
-enabled = true
-port = 54321
-schemas = ["public", "graphql_public"]
-extra_search_path = ["public", "extensions"]
-max_rows = 1000
-```
-
-#### Step 5.4: Perform Migration
+#### Step 5.3: Run Migrations
 Apply the database migrations to your remote database:
 
 ```bash
-supabase db push
+# The postgres db URL can be found in the .env file from Step 4
+supabase db push --db-url "postgres://postgres.your-tenant-id:your-super-secret-and-long-postgres-password@127.0.0.1:5432/postgres"
 ``` 
 
-If successful, you'll see output similar to:
+If successful, you should see output similar to the following:
 
 ```
 Connecting to remote database...
@@ -104,20 +87,21 @@ Applying migration 20240902023033_remote_schema.sql...
 Finished supabase db push.
 ```
 
-### Step 6: Bootstrap Server
+### Step 6: Start the Server
 Start the server with the following command:
 
 ```bash
-yarn run server
+yarn run server:local
 ```
 
-Check if the server is running by opening `http://127.0.0.1:8000/api/health_checker` in your browser.
+Verify the server is running by opening `http://127.0.0.1:8001/api/health_checker` in your browser.
 
-### Step 7: Bootstrap Client
+### Step 7: Start the Client
 Start the client with the following command:
 
 ```bash
 yarn run client
 ```
 
-You can check the client service by opening `http://127.0.0.1:3000` in your browser.
+Verify the client service by opening `http://127.0.0.1:3000` in your browser.
+```

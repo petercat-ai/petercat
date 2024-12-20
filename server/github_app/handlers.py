@@ -1,5 +1,6 @@
 from typing import Union
 
+from event_handler.intsall import InstallationEventHandler, InstallationEditEventHandler
 from petercat_utils import get_env_variable
 from github import Auth
 
@@ -25,6 +26,8 @@ def get_handler(
     DiscussionEventHandler,
     DiscussionCommentEventHandler,
     PullRequestReviewCommentEventHandler,
+    InstallationEventHandler,
+    InstallationEditEventHandler,
     None,
 ]:
     handlers = {
@@ -33,8 +36,10 @@ def get_handler(
         "issue_comment": IssueCommentEventHandler,
         "discussion": DiscussionEventHandler,
         "discussion_comment": DiscussionCommentEventHandler,
-        "pull_request_review_comment":PullRequestReviewCommentEventHandler,
-        "pull_request_review":PullRequestReviewCommentEventHandler,
+        "pull_request_review_comment": PullRequestReviewCommentEventHandler,
+        "pull_request_review": PullRequestReviewCommentEventHandler,
+        "installation": InstallationEventHandler,
+        "installation_repositories": InstallationEditEventHandler,
     }
     return (
         handlers.get(event)(payload=payload, auth=auth, installation_id=installation_id)

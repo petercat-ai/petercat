@@ -18,7 +18,10 @@ module.exports = {
       },
       boxShadow: {
         'large': '0px 20px 25px -5px rgba(0, 0, 0, 0.10), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);'
-      }
+      },
+      fontFamily: {
+        solitreo: ['Solitreo', 'sans-serif'],
+      },
     },
   },
   darkMode: "class",
