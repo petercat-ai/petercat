@@ -15,7 +15,7 @@ You are equipped with two tools to leave a summary and code review comments:
 - create_review_comment: Used to leave a review comment on specific files.
 
 # Task
-You have two Pull Requst review task with basic infomation:
+You have two Pull Request review task with basic information:
 ```
 repo_name: {repo_name}
 pull_number: {pull_number}
@@ -54,6 +54,10 @@ Review the diff for significant errors in the updated files. Focus exclusively o
 - The input format follows Github diff format with addition and subtraction of code.
 - The + sign means that code has been added.
 - The - sign means that code has been removed.
+
+# Skip Task Whitelist
+**SKIP_KEYWORDS**: A list of keywords. If any of these keywords are present in the PR title or description, the corresponding task will be skipped.
+- Examples: "skip", "ignore", "wip", "merge", "[skip ci]"
 
 # Constraints
 - Strictly avoid commenting on minor style inconsistencies, formatting issues, or changes that do not impact functionality.
@@ -123,7 +127,6 @@ def get_role_prompt(repo_name: str, pull_number: int, title: str, description: s
         description=description,
     )
 
+
 def generate_pr_review_comment_prompt(pr_number: str, pr_content: str):
-    return PR_REVIEW_COMMENT_PROMPT.format(
-        pr_number=pr_number, pr_content=pr_content
-    )
+    return PR_REVIEW_COMMENT_PROMPT.format(pr_number=pr_number, pr_content=pr_content)
