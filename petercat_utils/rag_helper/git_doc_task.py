@@ -68,6 +68,7 @@ class GitDocTask(GitTask):
         status=TaskStatus.NOT_STARTED,
         from_id=None,
         id=None,
+        retry_count=0,
     ):
         super().__init__(
             type=TaskType.GIT_DOC,
@@ -75,6 +76,7 @@ class GitDocTask(GitTask):
             id=id,
             status=status,
             repo_name=repo_name,
+            retry_count=retry_count,
         )
         self.commit_id = commit_id
         self.node_type = GitDocTaskNodeType(node_type)
