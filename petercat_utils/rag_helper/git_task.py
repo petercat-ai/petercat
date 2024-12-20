@@ -24,12 +24,14 @@ class GitTask(ABC):
         status=TaskStatus.NOT_STARTED,
         from_id=None,
         id=None,
+        retry_count=0,
     ):
         self.type = type
         self.id = id
         self.from_id = from_id
         self.status = status
         self.repo_name = repo_name
+        self.retry_count = retry_count
 
     @staticmethod
     def get_table_name(type: TaskType):
@@ -82,11 +84,17 @@ class GitTask(ABC):
             QueueUrl=SQS_QUEUE_URL,
             DelaySeconds=10,
             MessageBody=(
-                json.dumps({"task_id": self.id, "task_type": self.type.value})
+                json.dumps(
+                    {
+                        "task_id": self.id,
+                        "task_type": self.type.value,
+                        "retry_count": self.retry_count,
+                    }
+                )
             ),
         )
         message_id = response["MessageId"]
         print(
-            f"task_id={self.id}, task_type={self.type.value}, message_id={message_id}"
+            f"task_id={self.id}, task_type={self.type.value}, message_id={message_id}, retry_count={self.retry_count}"
         )
         return message_id

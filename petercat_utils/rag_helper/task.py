@@ -23,15 +23,6 @@ TABLE_NAME = "rag_tasks"
 SQS_QUEUE_URL = get_env_variable("SQS_QUEUE_URL")
 
 
-def send_task_message(task_id: str):
-    response = sqs.send_message(
-        QueueUrl=SQS_QUEUE_URL,
-        DelaySeconds=10,
-        MessageBody=(json.dumps({"task_id": task_id})),
-    )
-    return response["MessageId"]
-
-
 def get_oldest_task():
     supabase = get_client()
 
@@ -54,10 +45,7 @@ def get_task_by_id(task_id):
     return response.data[0] if (len(response.data) > 0) else None
 
 
-def get_task(
-    task_type: TaskType,
-    task_id: str,
-) -> GitTask:
+def get_task(task_type: TaskType, task_id: str, retry_count=0) -> GitTask:
     supabase = get_client()
     response = (
         supabase.table(GitTask.get_table_name(task_type))
@@ -77,6 +65,7 @@ def get_task(
                 path=data["path"],
                 status=data["status"],
                 from_id=data["from_task_id"],
+                retry_count=retry_count,
             )
         if task_type == TaskType.GIT_ISSUE:
             return GitIssueTask(
@@ -87,11 +76,12 @@ def get_task(
                 bot_id=data["bot_id"],
                 status=data["status"],
                 from_id=data["from_task_id"],
+                retry_count=retry_count,
             )
 
 
-def trigger_task(task_type: TaskType, task_id: Optional[str]):
-    task = get_task(task_type, task_id) if task_id else get_oldest_task()
+def trigger_task(task_type: TaskType, task_id: Optional[str], retry_count: int = 0):
+    task = get_task(task_type, task_id, retry_count) if task_id else get_oldest_task()
     if task is None:
         return task
     return task.handle()
