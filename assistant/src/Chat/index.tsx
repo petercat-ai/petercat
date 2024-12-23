@@ -68,6 +68,21 @@ export interface ChatProps extends BotInfo {
   getToolsResult?: (response: any) => void;
 }
 
+const Avatar = (props: { backgroundColor?: string; avatar: string }) => {
+  const { backgroundColor, avatar } = props;
+  return (
+    <div
+      className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden flex-shrink-0"
+      style={{
+        backgroundColor: `${backgroundColor}`,
+        backgroundImage: `url(${avatar})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+      }}
+    />
+  );
+};
+
 const Chat: FC<ChatProps> = memo(
   ({
     helloMessage = '让我们开始对话吧~',
@@ -276,8 +291,11 @@ const Chat: FC<ChatProps> = memo(
 
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
-      const { title, avatar = BOT_INFO.avatar } =
-        currentBotInfo?.assistantMeta ?? {};
+      const {
+        title,
+        avatar = BOT_INFO.avatar,
+        backgroundColor,
+      } = currentBotInfo?.assistantMeta ?? {};
       return {
         [Role.init]: {
           classNames: {
@@ -286,9 +304,7 @@ const Chat: FC<ChatProps> = memo(
             content: 'petercat-content-start',
           },
           placement: 'start',
-          avatar: {
-            src: avatar,
-          },
+          avatar: <Avatar backgroundColor={backgroundColor} avatar={avatar} />,
           header: <>{title}</>,
           messageRender: (message) => {
             try {
@@ -335,9 +351,7 @@ const Chat: FC<ChatProps> = memo(
             header: 'petercat-header',
           },
           placement: 'start',
-          avatar: {
-            src: avatar,
-          },
+          avatar: <Avatar backgroundColor={backgroundColor} avatar={avatar} />,
           variant: 'borderless',
           header: <>{title}</>,
           messageRender: (message: any) => {
