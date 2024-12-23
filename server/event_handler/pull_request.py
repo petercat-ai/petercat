@@ -87,7 +87,7 @@ class PullRequestEventHandler:
 
                 file_diff = self.get_file_diff(diff)
                 role_prompt = get_role_prompt(
-                    repo.full_name, pr.number, pr.title, pr.body
+                    repo.full_name, pr.number, pr.title, pr.body, pr.draft
                 )
 
                 pr_content = f"""

@@ -21,6 +21,7 @@ repo_name: {repo_name}
 pull_number: {pull_number}
 title: {title}
 description: {description}
+draft: {draft}
 ```
 
 ## Task 1: Summarize the Pull Request
@@ -58,6 +59,7 @@ Review the diff for significant errors in the updated files. Focus exclusively o
 # Skip Task Whitelist
 **SKIP_KEYWORDS**: A list of keywords. If any of these keywords are present in the PR title or description, the corresponding task will be skipped.
 - Examples: "skip", "ignore", "wip", "merge", "[skip ci]"
+- If the draft flag is set to true, the task should be skipped.
 
 # Constraints
 - Strictly avoid commenting on minor style inconsistencies, formatting issues, or changes that do not impact functionality.
@@ -119,12 +121,15 @@ For further assistance, please describe your question in the comments and @peter
 """
 
 
-def get_role_prompt(repo_name: str, pull_number: int, title: str, description: str):
+def get_role_prompt(
+    repo_name: str, pull_number: int, title: str, description: str, draft: bool
+):
     return PULL_REQUEST_ROLE.format(
         repo_name=repo_name,
         pull_number=pull_number,
         title=title,
         description=description,
+        draft=draft,
     )
 
 
