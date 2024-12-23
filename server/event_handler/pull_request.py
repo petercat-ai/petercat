@@ -12,6 +12,7 @@ from agent.bot import Bot
 from agent.bot.get_bot import get_bot_by_id
 from core.models.bot import BotModel
 
+from utils.fuzzy_match import contains_keyword_fuzzy
 from utils.path_to_hunk import convert_patch_to_hunk
 from utils.random_str import random_str
 from agent.prompts.pull_request import (
@@ -21,6 +22,7 @@ from agent.prompts.pull_request import (
 from agent.qa_chat import agent_chat
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
+
 
 def file_match(filename: str, patterns: List[str]):
     return any(fnmatch.fnmatch(filename, pattern) for pattern in patterns)
@@ -85,7 +87,7 @@ class PullRequestEventHandler:
 
                 file_diff = self.get_file_diff(diff)
                 role_prompt = get_role_prompt(
-                    repo.full_name, pr.number, pr.title, pr.body
+                    repo.full_name, pr.number, pr.title, pr.body, pr.draft
                 )
 
                 pr_content = f"""
@@ -132,6 +134,7 @@ class PullRequestEventHandler:
             print(f"处理 GitHub 请求时出错：{e}")
             return {"success": False, "error": str(e)}
 
+
 class PullRequestReviewCommentEventHandler(PullRequestEventHandler):
     def not_mentioned_me(self):
         return "@petercat-assistant" not in self.event["comment"]["body"]
@@ -145,7 +148,7 @@ class PullRequestReviewCommentEventHandler(PullRequestEventHandler):
                 if self.not_mentioned_me():
                     return {"success": True}
 
-                comment_id = self.event["comment"]['id']
+                comment_id = self.event["comment"]["id"]
                 pr, diff, repo = self.get_pull_request()
                 file_diff = self.get_file_diff(diff)
 
@@ -188,7 +191,9 @@ class PullRequestReviewCommentEventHandler(PullRequestEventHandler):
                         bot,
                     )
 
-                    pr.create_review_comment_reply(comment_id, analysis_result["output"])
+                    pr.create_review_comment_reply(
+                        comment_id, analysis_result["output"]
+                    )
 
         except GithubException as e:
             print(f"处理 GitHub 请求时出错：{e}")

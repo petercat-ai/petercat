@@ -8,11 +8,13 @@ from agent.prompts.issue_helper import (
     generate_issue_comment_prompt,
     generate_issue_prompt,
 )
-
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from petercat_utils.data_class import ChatData, Message, TextContentBlock
 
 from agent.qa_chat import agent_chat
+from utils.fuzzy_match import contains_keyword_fuzzy
+
+SKIP_KEYWORDS = ["RFC", "skip"]
 
 
 class IssueEventHandler:
@@ -40,11 +42,15 @@ class IssueEventHandler:
                 return {"success": True}
             if action in ["opened", "reopened"]:
                 issue, repo = self.get_issue()
+                is_skip = contains_keyword_fuzzy(issue.title, SKIP_KEYWORDS)
+                if is_skip:
+                    return {"success": True}
 
                 prompt = generate_issue_prompt(
                     repo_name=repo.full_name,
                     issue_url=issue.url,
                     issue_number=issue.number,
+                    issue_title=issue.title,
                     issue_content=issue.body,
                 )
                 issue_content = f"{issue.title}: {issue.body}"
