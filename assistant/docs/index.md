@@ -28,7 +28,7 @@ $ yarn run doctor
 ```
 
 
-## How to integrate PertercatLUI by UMD way?
+## How to integrate PeterCatLUI by UMD way?
 
 Step 1, externalize the following dependencies for your project **if you already used them in your project**:
 

@@ -32,11 +32,6 @@
   background: rgba(250, 228, 203, 1) !important;
 }
 
-.pertercat-assistant-spin-wrapper .ant-spin-container {
-  width: 100%;
-  height: 100%;
-}
-
 .petercat-lui .ant-bubble-content {
   min-height: 0 !important;
 }

@@ -65,7 +65,7 @@ Webhook URL \> 填入smee channel url, eg: https://smee.io/Q2VVS0casGnhZV
 
 6. 在 demo repository 发起 issue 或者 pull-request，在 smee 、本地将能同步看到请求。
 
-7. 在测试完毕后记得将 Webhook URL 改回去, eg:http://pertercat.chat/api/github/app/webhook
+7. 在测试完毕后记得将 Webhook URL 改回去, eg:http://petercat.chat/api/github/app/webhook
 
 ## RAG
 ### API
