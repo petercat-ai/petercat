@@ -108,6 +108,7 @@ class DiscussionEventHandler:
             repo_name=repo_name,
             issue_url=discussion["html_url"],
             issue_number=discussion["number"],
+            issue_title=title,
             issue_content=discussion["body"],
         )
 
