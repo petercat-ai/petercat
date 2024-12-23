@@ -52,3 +52,4 @@ export default () => {
 | `disabled`             | `boolean`                 | `false`     | 是否禁用聊天输入区域，禁用后用户无法输入消息。                                        |
 | `disabledPlaceholder`  | `string`                  | `undefined` | 当聊天输入区域被禁用时显示的占位符文本。                                             |
 | `getToolsResult`       | `(response: any) => void` | `undefined` | 用于接收工具处理结果的回调函数。                                                     |
+| `bottom` | `number` | `120` | 聊天助手距离底部的距离，单位为像素。 |

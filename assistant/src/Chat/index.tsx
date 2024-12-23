@@ -119,7 +119,7 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Agent =============================
     const [agent] = useXAgent<IContentMessage>({
       baseURL: apiDomain,
-      request: async ({ messages = [] }, { onError, onUpdate, onSuccess }) => {
+      request: async ({ messages = [] }, { onUpdate, onSuccess }) => {
         onUpdate({
           role: Role.loading,
           content: [],
