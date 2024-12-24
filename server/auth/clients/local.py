@@ -34,7 +34,6 @@ class LocalClient(BaseAuthClient):
       "name": username,
       "picture": f"https://picsum.photos/seed/{seed}/100/100",
       "sid": secrets.token_urlsafe(32),
-      "agreement_accepted": False,
     }
 
 

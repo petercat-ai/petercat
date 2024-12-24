@@ -11,6 +11,15 @@ class ProfilesDAO(BaseDAO):
         super().__init__()
         self.client = get_client()
 
+    def get_profile(self, user_id: str):
+        resp = (
+            self.client.table("profiles")
+            .select('id, is_admin, agreement_accepted')
+            .eq('id', user_id)
+            .execute()
+        )
+        return resp.data[0]
+    
     def get_agreement_status(self, user_id: str):
 
         resp = (

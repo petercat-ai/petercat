@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends
 
 from agent.llm import get_registered_llm_client, import_clients
 from auth.get_user_info import get_user_id
+from auth.verify_admin import verify_admin
 from core.service.user_llm_token import UserLLMTokenService, CreateUserLLMTokenVO, get_llm_token_service
 from core.service.user_token_usage import UserTokenUsageService, get_user_token_usage_service
 
@@ -67,10 +68,26 @@ def token_usage(
 ):
   return user_token_usage_service.usage_stats(user_id=user_id, start_date=start_date, end_date=end_date)
 
-@router.get("/llm_token_usages/analyzer")
+@router.get("/llm_token_usages/analyzer", dependencies=[Depends(verify_admin)])
 def token_usage_analyze(
-  start_date: datetime = datetime.now() - timedelta(days=7),
+  start_date: datetime = datetime.now() - timedelta(days=30),
   end_date: datetime = datetime.now(),
   user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
 ):
   return user_token_usage_service.analyze_token_usage(start_date=start_date, end_date=end_date)
+
+@router.get("/llm_token_usages/top_bots", dependencies=[Depends(verify_admin)])
+def top_used_bots(
+  start_date: datetime = datetime.now() - timedelta(days=30),
+  end_date: datetime = datetime.now(),
+  user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
+):
+  return user_token_usage_service.top_bots(start_date=start_date, end_date=end_date)
+
+@router.get("/llm_token_usages/top_users", dependencies=[Depends(verify_admin)])
+def top_used_users(
+  start_date: datetime = datetime.now() - timedelta(days=30),
+  end_date: datetime = datetime.now(),
+  user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
+):
+  return user_token_usage_service.top_users(start_date=start_date, end_date=end_date)

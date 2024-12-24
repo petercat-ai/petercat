@@ -17,6 +17,8 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.6",
+    "@antv/g2": "^5.2.10",
     "@auth0/nextjs-auth0": "^3.3.0",
     "@fingerprintjs/fingerprintjs": "^4.3.0",
     "@fullpage/react-fullpage": "^0.1.42",

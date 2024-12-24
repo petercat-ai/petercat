@@ -43,10 +43,19 @@ async def logout(request: Request):
 @router.get("/callback")
 async def callback(request: Request, auth_client: BaseAuthClient = Depends(get_auth_client)):
     user_info = await auth_client.get_user_info(request)
+    profiles_dao = ProfilesDAO()
+    profile = profiles_dao.get_profile(user_info['id'])
+
     if user_info:
-        request.session["user"] = dict(user_info)
+        upsert_user = {
+            **user_info,
+            'agreement_accepted': profile['agreement_accepted'],
+            'is_admin': profile['is_admin'],
+        }
+
+        request.session["user"] = dict(upsert_user)
         supabase = get_client()
-        supabase.table("profiles").upsert(user_info).execute()
+        supabase.table("profiles").upsert(upsert_user).execute()
     return RedirectResponse(url=f"{WEB_LOGIN_SUCCESS_URL}", status_code=302)
 
 
