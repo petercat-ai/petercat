@@ -4,7 +4,7 @@ atomId: Chat
 
 # Chat
 
-Chat 是一个基于 @ant-design/pro-chat 和 @ant-design/pro-editor 构建的聊天组件，提供了丰富的功能和配置选项。它支持与一个基于 @ant-design/x 的聊天服务进行交互，并且可以渲染多种消息类型。
+Chat 是一个基于 @ant-design/x 和 @ant-design/pro-editor 构建的聊天组件，提供了丰富的功能和配置选项。它支持与一个基于 @ant-design/x 的聊天服务进行交互，并且可以渲染多种消息类型。
 
 ## 安装
 
