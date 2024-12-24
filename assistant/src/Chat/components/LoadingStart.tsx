@@ -5,13 +5,14 @@ const LoadingAnimationStart = require('../../assets/bubble-start.json');
 interface LoadingStartProps {
   loop?: boolean;
   onComplete?: () => void;
+  className?: string;
 }
 
 const LoadingStart: React.FC<LoadingStartProps> = (props) => {
   const { onComplete, loop = true } = props;
 
   return (
-    <div className="loading">
+    <div className={`loading ${props.className || ''}`}>
       <Lottie
         animationData={LoadingAnimationStart}
         loop={loop}

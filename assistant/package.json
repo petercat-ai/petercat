@@ -1,11 +1,12 @@
 {
   "name": "@petercatai/assistant",
-  "version": "1.0.22",
+  "version": "2.0.7",
   "description": "PeterCat Assistant Application",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
-  "style": "dist/esm/style.css",
-  "browser": "dist/umd/assistant.min.js",
+  "repository": "https://github.com/petercat-ai/petercat.git",
+  "license": "MIT",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": "./dist/esm/index.js"
@@ -14,25 +15,24 @@
       "import": "./dist/esm/style.css"
     }
   },
+  "module": "dist/esm/index.js",
+  "browser": "dist/umd/assistant.min.js",
+  "types": "dist/esm/index.d.ts",
+  "style": "dist/esm/style.css",
   "scripts": {
-    "start": "npm run dev",
-    "dev": "dumi dev",
-    "build:css": "tailwindcss -i tailwind.css -o ./src/style.css",
     "build": "npm run build:css && cp ./src/style.css ./.dumi/tmp/style.css && father build",
+    "build:css": "tailwindcss -i tailwind.css -o ./src/style.css",
     "build:watch": "father dev",
+    "dev": "dumi dev",
     "docs:build": "dumi build",
-    "prepare": "dumi setup",
     "doctor": "father doctor",
     "lint": "npm run lint:es && npm run lint:css",
     "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
     "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "prepublishOnly": "father doctor && npm run build"
+    "prepare": "dumi setup",
+    "prepublishOnly": "father doctor && npm run build",
+    "start": "npm run dev"
   },
-  "authors": [],
-  "license": "MIT",
-  "sideEffects": [
-    "**/*.css"
-  ],
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -55,17 +55,10 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "react": ">=16.9.0 <19.0.0",
-    "react-dom": ">=16.9.0 <19.0.0"
-  },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
-    "@ant-design/pro-chat": "^1.9.0",
     "@ant-design/pro-editor": "^1.1.1",
+    "@ant-design/x": "^1.0.0",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",
     "antd-style": "^3.6.1",
@@ -81,7 +74,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
-    "@types/lodash": "^4.14.202",
+    "@types/lodash": "^4.17.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@umijs/lint": "^4.0.0",
@@ -97,5 +90,12 @@
     "react-dom": "^18.0.0",
     "stylelint": "^14.9.1"
   },
-  "repository": "https://github.com/petercat-ai/petercat.git"
+  "peerDependencies": {
+    "react": ">=16.9.0 <19.0.0",
+    "react-dom": ">=16.9.0 <19.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": []
 }

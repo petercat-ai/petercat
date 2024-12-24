@@ -12,8 +12,10 @@ from agent.prompts.issue_helper import (
 
 
 from agent.qa_chat import agent_chat
+from utils.fuzzy_match import contains_keyword_fuzzy
 
 BOT_NAME = "petercat-assistant"
+SKIP_KEYWORDS = ["RFC", "skip"]
 
 
 class DiscussionEventHandler:
@@ -91,7 +93,11 @@ class DiscussionEventHandler:
         owner = self.event["organization"]["login"]
         repo_name = self.event["repository"]["full_name"]
         discussion = self.event["discussion"]
-        discussion_content = f"{discussion['title']}: {discussion['body']}"
+        title = discussion["title"]
+        is_skip = contains_keyword_fuzzy(title, SKIP_KEYWORDS)
+        if is_skip:
+            return {"success": True}
+        discussion_content = f"{title}: {discussion['body']}"
         text_block = TextContentBlock(type="text", text=discussion_content)
         discussion_number = discussion["number"]
         message = Message(role="user", content=[text_block])
@@ -102,6 +108,7 @@ class DiscussionEventHandler:
             repo_name=repo_name,
             issue_url=discussion["html_url"],
             issue_number=discussion["number"],
+            issue_title=title,
             issue_content=discussion["body"],
         )
 

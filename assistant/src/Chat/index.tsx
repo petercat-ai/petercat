@@ -1,41 +1,54 @@
-import type {
-  ChatItemProps,
-  ChatMessage,
-  MetaData,
-  ProChatInstance,
-} from '@ant-design/pro-chat';
-import { ProChat } from '@ant-design/pro-chat';
-import { Markdown } from '@ant-design/pro-editor';
-import { isEmpty, map } from 'lodash';
-import React, {
-  ReactNode,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type FC,
-} from 'react';
+import { Bubble, useXAgent, useXChat, XStream } from '@ant-design/x';
+import { MessageInfo } from '@ant-design/x/es/useXChat';
+import { Flex, GetProp, theme } from 'antd';
+import { isEmpty, isEqual } from 'lodash';
+import React, { memo, useEffect, useRef, useState, type FC } from 'react';
 import useSWR from 'swr';
-import { UITemplateRender } from './template/index';
-
 import SignatureIcon from '../icons/SignatureIcon';
 import {
+  IContentMessage,
   ImageURLContentBlock,
-  Message,
+  ITool,
   MessageContent,
+  MessageTypeEnum,
   Role,
 } from '../interface';
 import { BOT_INFO } from '../mock';
 import { fetcher, streamChat } from '../services/ChatController';
 import StarterList from '../StarterList';
 import ThoughtChain from '../ThoughtChain';
-import { convertChunkToJson, handleStream } from '../utils';
-import ChatItemRender from './components/ChatItemRender';
+import { parseStreamChunk } from '../utils';
 import InputArea from './components/InputAreaRender';
-import LoadingEnd from './components/LoadingEnd';
 import LoadingStart from './components/LoadingStart';
+import MarkdownRender from './components/MarkdownRender';
+import MySpinner from './components/MySpinner';
 import UserContent from './components/UserContent';
+import './index.css';
+import { UITemplateRender } from './template';
+
+const CANCEL_REASON = 'petercat user cancel';
+export interface MetaData {
+  /**
+   * 角色头像
+   * @description 可选参数，如果不传则使用默认头像
+   */
+  avatar?: string;
+  /**
+   *  背景色
+   * @description 可选参数，如果不传则使用默认背景色
+   */
+  backgroundColor?: string;
+  /**
+   * 名称
+   * @description 可选参数，如果不传则使用默认名称
+   */
+  title?: string;
+  /**
+   * 自定义类名
+   * @description 可选参数，如果不传则使用默认类名
+   */
+  className?: string;
+}
 
 export interface BotInfo {
   assistantMeta?: MetaData;
@@ -53,14 +66,28 @@ export interface ChatProps extends BotInfo {
   style?: React.CSSProperties;
   hideLogo?: boolean;
   disabled?: boolean;
-
   disabledPlaceholder?: string;
   getToolsResult?: (response: any) => void;
 }
 
+const Avatar = (props: { backgroundColor?: string; avatar: string }) => {
+  const { backgroundColor, avatar } = props;
+  return (
+    <div
+      className="ant-avatar ant-avatar-circle ant-avatar-image w-[40px] h-[40px] rounded-full overflow-hidden flex-shrink-0"
+      style={{
+        backgroundColor: `${backgroundColor}`,
+        backgroundImage: `url(${avatar})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+      }}
+    />
+  );
+};
+
 const Chat: FC<ChatProps> = memo(
   ({
-    helloMessage,
+    helloMessage = '让我们开始对话吧~',
     apiDomain = 'http://127.0.0.1:8000',
     apiUrl,
     drawerWidth = 500,
@@ -75,14 +102,37 @@ const Chat: FC<ChatProps> = memo(
     editBotId,
     getToolsResult,
   }) => {
-    const proChatRef = useRef<ProChatInstance>();
+    const { token: designToken } = theme.useToken();
     const tokenRef = useRef<string | undefined>(token);
-    const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>();
-    const [complete, setComplete] = useState(false);
+    const requestParamsRef = useRef({ apiDomain, apiUrl, prompt, editBotId });
+    useEffect(() => {
+      requestParamsRef.current = {
+        apiDomain,
+        apiUrl,
+        prompt,
+        editBotId,
+      };
+    }, [tokenRef?.current, apiDomain, apiUrl, prompt, editBotId]);
+
     useEffect(() => {
       tokenRef.current = token;
     }, [token]);
-    const { data: detail } = useSWR(
+    const messageMinWidth = drawerWidth
+      ? `calc(${drawerWidth}px - 90px)`
+      : '400px';
+
+    const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>({
+      assistantMeta,
+      helloMessage,
+      starters,
+    });
+    const currentBotInfoRef = useRef<BotInfo>({
+      assistantMeta,
+      helloMessage,
+      starters,
+    });
+
+    const { data: botDetail, isValidating } = useSWR(
       tokenRef?.current
         ? [
             `${apiDomain}/api/bot/detail?id=${tokenRef?.current}`,
@@ -92,78 +142,192 @@ const Chat: FC<ChatProps> = memo(
       fetcher<BotInfo>,
     );
 
-    const [botInfo, setBotInfo] = useState<BotInfo>({
-      assistantMeta: {
-        avatar: assistantMeta?.avatar,
-        title: assistantMeta?.title,
-        backgroundColor: assistantMeta?.backgroundColor,
-      },
-      helloMessage: helloMessage,
-      starters: starters,
-    });
+    const [abortController, setAbortController] = useState<AbortController>();
 
-    const request = useCallback(
-      async (messages: any[]) => {
+    const resetController = () => {
+      if (abortController) {
+        // 在发起请求前重置控制器
+        abortController.abort();
+      }
+      const newAbortController = new AbortController();
+      setAbortController(newAbortController);
+      return newAbortController;
+    };
+    // ============================ Agent =============================
+
+    const [agent] = useXAgent<IContentMessage>({
+      baseURL: apiDomain,
+      request: async ({ messages = [] }, { onUpdate, onSuccess }) => {
+        onUpdate({
+          role: Role.loading,
+          content: [],
+        });
         const newMessages = messages
           .filter(
             (item) => item.role !== Role.tool && item.role !== Role.knowledge,
           )
-          .map((message) => {
-            if (message.role === Role.user) {
-              try {
-                return {
-                  role: message.role,
-                  // @ts-ignore
-                  content: JSON.parse(message?.content),
-                };
-              } catch (e) {
-                return message;
-              }
-            } else {
-              const originMessage = convertChunkToJson(
-                message?.content as string,
-              ) as any;
-              const text =
-                typeof originMessage === 'string'
-                  ? originMessage
-                  : originMessage.message;
-              return {
-                role: message.role,
-                content: [
-                  {
-                    type: 'text',
-                    text: text,
-                  },
-                ],
-              };
-            }
-          }) as Message[];
-
+          .map((item) => {
+            return {
+              ...item,
+              content: item.content.filter(
+                (item) =>
+                  item.type !== MessageTypeEnum.ERROR &&
+                  item.type !== MessageTypeEnum.TOOL,
+              ),
+            };
+          });
+        let res: IContentMessage = { role: Role.assistant, content: [] };
         try {
-          const token = editBotId || tokenRef?.current;
+          const { apiDomain, prompt, apiUrl, editBotId } =
+            requestParamsRef.current;
           const response = await streamChat(
             newMessages,
             apiDomain,
             apiUrl,
             prompt,
-            token,
+            editBotId || tokenRef?.current,
+            resetController().signal,
           );
-          return handleStream(response);
+          if (!response.ok) {
+            throw new Error(await response.json());
+          }
+          if (response.body instanceof ReadableStream) {
+            for await (const chunk of XStream({
+              readableStream: response.body!,
+            })) {
+              const resContent = parseStreamChunk(res.content, chunk.data);
+              res = {
+                role: Role.assistant,
+                content: resContent,
+              };
+              // @ts-ignore
+              const toolContent: ITool[] = resContent.filter(
+                (i: MessageContent) => i.type === 'tool',
+              );
+              if (toolContent.length > 0 && toolContent[0]?.extra) {
+                getToolsResult?.(toolContent[0]?.extra);
+              }
+              onUpdate(res);
+            }
+          } else {
+            res = {
+              role: Role.assistant,
+              content: [
+                {
+                  type: MessageTypeEnum.TEXT,
+                  text: JSON.stringify(await response.json()),
+                },
+              ],
+            };
+          }
         } catch (e: any) {
-          // 处理请求错误，例如网络错误
-          return new Response(
-            `data: ${JSON.stringify({
-              status: 'error',
-              message: e.message,
-            })}`,
-          );
+          if (e.name === 'AbortError' || e === CANCEL_REASON) {
+            // ignore abort error
+          } else {
+            res = {
+              role: Role.assistant,
+              content: [{ type: MessageTypeEnum.ERROR, text: e.message }],
+            };
+          }
         }
+
+        onSuccess(res);
       },
-      [apiDomain, apiUrl, prompt, tokenRef?.current, editBotId],
-    );
+    });
+
+    // ============================= Chat =============================
+    const { setMessages, messages, onRequest } = useXChat<
+      IContentMessage,
+      IContentMessage
+    >({
+      agent,
+    });
+
+    const resetChat = () => {
+      resetController();
+      const initMessages: MessageInfo<IContentMessage>[] = [
+        {
+          id: 'init',
+          status: 'success',
+          message: {
+            role: Role.init,
+            content: [
+              {
+                type: MessageTypeEnum.TEXT,
+                text: helloMessage || BOT_INFO.helloMessage,
+              },
+            ],
+          },
+        },
+      ];
+      if (currentBotInfo?.starters?.length) {
+        initMessages.push({
+          id: 'suggestion',
+          status: 'success' as const,
+          message: {
+            role: Role.starter,
+            content: currentBotInfo.starters.map((starterTxt) => {
+              return {
+                type: MessageTypeEnum.TEXT,
+                text: starterTxt,
+              };
+            }),
+          },
+        });
+      }
+      // resetController may touch abort error and set Error Message
+      setTimeout(() => {
+        setMessages(initMessages);
+      }, 0);
+    };
+
+    // ============================ Event ============================
+    const handleSendMessage = (message: IContentMessage) => {
+      setMessages((prev) =>
+        prev.filter((info) => info.id !== 'init' && info.id !== 'suggestion'),
+      );
+      onRequest(message);
+    };
 
     useEffect(() => {
-      setBotInfo({
+      return () => {
+        resetController();
+      };
+    }, []);
+
+    useEffect(() => {
+      if (isEmpty(botDetail)) {
+        return;
+      }
+      try {
+        // @ts-ignore
+        const info = botDetail?.[0] as any;
+        setCurrentBotInfo({
+          assistantMeta: {
+            avatar: info.avatar,
+            title: info.name,
+          },
+          helloMessage: info.hello_message,
+          starters: info.starters || [],
+        });
+      } catch (e) {
+        console.error('botDetail effect', e);
+      }
+    }, [botDetail]);
+
+    useEffect(() => {
+      if (isEqual(currentBotInfo, currentBotInfoRef.current)) {
+        return;
+      }
+      if (currentBotInfo?.assistantMeta?.title) {
+        document.title = currentBotInfo.assistantMeta.title;
+      }
+      resetChat();
+      currentBotInfoRef.current = currentBotInfo;
+    }, [currentBotInfo]);
+
+    useEffect(() => {
+      setCurrentBotInfo({
         assistantMeta: {
           avatar: assistantMeta?.avatar,
           title: assistantMeta?.title,
@@ -174,31 +338,172 @@ const Chat: FC<ChatProps> = memo(
       });
     }, [assistantMeta, helloMessage, starters]);
 
-    useEffect(() => {
-      if (proChatRef?.current) {
-        proChatRef?.current?.clearMessage();
-      }
-    }, [tokenRef?.current, prompt, proChatRef?.current]);
-
-    useEffect(() => {
-      if (isEmpty(detail)) {
-        return;
-      }
-      // @ts-ignore
-      const info = detail?.[0] as any;
-      setBotInfo({
-        assistantMeta: {
-          avatar: info.avatar,
-          title: info.name,
+    // ============================ Roles =============================
+    const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
+      const {
+        title,
+        avatar = BOT_INFO.avatar,
+        backgroundColor,
+      } = currentBotInfo?.assistantMeta ?? {};
+      return {
+        [Role.init]: {
+          classNames: {
+            avatar: 'petercat-avatar',
+            header: 'petercat-header',
+            content: 'petercat-content-start',
+          },
+          placement: 'start',
+          avatar: <Avatar backgroundColor={backgroundColor} avatar={avatar} />,
+          header: <>{title}</>,
+          messageRender: (message) => {
+            try {
+              // @ts-ignore
+              const hello = message.content[0].text;
+              return <MarkdownRender content={hello} />;
+            } catch (e) {
+              console.error('init items', e);
+            }
+          },
         },
-        helloMessage: info.hello_message,
-        starters: info.starters,
-      });
-    }, [detail]);
+        [Role.starter]: {
+          placement: 'start',
+          variant: 'borderless',
+          messageRender: (items) => {
+            try {
+              // @ts-ignore
+              const botStarters = items.content.map((item) => item.text);
+              return (
+                <StarterList
+                  className="ml-[52px]"
+                  starters={botStarters}
+                  onClick={(item) => {
+                    handleSendMessage({
+                      role: Role.user,
+                      content: [
+                        {
+                          type: MessageTypeEnum.TEXT,
+                          text: item.trim(),
+                        },
+                      ],
+                    });
+                  }}
+                ></StarterList>
+              );
+            } catch (e) {
+              console.error('starter items', e);
+            }
+          },
+        },
+        [Role.assistant]: {
+          classNames: {
+            header: 'petercat-header',
+            avatar: 'petercat-avatar',
+          },
+          placement: 'start',
+          avatar: <Avatar backgroundColor={backgroundColor} avatar={avatar} />,
+          variant: 'borderless',
+          header: <>{title}</>,
+          messageRender: (message: any) => {
+            try {
+              const toolContent = message.content.find(
+                (i: MessageContent) => i.type === 'tool',
+              );
+              const extra = toolContent?.extra;
+              // getToolsResult?.(extra);
+              const textContent = message.content.find(
+                (i: MessageContent) => i.type === MessageTypeEnum.TEXT,
+              );
+              const errorContent = message.content.find(
+                (i: MessageContent) => i.type === MessageTypeEnum.ERROR,
+              );
+              return (
+                <>
+                  {extra && (
+                    <div className="mb-2">
+                      <ThoughtChain
+                        content={extra}
+                        status={extra.status}
+                        source={extra.source}
+                      />
+                    </div>
+                  )}
+                  {textContent && (
+                    <div className="petercat-content-start">
+                      <MarkdownRender content={textContent.text} />
+                    </div>
+                  )}
+                  {errorContent && (
+                    <div className="petercat-content-start text-red-700">
+                      ops... {errorContent.text}
+                    </div>
+                  )}
+                  {extra?.template_id && message.status === 'success' && (
+                    <div
+                      style={{ maxWidth: messageMinWidth }}
+                      className="transition-all duration-300 ease-in-out"
+                    >
+                      {UITemplateRender({
+                        templateId: extra.template_id,
+                        cardData: extra.data,
+                        apiDomain: apiDomain,
+                        token: tokenRef?.current ?? '',
+                      })}
+                    </div>
+                  )}
+                </>
+              );
+            } catch (e) {
+              console.error('items', message);
+            }
+          },
+          typing: {
+            step: 5,
+          },
+        },
+        [Role.user]: {
+          classNames: {
+            avatar: 'petercat-avatar',
+            header: 'petercat-header',
+            content: 'petercat-content-end',
+          },
+          placement: 'end',
+          messageRender: (message) => {
+            try {
+              // @ts-ignore
+              const { images, text } = message.content.reduce(
+                (acc: any, item: any) => {
+                  if (item.type === 'image_url') acc.images.push(item);
+                  else if (item.type === 'text') acc.text += item.text;
+                  return acc;
+                },
+                { images: [] as ImageURLContentBlock[], text: '' },
+              );
+              return <UserContent images={images} text={text} />;
+            } catch (e) {
+              console.error('user items', e);
+              return null;
+            }
+          },
+        },
+        [Role.loading]: {
+          classNames: {
+            avatar: 'petercat-avatar',
+            header: 'petercat-header',
+          },
+          placement: 'start',
+          avatar: {
+            src: avatar,
+          },
+          header: <div>{title}</div>,
+          variant: 'borderless',
+          messageRender: () => {
+            return <LoadingStart loop={true}></LoadingStart>;
+          },
+        },
+      };
+    }, [currentBotInfo]);
 
-    const messageMinWidth = drawerWidth
-      ? `calc(${drawerWidth}px - 90px)`
-      : '400px';
+    // ============================ Render ============================
     return (
       <div
         className="petercat-lui bg-[#FCFCFC] pt-2"
@@ -208,286 +513,58 @@ const Chat: FC<ChatProps> = memo(
           height: '100%',
         }}
       >
-        <div className="h-full w-full flex flex-col relative">
-          {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
-          {disabled && (
-            <div className="absolute top-[24px] left-0 w-full h-[50%] bg-[#FCFCFC] z-[9]" />
-          )}
-          <ProChat
-            className="flex-1"
-            showTitle
-            chats={chats}
-            onChatsChange={(chats) => {
-              setChats(chats);
-            }}
-            chatRef={proChatRef}
-            helloMessage={botInfo.helloMessage}
-            userMeta={{ title: ' ' }}
-            chatItemRenderConfig={{
-              render: (
-                props: ChatItemProps,
-                domsMap: {
-                  avatar: ReactNode;
-                  title: ReactNode;
-                  messageContent: ReactNode;
-                  actions: ReactNode;
-                  itemDom: ReactNode;
-                },
-                defaultDom: ReactNode,
-              ) => {
-                if (disabled) {
-                  return;
+        <MySpinner
+          loading={!botDetail && isValidating}
+          spinner={<LoadingStart loop={true} />}
+        >
+          <div className="h-full w-full flex flex-col relative">
+            {!hideLogo && <SignatureIcon className="mx-auto my-2 flex-none" />}
+            <Flex vertical className="h-full">
+              <Bubble.List
+                style={{ flex: '1 1 0', padding: designToken.padding }}
+                roles={roles}
+                items={
+                  disabled
+                    ? []
+                    : messages.map(({ status, message, id }, index) => {
+                        const role = message.role;
+                        const key = id || `fixed_${index}`;
+                        return {
+                          key,
+                          role,
+                          content: { ...message, status, id },
+                          typing: false,
+                        };
+                      })
                 }
-                const originData = props.originData || {};
-                const isDefault = originData.role === 'hello';
-                // default message content
-                if (isDefault) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      title={domsMap.title}
-                      avatar={domsMap.avatar}
-                      content={
-                        <div className="leftMessageContent">
-                          <div className="ant-pro-chat-list-item-message-content">
-                            <div className="text-left text-[14px] font-[500] leading-[28px] font-sf">
-                              {props.message}
-                            </div>
-                          </div>
-                        </div>
-                      }
-                      starter={
-                        <StarterList
-                          starters={botInfo?.starters ?? starters ?? []}
-                          onClick={(msg: string) => {
-                            proChatRef?.current?.sendMessage(
-                              JSON.stringify([{ type: 'text', text: msg }]),
-                            );
-                          }}
-                          className="ml-[72px]"
-                        />
-                      }
-                    />
-                  );
-                }
-
-                // If user role, try to parse and render content
-                if (originData?.role === Role.user) {
-                  try {
-                    const content = JSON.parse(
-                      originData.content,
-                    ) as MessageContent[];
-                    const { images, text } = content.reduce(
-                      (acc, item) => {
-                        if (item.type === 'image_url') acc.images.push(item);
-                        else if (item.type === 'text') acc.text += item.text;
-                        return acc;
-                      },
-                      { images: [] as ImageURLContentBlock[], text: '' },
-                    );
-                    return (
-                      <ChatItemRender
-                        direction={'end'}
-                        title={domsMap.title}
-                        content={<UserContent images={images} text={text} />}
-                      />
-                    );
-                  } catch (err) {
-                    console.error(err);
-                    return defaultDom;
-                  }
-                }
-
-                const originMessage = convertChunkToJson(
-                  originData.content,
-                ) as any;
-
-                // handle errors
-                if (originMessage.errors.length > 0) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      avatar={domsMap.avatar}
-                      title={domsMap.title}
-                      content={
-                        <div className="leftMessageContent">
-                          <div className="ant-pro-chat-list-item-message-content text-red-700">
-                            ops...似乎出了点问题。
-                          </div>
-                        </div>
-                      }
-                    />
-                  );
-                }
-
-                // Default message content
-                const defaultMessageContent = (
-                  <div className="leftMessageContent">{defaultDom}</div>
-                );
-
-                // If originMessage is invalid, return default message content
-                if (
-                  (!originMessage || typeof originMessage === 'string') &&
-                  !!proChatRef?.current?.getChatLoadingId()
-                ) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      avatar={domsMap.avatar}
-                      title={domsMap.title}
-                      content={defaultMessageContent}
-                    />
-                  );
-                }
-
-                const { message: answerStr, tools = [] } = originMessage;
-                // Handle chat loading state
-                if (
-                  !!proChatRef?.current?.getChatLoadingId() &&
-                  answerStr === '...' &&
-                  isEmpty(tools)
-                ) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      avatar={domsMap.avatar}
-                      title={domsMap.title}
-                      content={
-                        <div className="leftMessageContent">
-                          <LoadingStart
-                            loop={!complete}
-                            onComplete={() => setComplete(true)}
-                          />
-                        </div>
-                      }
-                    />
-                  );
-                }
-
-                // If no tools, render the markdown content
-                if (isEmpty(tools)) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      avatar={domsMap.avatar}
-                      title={domsMap.title}
-                      content={
-                        <div className="leftMessageContent">
-                          <LoadingEnd>
-                            <Markdown
-                              className="ant-pro-chat-list-item-message-content"
-                              style={{ overflowX: 'hidden', overflowY: 'auto' }}
-                            >
-                              {answerStr}
-                            </Markdown>
-                          </LoadingEnd>
-                        </div>
-                      }
-                    />
-                  );
-                }
-
-                // Handle tool or knowledge role
-                const { type, extra } = tools[tools.length - 1];
-                if (![Role.knowledge, Role.tool].includes(type)) {
-                  return (
-                    <ChatItemRender
-                      direction={'start'}
-                      avatar={domsMap.avatar}
-                      title={domsMap.title}
-                      content={defaultMessageContent}
-                    />
-                  );
-                }
-
-                getToolsResult?.(extra);
-                const { status, source, template_id, data } = extra;
-                return (
-                  <ChatItemRender
-                    direction={'start'}
-                    avatar={domsMap.avatar}
-                    title={domsMap.title}
-                    content={
-                      <div
-                        className="leftMessageContent"
-                        style={{ maxWidth: messageMinWidth }}
-                      >
-                        <div className="mb-1">
-                          <ThoughtChain
-                            content={extra}
-                            status={status}
-                            source={source}
-                          />
-                        </div>
-                        {answerStr && (
-                          <Markdown
-                            className={`${
-                              template_id
-                                ? 'mt-2 rounded-[20px] p-3 bg-[#F1F1F1]'
-                                : 'ant-pro-chat-list-item-message-content'
-                            }`}
-                            style={{ overflowX: 'hidden', overflowY: 'auto' }}
-                          >
-                            {answerStr}
-                          </Markdown>
-                        )}
-                        {template_id &&
-                          proChatRef?.current?.getChatLoadingId() ===
-                            undefined && (
-                            <div
-                              style={{ maxWidth: messageMinWidth }}
-                              className="transition-all duration-300 ease-in-out"
-                            >
-                              {UITemplateRender({
-                                templateId: template_id,
-                                cardData: data,
-                                apiDomain: apiDomain,
-                                token: tokenRef?.current!,
-                              })}
-                            </div>
-                          )}
-                      </div>
-                    }
-                  />
-                );
-              },
-            }}
-            assistantMeta={{
-              avatar: botInfo.assistantMeta?.avatar || BOT_INFO.avatar,
-              title: botInfo.assistantMeta?.title || BOT_INFO.name,
-              backgroundColor: botInfo.assistantMeta?.backgroundColor,
-            }}
-            autocompleteRequest={async (value) => {
-              if (value === '/') {
-                const questions = botInfo.starters || BOT_INFO.starters;
-                return map(questions, (question: string) => ({
-                  value: question,
-                  label: question,
-                }));
-              }
-              return [];
-            }}
-            request={request}
-            inputAreaRender={(
-              _: ReactNode,
-              onMessageSend: (message: string) => void | Promise<any>,
-              onClear: () => void,
-            ) => {
-              return (
+              />
+              <div style={{ padding: designToken.paddingSM }}>
                 <InputArea
                   apiDomain={apiDomain}
                   disabled={disabled}
                   disabledPlaceholder={disabledPlaceholder}
-                  isShowStop={!!proChatRef?.current?.getChatLoadingId()}
-                  onMessageSend={onMessageSend}
-                  onClear={onClear}
-                  onStop={() => proChatRef?.current?.stopGenerateMessage()}
+                  isShowStop={agent.isRequesting()}
+                  onMessageSend={(contentStr) => {
+                    if (agent.isRequesting()) {
+                      return;
+                    }
+                    const message = {
+                      role: Role.user,
+                      content: JSON.parse(contentStr),
+                    };
+                    handleSendMessage(message);
+                  }}
+                  onClear={() => {
+                    resetChat();
+                  }}
+                  onStop={() => {
+                    abortController?.abort(CANCEL_REASON);
+                  }}
                 />
-              );
-            }}
-            inputAreaProps={{ className: 'userInputBox h-24 !important' }}
-          />
-        </div>
+              </div>
+            </Flex>
+          </div>
+        </MySpinner>
       </div>
     );
   },

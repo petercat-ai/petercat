@@ -1,32 +1,26 @@
-export enum Status {
+export enum IToolStatus {
   loading = 'loading',
   success = 'success',
   error = 'error',
   end = 'end',
 }
 
-export enum ContentType {
-  text = 'text',
-  img = 'img',
-  component = 'component',
-  slot = 'slot',
+export enum MessageTypeEnum {
+  TEXT = 'text',
+  IMAGE_URL = 'image_url',
+  TOOL = 'tool',
+  ERROR = 'error',
 }
 
 export enum Role {
   system = 'system',
+  init = 'init',
   assistant = 'assistant',
+  loading='loading',
+  starter = 'starter',
   user = 'user',
   tool = 'tool',
   knowledge = 'knowledge',
-}
-
-export interface IContentMessage {
-  id: string; // Unique identifier for the conversation
-  title: string; // Title of the conversation
-  createAt: number; // Timestamp of when the conversation was created
-  updateAt: number; // Timestamp of when the conversation was last updated
-  participants: IParticipant[]; // Participants in the conversation
-  messages: IMessage[]; // Messages in the conversation
 }
 
 export interface IParticipant {
@@ -43,37 +37,39 @@ interface ImageURL {
 
 export interface ImageURLContentBlock {
   image_url: ImageURL;
-  type: 'image_url';
+  type: MessageTypeEnum.IMAGE_URL;
 }
 
 export interface TextContentBlock {
   text: string;
-  type: 'text';
+  type: MessageTypeEnum.TEXT;
 }
 
-export type MessageContent = ImageURLContentBlock | TextContentBlock;
+export interface ITool {
+  type: MessageTypeEnum.TOOL;
+  extra: {
+    source: string;
+    pluginName: string;
+    data: string;
+    status: IToolStatus;
+    template_id?: string;
+  };
+}
 
-export interface Message {
+export interface IErrorMessage {
+  type: MessageTypeEnum.ERROR;
+  text: string;
+}
+
+export type MessageContent = ImageURLContentBlock | TextContentBlock | ITool | IErrorMessage;
+
+// 兼容 oneapi 等发送消息的格式
+export interface IContentMessage {
   role: string;
   content: MessageContent[];
 }
 
-export interface IMessage {
-  id: string; // Unique identifier for the message
-  parentId?: string; // ID of the parent message
-  uid: string; // User UUID
-  content: string; // Content text
-  contentType: ContentType; // Type of content
-  componentId?: string; // If contentType is of component type, componentId is the component's ID
-  role: Role; // Role type
-  ext?: IExtraInfo[]; // Additional information such as execution process/intermediate state
-  status?: Status; // Current return status of the message
-  createAt: number; // Timestamp of creation
-  updateAt: number; // Timestamp of last update
-  timeCost: string; // Time taken for the operation
-}
-
-export interface IExtraInfo {
+export interface IToolExtraInfo {
   /** Source text for display purposes */
   source?: string;
   /** Plugin name */
@@ -85,7 +81,7 @@ export interface IExtraInfo {
   /** Database name */
   databaseName?: string;
   /** Individual execution status */
-  status?: Status;
+  status?: IToolStatus;
   /** Time taken for individual execution */
   timeCost?: string;
   /** Content for display */

@@ -174,7 +174,7 @@ export default function Edit() {
         });
       }
     } catch (e) {
-      console.error(JSON.stringify(e));
+      console.error('updateConfigFromChatResult error,', JSON.stringify(e));
     }
   }, []);
 
@@ -201,7 +201,6 @@ export default function Edit() {
   );
 
   useEffect(() => {
-    console.log('config', config);
     if (!isEmpty(config)) {
       setBotProfile((draft) => {
         draft.id = config.id;
@@ -321,9 +320,8 @@ export default function Edit() {
           apiDomain={API_HOST}
           helloMessage={I18N.edit.page.chuCiJianMianXian}
           starters={[I18N.edit.page.bangWoPeiZhiYi]}
-          getToolsResult={(result) => {
-            const data = result?.data;
-            updateConfigFromChatResult(data);
+          getToolsResult={(result: any) => {
+            updateConfigFromChatResult(result?.data);
           }}
         />
       )}

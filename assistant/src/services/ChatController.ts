@@ -1,16 +1,17 @@
 import axios from 'axios';
-import { Message } from '../interface';
+import { IContentMessage } from '../interface';
 
 /**
  * Chat api
  * @param message
  */
 export async function streamChat(
-  messages: Message[],
+  messages: IContentMessage[],
   apiDomain: string,
   apiUrl = '/api/chat/stream_qa',
   prompt = '',
   token = '',
+  signal?: AbortSignal 
 ): Promise<Response> {
   return fetch(`${apiDomain}${apiUrl}`, {
     method: 'POST',
@@ -26,6 +27,7 @@ export async function streamChat(
       prompt: prompt,
       bot_id: token,
     }),
+    signal
   });
 }
 
