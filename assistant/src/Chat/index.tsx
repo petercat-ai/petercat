@@ -1,13 +1,14 @@
 import { Bubble, useXAgent, useXChat, XStream } from '@ant-design/x';
 import { MessageInfo } from '@ant-design/x/es/useXChat';
 import { Flex, GetProp, theme } from 'antd';
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import React, { memo, useEffect, useRef, useState, type FC } from 'react';
 import useSWR from 'swr';
 import SignatureIcon from '../icons/SignatureIcon';
 import {
   IContentMessage,
   ImageURLContentBlock,
+  ITool,
   MessageContent,
   MessageTypeEnum,
   Role,
@@ -25,6 +26,7 @@ import UserContent from './components/UserContent';
 import './index.css';
 import { UITemplateRender } from './template';
 
+const CANCEL_REASON = 'petercat user cancel';
 export interface MetaData {
   /**
    * 角色头像
@@ -102,13 +104,34 @@ const Chat: FC<ChatProps> = memo(
   }) => {
     const { token: designToken } = theme.useToken();
     const tokenRef = useRef<string | undefined>(token);
+    const requestParamsRef = useRef({ apiDomain, apiUrl, prompt, editBotId });
+    useEffect(() => {
+      requestParamsRef.current = {
+        apiDomain,
+        apiUrl,
+        prompt,
+        editBotId,
+      };
+    }, [tokenRef?.current, apiDomain, apiUrl, prompt, editBotId]);
+
     useEffect(() => {
       tokenRef.current = token;
     }, [token]);
     const messageMinWidth = drawerWidth
       ? `calc(${drawerWidth}px - 90px)`
       : '400px';
-    const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>();
+
+    const [currentBotInfo, setCurrentBotInfo] = useState<BotInfo>({
+      assistantMeta,
+      helloMessage,
+      starters,
+    });
+    const currentBotInfoRef = useRef<BotInfo>({
+      assistantMeta,
+      helloMessage,
+      starters,
+    });
+
     const { data: botDetail, isValidating } = useSWR(
       tokenRef?.current
         ? [
@@ -130,8 +153,8 @@ const Chat: FC<ChatProps> = memo(
       setAbortController(newAbortController);
       return newAbortController;
     };
-
     // ============================ Agent =============================
+
     const [agent] = useXAgent<IContentMessage>({
       baseURL: apiDomain,
       request: async ({ messages = [] }, { onUpdate, onSuccess }) => {
@@ -155,6 +178,8 @@ const Chat: FC<ChatProps> = memo(
           });
         let res: IContentMessage = { role: Role.assistant, content: [] };
         try {
+          const { apiDomain, prompt, apiUrl, editBotId } =
+            requestParamsRef.current;
           const response = await streamChat(
             newMessages,
             apiDomain,
@@ -175,6 +200,13 @@ const Chat: FC<ChatProps> = memo(
                 role: Role.assistant,
                 content: resContent,
               };
+              // @ts-ignore
+              const toolContent: ITool[] = resContent.filter(
+                (i: MessageContent) => i.type === 'tool',
+              );
+              if (toolContent.length > 0 && toolContent[0]?.extra) {
+                getToolsResult?.(toolContent[0]?.extra);
+              }
               onUpdate(res);
             }
           } else {
@@ -189,10 +221,8 @@ const Chat: FC<ChatProps> = memo(
             };
           }
         } catch (e: any) {
-          console.error('Error:', e);
-          if (e.name === 'AbortError') {
+          if (e.name === 'AbortError' || e === CANCEL_REASON) {
             // ignore abort error
-            // onError(e);
           } else {
             res = {
               role: Role.assistant,
@@ -200,6 +230,7 @@ const Chat: FC<ChatProps> = memo(
             };
           }
         }
+
         onSuccess(res);
       },
     });
@@ -213,6 +244,7 @@ const Chat: FC<ChatProps> = memo(
     });
 
     const resetChat = () => {
+      resetController();
       const initMessages: MessageInfo<IContentMessage>[] = [
         {
           id: 'init',
@@ -243,15 +275,11 @@ const Chat: FC<ChatProps> = memo(
           },
         });
       }
-      setMessages(initMessages);
-    };
-
-    useEffect(() => {
-      resetController();
+      // resetController may touch abort error and set Error Message
       setTimeout(() => {
-        resetChat();
+        setMessages(initMessages);
       }, 0);
-    }, [currentBotInfo]);
+    };
 
     // ============================ Event ============================
     const handleSendMessage = (message: IContentMessage) => {
@@ -260,6 +288,43 @@ const Chat: FC<ChatProps> = memo(
       );
       onRequest(message);
     };
+
+    useEffect(() => {
+      return () => {
+        resetController();
+      };
+    }, []);
+
+    useEffect(() => {
+      if (isEmpty(botDetail)) {
+        return;
+      }
+      try {
+        // @ts-ignore
+        const info = botDetail?.[0] as any;
+        setCurrentBotInfo({
+          assistantMeta: {
+            avatar: info.avatar,
+            title: info.name,
+          },
+          helloMessage: info.hello_message,
+          starters: info.starters || [],
+        });
+      } catch (e) {
+        console.error('botDetail effect', e);
+      }
+    }, [botDetail]);
+
+    useEffect(() => {
+      if (isEqual(currentBotInfo, currentBotInfoRef.current)) {
+        return;
+      }
+      if (currentBotInfo?.assistantMeta?.title) {
+        document.title = currentBotInfo.assistantMeta.title;
+      }
+      resetChat();
+      currentBotInfoRef.current = currentBotInfo;
+    }, [currentBotInfo]);
 
     useEffect(() => {
       setCurrentBotInfo({
@@ -272,22 +337,6 @@ const Chat: FC<ChatProps> = memo(
         starters: starters,
       });
     }, [assistantMeta, helloMessage, starters]);
-
-    useEffect(() => {
-      if (isEmpty(botDetail)) {
-        return;
-      }
-      // @ts-ignore
-      const info = botDetail?.[0] as any;
-      setCurrentBotInfo({
-        assistantMeta: {
-          avatar: info.avatar,
-          title: info.name,
-        },
-        helloMessage: info.hello_message,
-        starters: info.starters,
-      });
-    }, [botDetail]);
 
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
@@ -347,8 +396,8 @@ const Chat: FC<ChatProps> = memo(
         },
         [Role.assistant]: {
           classNames: {
-            avatar: 'petercat-avatar',
             header: 'petercat-header',
+            avatar: 'petercat-avatar',
           },
           placement: 'start',
           avatar: <Avatar backgroundColor={backgroundColor} avatar={avatar} />,
@@ -360,7 +409,7 @@ const Chat: FC<ChatProps> = memo(
                 (i: MessageContent) => i.type === 'tool',
               );
               const extra = toolContent?.extra;
-              getToolsResult?.(extra);
+              // getToolsResult?.(extra);
               const textContent = message.content.find(
                 (i: MessageContent) => i.type === MessageTypeEnum.TEXT,
               );
@@ -369,41 +418,38 @@ const Chat: FC<ChatProps> = memo(
               );
               return (
                 <>
-                  {/* @ts-ignore */}
-                  <>
-                    {extra && (
-                      <div className="mb-2">
-                        <ThoughtChain
-                          content={extra}
-                          status={extra.status}
-                          source={extra.source}
-                        />
-                      </div>
-                    )}
-                    {textContent && (
-                      <div className="petercat-content-start">
-                        <MarkdownRender content={textContent.text} />
-                      </div>
-                    )}
-                    {errorContent && (
-                      <div className="petercat-content-start text-red-700">
-                        ops..., {errorContent.text}
-                      </div>
-                    )}
-                    {extra?.template_id && message.status === 'success' && (
-                      <div
-                        style={{ maxWidth: messageMinWidth }}
-                        className="transition-all duration-300 ease-in-out"
-                      >
-                        {UITemplateRender({
-                          templateId: extra.template_id,
-                          cardData: extra.data,
-                          apiDomain: apiDomain,
-                          token: tokenRef?.current ?? '',
-                        })}
-                      </div>
-                    )}
-                  </>
+                  {extra && (
+                    <div className="mb-2">
+                      <ThoughtChain
+                        content={extra}
+                        status={extra.status}
+                        source={extra.source}
+                      />
+                    </div>
+                  )}
+                  {textContent && (
+                    <div className="petercat-content-start">
+                      <MarkdownRender content={textContent.text} />
+                    </div>
+                  )}
+                  {errorContent && (
+                    <div className="petercat-content-start text-red-700">
+                      ops... {errorContent.text}
+                    </div>
+                  )}
+                  {extra?.template_id && message.status === 'success' && (
+                    <div
+                      style={{ maxWidth: messageMinWidth }}
+                      className="transition-all duration-300 ease-in-out"
+                    >
+                      {UITemplateRender({
+                        templateId: extra.template_id,
+                        cardData: extra.data,
+                        apiDomain: apiDomain,
+                        token: tokenRef?.current ?? '',
+                      })}
+                    </div>
+                  )}
                 </>
               );
             } catch (e) {
@@ -435,6 +481,7 @@ const Chat: FC<ChatProps> = memo(
               return <UserContent images={images} text={text} />;
             } catch (e) {
               console.error('user items', e);
+              return null;
             }
           },
         },
@@ -511,7 +558,7 @@ const Chat: FC<ChatProps> = memo(
                     resetChat();
                   }}
                   onStop={() => {
-                    abortController?.abort('user cancel');
+                    abortController?.abort(CANCEL_REASON);
                   }}
                 />
               </div>
