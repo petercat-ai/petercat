@@ -69,8 +69,24 @@ def token_usage(
 
 @router.get("/llm_token_usages/analyzer")
 def token_usage_analyze(
-  start_date: datetime = datetime.now() - timedelta(days=7),
+  start_date: datetime = datetime.now() - timedelta(days=30),
   end_date: datetime = datetime.now(),
   user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
 ):
   return user_token_usage_service.analyze_token_usage(start_date=start_date, end_date=end_date)
+
+@router.get("/llm_token_usages/top_bots")
+def top_used_bots(
+  start_date: datetime = datetime.now() - timedelta(days=30),
+  end_date: datetime = datetime.now(),
+  user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
+):
+  return user_token_usage_service.top_bots(start_date=start_date, end_date=end_date)
+
+@router.get("/llm_token_usages/top_users")
+def top_used_users(
+  start_date: datetime = datetime.now() - timedelta(days=30),
+  end_date: datetime = datetime.now(),
+  user_token_usage_service: Annotated[UserTokenUsageService | None, Depends(get_user_token_usage_service)] = None,
+):
+  return user_token_usage_service.top_users(start_date=start_date, end_date=end_date)

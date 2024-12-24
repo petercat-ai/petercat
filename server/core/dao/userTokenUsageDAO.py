@@ -1,7 +1,7 @@
 from datetime import datetime
 from supabase.client import Client
 
-from core.models.user_token_usage import BotTokenUsageStats, UserTokenUsage, UserTokenUsageStats
+from core.models.user_token_usage import BotTokenUsageRate, BotTokenUsageStats, UserTokenUsage, UserTokenUsageRate, UserTokenUsageStats
 from petercat_utils.db.client.supabase import get_client
 from core.dao.BaseDAO import BaseDAO
 
@@ -37,3 +37,20 @@ class UserTokenUsageDAO(BaseDAO):
         }).execute()
 
         return [BotTokenUsageStats(**stats) for stats in resp.data]
+    
+    def top_bots(self, start_date: datetime, end_date: datetime):
+        resp = self.client.rpc("bot_token_usage_rate", {
+            "start_date": start_date.strftime("%Y-%m-%d"),
+            "end_date": end_date.strftime("%Y-%m-%d"),
+        }).execute()
+
+        return [BotTokenUsageRate(**stats) for stats in resp.data]
+    
+    def top_users(self, start_date: datetime, end_date: datetime):
+        resp = self.client.rpc("user_token_usage_rate", {
+            "start_date": start_date.strftime("%Y-%m-%d"),
+            "end_date": end_date.strftime("%Y-%m-%d"),
+        }).execute()
+
+        return [UserTokenUsageRate(**stats) for stats in resp.data]
+        
