@@ -12,7 +12,6 @@ from agent.bot import Bot
 from agent.bot.get_bot import get_bot_by_id
 from core.models.bot import BotModel
 
-from utils.fuzzy_match import contains_keyword_fuzzy
 from utils.path_to_hunk import convert_patch_to_hunk
 from utils.random_str import random_str
 from agent.prompts.pull_request import (

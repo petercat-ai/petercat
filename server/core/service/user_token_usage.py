@@ -24,6 +24,9 @@ class UserTokenUsageService():
   def usage_stats(self, user_id: str, start_date: datetime.date, end_date: datetime.date):
     return self.user_token_usage_dao.stats(user_id=user_id, start_date=start_date, end_date=end_date)
 
+  def analyze_token_usage(self, start_date: datetime.date, end_date: datetime.date):
+    return self.user_token_usage_dao.analyze(start_date=start_date, end_date=end_date)
+
 def get_user_token_usage_service():
   return UserTokenUsageService()
 

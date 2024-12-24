@@ -19,3 +19,11 @@ class UserTokenUsageStats(BaseModel):
     input_tokens: Optional[int] = 0
     output_tokens: Optional[int] = 0
     total_tokens: Optional[int] = 0
+
+
+class BotTokenUsageStats(BaseModel):
+    bot_id: str
+    usage_date: datetime
+    input_tokens: Optional[int] = 0
+    output_tokens: Optional[int] = 0
+    total_tokens: Optional[int] = 0
