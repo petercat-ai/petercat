@@ -51,37 +51,37 @@ class AuthMiddleWare(BaseHTTPMiddleware):
             return False
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
-        
-        if ENVIRONMENT == "development":
-            return await call_next(request)
-
-        # Auth 相关的直接放过
-        if request.url.path.startswith("/api/auth"):
-            return await call_next(request)
-
-        if request.url.path in ALLOW_LIST:
-            return await call_next(request)
-
-        if await self.oauth(request=request):
-            return await call_next(request)
-
-        # 获取 session 中的用户信息
-        user = request.session.get("user")
-        if not user:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
-
-        if user['sub'].startswith("client|"):
-            if request.url.path in ANONYMOUS_USER_ALLOW_LIST:
+        try:
+            if ENVIRONMENT == "development":
                 return await call_next(request)
-            else:
-                # 如果没有用户信息，返回 401 Unauthorized 错误
-                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Anonymous User Not Allow")
 
-        return await call_next(request)
-        # except HTTPException as e:
-        #     print(traceback.format_exception(e))
-        #     # 处理 HTTP 异常
-        #     return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
-        # except Exception as e:
-        #     # 处理其他异常
-        #     return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
+            # Auth 相关的直接放过
+            if request.url.path.startswith("/api/auth"):
+                return await call_next(request)
+
+            if request.url.path in ALLOW_LIST:
+                return await call_next(request)
+
+            if await self.oauth(request=request):
+                return await call_next(request)
+
+            # 获取 session 中的用户信息
+            user = request.session.get("user")
+            if not user:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+
+            if user['sub'].startswith("client|"):
+                if request.url.path in ANONYMOUS_USER_ALLOW_LIST:
+                    return await call_next(request)
+                else:
+                    # 如果没有用户信息，返回 401 Unauthorized 错误
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Anonymous User Not Allow")
+
+            return await call_next(request)
+        except HTTPException as e:
+            print(traceback.format_exception(e))
+            # 处理 HTTP 异常
+            return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
+        except Exception as e:
+            # 处理其他异常
+            return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
