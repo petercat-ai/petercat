@@ -65,6 +65,7 @@ export default function AdminPage() {
               <div className="text-gray-400">
                 {topBots.map(record => {
                   return <Progress
+                    key={record.bot_name}
                     className="max-w-md"
                     color="primary"
                     formatOptions={{ style: "decimal"}}
