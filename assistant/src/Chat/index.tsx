@@ -204,8 +204,12 @@ const Chat: FC<ChatProps> = memo(
               const toolContent: ITool[] = resContent.filter(
                 (i: MessageContent) => i.type === 'tool',
               );
-              if (toolContent.length > 0 && toolContent[0]?.extra) {
-                getToolsResult?.(toolContent[0]?.extra);
+              if (
+                toolContent.length > 0 &&
+                toolContent[0]?.extra &&
+                getToolsResult !== undefined
+              ) {
+                getToolsResult(toolContent[0].extra);
               }
               onUpdate(res);
             }
@@ -409,7 +413,6 @@ const Chat: FC<ChatProps> = memo(
                 (i: MessageContent) => i.type === 'tool',
               );
               const extra = toolContent?.extra;
-              // getToolsResult?.(extra);
               const textContent = message.content.find(
                 (i: MessageContent) => i.type === MessageTypeEnum.TEXT,
               );
