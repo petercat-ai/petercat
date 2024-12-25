@@ -84,6 +84,7 @@ export default function AdminPage() {
               <div className="text-gray-400">
                 {topUsers.map(record => {
                   return <Progress
+                    key={record.user_name}
                     className="max-w-md"
                     color="primary"
                     formatOptions={{ style: "decimal"}}
