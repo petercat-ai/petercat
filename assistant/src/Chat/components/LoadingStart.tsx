@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import React from 'react';
-const LoadingAnimationStart = require('../../assets/bubble-start.json');
+import LoadingAnimationStart from '../../assets/bubble-start.json';
 
 interface LoadingStartProps {
   loop?: boolean;
