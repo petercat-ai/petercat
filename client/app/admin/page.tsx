@@ -4,7 +4,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Column } from '@ant-design/charts';
 import { Card, Progress } from '@nextui-org/react';
-import { useAnalyze, useTopBots, useTopUsers } from '../hooks/useAnalyze';
+import { BotUsage, useAnalyze, useTopBots, useTopUsers } from '../hooks/useAnalyze';
 import { maxBy, sortBy } from 'lodash';
 
 export default function AdminPage() {
@@ -13,7 +13,7 @@ export default function AdminPage() {
   const { data: topUsers = [] } = useTopUsers();
 
   const chartProps = {
-    xField: d => new Date(d.usage_date),
+    xField: (d: BotUsage) => new Date(d.usage_date),
     colorField: 'bot_name',
     height: 400,
     stack: true,
@@ -22,7 +22,7 @@ export default function AdminPage() {
     scale: { color: { palette: 'tableau10' }},
     axis: {
       x: {
-        labelFormatter: x => dayjs(x).format('MM-DD'),
+        labelFormatter: (x: string) => dayjs(x).format('MM-DD'),
       }
     },
   }
