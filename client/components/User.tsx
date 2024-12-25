@@ -39,10 +39,10 @@ export default function Profile() {
         />
       </DropdownTrigger>
       <DropdownMenu>
-        <DropdownItem>
+        <DropdownItem key="token">
           <Link href="/user/tokens">{I18N.components.User.tOKEN}</Link>
         </DropdownItem>
-        <DropdownItem onClick={actions.doLogout}>
+        <DropdownItem key="logout" onPress={actions.doLogout}>
           {I18N.components.User.dengChu}
         </DropdownItem>
       </DropdownMenu>
