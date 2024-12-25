@@ -1,6 +1,6 @@
 'use client';
 import I18N from '@/app/utils/I18N';
-import React, { useCallback, useEffect, useMemo, useState, Key } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Tabs,
   Tab,
@@ -20,7 +20,6 @@ import Image from 'next/image';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateForm';
 import { toast, ToastContainer } from 'react-toastify';
 import BackIcon from '@/public/icons/BackIcon';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useRouter } from 'next/navigation';
 import {
   useBotConfigGenerator,
@@ -328,25 +327,32 @@ export default function Edit() {
     </div>
   );
 
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(botProfile.id)
+      .then(() => {
+        toast.success(I18N.edit.page.tOKEN);
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('something went wrong, please try again');
+      });
+  };
+
   const manualConfigContent = (
     <div className="h-full px-10 py-10 overflow-x-hidden overflow-y-scroll">
-      <div className="flex justify-between">
+      <div className="flex justify-between" key="copy">
         <span>{I18N.edit.page.gITHU}</span>
         {botProfile.id && (
-          <CopyToClipboard
-            text={botProfile.id}
-            onCopy={() => {
-              toast.success(I18N.edit.page.tOKEN);
-            }}
+          <span
+            className="text-xs text-gray-500 cursor-pointer"
+            onClick={handleCopy}
           >
-            {/* @ts-ignore */}
-            <span className="text-xs text-gray-500 cursor-pointer">
-              {I18N.edit.page.fuZhiTOK}
-            </span>
-          </CopyToClipboard>
+            {I18N.edit.page.fuZhiTOK}
+          </span>
         )}
       </div>
-      <div>
+      <div key="input">
         {!isEdit ? (
           <Autocomplete
             name="repo_name"

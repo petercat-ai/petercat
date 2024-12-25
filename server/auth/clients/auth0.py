@@ -67,7 +67,6 @@ class Auth0Client(BaseAuthClient):
                 "picture": user_info.get("picture"),
                 "sub": user_info["sub"],
                 "sid": secrets.token_urlsafe(32),
-                "agreement_accepted": user_info.get("agreement_accepted"),
             }
             return data
         else:

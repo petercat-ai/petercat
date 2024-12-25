@@ -17,3 +17,19 @@ export async function createToken(data: LLMTokenInsert) {
   const response = await axios.post(`${apiDomain}/api/user/llm_token`, data);
   return response.data;
 }
+
+export async function analyzeTokenUsage() {
+  const response = await axios.get(`${apiDomain}/api/user/llm_token_usages/analyzer`);
+  return response.data;
+}
+
+export async function analyzeTopBots() {
+  const response = await axios.get(`${apiDomain}/api/user/llm_token_usages/top_bots`);
+  return response.data;
+}
+
+export async function analyzeTopUsers() {
+  const response = await axios.get(`${apiDomain}/api/user/llm_token_usages/top_users`);
+  return response.data;
+}
+

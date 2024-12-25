@@ -9,6 +9,6 @@ class User(BaseModel):
     avatar: Optional[str] = None
     picture: Optional[str]
     agreement_token: Optional[bool] = False
-
+    is_admin: Optional[bool] = False
     anonymous: Optional[bool] = True
     access_token: Optional[str] = None
