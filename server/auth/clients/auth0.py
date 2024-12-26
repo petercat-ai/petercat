@@ -1,3 +1,4 @@
+from fastapi.responses import RedirectResponse
 import httpx
 import secrets
 
@@ -35,8 +36,25 @@ class Auth0Client(BaseAuthClient):
 
   async def login(self, request):
     return await self._client.auth0.authorize_redirect(
-        request, redirect_uri=CALLBACK_URL
+        request, redirect_uri=CALLBACK_URL, prompt='login'
     )
+
+  async def logout(self, request, redirect):
+    url = f'https://{AUTH0_DOMAIN}/v2/logout'
+    headers = {"content-type": "application/x-www-form-urlencoded"}
+    data = {
+        'client_id': CLIENT_ID,
+        'returnTo': redirect,
+    }
+
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, params=data, headers=headers)
+        if redirect:
+            if resp.status_code == 302:
+                return RedirectResponse(url=resp.headers['Location']) 
+            else:
+                return RedirectResponse(url=redirect)  # 如果出错，直接重定向到 fallback 地址
+        return {"success": True}
 
   async def get_oauth_token(self):
     url = f'https://{AUTH0_DOMAIN}/oauth/token'
