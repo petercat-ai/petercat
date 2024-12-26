@@ -32,12 +32,10 @@ async def login(request: Request, auth_client = Depends(get_auth_client)):
     return await auth_client.login(request)
 
 @router.get("/logout")
-async def logout(request: Request):
+async def logout(request: Request, auth_client = Depends(get_auth_client)):
     request.session.pop("user", None)
     redirect = request.query_params.get("redirect")
-    if redirect:
-        return RedirectResponse(url=f"{redirect}", status_code=302)
-    return {"success": True}
+    return await auth_client.logout(request, redirect)
 
 
 @router.get("/callback")

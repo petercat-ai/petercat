@@ -39,6 +39,10 @@ class BaseAuthClient:
     pass
 
   @abstractmethod
+  async def logout(self, request: Request, redirect: str):
+    pass
+
+  @abstractmethod
   async def get_oauth_token(self) -> str:
     pass
 
