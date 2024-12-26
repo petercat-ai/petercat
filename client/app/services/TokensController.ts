@@ -2,6 +2,7 @@ import axios from "axios";
 import { LLMTokenInsert } from "../hooks/useToken";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+axios.defaults.withCredentials = true;
 
 export async function getTokenList() {
   const response = await axios.get(`${apiDomain}/api/user/llm_tokens`);
