@@ -32,7 +32,7 @@ class UserTokenUsageService():
 
   def top_users(self, start_date: datetime.date, end_date: datetime.date):
     return self.user_token_usage_dao.top_users(start_date=start_date, end_date=end_date)
-    
+
 def get_user_token_usage_service():
   return UserTokenUsageService()
 

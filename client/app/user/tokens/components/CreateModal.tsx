@@ -1,5 +1,5 @@
 import I18N from '@/app/utils/I18N';
-import { LLMTokenInsert, useCreateToken } from '@/app/hooks/useToken';
+import { LLMTokenInsert, useCreateToken, useListLLMs } from '@/app/hooks/useToken';
 import {
   Button,
   Input,
@@ -24,6 +24,8 @@ export interface CreateModalProps {
 
 export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: CreateModalProps) {
   const [llmToken, setLLMToken] = useCreateToken();
+  const { data: llms = [] } = useListLLMs();
+
   useEffect(() => setLLMToken({}), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -48,7 +50,7 @@ export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: Cr
             <ModalBody>
               <form>
                 <div className="flex-1">
-  
+
                   <div className="mb-[42px]">
                     <Input
                       name="slug"
@@ -67,8 +69,7 @@ export default function CreateModal({ isOpen, onClose, isLoading, onCreate }: Cr
                       required
                       onChange={handleChange}
                     >
-                      <SelectItem key="openai">openai</SelectItem>
-                      <SelectItem key="gemini">gemini</SelectItem>
+                      {llms?.map(llm => <SelectItem key={llm}>{llm}</SelectItem>)}
                     </Select>
                   </div>
                   <div className="mt-[42px]">

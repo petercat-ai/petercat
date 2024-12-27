@@ -58,7 +58,7 @@ export default {
     gITHU: ' GitHubプラットフォーム',
   },
   CreateButton: {
-    chuangJianTOK: 'トークンを作成',
+    chuangJianTOK: '托管されたトークン',
   },
   CreateModal: {
     miYao: 'シークレットキー',

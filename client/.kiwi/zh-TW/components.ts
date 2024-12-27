@@ -58,7 +58,7 @@ export default {
     gITHU: ' GitHub 平台',
   },
   CreateButton: {
-    chuangJianTOK: '創建 Token',
+    chuangJianTOK: '代管 Token',
   },
   CreateModal: {
     miYao: '密鑰',

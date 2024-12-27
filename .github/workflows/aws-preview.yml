@@ -21,7 +21,7 @@ env:
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
-  actions: write 
+  actions: write
 
 jobs:
   deploy:
@@ -67,6 +67,7 @@ jobs:
               ParameterKey=OpenAIAPIKey,ParameterValue=${{ secrets.OPENAI_API_KEY }} \
               ParameterKey=OpenAIBaseUrl,ParameterValue=${{ vars.OPENAI_BASE_URL || 'https://api.openai.com/v1' }} \
               ParameterKey=GeminiAPIKey,ParameterValue=${{ secrets.GEMINI_API_KEY }} \
+              ParameterKey=DeepSeekAPIKey,ParameterValue=${{ secrets.DEEPSEEK_API_KEY }} \
               ParameterKey=SupabaseServiceKey,ParameterValue=${{ secrets.SUPABASE_SERVICE_KEY }} \
               ParameterKey=SupabaseUrl,ParameterValue=${{ secrets.SUPABASE_URL }} \
               ParameterKey=TavilyAPIKey,ParameterValue=${{ secrets.TAVILY_API_KEY }} \
