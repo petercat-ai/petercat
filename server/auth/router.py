@@ -47,8 +47,8 @@ async def callback(request: Request, auth_client: BaseAuthClient = Depends(get_a
     if user_info:
         upsert_user = {
             **user_info,
-            'agreement_accepted': profile['agreement_accepted'],
-            'is_admin': profile['is_admin'],
+            'agreement_accepted': profile['agreement_accepted'] if profile else False,
+            'is_admin': profile['is_admin'] if profile else False,
         }
 
         request.session["user"] = dict(upsert_user)

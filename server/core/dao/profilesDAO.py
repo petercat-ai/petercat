@@ -18,7 +18,7 @@ class ProfilesDAO(BaseDAO):
             .eq('id', user_id)
             .execute()
         )
-        return resp.data[0]
+        return resp.data[0] if resp.data else None
     
     def get_agreement_status(self, user_id: str):
 
