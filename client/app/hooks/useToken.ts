@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTokenList } from '../services/TokensController';
+import { getTokenList, getLLMList } from '../services/TokensController';
 import { Tables, Database } from '@/types/database.types';
 import { Updater, useImmer } from 'use-immer';
 
@@ -20,4 +20,12 @@ export function useCreateToken(): [LLMTokenInsert, Updater<LLMTokenInsert>] {
   const [llmToken, setLLMToken] = useImmer<LLMTokenInsert>(defaultLLMToken);
 
   return [llmToken, setLLMToken]
+}
+
+export function useListLLMs() {
+  return useQuery<string[]>({
+    queryKey: [`llm.list`],
+    queryFn: async () => getLLMList(),
+    retry: false,
+  });
 }
