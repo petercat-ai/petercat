@@ -95,7 +95,7 @@ const Assistant = (props: AssistantProps) => {
               <ActionIcon
                 icon={<CloseCircleFilled />}
                 onClick={toggleDrawer}
-                className="w-6 h-6"
+                className="w-6 h-6 text-black"
               />
             </div>
           </>
