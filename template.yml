@@ -60,6 +60,10 @@ Parameters:
     Type: String
     Description: Gemini API Key
     Default: 1
+  DeepSeekAPIKey:
+    Type: String
+    Description: DeepSeek API Key
+    Default: 1
   SupabaseServiceKey:
     Type: String
     Description: Supabase Service Key
@@ -129,7 +133,7 @@ Resources:
           PETERCAT_ENV: !Ref PetercatEnv
           X_GITHUB_SECRET_NAME: !Ref GithubSecretName
           STATIC_SECRET_NAME: !Ref StaticSecretName
-          LLM_TOKEN_SECRET_NAME: !Ref LLMTokenSecretName 
+          LLM_TOKEN_SECRET_NAME: !Ref LLMTokenSecretName
           LLM_TOKEN_PUBLIC_NAME: !Ref LLMTokenPublicName
           STATIC_KEYPAIR_ID: !Ref StaticKeyPairId
           S3_TEMP_BUCKET_NAME: !Ref S3TempBucketName
@@ -164,11 +168,11 @@ Resources:
           Resource: '*'
         - Sid: AllObjectActions
           Effect: Allow
-          Action: 
+          Action:
             - s3:PutObject
             - s3:GetObject
             - s3:DeleteObject
-          Resource: 
+          Resource:
             - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       Tracing: Active
     Metadata:
@@ -192,6 +196,7 @@ Resources:
           FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
           OPENAI_API_KEY: !Ref OpenAIAPIKey
           GEMINI_API_KEY: !Ref GeminiAPIKey
+          DEEPSEEK_API_KEY: !Ref DeepSeekAPIKey
           SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
@@ -211,14 +216,14 @@ Resources:
           Resource: '*'
         - Sid: AllObjectActions
           Effect: Allow
-          Action: 
+          Action:
           - s3:PutObject
           - s3:GetObject
           - s3:DeleteObject
-          Resource: 
+          Resource:
           - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
       - SQSPollerPolicy:
-          QueueName: 
+          QueueName:
             !Ref SQSQueueName
       Tracing: Active
     Metadata:

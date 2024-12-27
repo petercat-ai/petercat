@@ -26,7 +26,6 @@ class DeepSeekClient(BaseLLMClient):
         streaming: Optional[bool] = False,
         api_key: Optional[str] = DEEPSEEK_API_KEY,
     ):
-        print(f"DEEPSEEK_API_KEY={DEEPSEEK_API_KEY}")
         self._client = ChatOpenAI(
             model_name="deepseek-chat",
             temperature=temperature,
