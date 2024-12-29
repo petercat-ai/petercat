@@ -92,8 +92,8 @@ Here is a reference example of an import:
   <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@1.0.7/dist/umd/assistant.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@1.0.7/dist/umd/assistant.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.css">
 </head>
 ```
 
