@@ -32,8 +32,11 @@ async def dict_to_sse(generator: AsyncGenerator[Dict, None]):
             json_output = json.dumps(d, ensure_ascii=False)
             yield f"data: {json_output}\n\n"
         except Exception as e:
-            error_output = json.dumps({"status": "error", "message": str(e)}, ensure_ascii=False)
+            error_output = json.dumps(
+                {"status": "error", "message": str(e)}, ensure_ascii=False
+            )
             yield f"data: {error_output}\n\n"
+
 
 class AgentBuilder:
     agent_executor: AgentExecutor
@@ -216,13 +219,17 @@ class AgentBuilder:
     async def run_chat(self, input_data: ChatData) -> str:
         try:
             messages = input_data.messages
-            return self.agent_executor.invoke(
+            last_message_content = messages[-1].content
+
+            result = self.agent_executor.invoke(
                 {
-                    "input": messages[len(messages) - 1].content,
+                    "input": last_message_content,
                     "chat_history": self.chat_history_transform(messages),
                 },
                 return_only_outputs=True,
             )
+
+            return result
         except Exception as e:
-            logger.error(e)
-            return f"error: {str(e)}\n"
+            logger.error("Error occurred in run_chat: %s", str(e))
+            return f"error: {str(e)}"

@@ -1,4 +1,3 @@
-
 import traceback
 from typing import Optional
 from github import Github, Auth, ContentFile
@@ -6,6 +5,7 @@ import json
 
 from langchain.tools import tool
 from agent.tools.helper import need_github_login
+
 
 def factory(token: Optional[Auth.Token]):
     @tool
@@ -22,19 +22,28 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         try:
             repo = g.get_repo(repo_name)
-            contents: list[ContentFile.ContentFile] | ContentFile.ContentFile = repo.get_contents(path=path, ref=ref) if ref else repo.get_contents(path=path)
+            contents: list[ContentFile.ContentFile] | ContentFile.ContentFile = (
+                repo.get_contents(path=path, ref=ref)
+                if ref
+                else repo.get_contents(path=path)
+            )
 
             if isinstance(contents, list):
                 return json.dumps(
-                    [{
-                        "filename": content.path,
-                        "content": content.content,
-                    } for content in contents]
+                    [
+                        {
+                            "filename": content.path,
+                            "content": content.content,
+                        }
+                        for content in contents
+                    ]
                 )
-            return json.dumps({
-                "filename": contents.path,
-                "content": contents.content,
-            })
+            return json.dumps(
+                {
+                    "filename": contents.path,
+                    "content": contents.content,
+                }
+            )
         except Exception as e:
             print(traceback.format_exception(e))
             return json.dumps([])
@@ -53,11 +62,13 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         repo = g.get_repo(repo_name)
         pull_request = repo.get_pull(pull_number)
-        # print(f"create_pr_summary, pull_request={pull_request}, summary={summary}")
         pull_request.create_issue_comment(summary)
         return json.dumps([])
+
     @tool
-    def create_review_comment(repo_name: str, pull_number: int, sha: str, path: str, line: int, comment: str):
+    def create_review_comment(
+        repo_name: str, pull_number: int, sha: str, path: str, line: int, comment: str
+    ):
         """
         Create a code review of specified pull requst file
         :param repo_name: The name of the repository, e.g., "ant-design/ant-design"
