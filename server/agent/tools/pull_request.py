@@ -2,6 +2,7 @@ import traceback
 from typing import Optional
 from github import Github, Auth, ContentFile
 import json
+import re
 
 from langchain.tools import tool
 from agent.tools.helper import need_github_login
@@ -48,6 +49,10 @@ def factory(token: Optional[Auth.Token]):
             print(traceback.format_exception(e))
             return json.dumps([])
 
+    def fix_markdown_format(markdown_str: str) -> str:
+        fixed_str = re.sub(r"\\n", "\n", markdown_str)
+        return fixed_str
+
     @tool
     def create_pr_summary(repo_name: str, pull_number: int, summary: str):
         """
@@ -62,7 +67,11 @@ def factory(token: Optional[Auth.Token]):
         g = Github(auth=token)
         repo = g.get_repo(repo_name)
         pull_request = repo.get_pull(pull_number)
-        pull_request.create_issue_comment(summary)
+
+        # check if the summary is correct and fix it
+        format_summary = fix_markdown_format(summary)
+        print(f"summary:{format_summary}")
+        pull_request.create_issue_comment(format_summary)
         return json.dumps([])
 
     @tool

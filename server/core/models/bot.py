@@ -19,7 +19,6 @@ class BotModel(BaseModel):
     temperature: Optional[float] = 0.2
     n: Optional[int] = 1
     top_p: Optional[float] = None
-    
 
 
 class RepoBindBotConfigVO(BaseModel):
