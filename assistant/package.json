@@ -1,6 +1,6 @@
 {
   "name": "@petercatai/assistant",
-  "version": "2.0.13-alpha.0",
+  "version": "2.0.13-alpha.6",
   "description": "PeterCat Assistant Application",
   "repository": "https://github.com/petercat-ai/petercat.git",
   "license": "MIT",
@@ -12,16 +12,16 @@
       "import": "./dist/esm/index.js"
     },
     "./style": {
-      "import": "./dist/esm/style.module.css"
+      "import": "./dist/esm/style/global.css"
     }
   },
   "module": "dist/esm/index.js",
   "browser": "dist/umd/assistant.min.js",
   "types": "dist/esm/index.d.ts",
-  "style": "dist/esm/style.module.css",
+  "style": "dist/esm/style/global.css",
   "scripts": {
-    "build": "npm run build:css && cp ./src/style.module.css ./.dumi/tmp/style.module.css && father build",
-    "build:css": "tailwindcss -i tailwind.css -o ./src/style.module.css",
+    "build": "npm run build:css && cp ./src/style/global.css ./.dumi/tmp/global.css && father build",
+    "build:css": "tailwindcss -i tailwind.css -o ./src/style/global.css",
     "build:watch": "father dev",
     "dev": "dumi dev",
     "docs:build": "dumi build",

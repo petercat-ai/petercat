@@ -7,11 +7,16 @@ import {
   UnorderedListOutlined,
   UpOutlined,
 } from '@ant-design/icons';
-import { Highlight } from '@ant-design/pro-editor';
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 import { IToolExtraInfo, IToolStatus } from '../interface';
+
+const Highlight = lazy(() =>
+  import('@ant-design/pro-editor').then((module) => ({
+    default: module.Highlight,
+  })),
+);
 
 const getColorClass = (status: IToolStatus) => {
   const colorClasses = {
@@ -70,14 +75,18 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
               <DownOutlined className={`${getColorClass(status!)}`} />
             </span>
           ),
-        children: safeJsonParse(content?.data) ? (
-          <Highlight language="json" theme="light" type="block">
-            {JSON.stringify(safeJsonParse(content?.data), null, 2)}
-          </Highlight>
-        ) : (
-          <Highlight language="text" theme="light" type="block">
-            {content?.data}
-          </Highlight>
+        children: (
+          <Suspense fallback={<div>...</div>}>
+            {safeJsonParse(content?.data) ? (
+              <Highlight language="json" theme="light" type="block">
+                {JSON.stringify(safeJsonParse(content?.data), null, 2)}
+              </Highlight>
+            ) : (
+              <Highlight language="text" theme="light" type="block">
+                {content?.data}
+              </Highlight>
+            )}
+          </Suspense>
         ),
       },
     ];
