@@ -7,12 +7,12 @@ interface IProps {
   content: string;
 }
 
-const MarkdownRender = (props: IProps) => (
+const MarkdownRender = React.memo((props: IProps) => (
   <Markdown
     className="ant-pro-chat-list-item-message-content"
     style={{ overflowX: 'hidden', overflowY: 'auto' }}
   >
     {props.content}
   </Markdown>
-);
+));
 export default MarkdownRender;
