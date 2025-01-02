@@ -23,7 +23,6 @@ import LoadingStart from './components/LoadingStart';
 import MarkdownRender from './components/MarkdownRender';
 import MySpinner from './components/MySpinner';
 import UserContent from './components/UserContent';
-import './index.css';
 import { UITemplateRender } from './template';
 
 const CANCEL_REASON = 'petercat user cancel';
@@ -509,7 +508,7 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Render ============================
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pt-2"
+        className="petercat-assitant bg-[#FCFCFC] pt-2"
         style={{
           ...style,
           minWidth: drawerWidth,

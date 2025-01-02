@@ -73,7 +73,7 @@ const Assistant = (props: AssistantProps) => {
     return;
   }
   return (
-    <div className="petercat-lui-assistant">
+    <div className="petercat-assitant">
       <div
         className={cls}
         style={{

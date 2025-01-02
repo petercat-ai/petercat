@@ -89,46 +89,48 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   }, []);
 
   return (
-    <Collapse
-      size="small"
-      items={items}
-      activeKey={activeKey}
-      onChange={onChange}
-      style={{ maxWidth: '100%'}}
-      expandIcon={(panelProps) => {
-        if (panelProps.isActive) {
-          return <UnorderedListOutlined className="text-gray-900 text-xs" />;
-        }
-        switch (status) {
-          case IToolStatus.success:
-            return (
-              <CheckCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.loading:
-            return (
-              <LoadingOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.error:
-            return (
-              <CloseCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.end:
-            return (
-              <ExclamationCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          default:
-            return '';
-        }
-      }}
-    />
+    <div className="petercat-assitant">
+      <Collapse
+        size="small"
+        items={items}
+        activeKey={activeKey}
+        onChange={onChange}
+        style={{ maxWidth: '100%' }}
+        expandIcon={(panelProps) => {
+          if (panelProps.isActive) {
+            return <UnorderedListOutlined className="text-gray-900 text-xs" />;
+          }
+          switch (status) {
+            case IToolStatus.success:
+              return (
+                <CheckCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.loading:
+              return (
+                <LoadingOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.error:
+              return (
+                <CloseCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.end:
+              return (
+                <ExclamationCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            default:
+              return '';
+          }
+        }}
+      />
+    </div>
   );
 };
 
