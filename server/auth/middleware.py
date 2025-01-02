@@ -33,8 +33,8 @@ class AuthMiddleWare(BaseHTTPMiddleware):
 
     async def oauth(self, request: Request):
         try:
-            referer = request.headers.get('referer')
-            origin = request.headers.get('origin')
+            referer = request.headers.get("referer")
+            origin = request.headers.get("origin")
             if referer and referer.startswith(WEB_URL):
                 return True
 
@@ -43,14 +43,17 @@ class AuthMiddleWare(BaseHTTPMiddleware):
                 bot_dao = BotDAO()
                 bot = bot_dao.get_bot(bot_id=token)
                 return bot and (
-                        "*" in bot.domain_whitelist
-                        or
-                        origin in bot.domain_whitelist
+                    "*" in bot.domain_whitelist or origin in bot.domain_whitelist
                 )
-        except HTTPException:
+        except Exception as e:
+            print(
+                f"Error: {e}, bot.domain_whitelist={bot.domain_whitelist}, origin={origin}"
+            )
             return False
 
-    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
         try:
             if ENVIRONMENT == "development":
                 return await call_next(request)
@@ -68,14 +71,19 @@ class AuthMiddleWare(BaseHTTPMiddleware):
             # 获取 session 中的用户信息
             user = request.session.get("user")
             if not user:
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+                )
 
-            if user['sub'].startswith("client|"):
+            if user["sub"].startswith("client|"):
                 if request.url.path in ANONYMOUS_USER_ALLOW_LIST:
                     return await call_next(request)
                 else:
                     # 如果没有用户信息，返回 401 Unauthorized 错误
-                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Anonymous User Not Allow")
+                    raise HTTPException(
+                        status_code=status.HTTP_403_FORBIDDEN,
+                        detail="Anonymous User Not Allow",
+                    )
 
             return await call_next(request)
         except HTTPException as e:
@@ -84,4 +92,6 @@ class AuthMiddleWare(BaseHTTPMiddleware):
             return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
         except Exception as e:
             # 处理其他异常
-            return JSONResponse(status_code=500, content={"detail": f"Internal Server Error: {e}"})
+            return JSONResponse(
+                status_code=500, content={"detail": f"Internal Server Error: {e}"}
+            )
