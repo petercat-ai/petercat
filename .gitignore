@@ -62,4 +62,4 @@ next-env.d.ts
 .pytest_cache
 
 dist/
-lui/src/style.css
+assistant/src/style.module.css
