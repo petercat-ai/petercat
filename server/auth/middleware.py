@@ -47,8 +47,8 @@ class AuthMiddleWare(BaseHTTPMiddleware):
                 return bot and (
                     "*" in bot.domain_whitelist or origin in bot.domain_whitelist
                 )
-        except Exception as e:
-            print(f"Error: {e}")
+        except HTTPException as e:
+            print(f"Error: {traceback.format_exception(e)}")
             return False
 
     async def dispatch(
