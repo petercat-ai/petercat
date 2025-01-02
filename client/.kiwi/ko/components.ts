@@ -58,7 +58,7 @@ export default {
     gITHU: ' GitHub 플랫폼',
   },
   CreateButton: {
-    chuangJianTOK: '토큰 생성',
+    chuangJianTOK: '위탁된 토큰',
   },
   CreateModal: {
     miYao: '비밀 키',

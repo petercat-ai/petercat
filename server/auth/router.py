@@ -32,12 +32,10 @@ async def login(request: Request, auth_client = Depends(get_auth_client)):
     return await auth_client.login(request)
 
 @router.get("/logout")
-async def logout(request: Request):
+async def logout(request: Request, auth_client = Depends(get_auth_client)):
     request.session.pop("user", None)
     redirect = request.query_params.get("redirect")
-    if redirect:
-        return RedirectResponse(url=f"{redirect}", status_code=302)
-    return {"success": True}
+    return await auth_client.logout(request, redirect)
 
 
 @router.get("/callback")
@@ -49,8 +47,8 @@ async def callback(request: Request, auth_client: BaseAuthClient = Depends(get_a
     if user_info:
         upsert_user = {
             **user_info,
-            'agreement_accepted': profile['agreement_accepted'],
-            'is_admin': profile['is_admin'],
+            'agreement_accepted': profile['agreement_accepted'] if profile else False,
+            'is_admin': profile['is_admin'] if profile else False,
         }
 
         request.session["user"] = dict(upsert_user)

@@ -2,11 +2,18 @@ import axios from "axios";
 import { LLMTokenInsert } from "../hooks/useToken";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN;
+axios.defaults.withCredentials = true;
 
 export async function getTokenList() {
   const response = await axios.get(`${apiDomain}/api/user/llm_tokens`);
   return response.data.data;
 }
+
+export async function getLLMList() {
+  const response = await axios.get(`${apiDomain}/api/user/llms`);
+  return response.data;
+}
+
 
 export async function deleteToken(id: string) {
   const response = await axios.delete(`${apiDomain}/api/user/llm_token/${id}`);
@@ -32,4 +39,5 @@ export async function analyzeTopUsers() {
   const response = await axios.get(`${apiDomain}/api/user/llm_token_usages/top_users`);
   return response.data;
 }
+
 

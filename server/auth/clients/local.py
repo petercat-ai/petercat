@@ -21,6 +21,11 @@ class LocalClient(BaseAuthClient):
     request.session["user"] = data
   
     return RedirectResponse(url=f"{WEB_LOGIN_SUCCESS_URL}", status_code=302)
+
+  async def logout(self, request: Request, redirect: str):
+    if redirect:
+      return RedirectResponse(url=f"{redirect}", status_code=302)
+    return {"success": True}
   
   async def get_user_info(self, user_id):
     token = PETERCAT_LOCAL_UID

@@ -59,7 +59,7 @@ export default {
     gITHU: ' GitHub platform',
   },
   CreateButton: {
-    chuangJianTOK: 'Create Token',
+    chuangJianTOK: 'Custodial Token',
   },
   CreateModal: {
     miYao: 'Secret Key',
