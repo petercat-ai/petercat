@@ -35,6 +35,7 @@ class AuthMiddleWare(BaseHTTPMiddleware):
         try:
             referer = request.headers.get("referer")
             origin = request.headers.get("origin")
+            print(f"referer: {referer}, origin: {origin}")
             if referer and referer.startswith(WEB_URL):
                 return True
 
@@ -42,13 +43,12 @@ class AuthMiddleWare(BaseHTTPMiddleware):
             if token:
                 bot_dao = BotDAO()
                 bot = bot_dao.get_bot(bot_id=token)
+                print(f"bot_id: {bot.id}")
                 return bot and (
                     "*" in bot.domain_whitelist or origin in bot.domain_whitelist
                 )
         except Exception as e:
-            print(
-                f"Error: {e}, bot.domain_whitelist={bot.domain_whitelist}, origin={origin}"
-            )
+            print(f"Error: {e}")
             return False
 
     async def dispatch(
