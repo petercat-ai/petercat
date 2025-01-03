@@ -9,14 +9,8 @@ import {
 } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
-import React, { lazy, Suspense, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { IToolExtraInfo, IToolStatus } from '../interface';
-
-const Highlight = lazy(() =>
-  import('@ant-design/pro-editor').then((module) => ({
-    default: module.Highlight,
-  })),
-);
 
 const getColorClass = (status: IToolStatus) => {
   const colorClasses = {
@@ -62,7 +56,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
                 status!,
               )}`}
             >
-              <span className="mt-px mr-4">隐藏运行过程</span>
+              <span className="mt-px mr-4">Hide the process</span>
               <UpOutlined />
             </span>
           ) : (
@@ -75,19 +69,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
               <DownOutlined className={`${getColorClass(status!)}`} />
             </span>
           ),
-        children: (
-          <Suspense fallback={<div>...</div>}>
-            {safeJsonParse(content?.data) ? (
-              <Highlight language="json" theme="light" type="block">
-                {JSON.stringify(safeJsonParse(content?.data), null, 2)}
-              </Highlight>
-            ) : (
-              <Highlight language="text" theme="light" type="block">
-                {content?.data}
-              </Highlight>
-            )}
-          </Suspense>
-        ),
+        children: <div>{JSON.stringify(content?.data)}</div>,
       },
     ];
   }, [status, content, activeKey, source]);

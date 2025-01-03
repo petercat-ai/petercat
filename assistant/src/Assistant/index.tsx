@@ -1,5 +1,4 @@
 import { CloseCircleFilled } from '@ant-design/icons';
-import { ActionIcon } from '@ant-design/pro-editor';
 import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -91,12 +90,11 @@ const Assistant = (props: AssistantProps) => {
               {...props}
               drawerWidth={drawerWidth}
             />
-            <div className="absolute top-0 right-0 m-1">
-              <ActionIcon
-                icon={<CloseCircleFilled />}
-                onClick={toggleDrawer}
-                className="w-6 h-6 text-black"
-              />
+            <div
+              className="absolute top-0 right-0 m-1 flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-300 cursor-pointer transition-all duration-300"
+              onClick={toggleDrawer}
+            >
+              <CloseCircleFilled className="w-4 h-4 text-black" />
             </div>
           </>
         )}

@@ -1,7 +1,7 @@
-import { Markdown } from '@ant-design/pro-editor';
 import { Image } from 'antd';
 import React, { type FC } from 'react';
 import { ImageURLContentBlock } from '../../interface';
+import MarkdownRender from './MarkdownRender';
 
 interface IProps {
   images: ImageURLContentBlock[];
@@ -23,16 +23,7 @@ const UserContent: FC<IProps> = ({ images, text }) => {
           }}
         />
       ))}
-      {text && (
-        <Markdown
-          style={{
-            overflowX: 'hidden',
-            overflowY: 'auto',
-          }}
-        >
-          {text}
-        </Markdown>
-      )}
+      {text && <MarkdownRender content={text} />}
     </div>
   );
 };

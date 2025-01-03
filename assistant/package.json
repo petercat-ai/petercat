@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
-    "@ant-design/pro-editor": "^1.1.1",
     "@ant-design/x": "^1.0.0",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",
