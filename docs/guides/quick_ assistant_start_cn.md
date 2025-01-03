@@ -59,7 +59,7 @@ function App() {
 
 ### UMD 接入
 
-petercat 同时支持 UMD 的接入方式
+PeterCat 同时支持 UMD 的接入方式
 
 1. external 和 UMD 加载资源
 
@@ -86,17 +86,17 @@ export default {
 
 ```html
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.css"></link>
   <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.js"></script>
 </head>
 ```
 
-2. 加载 PetercatLUI
+2. 加载 PeterCat Assistant
 
 ```html
 <body>

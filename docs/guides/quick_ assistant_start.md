@@ -87,17 +87,17 @@ Here is a reference example of an import:
 
 ```html
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.css"></link>
   <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.js"></script>
 </head>
 ```
 
-2. Loading PetercatLUI
+2. Loading PeterCat Assistant
 
 ```html
 <body>
