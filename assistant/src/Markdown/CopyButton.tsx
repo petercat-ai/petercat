@@ -18,7 +18,9 @@ const CopyButton: React.FC<{ content: string }> = ({ content }) => {
       className="absolute top-2 right-2 text-xs bg-gray-800 text-white p-1 rounded-md hover:bg-gray-700"
       onClick={handleCopy}
     >
-      {copied ? 'copy' : 'copied'}
+      {copied ? 'copied' : 'copy'}
     </button>
   );
 };
+
+export default CopyButton;
