@@ -1,6 +1,8 @@
 import json
-from typing import Optional
+from typing import Annotated, Optional
+from pydantic import BaseModel
 
+from auth.get_user_info import get_user_id
 from fastapi import APIRouter, Depends
 from petercat_utils.db.client.supabase import get_client
 
@@ -114,5 +116,44 @@ def get_rag_task(repo_name: str):
             .execute()
         )
         return response
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+class UpdateKnowledgeRequest(BaseModel):
+    bot_id: str
+
+@router.post("/rag/update_knowledge", dependencies=[Depends(verify_rate_limit)])
+def update_knowledge(request: UpdateKnowledgeRequest, user_id: Annotated[str | None, Depends(get_user_id)] = None):
+    try:
+        # Get config from database using bot_id
+        supabase = get_client()
+        response = (
+            supabase.table("bots")
+            .select("*")
+            .eq("id", request.bot_id)
+            .eq("uid", user_id)
+            .single()
+            .execute()
+        )
+        
+        if not response.data:
+            return json.dumps({
+                "success": False,
+                "message": f"Bot with id {request.bot_id} not found"
+            })
+            
+        bot_config = RAGGitDocConfig(**response.data)
+        result = retrieval.check_and_update_knowledge(bot_config)
+        
+        if result:
+            return json.dumps({
+                "success": True,
+                "message": "Knowledge updated successfully!"
+            })
+        else:
+            return json.dumps({
+                "success": False,
+                "message": "Knowledge not updated!"
+            })
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})

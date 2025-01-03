@@ -144,7 +144,7 @@ class GitDocTask(GitTask):
         )
 
     def handle_blob_node(self):
-        retrieval.add_knowledge_by_doc(
+        retrieval.check_and_update_knowledge(
             RAGGitDocConfig(
                 repo_name=self.repo_name,
                 file_path=self.path,
