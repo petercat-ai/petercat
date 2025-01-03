@@ -1,10 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-
-const Markdown = lazy(() =>
-  import('@ant-design/pro-editor').then((module) => ({
-    default: module.Markdown,
-  })),
-);
+import React from 'react';
+import Markdown from '../../Markdown';
 
 interface IProps {
   className?: string;
@@ -12,13 +7,9 @@ interface IProps {
 }
 
 const MarkdownRender = React.memo((props: IProps) => (
-  <Suspense fallback={<>...</>}>
-    <Markdown
-      className="ant-pro-chat-list-item-message-content"
-      style={{ overflowX: 'hidden', overflowY: 'auto' }}
-    >
-      {props.content}
-    </Markdown>
-  </Suspense>
+  <Markdown
+    style={{ overflowX: 'hidden', overflowY: 'auto' }}
+    text={props.content}
+  />
 ));
 export default MarkdownRender;
