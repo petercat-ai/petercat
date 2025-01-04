@@ -2,8 +2,8 @@ import secrets
 
 from abc import abstractmethod
 from fastapi import Request
+from core.dao.profilesDAO import ProfilesDAO
 from utils.random_str import random_str
-from petercat_utils import get_client
 
 
 class BaseAuthClient:
@@ -29,8 +29,8 @@ class BaseAuthClient:
   async def anonymouseLogin(self, request: Request) -> dict:
     clientId = request.query_params.get("clientId") or random_str()
     token, data = self.generateAnonymousUser(clientId = clientId)
-    supabase = get_client()
-    supabase.table("profiles").upsert(data).execute()
+    profiles_dao = ProfilesDAO()
+    profiles_dao.upsert_user(data)
     request.session["user"] = data
     return data
 
@@ -49,7 +49,7 @@ class BaseAuthClient:
   @abstractmethod
   async def get_user_info(self, request: Request) -> dict:
     pass
-  
+
   @abstractmethod
   async def get_access_token(self, user_id: str, provider="github") -> str:
     pass

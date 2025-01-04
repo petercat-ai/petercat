@@ -19,9 +19,17 @@ class ProfilesDAO(BaseDAO):
             .execute()
         )
         return resp.data[0] if resp.data else None
-    
-    def get_agreement_status(self, user_id: str):
 
+    def upsert_user(self, user_data: dict):
+
+        resp = (
+            self.client.table("profiles")
+            .upsert(user_data)
+            .execute()
+        )
+        return resp.data
+
+    def get_agreement_status(self, user_id: str):
         resp = (
             self.client.table("profiles")
             .select("agreement_accepted")
