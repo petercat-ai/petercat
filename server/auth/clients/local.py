@@ -1,7 +1,8 @@
 import secrets
 from fastapi import Request
 from fastapi.responses import RedirectResponse
-from petercat_utils import get_client, get_env_variable
+from core.dao.profilesDAO import ProfilesDAO
+from petercat_utils import get_env_variable
 from auth.clients.base import BaseAuthClient
 
 PETERCAT_LOCAL_UID = get_env_variable("PETERCAT_LOCAL_UID")
@@ -13,20 +14,20 @@ WEB_LOGIN_SUCCESS_URL = f"{WEB_URL}/user/login"
 class LocalClient(BaseAuthClient):
   def __init__(self):
     pass
-  
+
   async def login(self, request: Request):
     data = await self.get_user_info()
-    supabase = get_client()
-    supabase.table("profiles").upsert(data).execute()
+    profiles_dao = ProfilesDAO()
+    profiles_dao.upsert_user(data)
     request.session["user"] = data
-  
+
     return RedirectResponse(url=f"{WEB_LOGIN_SUCCESS_URL}", status_code=302)
 
   async def logout(self, request: Request, redirect: str):
     if redirect:
       return RedirectResponse(url=f"{redirect}", status_code=302)
     return {"success": True}
-  
+
   async def get_user_info(self, user_id):
     token = PETERCAT_LOCAL_UID
     username = PETERCAT_LOCAL_UNAME
