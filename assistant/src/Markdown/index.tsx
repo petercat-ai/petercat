@@ -13,6 +13,7 @@ const Markdown: React.FC<MarkdownProps> = ({ text, style }) => {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
+          // @ts-ignore
           code: CodeBlock,
         }}
       >
