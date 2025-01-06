@@ -299,26 +299,6 @@ const Chat: FC<ChatProps> = memo(
     }, []);
 
     useEffect(() => {
-      if (isEmpty(botDetail)) {
-        return;
-      }
-      try {
-        // @ts-ignore
-        const info = botDetail?.[0] as any;
-        setCurrentBotInfo({
-          assistantMeta: {
-            avatar: info.avatar,
-            title: info.name,
-          },
-          helloMessage: info.hello_message,
-          starters: info.starters || [],
-        });
-      } catch (e) {
-        console.error('botDetail effect', e);
-      }
-    }, [botDetail]);
-
-    useEffect(() => {
       if (isEqual(currentBotInfo, currentBotInfoRef.current)) {
         return;
       }
@@ -340,6 +320,26 @@ const Chat: FC<ChatProps> = memo(
         starters: starters,
       });
     }, [assistantMeta, helloMessage, starters]);
+
+    useEffect(() => {
+      if (isEmpty(botDetail)) {
+        return;
+      }
+      try {
+        // @ts-ignore
+        const info = botDetail?.[0] as any;
+        setCurrentBotInfo({
+          assistantMeta: {
+            avatar: info.avatar,
+            title: info.name,
+          },
+          helloMessage: info.hello_message,
+          starters: info.starters || [],
+        });
+      } catch (e) {
+        console.error('botDetail effect', e);
+      }
+    }, [botDetail]);
 
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
