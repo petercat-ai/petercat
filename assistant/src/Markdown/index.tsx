@@ -9,7 +9,10 @@ export interface MarkdownProps {
 
 const Markdown: React.FC<MarkdownProps> = ({ text, style }) => {
   return (
-    <div style={style} className="prose max-w-none petercat-assistant-markdown">
+    <div
+      style={style}
+      className="prose max-w-none petercat-assistant-markdown text-black"
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

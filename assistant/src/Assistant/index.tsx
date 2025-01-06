@@ -6,8 +6,8 @@ import Chat, { ChatProps } from '../Chat';
 import BubbleIcon from '../icons/BubbleIcon';
 
 export interface AssistantProps extends ChatProps {
-  showBubble: boolean;
-  isVisible: boolean;
+  showBubble?: boolean;
+  isVisible?: boolean;
   onClose?: () => void;
   bottom?: number;
 }
@@ -15,7 +15,7 @@ export interface AssistantProps extends ChatProps {
 const Assistant = (props: AssistantProps) => {
   const {
     showBubble = true,
-    isVisible,
+    isVisible = false,
     onClose,
     drawerWidth = 500,
     bottom = 120,
@@ -68,9 +68,6 @@ const Assistant = (props: AssistantProps) => {
     },
   );
 
-  if (typeof window === 'undefined') {
-    return;
-  }
   return (
     <div className="petercat-assitant">
       <div

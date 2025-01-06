@@ -36,7 +36,7 @@ import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 
 const YourPetercataiAssistant = () => {
-  return <Assistant token="< 你的 token >" showBubble={true} isVisible={false} apiDomain="https://api.petercat.ai" />;
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
 };
 
 function App() {
@@ -50,6 +50,25 @@ function App() {
   );
 }
 ```
+
+#### Next.js 接入
+
+> 需要禁用服务端渲染
+
+```tsx
+import dynamic from 'next/dynamic';
+import '@petercatai/assistant/style';
+
+const Assistant = dynamic(() => import('@petercatai/assistant').then(mod => mod.Assistant), { ssr: false });
+
+// PeterCat AI Assistant: https://petercat.ai/
+export const PeterCat = () => {
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
+};
+
+
+```
+
 
 更详细的入参请参考文档
 

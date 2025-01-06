@@ -52,6 +52,21 @@ function App() {
 }
 ```
 
+### Next.js Integration
+> Server-side rendering needs to be disabled.
+
+```tsx
+import dynamic from 'next/dynamic';
+import '@petercatai/assistant/style';
+
+const Assistant = dynamic(() => import('@petercatai/assistant').then(mod => mod.Assistant), { ssr: false });
+
+// PeterCat AI Assistant: https://petercat.ai/
+export const PeterCat = () => {
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
+};
+```
+
 For more detailed parameters, please refer to the documentation.
 
 [petercat/assistant/src/Assistant/index.md at main · petercat-ai/petercat](https://github.com/petercat-ai/petercat/blob/main/assistant/src/Assistant/index.md#api)
