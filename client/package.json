@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.14.202",
     "kiwi-clis": "^1.1.0",
     "postcss-loader": "^8.1.1",
