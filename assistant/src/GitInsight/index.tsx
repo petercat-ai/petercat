@@ -31,22 +31,24 @@ const GitInsight = (props: GitInsightProps) => {
   }, []);
 
   return (
-    <div className="flex justify-start items-center">
-      <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
-        <MemoizedCountCard type="star" count={starCount} />
+    <div className="petercat-assitant">
+      <div className="flex justify-start items-center">
+        <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
+          <MemoizedCountCard type="star" count={starCount} />
+        </div>
+
+        {num0End && (
+          <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
+            <MemoizedCountCard type="fork" count={forkCount} />
+          </div>
+        )}
+
+        {num1End && (
+          <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
+            <MemoizedCountCard type="commit" count={commitCount} />
+          </div>
+        )}
       </div>
-
-      {num0End && (
-        <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
-          <MemoizedCountCard type="fork" count={forkCount} />
-        </div>
-      )}
-
-      {num1End && (
-        <div className="opacity-0 transform transition-opacity duration-500 delay-200 animate-fade-in">
-          <MemoizedCountCard type="commit" count={commitCount} />
-        </div>
-      )}
     </div>
   );
 };

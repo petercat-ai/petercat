@@ -28,7 +28,7 @@ export default () => {
       <a onClick={() => setToken('1234')}>点我变token{token}</a>
       <Assistant
         editBotId ={token}
-        apiUrl='/api/chat/stream_builder'
+        apiUrl='/api/chat/stream_qa'
         token='0553365a-edb1-435c-b69c-4c645290b86e'
         clearMessage={true}
       />

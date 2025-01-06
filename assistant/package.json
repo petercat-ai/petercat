@@ -1,6 +1,6 @@
 {
   "name": "@petercatai/assistant",
-  "version": "2.0.12",
+  "version": "2.0.15",
   "description": "PeterCat Assistant Application",
   "repository": "https://github.com/petercat-ai/petercat.git",
   "license": "MIT",
@@ -12,16 +12,16 @@
       "import": "./dist/esm/index.js"
     },
     "./style": {
-      "import": "./dist/esm/style.css"
+      "import": "./dist/esm/style/global.css"
     }
   },
   "module": "dist/esm/index.js",
   "browser": "dist/umd/assistant.min.js",
   "types": "dist/esm/index.d.ts",
-  "style": "dist/esm/style.css",
+  "style": "dist/esm/style/global.css",
   "scripts": {
-    "build": "npm run build:css && cp ./src/style.css ./.dumi/tmp/style.css && father build",
-    "build:css": "tailwindcss -i tailwind.css -o ./src/style.css",
+    "build": "npm run build:css && cp ./src/style/global.css ./.dumi/tmp/global.css && father build",
+    "build:css": "tailwindcss -i tailwind.css -o ./src/style/global.css",
     "build:watch": "father dev",
     "dev": "dumi dev",
     "docs:build": "dumi build",
@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
-    "@ant-design/pro-editor": "^1.1.1",
     "@ant-design/x": "^1.0.0",
     "@babel/runtime": "^7.18.0",
     "antd": "^5.15.3",
@@ -65,8 +64,14 @@
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
+    "latest": "^0.2.0",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
+    "react-markdown": "^8.0.7",
+    "react-syntax-highlighter": "^15.6.1",
+    "rehype-highlight": "6.0.0",
+    "remark-gfm": "^3.0.1",
+    "remark-html": "^16.0.1",
     "swr": "^2.2.5",
     "tailwindcss": "^3.4.1",
     "tailwindcss-scoped-preflight": "^3.2.6"

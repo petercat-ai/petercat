@@ -52,6 +52,21 @@ function App() {
 }
 ```
 
+### Next.js Integration
+> Server-side rendering needs to be disabled.
+
+```tsx
+import dynamic from 'next/dynamic';
+import '@petercatai/assistant/style';
+
+const Assistant = dynamic(() => import('@petercatai/assistant').then(mod => mod.Assistant), { ssr: false });
+
+// PeterCat AI Assistant: https://petercat.ai/
+export const PeterCat = () => {
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
+};
+```
+
 For more detailed parameters, please refer to the documentation.
 
 [petercat/assistant/src/Assistant/index.md at main · petercat-ai/petercat](https://github.com/petercat-ai/petercat/blob/main/assistant/src/Assistant/index.md#api)
@@ -87,17 +102,17 @@ Here is a reference example of an import:
 
 ```html
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.css"></link>
   <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.js"></script>
 </head>
 ```
 
-2. Loading PetercatLUI
+2. Loading PeterCat Assistant
 
 ```html
 <body>

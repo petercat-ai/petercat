@@ -7,7 +7,6 @@ import {
   UnorderedListOutlined,
   UpOutlined,
 } from '@ant-design/icons';
-import { Highlight } from '@ant-design/pro-editor';
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -57,7 +56,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
                 status!,
               )}`}
             >
-              <span className="mt-px mr-4">隐藏运行过程</span>
+              <span className="mt-px mr-4">Hide the process</span>
               <UpOutlined />
             </span>
           ) : (
@@ -70,15 +69,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
               <DownOutlined className={`${getColorClass(status!)}`} />
             </span>
           ),
-        children: safeJsonParse(content?.data) ? (
-          <Highlight language="json" theme="light" type="block">
-            {JSON.stringify(safeJsonParse(content?.data), null, 2)}
-          </Highlight>
-        ) : (
-          <Highlight language="text" theme="light" type="block">
-            {content?.data}
-          </Highlight>
-        ),
+        children: <div>{JSON.stringify(content?.data)}</div>,
       },
     ];
   }, [status, content, activeKey, source]);
@@ -89,46 +80,48 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   }, []);
 
   return (
-    <Collapse
-      size="small"
-      items={items}
-      activeKey={activeKey}
-      onChange={onChange}
-      style={{ maxWidth: '100%'}}
-      expandIcon={(panelProps) => {
-        if (panelProps.isActive) {
-          return <UnorderedListOutlined className="text-gray-900 text-xs" />;
-        }
-        switch (status) {
-          case IToolStatus.success:
-            return (
-              <CheckCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.loading:
-            return (
-              <LoadingOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.error:
-            return (
-              <CloseCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          case IToolStatus.end:
-            return (
-              <ExclamationCircleOutlined
-                className={`text-xs ${getColorClass(status!)}`}
-              />
-            );
-          default:
-            return '';
-        }
-      }}
-    />
+    <div className="petercat-assitant">
+      <Collapse
+        size="small"
+        items={items}
+        activeKey={activeKey}
+        onChange={onChange}
+        style={{ maxWidth: '100%' }}
+        expandIcon={(panelProps) => {
+          if (panelProps.isActive) {
+            return <UnorderedListOutlined className="text-gray-900 text-xs" />;
+          }
+          switch (status) {
+            case IToolStatus.success:
+              return (
+                <CheckCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.loading:
+              return (
+                <LoadingOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.error:
+              return (
+                <CloseCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            case IToolStatus.end:
+              return (
+                <ExclamationCircleOutlined
+                  className={`text-xs ${getColorClass(status!)}`}
+                />
+              );
+            default:
+              return '';
+          }
+        }}
+      />
+    </div>
   );
 };
 

@@ -36,7 +36,7 @@ import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 
 const YourPetercataiAssistant = () => {
-  return <Assistant token="< 你的 token >" showBubble={true} isVisible={false} apiDomain="https://api.petercat.ai" />;
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
 };
 
 function App() {
@@ -51,6 +51,25 @@ function App() {
 }
 ```
 
+#### Next.js 接入
+
+> 需要禁用服务端渲染
+
+```tsx
+import dynamic from 'next/dynamic';
+import '@petercatai/assistant/style';
+
+const Assistant = dynamic(() => import('@petercatai/assistant').then(mod => mod.Assistant), { ssr: false });
+
+// PeterCat AI Assistant: https://petercat.ai/
+export const PeterCat = () => {
+  return <Assistant token="your token" apiDomain="https://api.petercat.ai" />;
+};
+
+
+```
+
+
 更详细的入参请参考文档
 
 [petercat/assistant/src/Assistant/index.md at main · petercat-ai/petercat](https://github.com/petercat-ai/petercat/blob/main/assistant/src/Assistant/index.md#api)
@@ -59,7 +78,7 @@ function App() {
 
 ### UMD 接入
 
-petercat 同时支持 UMD 的接入方式
+PeterCat 同时支持 UMD 的接入方式
 
 1. external 和 UMD 加载资源
 
@@ -86,17 +105,17 @@ export default {
 
 ```html
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.css"></link>
   <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lottie-web/build/player/lottie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@petercatai/assistant@latest/dist/umd/assistant.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@petercatai/assistant/dist/umd/assistant.min.js"></script>
 </head>
 ```
 
-2. 加载 PetercatLUI
+2. 加载 PeterCat Assistant
 
 ```html
 <body>

@@ -23,7 +23,6 @@ import LoadingStart from './components/LoadingStart';
 import MarkdownRender from './components/MarkdownRender';
 import MySpinner from './components/MySpinner';
 import UserContent from './components/UserContent';
-import './index.css';
 import { UITemplateRender } from './template';
 
 const CANCEL_REASON = 'petercat user cancel';
@@ -300,26 +299,6 @@ const Chat: FC<ChatProps> = memo(
     }, []);
 
     useEffect(() => {
-      if (isEmpty(botDetail)) {
-        return;
-      }
-      try {
-        // @ts-ignore
-        const info = botDetail?.[0] as any;
-        setCurrentBotInfo({
-          assistantMeta: {
-            avatar: info.avatar,
-            title: info.name,
-          },
-          helloMessage: info.hello_message,
-          starters: info.starters || [],
-        });
-      } catch (e) {
-        console.error('botDetail effect', e);
-      }
-    }, [botDetail]);
-
-    useEffect(() => {
       if (isEqual(currentBotInfo, currentBotInfoRef.current)) {
         return;
       }
@@ -341,6 +320,26 @@ const Chat: FC<ChatProps> = memo(
         starters: starters,
       });
     }, [assistantMeta, helloMessage, starters]);
+
+    useEffect(() => {
+      if (isEmpty(botDetail)) {
+        return;
+      }
+      try {
+        // @ts-ignore
+        const info = botDetail?.[0] as any;
+        setCurrentBotInfo({
+          assistantMeta: {
+            avatar: info.avatar,
+            title: info.name,
+          },
+          helloMessage: info.hello_message,
+          starters: info.starters || [],
+        });
+      } catch (e) {
+        console.error('botDetail effect', e);
+      }
+    }, [botDetail]);
 
     // ============================ Roles =============================
     const roles: GetProp<typeof Bubble.List, 'roles'> = React.useMemo(() => {
@@ -509,7 +508,7 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Render ============================
     return (
       <div
-        className="petercat-lui bg-[#FCFCFC] pt-2"
+        className="petercat-assitant bg-[#FCFCFC] pt-2"
         style={{
           ...style,
           minWidth: drawerWidth,
