@@ -192,8 +192,7 @@ const InputAreaRender = (props: {
             {props && props.isShowStop && (
               <Button
                 disabled={disabled}
-                type="primary"
-                className="bg-white hover:!bg-white shadow-md"
+                className="bg-white hover:!bg-white shadow-md border-none rounded-[6px] leading-[0px]"
                 icon={<StopMessageIcon />}
                 onClick={() => {
                   if (props && props.onStop) {
@@ -203,9 +202,8 @@ const InputAreaRender = (props: {
               />
             )}
             <Button
-              type="primary"
               disabled={disabled}
-              className="bg-white hover:!bg-white shadow-md"
+              className="bg-white hover:!bg-white shadow-md border-none rounded-[6px] leading-[0px]"
               onClick={() => {
                 if (props && props.onClear) {
                   props.onClear();
@@ -227,11 +225,10 @@ const InputAreaRender = (props: {
               >
                 <Button
                   disabled={disabled}
-                  type="primary"
                   className={
                     uploadDisabled
-                      ? 'cu🤪rsor-not-allowed bg-white hover:!bg-white shadow-md'
-                      : 'bg-white hover:!bg-white shadow-md'
+                      ? 'cursor-not-allowed bg-white hover:!bg-white shadow-md'
+                      : 'bg-white hover:!bg-white shadow-md border-none rounded-[6px] leading-[0px]'
                   }
                   icon={
                     <div style={uploadDisabled ? { opacity: 0.6 } : {}}>
@@ -244,7 +241,7 @@ const InputAreaRender = (props: {
             {fileList.map((file) => (
               <div key={file.uid} className="relative h-[32px]">
                 {file.isLoading ? (
-                  <div className="rounded-lg shadow-md w-[32px] h-[32px] flex items-center justify-center">
+                  <div className="rounded-lg shadow-md w-[32px] h-[32px] flex items-center justify-center border-none rounded-[6px] leading-[0px]">
                     <LoadingOutlined className="text-center" />
                   </div>
                 ) : (
@@ -256,7 +253,7 @@ const InputAreaRender = (props: {
                     width={32}
                     height={32}
                     alt="uploaded"
-                    className="object-cover rounded-lg shadow-md"
+                    className="object-cover rounded-lg shadow-md border-none rounded-[6px] leading-[0px]"
                   />
                 )}
 
@@ -273,7 +270,7 @@ const InputAreaRender = (props: {
         </div>
         <Button
           type="primary"
-          className="w-[32px] bg-gray-700 hover:!bg-gray-700 shadow-md"
+          className="w-[32px] bg-gray-700 hover:!bg-gray-700 shadow-md border-none rounded-[6px] leading-[0px]"
           onClick={() => {
             handleMessage(form.getFieldValue('question'));
           }}
