@@ -32,8 +32,9 @@ def get_bot_list(
     name: Optional[str] = Query(None, description="Filter bots by name"),
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
+
     try:
-        data = query_list(name, user.id, user.access_token, personal)
+        data = query_list(name, user, personal)
 
         return {"data": data if data else [], "personal": personal}
 

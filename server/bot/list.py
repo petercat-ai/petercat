@@ -2,15 +2,16 @@ from typing import Optional
 
 from github import Github, Auth
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
+from core.models.user import User
 from petercat_utils import get_client
 
 
 def query_list(
     name: Optional[str] = None,
-    user_id: Optional[str] = None,
-    access_token: Optional[str] = None,
+    user: Optional[User] = None,
     personal: Optional[str] = None,
 ):
+
     try:
         supabase = get_client()
         query = (
@@ -24,9 +25,10 @@ def query_list(
             query = query.filter("name", "like", f"%{name}%")
 
         if personal == "true":
-            if not access_token or not user_id:
-                return {"data": [], "personal": personal}
-
+            if not user:
+                return None
+            user_id = user.id
+            access_token = user.access_token
             auth = Auth.Token(token=access_token)
             github_user = Github(auth=auth).get_user()
             orgs_ids = [org.id for org in github_user.get_orgs()]
