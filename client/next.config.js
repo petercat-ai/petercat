@@ -39,6 +39,7 @@ module.exports = withSentryConfig(nextConfig, {
 });
 
 module.exports = {
+  output: "standalone",
   webpack: (config) => {
     config.module.rules.push({
       test: /\.md$/,
