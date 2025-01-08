@@ -143,6 +143,22 @@ class RepositoryConfigDAO(BaseDAO):
             print(f"Error: {e}")
             return None
 
+    def query_by_robot_id(self, robot_id: str):
+        try:
+            response = (
+                self.client.table("github_repo_config")
+                .select("*")
+                .eq("robot_id", robot_id)
+                .execute()
+            )
+            if not response.data or not response.data[0]:
+                return None
+            repo = response.data[0]
+            return RepositoryConfig(**repo)
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+
     def delete_by_repo_ids(self, repo_ids: List[str]):
         try:
             response = (

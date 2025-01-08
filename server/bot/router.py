@@ -197,13 +197,53 @@ async def get_git_avatar(
 def update_bot(
     id: str,
     bot_data: BotUpdateRequest,
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     if not id:
         return {"error": "Incomplete parameters", "status": 400}
-    blacklist_fields = {"public"}
+
+    if not user:
+        return JSONResponse(
+            content={"success": False, "errorMessage": "User not authenticated."},
+            status_code=401,
+        )
 
     try:
+        user_id = user.id
+        access_token = user.access_token
+
+        # Authenticate user
+        auth = Auth.Token(token=access_token)
+        github_user = Github(auth=auth).get_user()
+        user_org_ids = {str(org.id) for org in github_user.get_orgs()}
+
+        # Fetch bot details
+        bot_dao = BotDAO()
+        bot = bot_dao.get_bot(id)
+        if not bot:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "Bot does not exist, update failed.",
+                },
+                status_code=500,
+            )
+
+        # Check ownership
+        repository_config_dao = RepositoryConfigDAO()
+        repo = repository_config_dao.query_by_robot_id(id)
+        owner_id = repo.owner_id if repo else None
+        if owner_id not in user_org_ids and bot.uid != user_id:
+            return JSONResponse(
+                content={
+                    "success": False,
+                    "errorMessage": "You are not the owner of the bot, update failed.",
+                },
+                status_code=401,
+            )
+
+        # Filter update fields
+        blacklist_fields = {"public"}
         update_fields = {
             key: value
             for key, value in bot_data.model_dump(exclude_unset=True).items()
@@ -215,24 +255,19 @@ def update_bot(
                 status_code=400,
             )
 
-        supabase = get_client()
-        response = (
-            supabase.table("bots")
-            .update(update_fields)
-            .eq("id", id)
-            .eq("uid", user_id)
-            .execute()
-        )
-
+        # Update bot
+        response = bot_dao.update_bot(id, update_fields)
         if not response.data:
             return JSONResponse(
                 content={
                     "success": False,
-                    "errorMessage": "Bot does not exist, update failed.",
-                }
+                    "errorMessage": "Update failed.",
+                },
+                status_code=500,
             )
 
         return JSONResponse(content={"success": True})
+
     except Exception as e:
         return JSONResponse(
             content={"success": False, "errorMessage": str(e)}, status_code=500
