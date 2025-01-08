@@ -80,10 +80,6 @@ const BotCreateFrom = () => {
     deleteBot(botProfile?.id!);
   };
 
-  useEffect(() => {
-    console.log('botProfile', botProfile);
-  }, [botProfile]);
-
   const customTitle = (
     <div className="flex">
       <div className="flex-1 leading-8">
