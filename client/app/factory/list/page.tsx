@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from './components/BotCard';
 
@@ -11,13 +11,39 @@ import { useGlobal } from '@/app/contexts/GlobalContext';
 import AddBotCard from '@/components/AddBotCard';
 import { useRouter } from 'next/navigation';
 import Crash from '@/components/Crash';
+import { useUser } from '@petercatai/assistant';
+import { useFingerprint } from '@/app/hooks/useFingerprint';
 
 declare type Bot = Tables<'bots'>;
 
+const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN!;
+
 export default function List() {
   const { search } = useGlobal();
-  let { data: bots, isLoading, error } = useBotList(true, search);
+  const { data } = useFingerprint();
+  const [isComplete, setComplete] = useState(false);
+  const { user, isLoading: userLoading } = useUser({
+    apiDomain,
+    fingerprint: data?.visitorId || '',
+  });
+  let { data: bots, isLoading, error } = useBotList(true, search, !!user);
   const router = useRouter();
+
+  const isOpening = useMemo(
+    () => !user && (userLoading || isLoading || !isComplete),
+    [isComplete, userLoading, isLoading, user],
+  );
+
+  if (isOpening) {
+    return (
+      <FullPageSkeleton
+        type="OPENING"
+        loop={false}
+        onComplete={() => setComplete(true)}
+      />
+    );
+  }
+
   if (isLoading) {
     return <FullPageSkeleton />;
   }

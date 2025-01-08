@@ -21,7 +21,10 @@ export default function Market() {
   const [isComplete, setComplete] = useState(false);
   const [currentBot, setCurrentBot] = useState<string>('');
   const { data } = useFingerprint();
-  const { user, isLoading: userLoading } = useUser({ apiDomain, fingerprint: data?.visitorId || '' });
+  const { user, isLoading: userLoading } = useUser({
+    apiDomain,
+    fingerprint: data?.visitorId || '',
+  });
   const { data: bots, isLoading, error } = useBotList(false, search, !!user);
 
   const isOpening = useMemo(
