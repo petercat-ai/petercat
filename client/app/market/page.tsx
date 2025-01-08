@@ -13,21 +13,12 @@ import Crash from '@/components/Crash';
 declare type Bot = Tables<'bots'>;
 
 const ASSISTANT_API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
-const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN!;
 
 export default function Market() {
   const { search } = useGlobal();
   const [visible, setVisible] = useState(false);
-  const [isComplete, setComplete] = useState(false);
   const [currentBot, setCurrentBot] = useState<string>('');
-  const { data } = useFingerprint();
-  const { user, isLoading: userLoading } = useUser({ apiDomain, fingerprint: data?.visitorId || '' });
-  const { data: bots, isLoading, error } = useBotList(false, search, !!user);
-
-  const isOpening = useMemo(
-    () => !user && (userLoading || isLoading || !isComplete),
-    [isComplete, userLoading, isLoading, user],
-  );
+  const { data: bots, isLoading, error } = useBotList(false, search);
 
   const handleCardClick = (id: string) => {
     setVisible(true);
@@ -35,16 +26,6 @@ export default function Market() {
   };
 
   const onClose = () => setVisible(false);
-
-  if (isOpening) {
-    return (
-      <FullPageSkeleton
-        type="OPENING"
-        loop={false}
-        onComplete={() => setComplete(true)}
-      />
-    );
-  }
 
   if (isLoading) {
     return <FullPageSkeleton />;

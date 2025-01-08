@@ -73,10 +73,10 @@ const BotInfoIconList = (props: { bot: BotInfo }) => {
   );
 };
 
-const BotCard = (props: { bot: Bot }) => {
+const BotCard = (props: { bot: BotInfo; userId: string }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { bot } = props;
+  const { isOpen, onOpenChange, onClose } = useDisclosure();
+  const { bot, userId } = props;
   const router = useRouter();
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
   const { data: taskInfo } = useGetBotRagTask(bot.repo_name!, false);
@@ -151,6 +151,31 @@ const BotCard = (props: { bot: Bot }) => {
                 isHovered ? 'opacity-0' : 'hover:opacity-100'
               } transition-all absolute bottom-0 w-full flex items-center justify-center`}
             >
+              {bot.uid !== userId && (
+                <>
+                  <Tooltip
+                    showArrow
+                    placement="top"
+                    content={`created by ${bot.nickname}`}
+                    classNames={{
+                      base: [
+                        // arrow color
+                        'before:bg-[#3F3F46] dark:before:bg-white',
+                      ],
+                      content: [
+                        'py-2 px-4 rounded-lg shadow-xl text-white',
+                        'bg-[#3F3F46]',
+                      ],
+                    }}
+                  >
+                    <Image
+                      src={bot.picture}
+                      className="z-10 cursor-pointer w-[24px] h-[24px] rounded-full"
+                    />
+                  </Tooltip>
+                  <Image src="../images/x.svg" className="z-10" />
+                </>
+              )}
               <BotInfoIconList bot={bot}></BotInfoIconList>
             </div>
           </div>
