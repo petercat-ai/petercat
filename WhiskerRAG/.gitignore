@@ -1,0 +1,65 @@
+# Docker volumnes
+docker/volumes/db/data
+docker/volumes/storage
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+__pycache__/
+*.pyc
+**/*.pyc
+# dependencies
+node_modules/
+
+server/temp/
+
+venv
+.venv/
+
+# testing
+/coverage
+.coverage
+
+# next.js
+.next/
+out/
+
+.ruff_cache/
+
+# production
+build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.yarnrc.yml
+
+# local env files
+.env*.local
+.env*.pre
+.env
+*.env
+*.env.local
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+.yarn
+/server/.aws-sam/*
+.aws-sam/*
+
+# IDE
+.idea
+**/.vscode/
+
+# Pytest
+.pytest_cache
+
+dist/
+assistant/src/style/global.css
