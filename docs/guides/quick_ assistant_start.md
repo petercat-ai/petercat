@@ -120,9 +120,7 @@ Here is a reference example of an import:
    <script>
      PetercatLUI.initAssistant({
        apiDomain: 'https://api.petercat.ai',
-       token: 'your-token',
-       starters: ['Introduce this project', 'View contribution guide', 'How can I get started quickly'],
-       clearMessage: true
+       token: 'your-token'
      });
   </script>
 </body>

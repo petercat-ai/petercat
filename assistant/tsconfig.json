@@ -8,8 +8,8 @@
     "baseUrl": "./",
     "paths": {
       "@@/*": [".dumi/tmp/*"],
-      "lui": ["src"],
-      "lui/*": ["src/*", "*"]
+      "assistant": ["src"],
+      "assistant/*": ["src/*", "*"]
     },
     "resolveJsonModule": true
   },
