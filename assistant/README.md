@@ -71,9 +71,7 @@ Step 3, render Assistant component in your project:
 +  <script>
 +    PetercatLUI.initAssistant({
 +      apiDomain: 'https://api.petercat.ai',
-+      token: 'your-token',
-+      starters: ['介绍下这个项目', '查看贡献指南', '我该怎样快速上手'],
-+      clearMessage: true
++      token: 'your-token'
 +    });
 + </script>
 </body>
