@@ -20,34 +20,33 @@ const Assistant = (props: AssistantProps) => {
     bottom = 120,
   } = props;
   const [chatVisible, setChatVisible] = useState(isVisible);
-  const [position, setPosition] = useState({ bottom: bottom });
+  const [position, setPosition] = useState({ transformY: 0 });
 
   const toggleDrawer = () => {
     setChatVisible(!chatVisible);
     onClose?.();
   };
 
-  const startDrag = (e: { clientY: any; preventDefault: () => void }) => {
+  const startDrag = (e: { clientY: number; preventDefault: () => void }) => {
     const startY = e.clientY;
-    const initBottom = position.bottom;
+    const initTransformY = position.transformY;
 
-    const onMouseMove = (moveEvent: { clientY: number }) => {
+    const onMouseMove = (moveEvent: MouseEvent) => {
       const dy = moveEvent.clientY - startY;
-      setPosition({ bottom: Math.max(0, initBottom - dy) });
+      setPosition({ transformY: initTransformY + dy });
     };
 
     const onMouseUp = () => {
-      // Remove the event listeners when the mouse is released
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
 
-    // Add mousemove and mouseup event listeners to the document
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
-    e.preventDefault(); // Prevent text selection
+    e.preventDefault();
   };
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
@@ -68,7 +67,7 @@ const Assistant = (props: AssistantProps) => {
   );
 
   return (
-    <div className="petercat-assitant">
+    <div className="petercat-assitant fixed" style={{ zIndex: 9999 }}>
       <div
         className={cls}
         style={{
@@ -96,30 +95,30 @@ const Assistant = (props: AssistantProps) => {
         )}
       </div>
 
-      <>
-        {showBubble && !chatVisible && (
+      {showBubble && !chatVisible && (
+        <div
+          className="fixed right-0 flex items-center justify-center rounded-full shadow-[0_8px_8px_-5px_#00000014,_0_16px_24px_-5px_#00000029] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg"
+          onMouseDown={startDrag}
+          onClick={toggleDrawer}
+          style={{
+            transform: `translateY(${position.transformY}px)`,
+            marginRight: '24px',
+            bottom: `${bottom}px`, // Use bottom as the initial position
+            zIndex: 9999,
+          }}
+        >
           <div
-            className="fixed bottom-[120px] right-0 flex items-center justify-center rounded-full shadow-[0_8px_8px_-5px_#00000014,_0_16px_24px_-5px_#00000029] bg-white cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg active:cursor-grabbing"
-            onMouseDown={startDrag}
-            onClick={toggleDrawer}
-            style={{
-              bottom: `${position.bottom}px`,
-              marginRight: '24px',
-              zIndex: 9999,
-            }}
+            id="petercat-lui-tip"
+            className="animate-shake absolute top-[-9px] left-[-47px] px-[8px] py-[4px] w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white"
+            style={{ boxSizing: 'border-box' }}
           >
-            <div
-              id="petercat-lui-tip"
-              className="animate-shake absolute top-[-9px] left-[-47px] px-[8px] py-[4px] w-[52px] h-[22px] bg-[#3F3F46] shadow-xl rounded-full rounded-br-none text-[10px] text-white"
-              style={{ boxSizing: 'border-box' }}
-            >
-              Ask me
-            </div>
-            <BubbleIcon />
+            Ask me
           </div>
-        )}
-      </>
+          <BubbleIcon />
+        </div>
+      )}
     </div>
   );
 };
+
 export default Assistant;
