@@ -1,8 +1,4 @@
-.petercat-assitant {
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-}
+@tailwind utilities;
 
 /* animations.css */
 
