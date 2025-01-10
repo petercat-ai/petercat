@@ -1,8 +1,4 @@
-.petercat-assitant {
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-}
+@tailwind utilities;
 
 /* animations.css */
 
@@ -143,6 +139,10 @@
 .petercat-assistant-markdown {
   font-size: 14px;
   line-height: 2;
+  
+  p {
+     margin: 0;
+  }
 
   h1 {
     margin-bottom: 20px;
