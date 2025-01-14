@@ -144,6 +144,12 @@
      margin: 0;
   }
 
+  
+  a {
+    color: #1D4ED8;
+    text-decoration: none;
+  }
+
   h1 {
     margin-bottom: 20px;
     font-weight: 500;
