@@ -245,7 +245,7 @@ export default function Homepage() {
                 </p>
                 <a
                   className="inline-block px-5 py-2 lg:px-8 lg:py-3 rounded-full border-2 border-white text-white text-sm lg:text-xl transition-transform hover:scale-105"
-                  href="/market"
+                  href="/factory/list"
                 >
                   {I18N.app.page.liJiChangShi}
                 </a>
