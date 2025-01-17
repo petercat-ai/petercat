@@ -508,7 +508,7 @@ const Chat: FC<ChatProps> = memo(
     // ============================ Render ============================
     return (
       <div
-        className="petercat-assitant bg-[#FCFCFC] pt-2"
+        className="petercat-assistant bg-[#FCFCFC] pt-2"
         style={{
           ...style,
           minWidth: drawerWidth,

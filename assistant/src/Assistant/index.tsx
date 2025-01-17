@@ -67,7 +67,7 @@ const Assistant = (props: AssistantProps) => {
   );
 
   return (
-    <div className="petercat-assitant fixed" style={{ zIndex: 9999 }}>
+    <div className="petercat-assistant fixed" style={{ zIndex: 9999 }}>
       <div
         className={cls}
         style={{

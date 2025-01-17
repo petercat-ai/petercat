@@ -80,7 +80,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
   }, []);
 
   return (
-    <div className="petercat-assitant">
+    <div className="petercat-assistant">
       <Collapse
         size="small"
         items={items}
