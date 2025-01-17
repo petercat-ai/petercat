@@ -18,13 +18,13 @@ ALLOW_LIST = [
     "/api/bot/detail",
     "/api/github/app/webhook",
     "/app/installation/callback",
+    "/api/aws/upload",
 ]
 
 ANONYMOUS_USER_ALLOW_LIST = [
     "/api/auth/userinfo",
     "/api/chat/qa",
     "/api/chat/stream_qa",
-    "/api/aws/upload",
 ]
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token")
