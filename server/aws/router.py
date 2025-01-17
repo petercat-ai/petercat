@@ -16,15 +16,15 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
 @router.post("/upload")
 async def upload_image(
     file: UploadFile = File(...),
     title: str = Form(None),
     description: str = Form(None),
     s3_client=Depends(get_s3_client),
-    user: Annotated[User | None, Depends(get_user)] = None,
-):  
-    
+):
+
     metadata = ImageMetaData(title=title, description=description)
     result = upload_image_to_s3(file, metadata, s3_client)
     return {"status": "success", "data": result}
