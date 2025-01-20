@@ -36,7 +36,12 @@ i18n_config = I18nConfig(default_language="en", translations_dir="i18n")
 
 app.add_middleware(AuthMiddleWare)
 
-app.add_middleware(SessionMiddleware, secret_key=session_secret_key)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=session_secret_key,
+    same_site="none",
+    https_only="true",
+)
 
 cors_origins = (
     ["*"] if cors_origins_whitelist is None else cors_origins_whitelist.split(",")
@@ -75,7 +80,7 @@ def health_checker():
         "ENVIRONMENT": ENVIRONMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
-        "CALLBACK_URL": CALLBACK_URL
+        "CALLBACK_URL": CALLBACK_URL,
     }
 
 
@@ -88,4 +93,6 @@ if __name__ == "__main__":
             reload=True,
         )
     else:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080")))
+        uvicorn.run(
+            app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080"))
+        )
