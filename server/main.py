@@ -20,6 +20,7 @@ from petercat_utils import get_env_variable
 from rag import router as rag_router
 from task import router as task_router
 from user import router as user_router
+from insight import router as insight_router
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 API_AUDIENCE = get_env_variable("API_IDENTIFIER")
@@ -62,6 +63,7 @@ app.include_router(task_router.router)
 app.include_router(github_app_router.router)
 app.include_router(aws_router.router)
 app.include_router(user_router.router)
+app.include_router(insight_router.router)
 
 
 @app.get("/")
@@ -75,7 +77,7 @@ def health_checker():
         "ENVIRONMENT": ENVIRONMENT,
         "API_URL": API_URL,
         "WEB_URL": WEB_URL,
-        "CALLBACK_URL": CALLBACK_URL
+        "CALLBACK_URL": CALLBACK_URL,
     }
 
 
@@ -88,4 +90,6 @@ if __name__ == "__main__":
             reload=True,
         )
     else:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080")))
+        uvicorn.run(
+            app, host="0.0.0.0", port=int(os.environ.get("PETERCAT_PORT", "8080"))
+        )
