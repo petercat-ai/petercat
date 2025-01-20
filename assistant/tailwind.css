@@ -1,4 +1,6 @@
-@tailwind utilities;
+.petercat-assistant {
+  @tailwind utilities;
+}
 
 /* animations.css */
 
@@ -79,25 +81,25 @@
 }
 
 /* Shake Animation Class */
-.petercat-assitant .animate-shake {
+.petercat-assistant .animate-shake {
   animation: shake 15s infinite;
 }
 
 /* Fade In Class */
-.petercat-assitant .animate-fade-in {
+.petercat-assistant .animate-fade-in {
   animation: fadeIn 0.5s ease-in forwards;
 }
 
 /* Fade In Left Class */
-.petercat-assitant .animate-fade-in-left {
+.petercat-assistant .animate-fade-in-left {
   animation: fadeInLeft 0.5s ease-out forwards;
 }
 
-.petercat-assitant .lui-input-area #question {
+.petercat-assistant .lui-input-area #question {
   box-shadow: none;
 }
 
-.petercat-assitant .chat_item_container {
+.petercat-assistant .chat_item_container {
   position: relative;
   width: 100%;
   max-width: 100vw;
@@ -105,33 +107,33 @@
   content-visibility: auto;
   contain-intrinsic-size: 100px;
 }
-.petercat-assitant .petercat-avatar {
+.petercat-assistant .petercat-avatar {
   flex: 0 0 40px;
 }
-.petercat-assitant .petercat-avatar .ant-avatar {
+.petercat-assistant .petercat-avatar .ant-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
-.petercat-assitant .petercat-header {
+.petercat-assistant .petercat-header {
   font-size: 12px !important;
   line-height: 1 !important;
   color: rgba(0, 0, 0, 0.45) !important;
 }
 
-.petercat-assitant .petercat-content-start {
+.petercat-assistant .petercat-content-start {
   padding: 8px 16px 8px 16px !important;
   border-radius: 16px !important;
   background: rgba(241, 241, 241, 1) !important;
 }
 
-.petercat-assitant .petercat-content-end {
+.petercat-assistant .petercat-content-end {
   padding: 8px 16px 8px 16px !important;
   border-radius: 16px !important;
   background: rgba(250, 228, 203, 1) !important;
 }
 
-.petercat-assitant .ant-bubble-content {
+.petercat-assistant .ant-bubble-content {
   min-height: 0 !important;
 }
 
@@ -141,7 +143,7 @@
   line-height: 2;
   
   p {
-     margin: 0;
+     margin: 0 !important;
   }
 
   

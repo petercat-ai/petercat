@@ -18,6 +18,7 @@ ALLOW_LIST = [
     "/api/bot/detail",
     "/api/github/app/webhook",
     "/app/installation/callback",
+    "/api/aws/upload",
 ]
 
 ANONYMOUS_USER_ALLOW_LIST = [
