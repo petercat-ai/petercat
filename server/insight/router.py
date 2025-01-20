@@ -38,7 +38,7 @@ def get_pr_insight(repo_name: str):
         return json.dumps({"success": False, "message": str(e)})
 
 
-@router.get("code_change")
+@router.get("/code_change")
 def get_code_change_insight(repo_name: str):
     try:
         result = get_code_changes(repo_name)
