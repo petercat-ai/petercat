@@ -17,7 +17,7 @@ interface Data {
 interface TrendCharProps {
   data: Data;
 }
-const TrendChar: React.FC<TrendCharProps> = ({ data }) => {
+const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
   >('month');
@@ -90,4 +90,4 @@ const TrendChar: React.FC<TrendCharProps> = ({ data }) => {
   );
 };
 
-export default TrendChar;
+export default TrendChart;

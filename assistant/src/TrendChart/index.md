@@ -13,7 +13,7 @@ npm install @petercatai/assistant
 
 ## 使用示例
 
-```jsx
+```tsx
 import React from 'react';
 import { TrendChart } from '@petercatai/assistant';
 
