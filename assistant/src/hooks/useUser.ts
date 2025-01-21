@@ -35,12 +35,10 @@ function useUser({
   };
 
   const handleLoginPostMessage = (event: MessageEvent) => {
-    if (event.origin !== location.origin) {
-      return;
-    }
+    const { origin, data } = event;
+    const { status } = data;
 
-    const { status } = event.data;
-    if (status === 'success') {
+    if (status === 'success' && (origin === webDomain || origin === location.origin)) {
       mutate();
     }
   };
