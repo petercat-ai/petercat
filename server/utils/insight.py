@@ -41,6 +41,11 @@ def get_data(repo_name, metrics_mapping):
             print(
                 f"Error fetching data from {url} (status code: {response.status_code})"
             )
+            return {
+                "year": [],
+                "quarter": [],
+                "month": [],
+            }
 
     def format_result(data):
         result = []

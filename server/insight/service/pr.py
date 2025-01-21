@@ -1,6 +1,3 @@
-import requests
-from collections import defaultdict
-
 from utils.insight import get_data
 
 
