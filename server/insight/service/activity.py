@@ -8,6 +8,8 @@ def get_activity_data(repo_name: str) -> List[Dict[str, int]]:
 
     response = requests.get(url)
     data = response.json()
+    if not data:
+        return []
 
     # Filter out only the monthly data (excluding quarters)
     monthly_data = {k: v for k, v in data.items() if "-" in k}
