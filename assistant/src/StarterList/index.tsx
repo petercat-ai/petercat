@@ -10,7 +10,7 @@ export interface IProps {
 
 const StarterList: FC<IProps> = ({ starters, onClick, style, className }) => {
   return (
-    <div className="petercat-assitant">
+    <div className="petercat-assistant">
       <div
         className={`flex flex-col flex-wrap gap-2 items-start ${className}`}
         style={style}

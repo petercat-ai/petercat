@@ -91,6 +91,7 @@
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",
+    "postcss-nested": "^7.0.2",
     "postcss-prefix-selector": "^2.1.0",
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.0.0",
