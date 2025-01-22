@@ -1,7 +1,8 @@
-import { Chart } from '@antv/g2';
+import { Runtime, corelib, extend } from '@antv/g2';
 import { Radio } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+const Chart = extend(Runtime, corelib());
 interface DataItem {
   type: string;
   date: string;
@@ -14,10 +15,11 @@ interface Data {
   month: DataItem[];
 }
 
-interface TrendCharProps {
+interface TrendChartProps {
   data: Data;
 }
 const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
+  const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
   >('month');
@@ -27,8 +29,9 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   };
 
   const createLineChart = (data: DataItem[]) => {
+    if (!chartRef.current) return;
     const chart = new Chart({
-      container: 'TrendCharContainer',
+      container: chartRef.current,
       autoFit: true,
     });
 
@@ -40,14 +43,15 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
       .scale('y', {
         nice: true,
       });
-
     chart.line().encode('shape', 'smooth');
     chart.point().encode('shape', 'point').tooltip(false);
 
     chart.render();
+    return chart;
   };
 
   const createIntervalChart = (data: DataItem[]) => {
+    if (!chartRef.current) return;
     const chart = new Chart({
       container: 'TrendCharContainer',
       autoFit: true,
@@ -59,20 +63,24 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
       .encode('x', 'date')
       .encode('y', 'value')
       .encode('color', 'type')
-      .transform({ type: 'dodgeX' })
-      .interaction('elementHighlight', { background: true });
+      .transform({ type: 'dodgeX' });
 
     chart.render();
+    return chart;
   };
 
   const currentData = data[timeDimension] || [];
 
   useEffect(() => {
+    let chart;
     if (currentData?.length > 3) {
-      createLineChart(currentData);
+      chart = createLineChart(currentData);
     } else {
-      createIntervalChart(currentData);
+      chart = createIntervalChart(currentData);
     }
+    return () => {
+      chart?.destroy();
+    };
   }, [currentData]);
 
   return (
@@ -82,10 +90,7 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
         <Radio.Button value="quarter">quarter</Radio.Button>
         <Radio.Button value="month">month</Radio.Button>
       </Radio.Group>
-      <div
-        id="TrendCharContainer"
-        style={{ height: '400px', marginTop: '20px' }}
-      />
+      <div ref={chartRef} style={{ height: '400px', marginTop: 20 }} />
     </div>
   );
 };

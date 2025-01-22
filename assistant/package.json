@@ -103,7 +103,7 @@
     "react": ">=18.0.0 <19.0.0",
     "react-dom": ">=18.0.0 <19.0.0",
     "antd": "^5.15.3",
-    "@antv/g2": "^4.1.10"
+    "@antv/g2": "^5.2.10"
   },
   "publishConfig": {
     "access": "public"
