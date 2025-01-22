@@ -19,11 +19,9 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
 
   const filteredData = useMemo(() => {
     if (filterBots) {
-      return data
-        ?.filter((item) => !item.user.includes('[bot]'))
-        ?.splice(0, 10);
+      return data?.filter((item) => !item.user.includes('[bot]'))?.slice(0, 10);
     }
-    return data?.splice(0, 10);
+    return data?.slice(0, 10);
   }, [filterBots, data]);
 
   useEffect(() => {
@@ -37,6 +35,13 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
     const medal = (datum: string, chartInstance: any) => {
       const { document } = chartInstance.getContext().canvas;
       const group = document?.createElement('g', {});
+      const clipPath = document.createElement('circle', {
+        style: {
+          cx: -10,
+          cy: 0,
+          r: 10,
+        },
+      });
       const icon = document.createElement('image', {
         style: {
           src: `https://avatars.githubusercontent.com/${datum}?s=48&v=4`,
@@ -44,8 +49,10 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
           height: 20,
           x: -20,
           y: -10,
+          clipPath: clipPath,
         },
       });
+      group.appendChild(clipPath);
       group.appendChild(icon);
       return group;
     };
