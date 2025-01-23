@@ -37,18 +37,18 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
       const group = document?.createElement('g', {});
       const clipPath = document.createElement('circle', {
         style: {
-          cx: -10,
+          cx: -15,
           cy: 0,
-          r: 10,
+          r: 15,
         },
       });
       const icon = document.createElement('image', {
         style: {
           src: `https://avatars.githubusercontent.com/${datum}?s=48&v=4`,
-          width: 20,
-          height: 20,
-          x: -20,
-          y: -10,
+          width: 30,
+          height: 30,
+          x: -30,
+          y: -15,
           clipPath: clipPath,
         },
       });
@@ -61,29 +61,39 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
       .interval()
       .scale('x', {
         type: 'band',
-        padding: 0.5,
+        padding: 0.4,
       })
       .data(filteredData)
       .encode('x', 'user')
       .encode('y', 'value')
       .style({
-        fill: 'l(136) 0:rgb(247, 124, 0) 1:rgb(255, 177, 98)',
-        padding: 10,
-        radius: 2,
+        fill: '#FECC6B',
+        radius: 4,
+        margin: [10, 8, 8, 8],
       })
       .label({
         text: 'value',
-        textAlign: (d: any) => (+d.value > 1 ? 'right' : 'start'),
-        fill: (d: any) => (+d.value > 1 ? '#fff' : '#000'),
-        dx: (d: any) => (+d.value > 1 ? -5 : 5),
+        textAlign: 'start',
+        fill: '#9CA3AF',
+        dx: 8,
       })
       .interaction('elementHighlight', { background: true })
       .coordinate({ transform: [{ type: 'transpose' }] })
       .scale('color', { palette: 'category10' })
-      .axis('x', {
-        labelFormatter: (user: string) => medal(user, chart),
+      .axis({
+        x: {
+          tick: false,
+          title: false,
+          labelSpacing: 8,
+          labelAutoRotate: false,
+          labelFormatter: (user: string) => medal(user, chart),
+        },
+        y: false,
       });
 
+    chart.options({
+      paddingRight: 40,
+    });
     chart.render();
 
     return () => {
