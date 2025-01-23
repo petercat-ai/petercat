@@ -12,6 +12,7 @@ npm install @petercatai/assistant
 ```
 
 ## 使用示例
+###  折线图
 
 ```tsx
 import React from 'react';
@@ -55,4 +56,105 @@ export default () => {
 }
 ```
 
+### 面积图
+
+
+```tsx
+import React from 'react';
+import { TrendChart } from '@petercatai/assistant';
+
+export default () => {
+ const data ={
+    "year": [
+      {
+        "type": "add",
+        "date": "2024",
+        "value": 181615
+      },
+      {
+        "type": "remove",
+        "date": "2024",
+        "value": -238621
+      }
+    ],
+    "quarter": [
+      {
+        "type": "add",
+        "date": "2024Q3",
+        "value": 115521
+      },
+      {
+        "type": "remove",
+        "date": "2024Q3",
+        "value": -96766
+      },
+      {
+        "type": "add",
+        "date": "2024Q4",
+        "value": 66094
+      },
+      {
+        "type": "remove",
+        "date": "2024Q4",
+        "value": -141855
+      }
+    ],
+    "month": [
+      {
+        "type": "add",
+        "date": "2024-08",
+        "value": 2
+      },
+      {
+        "type": "remove",
+        "date": "2024-08",
+        "value": -2
+      },
+      {
+        "type": "add",
+        "date": "2024-09",
+        "value": 115519
+      },
+      {
+        "type": "remove",
+        "date": "2024-09",
+        "value": -96764
+      },
+      {
+        "type": "add",
+        "date": "2024-10",
+        "value": 19246
+      },
+      {
+        "type": "remove",
+        "date": "2024-10",
+        "value": -22630
+      },
+      {
+        "type": "add",
+        "date": "2024-11",
+        "value": 20128
+      },
+      {
+        "type": "remove",
+        "date": "2024-11",
+        "value": -14924
+      },
+      {
+        "type": "add",
+        "date": "2024-12",
+        "value": 26720
+      },
+      {
+        "type": "remove",
+        "date": "2024-12",
+        "value": -104301
+      }
+    ]
+  };
+
+
+  return <TrendChart data={data} isArea={true} />;
+}
+```
 
