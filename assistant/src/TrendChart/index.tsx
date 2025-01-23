@@ -17,8 +17,9 @@ interface Data {
 
 interface TrendChartProps {
   data: Data;
+  isArea?: boolean;
 }
-const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
+const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
@@ -42,9 +43,38 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
       .encode('color', 'type')
       .scale('y', {
         nice: true,
+      })
+      .options({
+        paddingRight: 20,
+      })
+      .axis({
+        x: { title: false, labelAutoRotate: false },
+        y: {
+          title: false,
+          labelFormatter: (d: number) =>
+            d >= 1000 || d <= -1000 ? d / 1000 + 'k' : d,
+        },
       });
-    chart.line().encode('shape', 'smooth');
-    chart.point().encode('shape', 'point').tooltip(false);
+
+    if (isArea) {
+      chart
+        .line()
+        .encode('shape', 'smooth')
+        .style('strokeWidth', 2)
+        .tooltip(false);
+      chart.area().encode('shape', 'smooth').style('fillOpacity', 0.3);
+      chart.scale('color', {
+        range: [
+          'l(90) 0:#FECC6B 0.7:#FECC6B 1:#FECC6B4D',
+          'l(270) 0:#EF4444 0.7:EF4444 1:#EF44444D',
+        ],
+      });
+    } else {
+      chart.line().encode('shape', 'smooth');
+      chart.scale('color', {
+        range: ['#FECC6B', '#3B82F6', '#8B5CF6'],
+      });
+    }
 
     chart.render();
     return chart;
@@ -53,7 +83,7 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   const createIntervalChart = (data: DataItem[]) => {
     if (!chartRef.current) return;
     const chart = new Chart({
-      container: 'TrendCharContainer',
+      container: chartRef.current,
       autoFit: true,
     });
 
@@ -63,7 +93,19 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
       .encode('x', 'date')
       .encode('y', 'value')
       .encode('color', 'type')
-      .transform({ type: 'dodgeX' });
+      .transform({ type: 'dodgeX' })
+      .scale('color', {
+        range: isArea
+          ? [
+              'l(90) 0:#FECC6B 0.7:#FECC6B 1:#FECC6B4D',
+              'l(270) 0:#EF4444 0.7:EF4444 1:#EF44444D',
+            ]
+          : ['#FECC6B', '#3B82F6', '#8B5CF6'],
+      })
+      .axis({
+        x: { title: false },
+        y: { title: false },
+      });
 
     chart.render();
     return chart;

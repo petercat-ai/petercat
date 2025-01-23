@@ -2,7 +2,7 @@ import json
 from fastapi import APIRouter
 from insight.service.activity import get_activity_data
 from insight.service.issue import get_issue_data
-from insight.service.pr import get_code_changes, get_pr_data
+from insight.service.pr import get_code_frequency, get_pr_data
 
 
 # ref: https://open-digger.cn/en/docs/user_docs/metrics/metrics_usage_guide
@@ -39,10 +39,10 @@ def get_pr_insight(repo_name: str):
         return json.dumps({"success": False, "message": str(e)})
 
 
-@router.get("/code_change")
-def get_code_change_insight(repo_name: str):
+@router.get("/code_frequency")
+def get_code_frequency_insight(repo_name: str):
     try:
-        result = get_code_changes(repo_name)
+        result = get_code_frequency(repo_name)
         return {
             "success": True,
             "data": result,

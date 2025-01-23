@@ -66,6 +66,10 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
       .data(filteredData)
       .encode('x', 'user')
       .encode('y', 'value')
+      .axis({
+        x: { title: false },
+        y: { title: false },
+      })
       .style({
         fill: '#FECC6B',
         radius: 4,
