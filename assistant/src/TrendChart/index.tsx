@@ -97,8 +97,8 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
       .scale('color', {
         range: isArea
           ? [
-              'l(90) 0:#FECC6B 0.7:#FECC6B 1:#FECC6B4D',
-              'l(270) 0:#EF4444 0.7:EF4444 1:#EF44444D',
+              'l(90) 0:#FECC6B 0.9:#FECC6B 1:#FECC6B4D',
+              'l(270) 0:#EF4444 0.9:EF4444 1:#EF44444D',
             ]
           : ['#FECC6B', '#3B82F6', '#8B5CF6'],
       })

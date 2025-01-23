@@ -149,7 +149,7 @@ export default () => {
     }
   ];
 
-  return <RankChart data={data} />;
+  return <RankChart data={data} title={'Contributor Rankings Top 10'} />;
 }
 ```
 
