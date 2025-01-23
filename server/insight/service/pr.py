@@ -10,7 +10,7 @@ def get_pr_data(repo_name):
     return get_data(repo_name, metrics_mapping)
 
 
-def get_code_changes(repo_name):
+def get_code_frequency(repo_name):
     metrics_mapping = {
         "code_change_lines_add": "add",
         "code_change_lines_remove": "remove",
