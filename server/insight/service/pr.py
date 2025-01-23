@@ -10,9 +10,22 @@ def get_pr_data(repo_name):
     return get_data(repo_name, metrics_mapping)
 
 
-def get_code_changes(repo_name):
+def get_code_frequency(repo_name):
     metrics_mapping = {
         "code_change_lines_add": "add",
         "code_change_lines_remove": "remove",
     }
-    return get_data(repo_name, metrics_mapping)
+    data = get_data(repo_name, metrics_mapping)
+
+    def process_entries(entries):
+        """Convert 'remove' entries to negative values."""
+        return [
+            {**entry, "value": -entry["value"]} if entry["type"] == "remove" else entry
+            for entry in entries
+        ]
+
+    for key in ["year", "quarter", "month"]:
+        if key in data:
+            data[key] = process_entries(data[key])
+
+    return data
