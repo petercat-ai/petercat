@@ -17,6 +17,8 @@ def parse_gemini_input(message: MessageContent):
             return ImageRawURLContentBlock(
                 image_url=message.image_url.url, type="image_url"
             )
+        case "text":
+            return message.model_dump()
         case _:
             return message
 
@@ -51,6 +53,4 @@ class GeminiClient(BaseLLMClient):
         return [convert_to_genai_function_declarations(tool) for tool in tools]
 
     def parse_content(self, content: List[MessageContent]):
-        result = [parse_gemini_input(message=message) for message in content]
-        print(f"parse_content, content={content}, result={result}")
-        return result
+        return [parse_gemini_input(message=message) for message in content]
