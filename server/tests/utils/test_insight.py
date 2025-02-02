@@ -1,7 +1,5 @@
 import unittest
 from unittest.mock import patch, Mock
-from collections import defaultdict
-
 from utils.insight import get_data
 
 
