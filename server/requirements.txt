@@ -4,8 +4,8 @@ python-dotenv==1.0.0
 openai
 mangum
 langserve
-langchain_community>=0.2.11
-langchain>=0.2.12
+langchain_community>=0.3,<0.4
+langchain>=0.3,<0.4
 langchain_google_genai
 PyGithub==2.3.0
 GitPython>=3.1.43
