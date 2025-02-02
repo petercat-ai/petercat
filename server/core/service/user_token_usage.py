@@ -56,6 +56,8 @@ def create_token_recorder(user: User, bot: Bot):
               user_token_usage_dao.create(token_usage)
             except Exception as e:
               print(f"An error occurred: {e}")
+          case "error":
+            yield value
           case _:
             yield value
       except Exception as e:

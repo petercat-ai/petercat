@@ -1,7 +1,7 @@
 name: PR Tests
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ "main" ]
     paths:
       - .github/workflows/**
@@ -12,7 +12,7 @@ on:
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
-  pull-requests: write 
+  pull-requests: write
   actions: write
 
 env:
@@ -54,7 +54,7 @@ jobs:
           pip install -r requirements.txt
           pip install ruff
           pip install pytest pytest-cov
-        
+
       - name: Lint with Ruff
         run: |
           ruff check --output-format=github .
