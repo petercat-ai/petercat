@@ -27,5 +27,5 @@ requests
 pytest
 httpx
 urllib3>=2.2.2
-petercat_utils>=0.1.36
+petercat_utils>=0.1.42
 toolz
