@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "petercat_utils"
-version = "0.1.41"
+version = "0.1.42"
 description = ""
 authors = ["raoha.rh <raohai.rh@antgroup.com>"]
 readme = "README.md"
@@ -22,10 +22,10 @@ md_report_color = "auto"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-langchain_community = "^0.2.11"
-langchain_openai = "^0.1.20"
-langchain_core = "^0.2.28"
-langchain = "^0.2.12"
+langchain_community = ">=0.3,<0.4"
+langchain_openai = "0.3.3"
+langchain_core = ">=0.3,<0.4"
+langchain = ">=0.3,<0.4"
 supabase = "2.6.0"
 pydantic = ">=2.7.0,<3"
 PyGithub = "2.3.0"
