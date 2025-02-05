@@ -17,8 +17,14 @@ interface Data {
 
 interface AreaChartProps {
   data: Data;
+  title?: string;
+  height?: number;
 }
-const AreaChart: React.FC<AreaChartProps> = ({ data }) => {
+const AreaChart: React.FC<AreaChartProps> = ({
+  data,
+  title = '',
+  height = 400,
+}) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
@@ -137,7 +143,7 @@ const AreaChart: React.FC<AreaChartProps> = ({ data }) => {
         <Radio.Button value="quarter">quarter</Radio.Button>
         <Radio.Button value="month">month</Radio.Button>
       </Radio.Group>
-      <div ref={chartRef} style={{ height: '400px', marginTop: 20 }} />
+      <div ref={chartRef} style={{ height: `${height}px`, marginTop: 20 }} />
     </div>
   );
 };

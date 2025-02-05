@@ -17,9 +17,16 @@ interface Data {
 
 interface LineChartProps {
   data: Data;
+  title?: string;
+  height?: number;
   colors?: string[];
 }
-const LineChart: React.FC<LineChartProps> = ({ data, colors }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  data,
+  colors,
+  title = '',
+  height = 400,
+}) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
@@ -117,7 +124,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, colors }) => {
         <Radio.Button value="quarter">quarter</Radio.Button>
         <Radio.Button value="month">month</Radio.Button>
       </Radio.Group>
-      <div ref={chartRef} style={{ height: '400px', marginTop: 20 }} />
+      <div ref={chartRef} style={{ height: `${height}px`, marginTop: 20 }} />
     </div>
   );
 };

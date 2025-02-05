@@ -12,10 +12,15 @@ export interface DataItem {
 
 export interface BotFilterChartProps {
   data: DataItem[];
-  title: string;
+  title?: string;
+  height?: number;
 }
 
-const RankChart: React.FC<BotFilterChartProps> = ({ data, title = '' }) => {
+const RankChart: React.FC<BotFilterChartProps> = ({
+  data,
+  title = '',
+  height = 400,
+}) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [filterBots, setFilterBots] = useState<boolean>(true);
 
@@ -137,7 +142,7 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data, title = '' }) => {
       <div
         ref={chartRef}
         style={{
-          height: '500px',
+          height: `${height}px`,
           marginTop: 20,
         }}
       />
