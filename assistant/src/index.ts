@@ -1,11 +1,12 @@
+export { default as AreaChart } from './AreaChart';
 export { default as Assistant } from './Assistant';
 export { initAssistant } from './Assistant/InitAssistant';
 export { default as ChartHeader } from './ChartHeader';
 export { default as Chat } from './Chat';
 export { default as GitInsight } from './GitInsight';
 export { default as useUser } from './hooks/useUser';
+export { default as LineChart } from './LineChart';
 export { default as RankChart } from './RankChart';
 export { default as StarterList } from './StarterList';
 export { default as ThoughtChain } from './ThoughtChain';
-export { default as TrendChart } from './TrendChart';
 export * from './utils';

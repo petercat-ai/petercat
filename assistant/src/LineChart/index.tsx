@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const Chart = extend(Runtime, corelib());
 interface DataItem {
-  type: string;
   date: string;
   value: number;
+  type?: string;
 }
 
 interface Data {
@@ -15,11 +15,11 @@ interface Data {
   month: DataItem[];
 }
 
-interface TrendChartProps {
+interface LineChartProps {
   data: Data;
-  isArea?: boolean;
+  colors?: string[];
 }
-const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, colors }) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
@@ -29,6 +29,9 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
     setTimeDimension(e?.target?.value as 'year' | 'quarter' | 'month');
   };
 
+  const hasTypeField = (data: DataItem[]) =>
+    data.some((item) => item.type !== undefined);
+
   const createLineChart = (data: DataItem[]) => {
     if (!chartRef.current) return;
     const chart = new Chart({
@@ -36,17 +39,13 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
       autoFit: true,
     });
 
-    chart
+    const chartDefinition = chart
       .data(data)
       .encode('x', 'date')
       .encode('y', 'value')
-      .encode('color', 'type')
-      .scale('y', {
-        nice: true,
-      })
-      .options({
-        paddingRight: 20,
-      })
+      .scale('y', { nice: true })
+
+      .options({ paddingRight: 20 })
       .axis({
         x: { title: false, labelAutoRotate: false },
         y: {
@@ -56,25 +55,13 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
         },
       });
 
-    if (isArea) {
-      chart
-        .line()
-        .encode('shape', 'smooth')
-        .style('strokeWidth', 2)
-        .tooltip(false);
-      chart.area().encode('shape', 'smooth').style('fillOpacity', 0.3);
-      chart.scale('color', {
-        range: [
-          'l(90) 0:#FECC6B 0.7:#FECC6B 1:#FECC6B4D',
-          'l(270) 0:#EF4444 0.7:EF4444 1:#EF44444D',
-        ],
-      });
-    } else {
-      chart.line().encode('shape', 'smooth');
-      chart.scale('color', {
-        range: ['#FECC6B', '#3B82F6', '#8B5CF6'],
+    if (hasTypeField(data)) {
+      chartDefinition.encode('color', 'type').scale('color', {
+        range: colors ? colors : ['#FECC6B', '#3B82F6', '#8B5CF6'],
       });
     }
+
+    chartDefinition.line().encode('shape', 'smooth');
 
     chart.render();
     return chart;
@@ -87,25 +74,23 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
       autoFit: true,
     });
 
-    chart
+    const chartDefinition = chart
       .interval()
       .data(data)
       .encode('x', 'date')
       .encode('y', 'value')
-      .encode('color', 'type')
+
       .transform({ type: 'dodgeX' })
-      .scale('color', {
-        range: isArea
-          ? [
-              'l(90) 0:#FECC6B 0.9:#FECC6B 1:#FECC6B4D',
-              'l(270) 0:#EF4444 0.9:EF4444 1:#EF44444D',
-            ]
-          : ['#FECC6B', '#3B82F6', '#8B5CF6'],
-      })
       .axis({
         x: { title: false },
         y: { title: false },
       });
+
+    if (hasTypeField(data)) {
+      chartDefinition.encode('color', 'type').scale('color', {
+        range: colors ? colors : ['#FECC6B', '#3B82F6', '#8B5CF6'],
+      });
+    }
 
     chart.render();
     return chart;
@@ -137,4 +122,4 @@ const TrendChart: React.FC<TrendChartProps> = ({ data, isArea = false }) => {
   );
 };
 
-export default TrendChart;
+export default LineChart;
