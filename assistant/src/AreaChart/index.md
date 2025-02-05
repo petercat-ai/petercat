@@ -70,7 +70,7 @@ export default () => {
   };
 
 
-  return <AreaChart data={data} isArea={true} />;
+  return <AreaChart data={data} />;
 }
 ```
 
@@ -171,7 +171,7 @@ export default () => {
   };
 
 
-  return <AreaChart data={data} isArea={true} />;
+  return <AreaChart data={data} />;
 }
 ```
 
