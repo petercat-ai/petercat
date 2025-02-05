@@ -50,7 +50,7 @@ const Heatmap: React.FC<HeatmapProps> = ({
       .encode('x', 'hour')
       .encode('y', 'day')
       .encode('color', 'value')
-      .style('inset', 0.1)
+      .style('inset', 0.5)
       .axis({
         x: { title: false },
         y: { title: false },
