@@ -1,6 +1,7 @@
 import { Runtime, corelib, extend } from '@antv/g2';
-import { Switch } from 'antd';
+import { ConfigProvider, Switch } from 'antd';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import ChartHeader from '../ChartHeader';
 
 const Chart = extend(Runtime, corelib());
 
@@ -11,9 +12,10 @@ export interface DataItem {
 
 export interface BotFilterChartProps {
   data: DataItem[];
+  title: string;
 }
 
-const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
+const RankChart: React.FC<BotFilterChartProps> = ({ data, title = '' }) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [filterBots, setFilterBots] = useState<boolean>(true);
 
@@ -66,6 +68,10 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
       .data(filteredData)
       .encode('x', 'user')
       .encode('y', 'value')
+      .axis({
+        x: { title: false },
+        y: { title: false },
+      })
       .style({
         fill: '#FECC6B',
         radius: 4,
@@ -101,13 +107,33 @@ const RankChart: React.FC<BotFilterChartProps> = ({ data }) => {
     };
   }, [filteredData]);
 
+  const operation = (
+    <label className="flex items-center">
+      <span className="text-gray-400 text-[12px] mr-[8px] font-medium">
+        Exclude Bots
+      </span>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#000',
+          },
+          components: {
+            Switch: {
+              handleSize: 16,
+              trackPadding: 3,
+              trackMinWidth: 22,
+            },
+          },
+        }}
+      >
+        <Switch checked={filterBots} onChange={setFilterBots} />
+      </ConfigProvider>
+    </label>
+  );
+
   return (
     <div>
-      <label style={{ marginBottom: 8, display: 'inline-block' }}>
-        <span style={{ marginRight: 8 }}>Exclude Bots</span>
-        <Switch checked={filterBots} onChange={setFilterBots} />
-      </label>
-
+      <ChartHeader title={title} operation={operation} />
       <div
         ref={chartRef}
         style={{

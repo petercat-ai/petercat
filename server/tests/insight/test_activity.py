@@ -35,11 +35,10 @@ class TestGetActivityData(unittest.TestCase):
 
     @patch("insight.service.activity.requests.get")
     def test_get_activity_data_invalid_json(self, mock_get):
-
         mock_response = MagicMock()
         mock_response.json.side_effect = ValueError("Invalid JSON")
         mock_get.return_value = mock_response
 
         repo_name = "petercat-ai/petercat"
-        with self.assertRaises(ValueError):
-            get_activity_data(repo_name)
+        result = get_activity_data(repo_name)
+        self.assertEqual(result, [])

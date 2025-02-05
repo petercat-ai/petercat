@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const Chart = extend(Runtime, corelib());
 interface DataItem {
-  type: string;
   date: string;
   value: number;
+  type?: string;
 }
 
 interface Data {
@@ -15,10 +15,10 @@ interface Data {
   month: DataItem[];
 }
 
-interface TrendChartProps {
+interface AreaChartProps {
   data: Data;
 }
-const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
+const AreaChart: React.FC<AreaChartProps> = ({ data }) => {
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [timeDimension, setTimeDimension] = useState<
     'year' | 'quarter' | 'month'
@@ -28,23 +28,59 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
     setTimeDimension(e?.target?.value as 'year' | 'quarter' | 'month');
   };
 
-  const createLineChart = (data: DataItem[]) => {
+  const hasTypeField = (data: DataItem[]) =>
+    data.some((item) => item.type !== undefined);
+
+  const createAreaChart = (data: DataItem[]) => {
     if (!chartRef.current) return;
     const chart = new Chart({
       container: chartRef.current,
       autoFit: true,
     });
 
-    chart
+    const chartDefinition = chart
       .data(data)
       .encode('x', 'date')
       .encode('y', 'value')
-      .encode('color', 'type')
-      .scale('y', {
-        nice: true,
+      .scale('y', { nice: true })
+      .options({ paddingRight: 20 })
+      .axis({
+        x: { title: false, labelAutoRotate: false },
+        y: {
+          title: false,
+          labelFormatter: (d: number) =>
+            d >= 1000 || d <= -1000 ? d / 1000 + 'k' : d,
+        },
       });
-    chart.line().encode('shape', 'smooth');
-    chart.point().encode('shape', 'point').tooltip(false);
+
+    if (hasTypeField(data)) {
+      chartDefinition.encode('color', 'type');
+      chartDefinition
+        .area()
+        .encode('shape', 'smooth')
+        .scale('color', {
+          range: [
+            'l(90) 0:#FECC6B  1:#FECC6B4D',
+            'l(270) 0:#EF4444 1:#EF44444D',
+          ],
+        });
+      chartDefinition
+        .line()
+        .encode('shape', 'smooth')
+        .style('strokeWidth', 2)
+        .tooltip(false);
+    } else {
+      chartDefinition
+        .area()
+        .encode('shape', 'smooth')
+        .style('fill', 'l(90) 0:#FECC6B 0.2:#FECC6B 1:#FECC6B08');
+      chartDefinition
+        .line()
+        .encode('shape', 'smooth')
+        .style('strokeWidth', 2)
+        .style('stroke', '#FECC6B')
+        .tooltip(false);
+    }
 
     chart.render();
     return chart;
@@ -53,17 +89,28 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   const createIntervalChart = (data: DataItem[]) => {
     if (!chartRef.current) return;
     const chart = new Chart({
-      container: 'TrendCharContainer',
+      container: chartRef.current,
       autoFit: true,
     });
 
-    chart
+    const chartDefinition = chart
       .interval()
       .data(data)
       .encode('x', 'date')
       .encode('y', 'value')
-      .encode('color', 'type')
-      .transform({ type: 'dodgeX' });
+      .transform({ type: 'dodgeX' })
+      .axis({
+        x: { title: false },
+        y: { title: false },
+      });
+
+    if (hasTypeField(data)) {
+      chartDefinition.encode('color', 'type');
+    }
+
+    chartDefinition.scale('color', {
+      range: ['#FECC6B ', '#EF4444'],
+    });
 
     chart.render();
     return chart;
@@ -74,7 +121,7 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   useEffect(() => {
     let chart;
     if (currentData?.length > 3) {
-      chart = createLineChart(currentData);
+      chart = createAreaChart(currentData);
     } else {
       chart = createIntervalChart(currentData);
     }
@@ -95,4 +142,4 @@ const TrendChart: React.FC<TrendChartProps> = ({ data }) => {
   );
 };
 
-export default TrendChart;
+export default AreaChart;

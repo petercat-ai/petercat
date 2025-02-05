@@ -45,5 +45,4 @@ class DeepSeekClient(BaseLLMClient):
         return [convert_to_openai_tool(tool) for tool in tools]
 
     def parse_content(self, content: List[MessageContent]):
-        print(f"parse_conent, content={content}")
-        return content
+        return [c.model_dump() for c in content]

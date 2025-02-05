@@ -2,6 +2,7 @@ import json
 import logging
 from typing import AsyncGenerator, AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
+from openai import APIError
 from agent.llm import BaseLLMClient
 from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
@@ -152,15 +153,16 @@ class AgentBuilder:
                             "content": content,
                         }
                 elif kind == "on_chat_model_end":
-                    content = event["data"]["output"]["generations"][0][0][
-                        "message"
-                    ].usage_metadata
-                    if content:
-                        yield {
-                            "id": event["run_id"],
-                            "type": "usage",
-                            **content,
-                        }
+                    output = event.get("data", {}).get("output", {})
+                    generations = output.get("generations", [])
+                    if generations and len(generations) > 0:
+                        content = generations[0][0].get("message", {}).get("usage_metadata")
+                        if content:
+                            yield {
+                                "id": event["run_id"],
+                                "type": "usage",
+                                **content,
+                            }
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     yield {
@@ -213,8 +215,10 @@ class AgentBuilder:
                     }
 
         except Exception as e:
-            res = {"status": "error", "message": str(e)}
-            yield res
+            if isinstance(e, APIError):
+                yield { "status": "error", "message": e.body }
+            else:
+                yield { "status": "error", "message": str(e) }
 
     async def run_chat(self, input_data: ChatData) -> str:
         try:

@@ -42,4 +42,4 @@ class OpenAIClient(BaseLLMClient):
         return [convert_to_openai_tool(tool) for tool in tools]
 
     def parse_content(self, content: List[MessageContent]):
-        return content
+        return [c.model_dump() for c in content]
