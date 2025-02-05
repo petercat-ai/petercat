@@ -156,13 +156,17 @@ class AgentBuilder:
                     output = event.get("data", {}).get("output", {})
                     generations = output.get("generations", [])
                     if generations and len(generations) > 0:
-                        content = generations[0][0].get("message", {}).get("usage_metadata")
-                        if content:
-                            yield {
-                                "id": event["run_id"],
-                                "type": "usage",
-                                **content,
-                            }
+                        generation = generations[0][0]
+                        message = generation.get("message")
+                        if message:
+                            content = message.usage_metadata
+                            if content:
+                                yield {
+                                    "id": event["run_id"],
+                                    "type": "usage",
+                                    **content,
+                                }
+
                 elif kind == "on_tool_start":
                     children_value = event["data"].get("input", {})
                     yield {
@@ -216,9 +220,9 @@ class AgentBuilder:
 
         except Exception as e:
             if isinstance(e, APIError):
-                yield { "status": "error", "message": e.body }
+                yield {"status": "error", "message": e.body}
             else:
-                yield { "status": "error", "message": str(e) }
+                yield {"status": "error", "message": str(e)}
 
     async def run_chat(self, input_data: ChatData) -> str:
         try:
