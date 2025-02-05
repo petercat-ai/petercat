@@ -5,6 +5,7 @@ export { default as BoxChart } from './BoxChart';
 export { default as ChartHeader } from './ChartHeader';
 export { default as Chat } from './Chat';
 export { default as GitInsight } from './GitInsight';
+export { default as Heatmap } from './Heatmap';
 export { default as useUser } from './hooks/useUser';
 export { default as LineChart } from './LineChart';
 export { default as RankChart } from './RankChart';

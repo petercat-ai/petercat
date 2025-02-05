@@ -4,8 +4,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const Chart = extend(Runtime, corelib());
 interface DataItem {
-  date: string;
-  value: number[];
+  day: string;
+  hour: string;
+  value: number;
 }
 
 interface Data {
@@ -14,12 +15,12 @@ interface Data {
   month: DataItem[];
 }
 
-interface BoxChartProps {
+interface HeatmapProps {
   data: Data;
   title?: string;
   height?: number;
 }
-const BoxChart: React.FC<BoxChartProps> = ({
+const Heatmap: React.FC<HeatmapProps> = ({
   data,
   title = '',
   height = 400,
@@ -43,29 +44,20 @@ const BoxChart: React.FC<BoxChartProps> = ({
     });
 
     chart
-      .box()
+      .cell()
       .data(currentData)
-      .encode('x', 'date')
-      .encode('y', 'value')
-      .scale('x', { paddingInner: 0.3, paddingOuter: 0 })
-      .scale('y', { zero: true })
+      .transform({ type: 'group', color: 'max' })
+      .encode('x', 'hour')
+      .encode('y', 'day')
+      .encode('color', 'value')
+      .style('inset', 0.5)
       .axis({
-        x: { title: false, labelAutoRotate: false },
+        x: { title: false },
         y: { title: false },
       })
-      .legend(false)
-      .style({
-        fill: '#FECC6B',
-        stroke: '#FECC6B',
-      })
-      .tooltip([
-        { name: 'min', channel: 'y' },
-        { name: 'p25', channel: 'y1' },
-        { name: 'medium', channel: 'y2' },
-        { name: 'p75', channel: 'y3' },
-        { name: 'max', channel: 'y4' },
-      ]);
-
+      .scale('color', { palette: 'oranges' })
+      .animate('enter', { type: 'fadeIn' });
+    chart.options({ legend: false });
     chart.render();
 
     return () => {
@@ -86,4 +78,4 @@ const BoxChart: React.FC<BoxChartProps> = ({
   );
 };
 
-export default BoxChart;
+export default Heatmap;
