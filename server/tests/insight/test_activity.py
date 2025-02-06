@@ -5,7 +5,7 @@ from insight.service.activity import get_activity_data, get_active_dates_and_tim
 
 class TestGetActivityData(unittest.TestCase):
 
-    @patch("insight.service.activity.get_activity_data.requests.get")
+    @patch("insight.service.activity.requests.get")
     def test_get_activity_data(self, mock_get):
         mock_response = MagicMock()
         mock_response.json.return_value = {
@@ -23,7 +23,7 @@ class TestGetActivityData(unittest.TestCase):
         self.assertIsInstance(result, list)
         self.assertEqual(result, expected_result)
 
-    @patch("insight.service.activity.get_activity_data.requests.get")
+    @patch("insight.service.activity.requests.get")
     def test_get_activity_data_empty(self, mock_get):
         mock_response = MagicMock()
         mock_response.json.return_value = {}
@@ -33,7 +33,7 @@ class TestGetActivityData(unittest.TestCase):
 
         self.assertEqual(result, [])
 
-    @patch("insight.service.activity.get_activity_data.requests.get")
+    @patch("insight.service.activity.requests.get")
     def test_get_activity_data_invalid_json(self, mock_get):
         mock_response = MagicMock()
         mock_response.json.side_effect = ValueError("Invalid JSON")
@@ -46,7 +46,7 @@ class TestGetActivityData(unittest.TestCase):
 
 class TestGetActiveDatesAndTimes(unittest.TestCase):
 
-    @patch("insight.service.activity.get_active_dates_and_times.requests.get")
+    @patch("insight.service.activity.requests.get")
     def test_get_active_dates_and_times(self, mock_get):
         fake_json = {
             "2024": [0] * 168,
