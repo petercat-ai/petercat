@@ -20,6 +20,7 @@ from petercat_utils import get_env_variable
 from rag import router as rag_router
 from task import router as task_router
 from user import router as user_router
+from convert_monster import router as convert_monster_router
 from insight import router as insight_router
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
@@ -68,6 +69,8 @@ app.include_router(task_router.router)
 app.include_router(github_app_router.router)
 app.include_router(aws_router.router)
 app.include_router(user_router.router)
+app.include_router(convert_monster_router.router)
+
 app.include_router(insight_router.router)
 
 
