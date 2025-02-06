@@ -14,7 +14,7 @@ DASHSCOPE_API_KEY = get_env_variable("DASHSCOPE_API_KEY")
 
 
 @register_llm_client("deepseek-v3@dashscope")
-class DeepSeekV3DashScopeClient(BaseLLMClient):
+class DeepSeekR1DashScopeClient(BaseLLMClient):
     _client: ChatOpenAI
 
     def __init__(
