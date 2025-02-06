@@ -13,8 +13,8 @@ from petercat_utils import get_env_variable
 DASHSCOPE_API_KEY = get_env_variable("DASHSCOPE_API_KEY")
 
 
-@register_llm_client("dashscope")
-class DashScopeClient(BaseLLMClient):
+@register_llm_client("deepseek-r1@dashscope")
+class DeepSeekV3DashScopeClient(BaseLLMClient):
     _client: ChatOpenAI
 
     def __init__(
@@ -27,7 +27,7 @@ class DashScopeClient(BaseLLMClient):
         api_key: Optional[str] = DASHSCOPE_API_KEY,
     ):
         self._client = ChatOpenAI(
-            model_name="deepseek-v3",
+            model_name="deepseek-r1",
             temperature=temperature,
             n=n,
             top_p=top_p,
