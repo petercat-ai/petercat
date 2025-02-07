@@ -126,7 +126,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
   const currentData = data[timeDimension] || [];
 
   useEffect(() => {
-    let chart;
+    let chart: any;
     if (currentData?.length > 3) {
       chart = createAreaChart(currentData);
     } else {

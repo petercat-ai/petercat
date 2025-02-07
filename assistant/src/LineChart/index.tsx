@@ -107,7 +107,7 @@ const LineChart: React.FC<LineChartProps> = ({
   const currentData = data[timeDimension] || [];
 
   useEffect(() => {
-    let chart;
+    let chart: any;
     if (currentData?.length > 3) {
       chart = createLineChart(currentData);
     } else {
