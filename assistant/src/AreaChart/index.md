@@ -70,7 +70,7 @@ export default () => {
   };
 
 
-  return <AreaChart data={data} />;
+  return <AreaChart data={data} title={'Contributors'} />;
 }
 ```
 

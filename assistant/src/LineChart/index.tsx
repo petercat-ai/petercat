@@ -1,6 +1,7 @@
 import { Runtime, corelib, extend } from '@antv/g2';
-import { Radio } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import ChartHeader from '../ChartHeader';
+import SegmentedTabs from '../SegmentedTabs';
 
 const Chart = extend(Runtime, corelib());
 interface DataItem {
@@ -32,8 +33,8 @@ const LineChart: React.FC<LineChartProps> = ({
     'year' | 'quarter' | 'month'
   >('month');
 
-  const handleChange = (e: any) => {
-    setTimeDimension(e?.target?.value as 'year' | 'quarter' | 'month');
+  const handleChange = (val: string) => {
+    setTimeDimension(val as 'year' | 'quarter' | 'month');
   };
 
   const hasTypeField = (data: DataItem[]) =>
@@ -119,11 +120,11 @@ const LineChart: React.FC<LineChartProps> = ({
 
   return (
     <div>
-      <Radio.Group defaultValue="month" size="middle" onChange={handleChange}>
-        <Radio.Button value="year">year</Radio.Button>
-        <Radio.Button value="quarter">quarter</Radio.Button>
-        <Radio.Button value="month">month</Radio.Button>
-      </Radio.Group>
+      <ChartHeader
+        title={title}
+        operation={<SegmentedTabs onChange={handleChange} />}
+      />
+
       <div ref={chartRef} style={{ height: `${height}px`, marginTop: 20 }} />
     </div>
   );
