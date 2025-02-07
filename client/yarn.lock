@@ -3145,10 +3145,10 @@
   resolved "https://registry.yarnpkg.com/@panva/hkdf/-/hkdf-1.2.1.tgz#cb0d111ef700136f4580349ff0226bf25c853f23"
   integrity sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==
 
-"@petercatai/assistant@2.1.0-alpha.0":
-  version "2.1.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@petercatai/assistant/-/assistant-2.1.0-alpha.0.tgz#694e2122d5a69f2e7b7d17a842c89d9fcb621181"
-  integrity sha512-7EQ6zJyR7II9tEZahs6JBZrCylldL6cQeltmABoQcceCRK0Xe4e2DEmIGH1U3kQxcuVu/oJn4mJjTWHvgtNkwA==
+"@petercatai/assistant@2.1.0-alpha.1":
+  version "2.1.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@petercatai/assistant/-/assistant-2.1.0-alpha.1.tgz#654a76df5f19a23e2affa3d3626b86a792d95fb0"
+  integrity sha512-aBIRyA0Zl0BkYat3Wgtzyo84VwwekH2AW6ELaorQ7ONvRcFR+yADUPUid9N3k4YF2CWhepfNV5iHWPyOVR0Guw==
   dependencies:
     "@ant-design/icons" "^5.3.5"
     "@ant-design/x" "^1.0.0"

@@ -17,6 +17,13 @@ export async function getIssueResolutionDuration(repoName: string) {
   return response.data.data;
 }
 
+export async function getContributorStatistics(repoName: string) {
+  const response = await axios.get(
+    `${apiDomain}/api/insight/contributor/statistics?repo_name=${repoName}`,
+  );
+  return response.data.data;
+}
+
 export async function getPrStatistics(repoName: string) {
   const response = await axios.get(
     `${apiDomain}/api/insight/pr/statistics?repo_name=${repoName}`,

@@ -9,7 +9,6 @@ import {
   BoxChart,
   RankChart,
 } from '@petercatai/assistant';
-import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
 import { Skeleton } from '@nextui-org/react';
 import {
@@ -19,6 +18,7 @@ import {
   useCodeFrequency,
   useActivityStatistics,
   useActivityDatesAndTimes,
+  useContributorStatistics,
 } from '../hooks/useInsight';
 
 export default function Insight() {
@@ -32,6 +32,7 @@ export default function Insight() {
   const { data: codeFrequency } = useCodeFrequency(repoName);
   const { data: activityStatistics } = useActivityStatistics(repoName);
   const { data: activityDatesAndTimes } = useActivityDatesAndTimes(repoName);
+  const { data: contributors } = useContributorStatistics(repoName);
   return (
     <div className="flex w-full h-full flex-col bg-[#F3F4F6] min-h-screen">
       <div className="relative flex h-[72px] w-full items-center justify-between gap-2  px-6 flex-shrink-0">
@@ -40,7 +41,7 @@ export default function Insight() {
             className="flex items-center gap-2 cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
-              // router.back();
+              window.history.back();
             }}
           >
             <HomeIcon />
@@ -61,7 +62,17 @@ export default function Insight() {
       </div>
       <div className="pb-[42px] px-[40px] overflow-y-auto">
         <div className="grid grid-cols-2 gap-2">
-          <div className="bg-white rounded h-[607px] p-[24px]"></div>
+          <div className="bg-white rounded h-[607px] p-[24px]">
+            <Suspense fallback={<Skeleton className="rounded-lg" />}>
+              {contributors && (
+                <AreaChart
+                  data={contributors}
+                  height={500}
+                  title="Contributors"
+                />
+              )}
+            </Suspense>
+          </div>
           <div className="bg-white rounded h-[607px] p-[24px]">
             <Suspense fallback={<Skeleton className="rounded-lg" />}>
               {codeFrequency && (

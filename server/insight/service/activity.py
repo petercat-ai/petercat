@@ -35,9 +35,9 @@ def get_active_dates_and_times(repo_name: str):
         resp.raise_for_status()
         data = resp.json()
 
-        pattern_year = re.compile(r"^\d{4}$")  # e.g. "2024"
-        pattern_quarter = re.compile(r"^\d{4}Q[1-4]$")  # e.g. "2024Q3"
-        pattern_month = re.compile(r"^\d{4}-\d{2}$")  # e.g. "2024-08"
+        pattern_year = re.compile(r"^\d{4}$")
+        pattern_quarter = re.compile(r"^\d{4}Q[1-4]$")
+        pattern_month = re.compile(r"^\d{4}-\d{2}$")
 
         years = []
         quarters = []

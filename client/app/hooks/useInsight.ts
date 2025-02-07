@@ -6,12 +6,21 @@ import {
   getCodeFrequency,
   getActivityStatistics,
   getActivityDatesAndTimes,
+  getContributorStatistics,
 } from '../services/InsightController';
 
 export function useIssueStatistics(repoName: string) {
   return useQuery({
     queryKey: [`insight.issue.statistics`, repoName],
     queryFn: async () => getIssueStatistics(repoName),
+    enabled: repoName !== undefined,
+  });
+}
+
+export function useContributorStatistics(repoName: string) {
+  return useQuery({
+    queryKey: [`insight.contributor.statistics`, repoName],
+    queryFn: async () => getContributorStatistics(repoName),
     enabled: repoName !== undefined,
   });
 }
