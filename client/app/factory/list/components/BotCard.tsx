@@ -238,7 +238,31 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
               {bot.name}
             </span>
             <div className="flex items-center gap-2 shrink-0">
-              <div className="w-[32px] h-[32px] p-[7px] flex items-center rounded-[16px] bg-[#F4F4F5]">
+              <Tooltip
+                content="Insights"
+                classNames={{
+                  base: [
+                    // arrow color
+                    'before:bg-[#3F3F46] dark:before:bg-white',
+                  ],
+                  content: [
+                    'py-2 px-4 rounded-lg  shadow-xl text-white',
+                    'bg-[#3F3F46]',
+                  ],
+                }}
+              >
+                <img
+                  onClick={() =>
+                    router.push(
+                      `/insight?repo=${bot.repo_name}&name=${bot.name}`,
+                    )
+                  }
+                  className="w-[20px] h-[20px] cursor-pointer"
+                  src="/images/statistic.svg"
+                />
+              </Tooltip>
+
+              <div className="w-[20px] h-[20px] flex items-center">
                 {renderTaskStatusIcon(taskInfo ?? [])}
               </div>
             </div>

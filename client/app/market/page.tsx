@@ -1,13 +1,12 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Tables } from '@/types/database.types';
 import { isEmpty, map } from 'lodash';
 import BotCard from '@/components/BotCard';
 import { useBotList } from '@/app/hooks/useBot';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
 import { useGlobal } from '@/app/contexts/GlobalContext';
-import { Assistant, useUser } from '@petercatai/assistant';
-import { useFingerprint } from '../hooks/useFingerprint';
+import { Assistant } from '@petercatai/assistant';
 import Crash from '@/components/Crash';
 
 declare type Bot = Tables<'bots'>;

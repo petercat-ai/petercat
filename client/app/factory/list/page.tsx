@@ -1,6 +1,6 @@
 'use client';
 import { Tables } from '@/types/database.types';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { isEmpty, map } from 'lodash';
 import BotCard from './components/BotCard';
 
@@ -33,10 +33,6 @@ export default function List() {
     () => !user || userLoading || isLoading || !isComplete,
     [isComplete, userLoading, isLoading, user],
   );
-
-  useEffect(() => {
-    console.log(' opening', isOpening);
-  }, [isOpening]);
 
   if (isOpening) {
     return (
