@@ -11,14 +11,14 @@ interface SegmentedTabsProps {
   onChange?: (val: string) => void;
 }
 
-const defaultTbas = [
+const defaultTabs = [
   { value: 'year', label: 'Year' },
   { value: 'quarter', label: 'Quarter' },
   { value: 'month', label: 'Month' },
 ];
 
 const SegmentedTabs: React.FC<SegmentedTabsProps> = ({
-  tabs = defaultTbas,
+  tabs = defaultTabs,
   defaultValue = 'month',
   onChange,
 }) => {
