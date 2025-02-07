@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter
-from insight.service.activity import get_activity_data
+from insight.service.activity import get_active_dates_and_times, get_activity_data
 from insight.service.issue import get_issue_data, get_issue_resolution_duration
 from insight.service.pr import get_code_frequency, get_pr_data
 
@@ -69,6 +69,19 @@ def get_code_frequency_insight(repo_name: str):
 def get_activity_insight(repo_name: str):
     try:
         result = get_activity_data(repo_name)
+        return {
+            "success": True,
+            "data": result,
+        }
+
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.get("/activity/dates_and_times")
+def get_active_dates_and_times_insight(repo_name: str):
+    try:
+        result = get_active_dates_and_times(repo_name)
         return {
             "success": True,
             "data": result,

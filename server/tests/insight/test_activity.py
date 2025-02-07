@@ -1,6 +1,6 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from insight.service.activity import get_activity_data
+from unittest.mock import Mock, patch, MagicMock
+from insight.service.activity import get_activity_data, get_active_dates_and_times
 
 
 class TestGetActivityData(unittest.TestCase):
@@ -42,3 +42,39 @@ class TestGetActivityData(unittest.TestCase):
         repo_name = "petercat-ai/petercat"
         result = get_activity_data(repo_name)
         self.assertEqual(result, [])
+
+
+class TestGetActiveDatesAndTimes(unittest.TestCase):
+
+    @patch("insight.service.activity.requests.get")
+    def test_get_active_dates_and_times(self, mock_get):
+        fake_json = {
+            "2024": [0] * 168,
+            "2025": [1] * 168,
+            "2025Q1": [2] * 168,
+            "2025-01": [3] * 168,
+        }
+
+        mock_resp = Mock()
+        mock_resp.json.return_value = fake_json
+        mock_resp.status_code = 200
+        mock_get.return_value = mock_resp
+
+        result = get_active_dates_and_times("petercat-ai/petercat")
+
+        self.assertIn("year", result)
+        self.assertIn("quarter", result)
+        self.assertIn("month", result)
+
+        self.assertEqual(len(result["year"]), 168)
+        self.assertEqual(len(result["quarter"]), 168)
+        self.assertEqual(len(result["month"]), 168)
+
+        self.assertEqual(result["year"][0], {"day": "Mon", "hour": 0, "value": 1})
+        self.assertEqual(result["year"][167], {"day": "Sun", "hour": 23, "value": 1})
+
+        self.assertEqual(result["quarter"][0], {"day": "Mon", "hour": 0, "value": 2})
+        self.assertEqual(result["quarter"][167], {"day": "Sun", "hour": 23, "value": 2})
+
+        self.assertEqual(result["month"][0], {"day": "Mon", "hour": 0, "value": 3})
+        self.assertEqual(result["month"][167], {"day": "Sun", "hour": 23, "value": 3})
