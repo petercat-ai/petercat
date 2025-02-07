@@ -114,21 +114,16 @@ class AgentBuilder:
     def chat_history_transform(self, messages: list[Message]):
         transformed_messages = []
         for message in messages:
+            text_content = self.chat_model.parse_content(content=message.content)
             match message.role:
                 case "user":
-                    transformed_messages.append(
-                        HumanMessage(
-                            self.chat_model.parse_content(content=message.content)
-                        )
-                    )
+                    transformed_messages.append(HumanMessage(content=text_content))
                 case "assistant":
-                    transformed_messages.append(AIMessage(content=message.content))
+                    transformed_messages.append(AIMessage(content=text_content))
                 case "system":
-                    transformed_messages.append(SystemMessage(content=message.content))
+                    transformed_messages.append(SystemMessage(content=text_content))
                 case _:
-                    transformed_messages.append(
-                        FunctionMessage(content=message.content)
-                    )
+                    transformed_messages.append(FunctionMessage(content=text_content))
         return transformed_messages
 
     async def run_stream_chat(self, input_data: ChatData) -> AsyncIterator[Dict]:
