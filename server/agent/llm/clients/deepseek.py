@@ -1,5 +1,3 @@
-
-
 from typing import Any, List, Optional
 from langchain_openai import ChatOpenAI
 from langchain_core.utils.function_calling import convert_to_openai_tool
@@ -35,7 +33,7 @@ class DeepSeekClient(BaseLLMClient):
             max_tokens=max_tokens,
             openai_api_key=api_key,
             stream_usage=True,
-            openai_api_base="https://api.deepseek.com"
+            openai_api_base="https://api.deepseek.com",
         )
 
     def get_client(self):
