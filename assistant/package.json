@@ -1,6 +1,6 @@
 {
   "name": "@petercatai/assistant",
-  "version": "2.0.24",
+  "version": "2.1.0-alpha.0",
   "description": "PeterCat Assistant Application",
   "repository": "https://github.com/petercat-ai/petercat.git",
   "license": "MIT",
@@ -78,6 +78,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
+    "@types/antd": "^1.0.4",
     "@types/lodash": "^4.17.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -100,10 +101,10 @@
     "stylelint": "^14.9.1"
   },
   "peerDependencies": {
-    "react": ">=18.0.0 <19.0.0",
-    "react-dom": ">=18.0.0 <19.0.0",
+    "@antv/g2": "^5.2.10",
     "antd": "^5.15.3",
-    "@antv/g2": "^5.2.10"
+    "react": ">=18.0.0 <19.0.0",
+    "react-dom": ">=18.0.0 <19.0.0"
   },
   "publishConfig": {
     "access": "public"

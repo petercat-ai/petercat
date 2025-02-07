@@ -87,7 +87,7 @@ const ThoughtChain: React.FC<ThoughtChainProps> = (params) => {
         activeKey={activeKey}
         onChange={onChange}
         style={{ maxWidth: '100%' }}
-        expandIcon={(panelProps) => {
+        expandIcon={(panelProps: any) => {
           if (panelProps.isActive) {
             return <UnorderedListOutlined className="text-gray-900 text-xs" />;
           }
