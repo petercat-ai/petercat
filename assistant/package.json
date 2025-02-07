@@ -8,12 +8,8 @@
     "**/*.css"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.js"
-    },
-    "./style": {
-      "import": "./dist/esm/style/global.css"
-    }
+    ".": "./dist/esm/index.js",
+    "./style": "./dist/esm/style/global.css"
   },
   "module": "dist/esm/index.js",
   "browser": "dist/umd/assistant.min.js",
