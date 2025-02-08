@@ -7,6 +7,9 @@ import {
   Heatmap,
   BoxChart,
   RankChart,
+  ChartHeader,
+  GitInsight,
+  GitInsightIcon,
 } from '@petercatai/assistant';
 import { useSearchParams } from 'next/navigation';
 import { Spinner } from '@nextui-org/react';
@@ -18,6 +21,7 @@ import {
   useActivityStatistics,
   useActivityDatesAndTimes,
   useContributorStatistics,
+  useOverview,
 } from '../hooks/useInsight';
 
 export default function Insight() {
@@ -32,6 +36,7 @@ export default function Insight() {
   const { data: activityStatistics } = useActivityStatistics(repoName);
   const { data: activityDatesAndTimes } = useActivityDatesAndTimes(repoName);
   const { data: contributors } = useContributorStatistics(repoName);
+  const { data: overview } = useOverview(repoName);
 
   const Loading = (
     <div className="flex items-center justify-center h-[100%] w-[100%]">
@@ -65,8 +70,34 @@ export default function Insight() {
           </a>
         </div>
       </div>
+
       <div className="pb-[42px] px-[40px] overflow-y-auto">
         <div className="grid grid-cols-2 gap-2">
+          <div className="bg-white rounded h-[92px] p-[24px] flex col-span-2">
+            <div className="mt-[6px] w-[280px]">
+              <ChartHeader title="Overview" />
+            </div>
+
+            <div className="flex items-center justify-center w-full ">
+              <div className="flex-1 flex justify-center items-center">
+                <GitInsightIcon type="star" />
+                <div className="text-gray-800 font-[510] mx-[12px]">Stars</div>
+                <div className="text-gray-400">{overview?.stars}</div>
+              </div>
+              <div className="flex-1 flex justify-center items-center">
+                <GitInsightIcon type="fork" />
+                <div className="text-gray-800 font-[510] mx-[12px]">Forks</div>
+                <div className="text-gray-400">{overview?.forks}</div>
+              </div>
+              <div className="flex-1 flex justify-center items-center">
+                <GitInsightIcon type="commit" />
+                <div className="text-gray-800 font-[510] mx-[12px]">
+                  Commits
+                </div>
+                <div className="text-gray-400">{overview?.commits}</div>
+              </div>
+            </div>
+          </div>
           <div className="bg-white rounded h-[607px] p-[24px]">
             {contributors ? (
               <AreaChart

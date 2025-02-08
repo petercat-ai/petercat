@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from insight.service.activity import get_active_dates_and_times, get_activity_data
 from insight.service.contributor import get_contributor_data
 from insight.service.issue import get_issue_data, get_issue_resolution_duration
+from insight.service.overview import get_overview
 from insight.service.pr import get_code_frequency, get_pr_data
 
 
@@ -96,6 +97,19 @@ def get_activity_insight(repo_name: str):
 def get_active_dates_and_times_insight(repo_name: str):
     try:
         result = get_active_dates_and_times(repo_name)
+        return {
+            "success": True,
+            "data": result,
+        }
+
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.get("/overview")
+def get_overview_data(repo_name: str):
+    try:
+        result = get_overview(repo_name)
         return {
             "success": True,
             "data": result,

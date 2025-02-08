@@ -51,3 +51,10 @@ export async function getActivityDatesAndTimes(repoName: string) {
   );
   return response.data.data;
 }
+
+export async function getOverview(repoName: string) {
+  const response = await axios.get(
+    `${apiDomain}/api/insight/overview?repo_name=${repoName}`,
+  );
+  return response.data.data;
+}
