@@ -8,9 +8,8 @@ import {
   BoxChart,
   RankChart,
   ChartHeader,
-  GitInsight,
-  GitInsightIcon,
 } from '@petercatai/assistant';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { Spinner } from '@nextui-org/react';
 import {
@@ -24,6 +23,10 @@ import {
   useOverview,
 } from '../hooks/useInsight';
 
+const GitInsightIcon = dynamic(
+  () => import('@petercatai/assistant').then((module) => module.GitInsightIcon),
+  { ssr: false },
+);
 export default function Insight() {
   const searchParams = useSearchParams();
   const repoName = searchParams.get('repo') || '';
