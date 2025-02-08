@@ -15,6 +15,7 @@ import {
   Autocomplete,
   AutocompleteItem,
   Input,
+  Tooltip,
 } from '@nextui-org/react';
 import Image from 'next/image';
 import BotCreateFrom from '@/app/factory/edit/components/BotCreateForm';
@@ -480,6 +481,34 @@ export default function Edit() {
                           name={botProfile?.name!}
                         />
                         <span>{botProfile?.name!}</span>
+                        {botProfile?.repoName && (
+                          <Tooltip
+                            content="Insights"
+                            classNames={{
+                              base: [
+                                // arrow color
+                                'before:bg-[#3F3F46] dark:before:bg-white',
+                              ],
+                              content: [
+                                'py-2 px-4 rounded-lg  shadow-xl text-white',
+                                'bg-[#3F3F46]',
+                              ],
+                            }}
+                          >
+                            <img
+                              onClick={(e) => {
+                                e?.preventDefault();
+                                router.push(
+                                  `/insight?repo=${botProfile?.repoName!}&name=${
+                                    botProfile.name
+                                  }`,
+                                );
+                              }}
+                              className="w-[20px] h-[20px] cursor-pointer"
+                              src="/images/statistic.svg"
+                            />
+                          </Tooltip>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -565,8 +594,7 @@ export default function Edit() {
                       isLoading={createBotLoading || updateBotLoading}
                       variant="flat"
                       startContent={<SaveIcon />}
-                      onClick={(e) => {
-                        e.preventDefault();
+                      onPress={() => {
                         if (botProfile?.id) {
                           updateBot();
                         }

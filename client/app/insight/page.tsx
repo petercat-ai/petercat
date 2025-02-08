@@ -1,6 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
-import { Tables } from '@/types/database.types';
+import React from 'react';
 import HomeIcon from '@/public/icons/HomeIcon';
 import {
   AreaChart,
@@ -10,7 +9,7 @@ import {
   RankChart,
 } from '@petercatai/assistant';
 import { useSearchParams } from 'next/navigation';
-import { Skeleton } from '@nextui-org/react';
+import { Spinner } from '@nextui-org/react';
 import {
   useIssueStatistics,
   useIssueResolutionDuration,
@@ -33,6 +32,12 @@ export default function Insight() {
   const { data: activityStatistics } = useActivityStatistics(repoName);
   const { data: activityDatesAndTimes } = useActivityDatesAndTimes(repoName);
   const { data: contributors } = useContributorStatistics(repoName);
+
+  const Loading = (
+    <div className="flex items-center justify-center h-[100%] w-[100%]">
+      <Spinner size="lg" />
+    </div>
+  );
   return (
     <div className="flex w-full h-full flex-col bg-[#F3F4F6] min-h-screen">
       <div className="relative flex h-[72px] w-full items-center justify-between gap-2  px-6 flex-shrink-0">
@@ -63,78 +68,79 @@ export default function Insight() {
       <div className="pb-[42px] px-[40px] overflow-y-auto">
         <div className="grid grid-cols-2 gap-2">
           <div className="bg-white rounded h-[607px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {contributors && (
-                <AreaChart
-                  data={contributors}
-                  height={500}
-                  title="Contributors"
-                />
-              )}
-            </Suspense>
+            {contributors ? (
+              <AreaChart
+                data={contributors}
+                height={500}
+                title="Contributors"
+              />
+            ) : (
+              Loading
+            )}
           </div>
           <div className="bg-white rounded h-[607px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {codeFrequency && (
-                <AreaChart
-                  data={codeFrequency}
-                  height={500}
-                  title="Code Frequency"
-                />
-              )}
-            </Suspense>
+            {codeFrequency ? (
+              <AreaChart
+                data={codeFrequency}
+                height={500}
+                title="Code Frequency"
+              />
+            ) : (
+              Loading
+            )}
           </div>
           <div className="bg-white rounded h-[579px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {prStatistic && (
-                <LineChart data={prStatistic} height={450} title="PR History" />
-              )}
-            </Suspense>
+            {prStatistic ? (
+              <LineChart data={prStatistic} height={450} title="PR History" />
+            ) : (
+              Loading
+            )}
           </div>
           <div className="bg-white rounded h-[579px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {issueStatistic && (
-                <LineChart
-                  data={issueStatistic}
-                  height={450}
-                  title="Issue History"
-                />
-              )}
-            </Suspense>
+            {issueStatistic ? (
+              <LineChart
+                data={issueStatistic}
+                height={450}
+                colors={['#14B8A6', '#D946EF', '#F59E0B']}
+                title="Issue History"
+              />
+            ) : (
+              Loading
+            )}
           </div>
           <div className="bg-white rounded h-[400px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {issueResolutionDuration && (
-                <BoxChart
-                  data={issueResolutionDuration}
-                  height={300}
-                  title="Average Time To Issue Close"
-                />
-              )}
-            </Suspense>
+            {issueResolutionDuration ? (
+              <BoxChart
+                data={issueResolutionDuration}
+                height={300}
+                title="Average Time To Issue Close"
+              />
+            ) : (
+              Loading
+            )}
           </div>
           <div className="bg-white rounded h-[400px] p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {activityDatesAndTimes && (
-                <Heatmap
-                  data={activityDatesAndTimes}
-                  height={300}
-                  title="Repository Activity"
-                />
-              )}
-            </Suspense>
+            {activityDatesAndTimes ? (
+              <Heatmap
+                data={activityDatesAndTimes}
+                height={300}
+                title="Repository Activity"
+              />
+            ) : (
+              Loading
+            )}
           </div>
 
           <div className="bg-white rounded h-[500px] col-span-2 p-[24px]">
-            <Suspense fallback={<Skeleton className="rounded-lg" />}>
-              {activityStatistics && (
-                <RankChart
-                  data={activityStatistics}
-                  height={408}
-                  title="Contributor Rankings Top 10"
-                />
-              )}
-            </Suspense>
+            {activityStatistics ? (
+              <RankChart
+                data={activityStatistics}
+                height={408}
+                title="Contributor Rankings Top 10"
+              />
+            ) : (
+              Loading
+            )}
           </div>
         </div>
       </div>
