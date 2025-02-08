@@ -32,16 +32,13 @@ export default function RootLayout({
           <NextUIProvider>
             <GlobalProvider>
               <BotProvider>
-                {pathname === '/' ||
-                pathname === '/policy' ||
-                pathname === '/agreement' ||
-                pathname === '/release' ? (
-                  children
-                ) : (
+                {pathname === '/factory/list' || pathname === '/market' ? (
                   <div className="flex flex-col bg-[#F3F4F6] min-h-screen">
                     <Navbar />
                     <div className="pb-[40px]">{children}</div>
                   </div>
+                ) : (
+                  children
                 )}
               </BotProvider>
             </GlobalProvider>

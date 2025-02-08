@@ -37,7 +37,8 @@ const SegmentedTabs: React.FC<SegmentedTabsProps> = ({
   const getTabClass = (value: string) => {
     const isActive = active === value;
 
-    const base = 'flex-1 flex items-center justify-center cursor-pointer';
+    const base =
+      'flex-1 flex items-center justify-center cursor-pointer text-[14px]';
 
     const normal = 'bg-white text-black border-none';
 

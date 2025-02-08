@@ -1,7 +1,8 @@
 'use client';
 import { Tables } from '@/types/database.types';
 import React from 'react';
-import { Card, Image, CardBody, CardFooter } from '@nextui-org/react';
+import { Card, Image, CardBody, CardFooter, Tooltip } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 declare type Bot = Tables<'bots'>;
 
@@ -10,6 +11,7 @@ const BotCard = (props: {
   handleCardClick?: (id: string) => void;
 }) => {
   const { bot, handleCardClick } = props;
+  const router = useRouter();
 
   return (
     <Card
@@ -17,12 +19,13 @@ const BotCard = (props: {
       isPressable
       shadow="none"
       data-hover="true"
-      onClick={(e) => {
-        e.preventDefault();
-        handleCardClick?.(bot?.id);
-      }}
     >
-      <CardBody className="overflow-visible flex-initial p-0 flex-1">
+      <CardBody
+        className="overflow-visible flex-initial p-0 flex-1"
+        onClick={() => {
+          handleCardClick?.(bot?.id);
+        }}
+      >
         <div
           className="relative overflow-hidden w-full h-full bg-cover bg-center rounded-[8px]"
           style={{ backgroundImage: `url(${bot.avatar})` }}
@@ -55,6 +58,32 @@ const BotCard = (props: {
           <span className="leading-8 h-8 font-semibold text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
             {bot.name}
           </span>
+          <div className="flex items-center gap-2 shrink-0">
+            <Tooltip
+              content="Insights"
+              classNames={{
+                base: [
+                  // arrow color
+                  'before:bg-[#3F3F46] dark:before:bg-white',
+                ],
+                content: [
+                  'py-2 px-4 rounded-lg  shadow-xl text-white',
+                  'bg-[#3F3F46]',
+                ],
+              }}
+            >
+              <img
+                onClick={(e) => {
+                  e?.preventDefault();
+                  router.push(
+                    `/insight?repo=${bot.repo_name}&name=${bot.name}`,
+                  );
+                }}
+                className="w-[20px] h-[20px] cursor-pointer"
+                src="/images/statistic.svg"
+              />
+            </Tooltip>
+          </div>
         </div>
         <div className="flex-1 w-full border-zinc-100/50 text-left text-gray-400 font-[400] text-[14px] leading-[22px]">
           <p className="my-0 overflow-hidden text-ellipsis line-clamp-2">

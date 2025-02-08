@@ -4,14 +4,13 @@ from github.ContentFile import ContentFile
 from langchain.tools import tool
 import json
 
-DEFAULT_REPO_NAME = "ant-design/ant-design"
 
 g = Github()
 
 
 @tool
 def search_repo(
-    repo_name: Optional[str] = DEFAULT_REPO_NAME,
+    repo_name: Optional[str] = "",
 ) -> List[ContentFile]:
     """
     Get basic information of a GitHub repository including star count, fork count, and commit count.
@@ -19,6 +18,8 @@ def search_repo(
     :param repo_name: Name of the repository in the format 'owner/repo'
     :return: A object with basic repo information.
     """
+    if not repo_name:
+        return None
     try:
         repo = g.get_repo(repo_name)
 

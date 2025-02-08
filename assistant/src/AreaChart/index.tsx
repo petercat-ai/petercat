@@ -113,6 +113,8 @@ const AreaChart: React.FC<AreaChartProps> = ({
 
     if (hasTypeField(data)) {
       chartDefinition.encode('color', 'type');
+    } else {
+      chartDefinition.encode('color', 'x');
     }
 
     chartDefinition.scale('color', {
