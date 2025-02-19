@@ -55,7 +55,7 @@ def get_pr_insight(repo_name: str):
 
 
 @router.get("/contributor/statistics")
-def get_contributor_data(repo_name: str):
+def get_contributor_insight(repo_name: str):
     try:
         result = get_contributor_data(repo_name)
         return {
