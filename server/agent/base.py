@@ -11,7 +11,6 @@ from langchain.agents.format_scratchpad.openai_tools import (
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
-    MessagesPlaceholder,
 )
 from langchain_core.messages import (
     AIMessage,
