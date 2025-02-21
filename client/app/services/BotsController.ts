@@ -146,3 +146,10 @@ export async function bindBotToRepo(repsConfigs: BindBotToRepoConfig[]) {
   });
   return response.data;
 }
+
+// Add knowledge update API
+export async function updateKnowledge(config: {
+  bot_id: string;
+}) {
+  return axios.post(`${apiDomain}/api/rag/update_knowledge`, config);
+}
