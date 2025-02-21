@@ -8,6 +8,10 @@ from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+)
 from langchain_core.messages import (
     AIMessage,
     FunctionMessage,
@@ -16,7 +20,6 @@ from langchain_core.messages import (
 )
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain.prompts import MessagesPlaceholder
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
 from petercat_utils import get_env_variable
@@ -102,11 +105,15 @@ class AgentBuilder:
         )
 
     def get_prompt(self):
+        system_message = SystemMessage(content=self.prompt)
+
+        user_template = HumanMessagePromptTemplate.from_template("{input}")
+
         return ChatPromptTemplate.from_messages(
             [
-                ("system", self.prompt),
+                system_message,
                 MessagesPlaceholder(variable_name="chat_history"),
-                ("user", "{input}"),
+                user_template,
                 MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
