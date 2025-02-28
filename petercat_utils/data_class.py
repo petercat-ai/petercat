@@ -64,27 +64,6 @@ class S3Config(BaseModel):
     file_path: Optional[str] = None
 
 
-class GitDocConfig(BaseModel):
-    repo_name: str
-    """File path of the documentation file. eg:'docs/blog/build-ghost.zh-CN.md'"""
-    file_path: Optional[str] = ""
-    branch: Optional[str] = "main"
-    commit_id: Optional[str] = ""
-
-
-class RAGGitDocConfig(GitDocConfig):
-    bot_id: Optional[str] = ""
-
-
-class GitIssueConfig(BaseModel):
-    repo_name: str
-    issue_id: str
-
-
-class RAGGitIssueConfig(GitIssueConfig):
-    bot_id: str
-
-
 class AutoNameEnum(Enum):
     def _generate_next_value_(name, start, count, last_values):
         return name
@@ -97,11 +76,6 @@ class TaskStatus(AutoNameEnum):
     ON_HOLD = auto()
     CANCELLED = auto()
     ERROR = auto()
-
-
-class TaskType(AutoNameEnum):
-    GIT_DOC = auto()
-    GIT_ISSUE = auto()
 
 
 class GitDocTaskNodeType(AutoNameEnum):

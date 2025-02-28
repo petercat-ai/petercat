@@ -17,12 +17,7 @@ import {
   Tooltip,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import { useBotDelete, useGetBotRagTask } from '@/app/hooks/useBot';
-import { TaskStatus } from '@/types/task';
-import ErrorBadgeIcon from '@/public/icons/ErrorBadgeIcon';
-import KnowledgeTaskCompleteIcon from '@/public/icons/CheckBadgeIcon';
-import KnowledgeTaskRunningIcon from '@/public/icons/LoadingIcon';
-import { RagTask } from '@/app/services/BotsController';
+import { useBotDelete } from '@/app/hooks/useBot';
 import CardGithubIcon from '@/public/icons/CardGithubIcon';
 import CardHomeIcon from '@/public/icons/CardHomeIcon';
 import CardCartIcon from '@/public/icons/CardCartIcon';
@@ -79,7 +74,6 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
   const { bot, userId } = props;
   const router = useRouter();
   const { deleteBot, isLoading, isSuccess } = useBotDelete();
-  const { data: taskInfo } = useGetBotRagTask(bot.repo_name!, false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -90,30 +84,30 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
   const onDelete = (id: string) => {
     deleteBot(id);
   };
-  const renderTaskStatusIcon = (taskList: RagTask[]) => {
-    const status = taskList.find((task) => task.status === TaskStatus.ERROR)
-      ? TaskStatus.ERROR
-      : taskList.every((task) =>
-          [
-            TaskStatus.CANCELLED,
-            TaskStatus.COMPLETED,
-            TaskStatus.ERROR,
-          ].includes(task.status as TaskStatus),
-        )
-      ? TaskStatus.COMPLETED
-      : 'others';
-    if (status === TaskStatus.COMPLETED) {
-      return <KnowledgeTaskCompleteIcon />;
-    }
-    if (status === TaskStatus.ERROR) {
-      return <ErrorBadgeIcon />;
-    }
-    return (
-      <span className="animate-spinner-ease-spin">
-        <KnowledgeTaskRunningIcon />
-      </span>
-    );
-  };
+  // const renderTaskStatusIcon = (taskList: RagTask[]) => {
+  //   const status = taskList.find((task) => task.status === TaskStatus.ERROR)
+  //     ? TaskStatus.ERROR
+  //     : taskList.every((task) =>
+  //         [
+  //           TaskStatus.CANCELLED,
+  //           TaskStatus.COMPLETED,
+  //           TaskStatus.ERROR,
+  //         ].includes(task.status as TaskStatus),
+  //       )
+  //     ? TaskStatus.COMPLETED
+  //     : 'others';
+  //   if (status === TaskStatus.COMPLETED) {
+  //     return <KnowledgeTaskCompleteIcon />;
+  //   }
+  //   if (status === TaskStatus.ERROR) {
+  //     return <ErrorBadgeIcon />;
+  //   }
+  //   return (
+  //     <span className="animate-spinner-ease-spin">
+  //       <KnowledgeTaskRunningIcon />
+  //     </span>
+  //   );
+  // };
 
   return (
     <>
@@ -211,14 +205,14 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
               <Tooltip
                 showArrow
                 placement="top"
-                content={I18N.components.BotCard.gengXinZhiShiKu}
+                content={'查看知识库'}
                 classNames={{
                   base: [
                     // arrow color
                     'before:bg-[#3F3F46] dark:before:bg-white',
                   ],
                   content: [
-                    'py-2 px-4 rounded-lg shadow-xl text-white',
+                    'py-2 px-4 rounded-lg  shadow-xl text-white',
                     'bg-[#3F3F46]',
                   ],
                 }}
@@ -227,6 +221,11 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
                   src="../images/refresh.svg"
                   alt={I18N.components.BotCard.gengXinZhiShi}
                   className="z-10 cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      `/knowledge?repo_name=${bot.repo_name}&bot_id=${bot.id}`,
+                    )
+                  }
                 />
               </Tooltip>
             </div>
@@ -261,10 +260,6 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
                   src="/images/statistic.svg"
                 />
               </Tooltip>
-
-              <div className="w-[20px] h-[20px] flex items-center">
-                {renderTaskStatusIcon(taskInfo ?? [])}
-              </div>
             </div>
           </div>
 

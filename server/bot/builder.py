@@ -1,10 +1,16 @@
 from typing import List, Optional
 
 from github import Github
-from petercat_utils import get_client
-from petercat_utils.data_class import RAGGitDocConfig
-from petercat_utils import git_doc_task
-
+from core.models.user import User
+from petercat_utils import get_client, get_env_variable
+from whiskerrag_client import APIClient
+from whiskerrag_types.model import (
+    KnowledgeCreate,
+    KnowledgeSplitConfig,
+    KnowledgeSourceEnum,
+    KnowledgeTypeEnum,
+    GithubRepoSourceConfig,
+)
 from agent.prompts.bot_template import generate_prompt_by_repo_name
 
 g = Github()
@@ -44,24 +50,8 @@ async def bot_info_generator(
         return None
 
 
-def trigger_rag_task(repo_name: str, bot_id: str):
-    try:
-        repo = g.get_repo(repo_name)
-        default_branch = repo.default_branch
-        config = RAGGitDocConfig(
-            repo_name=repo_name,
-            branch=default_branch,
-            bot_id=bot_id,
-            file_path="",
-            commit_id="",
-        )
-        git_doc_task.add_rag_git_doc_task(config)
-    except Exception as e:
-        print(f"trigger_rag_task error: {e}")
-
-
 async def bot_builder(
-    uid: str,
+    user: User,
     repo_name: str,
     starters: Optional[List[str]] = None,
     hello_message: Optional[str] = None,
@@ -75,14 +65,38 @@ async def bot_builder(
     :param hello_message: The hello message of the bot
     """
     try:
-        bot_data = await bot_info_generator(uid, repo_name, starters, hello_message)
+        bot_data = await bot_info_generator(
+            user.sub, repo_name, starters, hello_message
+        )
         if not bot_data:
             return None
         supabase = get_client()
         response = supabase.table("bots").insert(bot_data).execute()
         if response:
-            bot_id = response.data[0]["id"]
-            trigger_rag_task(repo_name=repo_name, bot_id=bot_id)
+            try:
+                api_client = APIClient(
+                    base_url=get_env_variable("WHISKER_API_URL"),
+                    token=get_env_variable("WHISKER_API_KEY"),
+                )
+                await api_client.knowledge.add_knowledge(
+                    [
+                        KnowledgeCreate(
+                            source_type=KnowledgeSourceEnum.GITHUB_REPO,
+                            knowledge_type=KnowledgeTypeEnum.FOLDER,
+                            space_id=repo_name,
+                            knowledge_name=repo_name,
+                            source_config=GithubRepoSourceConfig(
+                                repo_name=repo_name, auth_token=user.access_token
+                            ),
+                            split_config=KnowledgeSplitConfig(
+                                chunk_size=500,
+                                chunk_overlap=100,
+                            ),
+                        )
+                    ]
+                )
+            except Exception as e:
+                print(f"Add repo knowledge error: {e}")
         return response
     except Exception as e:
         print(f"An error occurred: {e}")

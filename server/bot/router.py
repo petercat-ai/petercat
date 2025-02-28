@@ -112,7 +112,7 @@ def get_bot_config(
 async def create_bot(
     request: Request,
     bot_data: BotCreateRequest,
-    user_id: Annotated[str | None, Depends(get_user_id)] = None,
+    user: Annotated[User | None, Depends(get_user)] = None,
 ):
     lang = bot_data.lang or "en"
     default_starters = [
@@ -127,7 +127,7 @@ async def create_bot(
     )
 
     try:
-        res = await bot_builder(user_id, bot_data.repo_name, starters, hello_message)
+        res = await bot_builder(user, bot_data.repo_name, starters, hello_message)
         if not res:
             return JSONResponse(
                 content={

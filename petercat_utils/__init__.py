@@ -1,5 +1,9 @@
 from .db.client.supabase import get_client
-from .rag_helper import github_file_loader, retrieval, issue_retrieval, task, git_task, git_issue_task, git_doc_task
+from .rag_helper import (
+    github_file_loader,
+    retrieval,
+    issue_retrieval,
+)
 from .utils.env import get_env_variable
 
 __all__ = [
@@ -8,8 +12,4 @@ __all__ = [
     "github_file_loader",
     "retrieval",
     "issue_retrieval",
-    "task",
-    "git_task",
-    "git_issue_task",
-    "git_doc_task"
 ]

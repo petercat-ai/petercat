@@ -1,118 +1,102 @@
 import json
-from typing import Optional
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from petercat_utils.db.client.supabase import get_client
-
-from petercat_utils.data_class import (
-    RAGGitDocConfig,
-    RAGGitIssueConfig,
-    TaskType,
+from openai import BaseModel
+from auth.get_user_info import get_user
+from core.models.user import User
+from petercat_utils import get_env_variable
+from whiskerrag_client import APIClient
+from whiskerrag_types.model import (
+    PageParams,
+    Knowledge,
+    Task,
+    Chunk,
+    KnowledgeCreate,
+    KnowledgeTypeEnum,
+    KnowledgeSourceEnum,
+    GithubRepoSourceConfig,
+    KnowledgeSplitConfig,
 )
-from petercat_utils.rag_helper import (
-    retrieval,
-    task,
-    issue_retrieval,
-    git_doc_task,
-    git_issue_task,
-)
-
 from auth.rate_limit import verify_rate_limit
 
-
 router = APIRouter(
-    prefix="/api",
+    prefix="/api/rag",
     tags=["rag"],
     responses={404: {"description": "Not found"}},
 )
 
 
-@router.post("/rag/add_knowledge_by_doc", dependencies=[Depends(verify_rate_limit)])
-def add_knowledge_by_doc(config: RAGGitDocConfig):
+class ReloadRepoRequest(BaseModel):
+    repo_name: str
+
+
+@router.post("/knowledge/repo/reload", dependencies=[Depends(verify_rate_limit)])
+async def reload_repo(
+    request: ReloadRepoRequest,
+    user: Annotated[User | None, Depends(get_user)] = None,
+):
     try:
-        result = retrieval.add_knowledge_by_doc(config)
-        if result:
-            return json.dumps(
-                {
-                    "success": True,
-                    "message": "Knowledge added successfully!",
-                }
-            )
-        else:
-            return json.dumps({"success": False, "message": "Knowledge not added!"})
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.post("/rag/add_knowledge_by_issue", dependencies=[Depends(verify_rate_limit)])
-def add_knowledge_by_issue(config: RAGGitIssueConfig):
-    try:
-        result = issue_retrieval.add_knowledge_by_issue(config)
-        if result:
-            return json.dumps(
-                {
-                    "success": True,
-                    "message": "Issue added successfully!",
-                }
-            )
-        else:
-            return json.dumps({"success": False, "message": "Issue not added!"})
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.post("/rag/search_knowledge", dependencies=[Depends(verify_rate_limit)])
-def search_knowledge(query: str, repo_name: str, filter: dict = {}):
-    data = retrieval.search_knowledge(query, repo_name, filter)
-    return data
-
-
-@router.post("/rag/add_git_doc_task", dependencies=[Depends(verify_rate_limit)])
-def add_git_doc_task(config: RAGGitDocConfig):
-    try:
-        data = git_doc_task.add_rag_git_doc_task(config)
-        return data
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.post("/rag/add_git_issue_task", dependencies=[Depends(verify_rate_limit)])
-def add_git_issue_task(config: RAGGitIssueConfig):
-    try:
-        data = git_issue_task.add_rag_git_issue_task(config)
-        return data
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.post("/rag/trigger_task", dependencies=[Depends(verify_rate_limit)])
-def trigger_task(task_type: TaskType, task_id: Optional[str] = None):
-    try:
-        task.trigger_task(task_type, task_id)
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.get("/rag/chunk/list", dependencies=[Depends(verify_rate_limit)])
-def get_chunk_list(repo_name: str = None, page_size: int = 10, page_number: int = 1):
-    try:
-        return retrieval.get_chunk_list(repo_name, page_size, page_number)
-    except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
-
-
-@router.get("/rag/task/latest", dependencies=[Depends(verify_rate_limit)])
-def get_rag_task(repo_name: str):
-    # TODO: Think about hot to get correct when reload knowledge task was triggered
-    try:
-        supabase = get_client()
-        response = (
-            supabase.table("rag_tasks")
-            .select("id,status,node_type,path,from_task_id,created_at", count="exact")
-            .eq("repo_name", repo_name)
-            .order("created_at", desc=True)
-            .execute()
+        api_client = APIClient(
+            base_url=get_env_variable("WHISKER_API_URL"),
+            token=get_env_variable("WHISKER_API_KEY"),
         )
-        return response
+        res = await api_client.knowledge.add_knowledge(
+            [
+                KnowledgeCreate(
+                    source_type=KnowledgeSourceEnum.GITHUB_REPO,
+                    knowledge_type=KnowledgeTypeEnum.FOLDER,
+                    space_id=request.repo_name,
+                    knowledge_name=request.repo_name,
+                    source_config=GithubRepoSourceConfig(
+                        repo_name=request.repo_name, auth_token=user.access_token
+                    ),
+                    split_config=KnowledgeSplitConfig(
+                        chunk_size=500,
+                        chunk_overlap=100,
+                    ),
+                )
+            ]
+        )
+        return res
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.post("/knowledge/list", dependencies=[Depends(verify_rate_limit)])
+async def get_knowledge_list(params: PageParams[Knowledge]):
+    try:
+        api_client = APIClient(
+            base_url=get_env_variable("WHISKER_API_URL"),
+            token=get_env_variable("WHISKER_API_KEY"),
+        )
+        res = await api_client.knowledge.get_knowledge_list(**params.model_dump())
+        return res
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.post("/chunk/list", dependencies=[Depends(verify_rate_limit)])
+async def get_knowledge_list(params: PageParams[Chunk]):
+    try:
+        api_client = APIClient(
+            base_url=get_env_variable("WHISKER_API_URL"),
+            token=get_env_variable("WHISKER_API_KEY"),
+        )
+        res = await api_client.chunk.get_chunk_list(**params.model_dump())
+        return res
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.post("/task/list", dependencies=[Depends(verify_rate_limit)])
+async def get_rag_task(params: PageParams[Task]):
+    try:
+        api_client = APIClient(
+            base_url=get_env_variable("WHISKER_API_URL"),
+            token=get_env_variable("WHISKER_API_KEY"),
+        )
+        res = await api_client.task.get_task_list(**params.model_dump())
+        return res
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
