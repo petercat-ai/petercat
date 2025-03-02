@@ -205,7 +205,7 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
               <Tooltip
                 showArrow
                 placement="top"
-                content={'查看知识库'}
+                content={I18N.components.KnowledgeBtn.chaKanZhiShiKu}
                 classNames={{
                   base: [
                     // arrow color

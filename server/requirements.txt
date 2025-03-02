@@ -29,5 +29,4 @@ httpx
 urllib3>=2.2.2
 petercat_utils>=0.1.42
 toolz
--e ../../whiskerrag_toolkit
-# whiskerrag==0.0.5a4
+whiskerrag>=0.0.15

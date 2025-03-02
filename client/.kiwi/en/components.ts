@@ -92,4 +92,27 @@ export default {
     tOKEN: 'Token Management',
     dengLu: 'Login',
   },
+  Header: {
+    gengXinDaiMaCang: 'Update Code Repository',
+    zhiShiLieBiao: 'Knowledge List',
+    bianJiJiQiRen: 'Edit Bot',
+  },
+  KnowledgeList: {
+      keYongZhuangTai: 'Available Status',
+      daXiao: 'Size',
+      xiangLiangHuaMoXing: 'Vector Model',
+      zhiShiLaiYuan: 'Knowledge Source',
+      leiXing: 'Type',
+      zhiShiMing: 'Knowledge Name',
+  },
+  TaskButton: {
+      chaKanRenWu: 'View Task',
+      chongXinZhiXing: 'Retry',
+      shiBai: 'Failed',
+      ruKuZhong: 'Importing',
+      dengDaiZhong: 'Waiting',
+  },
+  TaskList: {
+      meiYouChaXunDao: 'No tasks found',
+  }
 };

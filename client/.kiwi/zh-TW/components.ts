@@ -91,4 +91,27 @@ export default {
     tOKEN: 'Token 管理',
     dengLu: '登入',
   },
+  Header: {
+    gengXinDaiMaCang: '更新程式碼庫',
+    zhiShiLieBiao: '知識列表',
+    bianJiJiQiRen: '編輯機器人',
+  },
+  KnowledgeList: {
+      keYongZhuangTai: '可用狀態',
+      daXiao: '大小',
+      xiangLiangHuaMoXing: '向量化模型',
+      zhiShiLaiYuan: '知識來源',
+      leiXing: '類型',
+      zhiShiMing: '知識名稱',
+  },
+  TaskButton: {
+      chaKanRenWu: '查看任務',
+      chongXinZhiXing: '重新執行',
+      shiBai: '失敗',
+      ruKuZhong: '匯入中',
+      dengDaiZhong: '等待中',
+  },
+  TaskList: {
+      meiYouChaXunDao: '沒有查詢到任務',
+  }
 };

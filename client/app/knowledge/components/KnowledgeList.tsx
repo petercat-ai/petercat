@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { useState } from 'react';
 import {
   Table,
@@ -31,12 +32,12 @@ export default function KnowledgeList({ repo_name }: { repo_name: string }) {
       <div className="flex-grow">
         <Table aria-label="Knowledge list table" className="min-w-full">
           <TableHeader>
-            <TableColumn>知识名</TableColumn>
-            <TableColumn>类型</TableColumn>
-            <TableColumn>知识来源</TableColumn>
-            <TableColumn>向量化模型</TableColumn>
-            <TableColumn>大小</TableColumn>
-            <TableColumn>可用状态</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.zhiShiMing}</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.leiXing}</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.zhiShiLaiYuan}</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.xiangLiangHuaMoXing}</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.daXiao}</TableColumn>
+            <TableColumn>{I18N.components.KnowledgeList.keYongZhuangTai}</TableColumn>
           </TableHeader>
           <TableBody>
             {!data || !data.items ? (

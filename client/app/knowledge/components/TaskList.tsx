@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { RAGTask } from '@/app/services/RAGController';
 import LoadingIcon from '@/public/icons/LoadingIcon';
 
@@ -108,7 +109,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     <div className="bg-white flex flex-col gap-1">
       {tasks.length === 0 ? (
         <div className="h-[100px] flex items-center justify-center text-gray-500">
-          没有查询到任务
+          {I18N.components.TaskList.meiYouChaXunDao}
         </div>
       ) : (
         tasks.map((task) => (

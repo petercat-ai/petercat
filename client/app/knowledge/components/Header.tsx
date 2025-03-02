@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { useReloadRepo, useTaskList } from '@/app/hooks/useRAG';
 import RefreshIcon from '@/public/icons/RefreshIcon';
 import { Tooltip } from '@nextui-org/react';
@@ -20,7 +21,7 @@ export function KnowledgePageHeader(props: {
           onClick={() => router.push(`/factory/edit?id=${bot_id}`)}
           className="cursor-pointer"
         >
-          <Tooltip content="编辑机器人" placement="bottom"></Tooltip>
+          <Tooltip content={I18N.components.Header.bianJiJiQiRen} placement="bottom"></Tooltip>
           <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
             <path
               fill-rule="evenodd"
@@ -40,8 +41,7 @@ export function KnowledgePageHeader(props: {
                 /
               </span>
               <span className="text-gray-800 text-base font-medium font-['PingFang SC'] leading-loose">
-                知识列表
-              </span>
+                {I18N.components.Header.zhiShiLieBiao}</span>
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@ export function KnowledgePageHeader(props: {
           }}
         >
           <RefreshIcon></RefreshIcon>
-          <span className="text-white">更新代码仓库</span>
+          <span className="text-white">{I18N.components.Header.gengXinDaiMaCang}</span>
         </div>
       </div>
     </div>

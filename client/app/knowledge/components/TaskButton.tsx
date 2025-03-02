@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import {
   Button,
   Checkbox,
@@ -12,10 +13,10 @@ import { TaskList } from './TaskList';
 import { Pagination } from '@nextui-org/react';
 
 const statusOptions = [
-  { value: 'pending', label: '等待中' },
-  { value: 'running', label: '入库中' },
-  { value: 'failed', label: '失败' },
-  { value: 'pending_retry', label: '重新执行' },
+  { value: 'pending', label: I18N.components.TaskButton.dengDaiZhong },
+  { value: 'running', label: I18N.components.TaskButton.ruKuZhong },
+  { value: 'failed', label: I18N.components.TaskButton.shiBai },
+  { value: 'pending_retry', label: I18N.components.TaskButton.chongXinZhiXing },
 ];
 
 const TaskButton = ({ space_id }: { space_id: string }) => {
@@ -29,7 +30,7 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement="bottom">
       <PopoverTrigger>
-        <Button>查看任务</Button>
+        <Button>{I18N.components.TaskButton.chaKanRenWu}</Button>
       </PopoverTrigger>
 
       <PopoverContent style={{ maxHeight: '400px', overflowY: 'auto' }}>

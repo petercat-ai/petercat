@@ -1,3 +1,4 @@
+import I18N from '@/app/utils/I18N';
 import { useState } from 'react';
 import { Pagination } from '@nextui-org/react';
 import {
@@ -68,13 +69,12 @@ const ChunkCard = ({ chunk }: { chunk: RAGChunk }) => {
             </div>
             <div className="p-1 bg-gray-200 rounded-md justify-center items-center gap-2.5 flex">
               <div className="text-gray-600 text-xs font-normal font-['PingFang SC'] leading-3">
-                {chunk.context?.length} 字符
-              </div>
+                {chunk.context?.length} {I18N.components.Knowledge.ziFu}</div>
             </div>
           </div>
         </div>
         <div className="self-stretch h-5 text-gray-500 text-xs font-normal font-['PingFang SC'] leading-tight">
-          更新于{new Date(chunk.updated_at).toLocaleString()}
+          {I18N.components.Knowledge.gengXinYu}{new Date(chunk.updated_at).toLocaleString()}
         </div>
       </div>
     </div>
