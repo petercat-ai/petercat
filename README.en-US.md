@@ -132,7 +132,9 @@ The project requires environment variables to be set:
 | `RATE_LIMIT_ENABLED`       | Optional                                   | Whether rate limiting is enabled               | `True`                                      |
 | `RATE_LIMIT_REQUESTS`      | Optional                                   | Number of requests for rate limiting           | `100`                                       |
 | `RATE_LIMIT_DURATION`      | Optional                                   | Duration for rate limiting (in minutes)        | `1`                                         |
-
+| **RAG server config** |
+| `WHISKER_API_URL` | Required | WHISKER RAG Server Path | `http://....` |
+| `WHISKER_API_KEY` | Required | WHISKER RAG Server KEY | `sk-xxxx` |
 ## 🤝 Contributing
 
 > PeterCat uses yarn as the package manager.

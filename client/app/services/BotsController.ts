@@ -4,8 +4,6 @@ import axios from 'axios';
 import { BotProfile } from '@/app/interface';
 
 export declare type Bot = Tables<'bots'>;
-export declare type RAGDoc = Tables<'rag_docs'>;
-export declare type RagTask = Tables<'rag_tasks'>;
 export declare type GithubRepoConfig = Tables<'github_repo_config'>;
 axios.defaults.withCredentials = true;
 
@@ -76,24 +74,6 @@ export async function getBotInfoByRepoName(params: {
 
 export async function getGitAvatarByRepoName(repo_name: string) {
   return axios.get(`${apiDomain}/api/bot/git/avatar?repo_name=${repo_name}`);
-}
-
-export async function getChunkList(
-  repo_name: string,
-  page_size: number,
-  page_number: number,
-): Promise<{ rows: RAGDoc[]; total: number }> {
-  const response = await axios.get(
-    `${apiDomain}/api/rag/chunk/list?repo_name=${repo_name}&page_size=${page_size}&page_number=${page_number}`,
-  );
-  return response.data;
-}
-
-export async function getRagTask(repo_name: string): Promise<RagTask[]> {
-  const response = await axios.get(
-    `${apiDomain}/api/rag/task/latest?repo_name=${repo_name}`,
-  );
-  return response.data.data;
 }
 
 export async function getBotApprovalList(bot_id: string, status: string) {

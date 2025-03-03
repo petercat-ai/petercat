@@ -12,6 +12,7 @@ from env import ENVIRONMENT, WEB_URL
 
 ALLOW_LIST = [
     "/",
+    "/token",
     "/favicon.ico",
     "/api/health_checker",
     "/api/bot/list",

@@ -30,7 +30,7 @@ import {
 } from '@/app/hooks/useBot';
 import { useAgreement, useAgreementStatus } from '@/app/hooks/useAgreement';
 import FullPageSkeleton from '@/components/FullPageSkeleton';
-import { isEmpty, map, size } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import { Chat } from '@petercatai/assistant';
 import AIBtnIcon from '@/public/icons/AIBtnIcon';
 import ChatIcon from '@/public/icons/ChatIcon';
@@ -38,9 +38,7 @@ import ConfigIcon from '@/public/icons/ConfigIcon';
 import SaveIcon from '@/public/icons/SaveIcon';
 import { useBot } from '@/app/contexts/BotContext';
 import { useUser, useUserRepos } from '@/app/hooks/useUser';
-import Knowledge from './components/Knowledge';
 import { useGlobal } from '@/app/contexts/GlobalContext';
-import KnowledgeBtn from './components/KnowledgeBtn';
 import { BotTaskProvider } from './components/TaskContext';
 import { useSearchParams } from 'next/navigation';
 import { extractFullRepoNameFromGitHubUrl } from '@/app/utils/tools';
@@ -53,6 +51,7 @@ import AgreementKO from '../../../.kiwi/ko/agreement.md';
 import AgreementZhTW from '../../../.kiwi/zh-TW/agreement.md';
 
 import 'react-toastify/dist/ReactToastify.css';
+import BookIcon from '@/public/icons/BookIcon';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_DOMAIN;
 enum VisibleTypeEnum {
@@ -434,13 +433,18 @@ export default function Edit() {
           {isEdit &&
           activeTab === ConfigTypeEnum.MANUAL_CONFIG &&
           botProfile.repoName ? (
-            <KnowledgeBtn
-              repoName={botProfile.repoName}
-              onClick={() => {
-                setVisibleType(VisibleTypeEnum.KNOWLEDGE_DETAIL);
+            <Button
+              radius="full"
+              className="bg-[#F1F1F1] text-gray-500"
+              startContent={<BookIcon />}
+              onPress={() => {
+                router.push(
+                  `/knowledge?repo_name=${botProfile.repoName}&bot_id=${botId}`,
+                );
               }}
-              mode={'configItem'}
-            />
+            >
+              {I18N.components.KnowledgeBtn.chaKanZhiShiKu}
+            </Button>
           ) : null}
         </div>
       </div>
@@ -638,16 +642,6 @@ export default function Edit() {
                 }}
               />
             </div>
-          ) : (
-            <></>
-          )}
-          {visibleType === VisibleTypeEnum.KNOWLEDGE_DETAIL ? (
-            <Knowledge
-              repoName={botProfile.repoName!}
-              goBack={() => {
-                setVisibleType(VisibleTypeEnum.BOT_CONFIG);
-              }}
-            ></Knowledge>
           ) : (
             <></>
           )}

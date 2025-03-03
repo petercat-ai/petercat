@@ -1,28 +1,20 @@
-![Frame 303](https://github.com/user-attachments/assets/01cf3bb2-650a-47a4-88b3-a63f961ae5e2)
-![image](https://github.com/user-attachments/assets/77670023-4fab-4ac9-bbe1-c7ea36363e02)
+![Frame 303](https://github.com/user-attachments/assets/01cf3bb2-650a-47a4-88b3-a63f961ae5e2) ![image](https://github.com/user-attachments/assets/77670023-4fab-4ac9-bbe1-c7ea36363e02)
 
 <h1 align="center"> PeterCat</h1>
 
 <div  align="center">
 
-  <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md) | [日本語](./README.ja-JP.md)
-  
-  **专为社区维护者和开发者打造的智能答疑机器人解决方案。**
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md) | [日本語](./README.ja-JP.md)
 
-  [![npm](https://img.shields.io/npm/dm/@petercatai/assistant.svg)](https://www.npmjs.com/package/@petercatai/assistant)
-  [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui)
-  [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat)
-  [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml)
-  [![codecov](https://codecov.io/github/petercat-ai/petercat/graph/badge.svg?token=2HAO18FB6X)](https://codecov.io/github/petercat-ai/petercat)
-  [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
-  
+**专为社区维护者和开发者打造的智能答疑机器人解决方案。**
+
+[![npm](https://img.shields.io/npm/dm/@petercatai/assistant.svg)](https://www.npmjs.com/package/@petercatai/assistant) [![Version](https://img.shields.io/npm/v/petercat-lui/latest.svg)](https://www.npmjs.com/package/petercat-lui) [![DockerHub Version](https://img.shields.io/docker/v/petercatai/petercat?logo=docker&logoColor=white)](https://hub.docker.com/r/petercatai/petercat) [![CI Test Status](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/petercat-ai/petercat/actions/workflows/pr-tests.yml) [![codecov](https://codecov.io/github/petercat-ai/petercat/graph/badge.svg?token=2HAO18FB6X)](https://codecov.io/github/petercat-ai/petercat) [![License](https://img.shields.io/badge/License-MIT%40Peter%20Cat-yellow.svg)](https://github.com/petercat-ai/petercat/blob/master/LICENSE)
+
 </div>
- 
 
 ## 🏠 主页
 
-[🐱窝: petercat.ai](https://petercat.ai)
-
+[🐱 窝: petercat.ai](https://petercat.ai)
 
 ## ✨ 特性
 
@@ -34,39 +26,36 @@
 
 ![对话即创造](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*aQ9uRoNZGe8AAAAAAAAAAAAADrPSAQ/original)
 
-
 ### 知识自动入库
 
-机器人创建后，所有相关Github 文档和 issue 将自动入库，作为机器人的知识依据
+机器人创建后，所有相关 Github 文档和 issue 将自动入库，作为机器人的知识依据
 
 ![知识自动入库](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*hkkFSaR1UqgAAAAAAAAAAAAADrPSAQ/original)
 
 ### 多平台集成
 
-多种集成方式自由选择，如对话应用 SDK 集成至官网，Github APP一键安装至 Github 仓库等
+多种集成方式自由选择，如对话应用 SDK 集成至官网，Github APP 一键安装至 Github 仓库等
 
 | ![官网](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*REw3QYgdJ44AAAAAAAAAAAAADrPSAQ/original) | ![GitHub](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*jlYzSqlcpRIAAAAAAAAAAAAADrPSAQ/original) |
-|:--------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| :-: | :-: |
 
 [完整演示视频](https://www.bilibili.com/video/BV1KiHUeFE4p)
 
 ### 不止是 QA 机器人
 
-| 项目信息查询                              | 回复 Discussion                                | 
-| ----------------------------------------- | --------------------------------------- | 
-| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331)|
+| 项目信息查询 | 回复 Discussion |
+| --- | --- |
+| ![search_repo](https://github.com/user-attachments/assets/a7e6d37b-4674-4fd0-a89b-678e10ec01c8) | ![ discussion replay](https://github.com/user-attachments/assets/e28a3ded-dc6c-4ba5-9543-05c41bbff331) |
 
+| PR Summary | Code Review |
+| --- | --- |
+| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2) | ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜ |
 
-| PR Summary       | Code Review     | 
-| ----------------------------------------- | --------------------------------------- | 
-| ![image](https://github.com/user-attachments/assets/28bd546b-0c00-48a2-a57e-982448d37ef2)| ![image](https://github.com/user-attachments/assets/a39c4d71-1368-4508-bca4-018a00549528) ｜
-
-| 查 Issue                          | 提 Issue                             | 回 Issue      | 
-| ----------------------------------------- | --------------------------------------- | --------------------------------------- | 
-| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136)| ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793)| ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
+| 查 Issue | 提 Issue | 回 Issue |
+| --- | --- | --- |
+| ![image](https://github.com/user-attachments/assets/501c6ba0-20c4-480f-97ff-1f20d0a99136) | ![image](https://github.com/user-attachments/assets/d020b03d-74cd-49d2-a199-5d21154b7793) | ![image](https://github.com/user-attachments/assets/f6093cb1-b089-4ac9-ad2c-f1c8126fb86b) |
 
 [完整演示视频](https://www.bilibili.com/video/BV12eHUe8EkT/)
-
 
 ## Agent 工作流
 
@@ -79,6 +68,7 @@
 部署方案：[AWS](https://aws.amazon.com) + [Supabase](https://supabase.com)
 
 你可以在这里看到完整方案：
+
 - [私有化部署 - 本地启动服务](./docs/guides/self_hosted_local_cn.md)
 - [私有化部署 - 部署到 AWS ](./docs/guides/self_hosted_aws_cn.md)
 
@@ -86,61 +76,60 @@
 
 [![演示视频](https://mdn.alipayobjects.com/huamei_j8gzmo/afts/img/A*spdZSbWsVhkAAAAAAAAAAAAADrPSAQ/fmt.webp)](https://www.youtube.com/watch?v=Al6R9Ye5mBY)
 
-
-
 ## ⚙️ 环境变量
 
 本项目需要进行环境变量进行设置：
 
 ### Client
+
 `.env.local`
 
-
-| 环境变量            | 类型 | 描述                                                                                                                          | 示例                                                                                                   |
-| ------------------- | ---- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `NEXT_PUBLIC_API_DOMAIN`    | 必选 |   后端服务的 API 域名。         | `https://api.petercat.ai`                                                                                   |
-
+| 环境变量 | 类型 | 描述 | 示例 |
+| --- | --- | --- | --- |
+| `NEXT_PUBLIC_API_DOMAIN` | 必选 | 后端服务的 API 域名。 | `https://api.petercat.ai` |
 
 ### Server
 
 `.env`
 
-
-| 环境变量            | 类型 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;         | 描述                                                                                                                          | 示例                                                                                                   |
-| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-|  **应用基础环境变量** |
-| `API_URL` | 必选 |  后端服务的 API 域名 | `https://api.petercat.ai`
-| `WEB_URL` | 必选 |  前端 Web 服务的域名 | `https://petercat.ai`
-| `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` 
-|  **AWS 相关环境变量** |
-| `X_GITHUB_SECRET_NAME` | 必选 |  AWS 托管的 Github 私钥文件名 | `prod/githubapp/petercat/pem`
+| 环境变量 | 类型 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 描述 | 示例 |
+| --- | --- | --- | --- |
+| **应用基础环境变量** |
+| `API_URL` | 必选 | 后端服务的 API 域名 | `https://api.petercat.ai` |
+| `WEB_URL` | 必选 | 前端 Web 服务的域名 | `https://petercat.ai` |
+| `STATIC_URL` | 必选 | 静态资源域名 | `https://static.petercat.ai` |
+| **AWS 相关环境变量** |
+| `X_GITHUB_SECRET_NAME` | 必选 | AWS 托管的 Github 私钥文件名 | `prod/githubapp/petercat/pem` |
 | `STATIC_SECRET_NAME` | 可选 | AWS 托管的 CloudFront 签名私钥名称。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `prod/petercat/static` |
 | `LLM_TOKEN_SECRET_NAME` | 可选 | AWS 托管的 llm 签名私钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm` |
 | `LLM_TOKEN_PUBLIC_NAME` | 可选 | AWS 托管的 llm 签名公钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm/pub` |
 | `STATIC_KEYPAIR_ID` | 可选 | AWS CloudFront 的 Key Pair ID。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `APKxxxxxxxx` |
-| `S3_TEMP_BUCKET_NAME` | 可选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` 
-| `SQS_QUEUE_URL`| 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue`
+| `S3_TEMP_BUCKET_NAME` | 可选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` |
+| `SQS_QUEUE_URL` | 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **SUPABASE 相关 env** |
-| `SUPABASE_URL`    | 必选 |    supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                                                    | `https://***.supabase.co`                                                                                   |
-| `SUPABASE_SERVICE_KEY`  | 必选 |    supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到                                     | `{{SUPABASE_SERVICE_KEY}}` |
-|  **Auth0 相关 env**|
-| `AUTH0_DOMAIN` | 必选 |   auth0 服务域名，从 auth0 / Application / Basic Information 下获取 |  `petercat.us.auth0.com`
-| `AUTH0_CLIENT_ID` | 必选 | auth0 客户端 ID，从 auth0 / Application / Basic Information 下获取  | `artfiUxxxx`
-| `AUTH0_CLIENT_SECRET` | 必选 | auth0 客户端密钥， 从 auth0 / Application / Basic Information 下获取 | `xxxx-xxxx-xxx`
-| `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/`
-|  **LLM相关的 env** |
-| `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx`
-| `OPENAI_BASE_URL` | 可选 | API 请求的基础 URL。仅在使用代理或服务模拟器时指定。| `https://api.openai.com/v1`
-| `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx`
-| `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx`
-|  **注册为 Github App 的 env** |
-| `X_GITHUB_APP_ID` | 可选 |  注册为 Github App 时，APPID | `123456`
-| `X_GITHUB_APPS_CLIENT_ID` | 可选 | 注册为 Github App 时，APP 的 Client ID | `Iv1.xxxxxxx`
-| `X_GITHUB_APPS_CLIENT_SECRET` | 可选 |  注册为 Github App 时，APP 的 Client 密钥 | `xxxxxxxx`
-|  **限流配置** |
-| `RATE_LIMIT_ENABLED` | 可选 |  限流配置是否开启 | `True`
-| `RATE_LIMIT_REQUESTS` | 可选 | 限流的请求数量 | `100`
-| `RATE_LIMIT_DURATION` | 可选 |  限流的统计时长，单位为分钟 | `1`
+| `SUPABASE_URL` | 必选 | supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到 | `https://***.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | 必选 | supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到 | `{{SUPABASE_SERVICE_KEY}}` |
+| **Auth0 相关 env** |
+| `AUTH0_DOMAIN` | 必选 | auth0 服务域名，从 auth0 / Application / Basic Information 下获取 | `petercat.us.auth0.com` |
+| `AUTH0_CLIENT_ID` | 必选 | auth0 客户端 ID，从 auth0 / Application / Basic Information 下获取 | `artfiUxxxx` |
+| `AUTH0_CLIENT_SECRET` | 必选 | auth0 客户端密钥， 从 auth0 / Application / Basic Information 下获取 | `xxxx-xxxx-xxx` |
+| `API_IDENTIFIER` | 必选 | auth0 的 API Identifier | `https://petercat.us.auth0.com/api/v2/` |
+| **LLM 相关的 env** |
+| `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx` |
+| `OPENAI_BASE_URL` | 可选 | API 请求的基础 URL。仅在使用代理或服务模拟器时指定。 | `https://api.openai.com/v1` |
+| `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx` |
+| `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx` |
+| **注册为 Github App 的 env** |
+| `X_GITHUB_APP_ID` | 可选 | 注册为 Github App 时，APPID | `123456` |
+| `X_GITHUB_APPS_CLIENT_ID` | 可选 | 注册为 Github App 时，APP 的 Client ID | `Iv1.xxxxxxx` |
+| `X_GITHUB_APPS_CLIENT_SECRET` | 可选 | 注册为 Github App 时，APP 的 Client 密钥 | `xxxxxxxx` |
+| **限流配置** |
+| `RATE_LIMIT_ENABLED` | 可选 | 限流配置是否开启 | `True` |
+| `RATE_LIMIT_REQUESTS` | 可选 | 限流的请求数量 | `100` |
+| `RATE_LIMIT_DURATION` | 可选 | 限流的统计时长，单位为分钟 | `1` |
+| **RAG 服务配置** |
+| `WHISKER_API_URL` | 必选 | WHISKER RAG 服务地址   | `http://....` |
+| `WHISKER_API_KEY` | 必选 | WHISKER RAG 服务的 KEY | `sk-xxxx` |
 
 ## 🤝 参与贡献
 
@@ -181,19 +170,16 @@ yarn run publish:pypi
 
 ```
 
-
 ## 💼 企业版接入
 
-请把您的项目地址，使用场景，使用频率等信息发送至 [petercat.assistant@gmail.com ](petercat.assistant@gmail.com) 
-
+请把您的项目地址，使用场景，使用频率等信息发送至 [petercat.assistant@gmail.com ](petercat.assistant@gmail.com)
 
 ## 📧 反馈问题
 
 猫猫还在养成阶段，难免有些 “小脾气”，遇到问题请对它宽容一些，可以通过以下两种途径告知铲屎官：
 
-
-* [提交 Issue](https://github.com/petercat-ai/petercat/issues/new/choose)
-*  [Discussions](https://github.com/petercat-ai/petercat/discussions) 提问
+- [提交 Issue](https://github.com/petercat-ai/petercat/issues/new/choose)
+- [Discussions](https://github.com/petercat-ai/petercat/discussions) 提问
 
 ## 👬 Contributors
 

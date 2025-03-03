@@ -18,7 +18,6 @@ from github_app import router as github_app_router
 from i18n.translations import I18nConfig, I18nMiddleware
 from petercat_utils import get_env_variable
 from rag import router as rag_router
-from task import router as task_router
 from user import router as user_router
 from insight import router as insight_router
 
@@ -64,7 +63,6 @@ app.include_router(rag_router.router)
 app.include_router(bot_router.router)
 app.include_router(auth_router.router)
 app.include_router(chat_router.router)
-app.include_router(task_router.router)
 app.include_router(github_app_router.router)
 app.include_router(aws_router.router)
 app.include_router(user_router.router)

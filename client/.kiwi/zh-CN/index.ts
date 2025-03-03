@@ -1,4 +1,5 @@
 import components from './components';
+import chunk from './chunk';
 import release from './release';
 import DeployBotModal from './DeployBotModal';
 import edit from './edit';
@@ -14,5 +15,6 @@ export default Object.assign(
     edit,
     DeployBotModal,
     release,
+    chunk
   },
 );

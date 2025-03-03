@@ -76,14 +76,6 @@ Parameters:
     Type: String
     Description: Tavily API Key
     Default: 1
-  SQSQueueName:
-    Type: String
-    Description: Name of the SQS queue
-    Default: 1
-  SQSQueueUrl:
-    Type: String
-    Description: URL of the SQS queue
-    Default: 1
   Auth0Domain:
     Type: String
     Description: Auth0 Domain
@@ -120,6 +112,14 @@ Parameters:
     Type: String
     Description: Name of the temporary S3 bucket
     Default: 1
+  WhiskerApiUrl:
+    Type: String
+    Description: API URL of ths Whisker RAG service
+    Default: 1
+  WhiskerApiKey:
+    Type: String
+    Description: API KEY of the Whisker RAG service
+    Default: 1
 
 Resources:
   FastAPIFunction:
@@ -152,10 +152,11 @@ Resources:
           SUPABASE_URL: !Ref SupabaseUrl
           GITHUB_TOKEN: !Ref GitHubToken
           TAVILY_API_KEY: !Ref TavilyAPIKey
-          SQS_QUEUE_URL: !Ref SQSQueueUrl
           AUTH0_DOMAIN: !Ref Auth0Domain
           AUTH0_CLIENT_ID: !Ref Auth0ClientId
           AUTH0_CLIENT_SECRET: !Ref Auth0ClientSecret
+          WHISKER_API_URL: !Ref WhiskerApiUrl
+          WHISKER_API_KEY: !Ref WhiskerApiKey
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
@@ -180,56 +181,6 @@ Resources:
       Dockerfile: ../docker/Dockerfile.aws.lambda
       DockerTag: v1
 
-  SQSSubscriptionFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      PackageType: Image
-      MemorySize: 512
-      FunctionUrlConfig:
-        AuthType: NONE
-      Environment:
-        Variables:
-          X_GITHUB_APP_ID: !Ref GitHubAppID
-          X_GITHUB_APPS_CLIENT_ID: !Ref GithubAppsClientId
-          X_GITHUB_APPS_CLIENT_SECRET: !Ref GithubAppsClientSecret
-          API_IDENTIFIER: !Ref APIIdentifier
-          FASTAPI_SECRET_KEY: !Ref FastAPISecretKey
-          OPENAI_API_KEY: !Ref OpenAIAPIKey
-          GEMINI_API_KEY: !Ref GeminiAPIKey
-          DEEPSEEK_API_KEY: !Ref DeepSeekAPIKey
-          SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKey
-          SUPABASE_URL: !Ref SupabaseUrl
-          GITHUB_TOKEN: !Ref GitHubToken
-          TAVILY_API_KEY: !Ref TavilyAPIKey
-          SQS_QUEUE_URL: !Ref SQSQueueUrl
-      Policies:
-      - Statement:
-        - Sid: BedrockInvokePolicy
-          Effect: Allow
-          Action:
-          - bedrock:InvokeModelWithResponseStream
-          Resource: '*'
-        - Sid: SQSInvokePolicy
-          Effect: Allow
-          Action:
-          - sqs:*
-          Resource: '*'
-        - Sid: AllObjectActions
-          Effect: Allow
-          Action:
-          - s3:PutObject
-          - s3:GetObject
-          - s3:DeleteObject
-          Resource:
-          - !Sub 'arn:aws:s3:::${S3TempBucketName}/*'
-      - SQSPollerPolicy:
-          QueueName:
-            !Ref SQSQueueName
-      Tracing: Active
-    Metadata:
-      Dockerfile: ../docker/Dockerfile.subscriber
-      DockerContext: subscriber
-      DockerTag: v1
 
 Outputs:
   FastAPIFunctionUrl:
@@ -238,10 +189,3 @@ Outputs:
   FastAPIFunction:
     Description: "FastAPI Lambda Function ARN"
     Value: !GetAtt FastAPIFunction.Arn
-
-  SQSSubscriptionFunctionUrl:
-    Description: "Function URL for SQS Subscriptio function"
-    Value: !GetAtt SQSSubscriptionFunctionUrl.FunctionUrl
-  SQSSubscriptionFunction:
-    Description: "SQS Subscription Function Lambda Function ARN"
-    Value: !GetAtt SQSSubscriptionFunction.Arn
