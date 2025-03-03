@@ -1,9 +1,4 @@
 from .db.client.supabase import get_client
-from .rag_helper import (
-    github_file_loader,
-    retrieval,
-    issue_retrieval,
-)
 from .utils.env import get_env_variable
 
 __all__ = [

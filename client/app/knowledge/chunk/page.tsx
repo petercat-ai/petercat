@@ -1,9 +1,9 @@
-import I18N from '@/app/utils/I18N';
 'use client';
+
+import I18N from '@/app/utils/I18N';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import ChunkList from '../components/ChunkList';
-import { Button } from '@nextui-org/react';
 
 export default function ChunkPage() {
   const searchParams = useSearchParams();
@@ -32,7 +32,8 @@ export default function ChunkPage() {
             d="M15.75 19.5L8.25 12l7.5-7.5"
           />
         </svg>
-        {I18N.chunk.page.fanHui}</div>
+        {I18N.chunk.page.fanHui}
+      </div>
       <ChunkList knowledge_id={knowledge_id!} />
     </div>
   );
