@@ -9,7 +9,7 @@ from agent.prompts.issue_helper import (
     generate_issue_prompt,
 )
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
-from petercat_utils.data_class import ChatData, Message, TextContentBlock
+from core.type_class.data_class import ChatData, Message, TextContentBlock
 
 from agent.qa_chat import agent_chat
 from utils.fuzzy_match import contains_keyword_fuzzy

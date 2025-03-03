@@ -9,11 +9,11 @@ from core.dao.botDAO import BotDAO
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.bot_approval import ApprovalStatus, BotApproval, TaskType
 from core.models.user import User
-from petercat_utils import get_client
 from typing import Annotated, Optional
 
 from bot.builder import bot_builder, bot_info_generator
 from core.type_class.bot import BotDeployRequest, BotUpdateRequest, BotCreateRequest
+from utils.supabase import get_client
 
 router = APIRouter(
     prefix="/api/bot",

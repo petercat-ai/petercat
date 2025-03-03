@@ -6,7 +6,6 @@ on:
     paths:
       - .github/workflows/aws-prod.yml
       - server/**
-      - petercat_utils/**
       - subscriber/**
       - template.yml
 

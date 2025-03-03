@@ -4,7 +4,7 @@ from whiskerrag_client import APIClient
 from whiskerrag_types.model import RetrievalBySpaceRequest, EmbeddingModelEnum
 from agent.bot.get_bot import get_bot_by_id
 from langchain.tools import tool
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 
 
 def factory(bot_id: str):

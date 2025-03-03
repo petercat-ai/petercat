@@ -16,7 +16,7 @@ from chat import router as chat_router
 from env import ENVIRONMENT, API_URL, WEB_URL
 from github_app import router as github_app_router
 from i18n.translations import I18nConfig, I18nMiddleware
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from rag import router as rag_router
 from user import router as user_router
 from insight import router as insight_router

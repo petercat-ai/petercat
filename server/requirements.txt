@@ -25,6 +25,5 @@ fastapi_auth0==0.5.0
 requests
 httpx
 urllib3>=2.2.2
-petercat_utils>=0.1.42
 toolz
 whiskerrag>=0.0.15

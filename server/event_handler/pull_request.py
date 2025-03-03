@@ -20,7 +20,7 @@ from agent.prompts.pull_request import (
 )
 from agent.qa_chat import agent_chat
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
-from petercat_utils.data_class import ChatData, Message, TextContentBlock
+from core.type_class.data_class import ChatData, Message, TextContentBlock
 
 
 def file_match(filename: str, patterns: List[str]):

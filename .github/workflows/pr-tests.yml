@@ -6,7 +6,6 @@ on:
     paths:
       - .github/workflows/**
       - server/**
-      - petercat_utils/**
       - subscriber/**
 
 permissions:

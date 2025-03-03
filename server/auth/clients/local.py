@@ -2,7 +2,7 @@ import secrets
 from fastapi import Request
 from fastapi.responses import RedirectResponse
 from core.dao.profilesDAO import ProfilesDAO
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from auth.clients.base import BaseAuthClient
 
 PETERCAT_LOCAL_UID = get_env_variable("PETERCAT_LOCAL_UID")

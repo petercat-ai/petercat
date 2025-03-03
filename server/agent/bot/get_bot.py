@@ -1,4 +1,3 @@
-
 from typing import Annotated
 
 from fastapi import Depends
@@ -10,7 +9,7 @@ from core.dao.llmTokenDAO import LLMTokenDAO
 
 from core.models.user import User
 from core.service.user_llm_token import UserLLMTokenService, get_llm_token_service
-from petercat_utils.data_class import ChatData
+from core.type_class.data_class import ChatData
 
 def get_bot(
         input_data: ChatData, 

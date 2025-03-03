@@ -2,7 +2,7 @@ from auth.clients.auth0 import Auth0Client
 from auth.clients.base import BaseAuthClient
 from auth.clients.local import LocalClient
 
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 
 PETERCAT_AUTH0_ENABLED = get_env_variable("PETERCAT_AUTH0_ENABLED", "True") == "True"
 

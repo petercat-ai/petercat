@@ -15,7 +15,9 @@ export default function ChunkPage() {
   return (
     <div className="w-full h-screen bg-zinc-100 flex-col justify-start items-start inline-flex overflow-hidden p-4">
       <div
-        onClick={() => router.back()}
+        onClick={() => {
+          window.history.back();
+        }}
         className="p-2 flex gap-2 cursor-pointer"
       >
         <svg

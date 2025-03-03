@@ -6,7 +6,7 @@ import time
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 
-from petercat_utils.utils.env import get_env_variable
+from utils.env import get_env_variable
 from utils.private_key import get_private_key
 
 APP_ID = get_env_variable("X_GITHUB_APP_ID")

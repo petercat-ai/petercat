@@ -1,4 +1,4 @@
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from utils.private_key.local import LocalPrivateKeyProvider
 from utils.private_key.s3 import S3PrivateKeyProvider
 

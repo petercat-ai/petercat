@@ -4,7 +4,6 @@ from typing import AsyncGenerator, AsyncIterator, Dict, Callable, Optional
 from langchain.agents import AgentExecutor
 from openai import APIError
 from agent.llm import BaseLLMClient
-from petercat_utils.data_class import ChatData, Message
 from langchain.agents.format_scratchpad.openai_tools import (
     format_to_openai_tool_messages,
 )
@@ -19,7 +18,8 @@ from langchain.prompts import MessagesPlaceholder
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
-from petercat_utils import get_env_variable
+from core.type_class.data_class import ChatData, Message
+from utils.env import get_env_variable
 
 
 TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")

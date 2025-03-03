@@ -1,6 +1,13 @@
 import I18N from '@/app/utils/I18N';
 import { useState } from 'react';
-import { Pagination } from '@nextui-org/react';
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Pagination,
+  useDisclosure,
+} from '@nextui-org/react';
 import {
   PageParams,
   RAGChunk,
@@ -51,33 +58,68 @@ const EditIcon = () => {
     </div>
   );
 };
+
 const ChunkCard = ({ chunk }: { chunk: RAGChunk }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <div className="w-[442px] h-60 px-2 pt-2 pb-4 bg-white rounded-lg flex-col justify-center items-start gap-3 inline-flex">
-      <div
-        data-svg-wrapper
-        className="relative w-[426px] h-[154px] overflow-hidden text-ellipsis"
-        title={chunk.context}
-      >
-        {chunk.context}
-      </div>
-      <div className="self-stretch h-[50px] px-2 flex-col justify-start items-start gap-2 flex">
-        <div className="self-stretch justify-start items-center gap-4 inline-flex">
-          <div className="grow shrink basis-0 h-[22px] justify-between items-center gap-3 flex">
-            <div className="text-gray-800 text-sm font-medium font-['PingFang SC'] leading-snug">
-              {chunk.chunk_id}
-            </div>
-            <div className="p-1 bg-gray-200 rounded-md justify-center items-center gap-2.5 flex">
-              <div className="text-gray-600 text-xs font-normal font-['PingFang SC'] leading-3">
-                {chunk.context?.length} {I18N.components.Knowledge.ziFu}</div>
+    <>
+      <div className="w-[442px] h-60 px-2 pt-2 pb-4 bg-white rounded-lg flex-col justify-center items-start gap-3 inline-flex">
+        <div
+          className="relative p-1 w-[426px] h-[154px] overflow-hidden text-ellipsis bg-[#F1F1F1] cursor-pointer"
+          title={chunk.context}
+          onClick={onOpen}
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 6,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {chunk.context}
+        </div>
+        <div className="self-stretch h-[50px] px-2 flex-col justify-start items-start gap-2 flex">
+          <div className="self-stretch justify-start items-center gap-4 inline-flex">
+            <div className="grow shrink basis-0 h-[22px] justify-between items-center gap-3 flex">
+              <div className="text-gray-800 text-sm font-medium font-['PingFang SC'] leading-snug">
+                {chunk.chunk_id}
+              </div>
+              <div className="p-1 bg-gray-200 rounded-md justify-center items-center gap-2.5 flex">
+                <div className="text-gray-600 text-xs font-normal font-['PingFang SC'] leading-3">
+                  {chunk.context?.length} {I18N.components.Knowledge.ziFu}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="self-stretch h-5 text-gray-500 text-xs font-normal font-['PingFang SC'] leading-tight">
-          {I18N.components.Knowledge.gengXinYu}{new Date(chunk.updated_at).toLocaleString()}
+          <div className="self-stretch h-5 text-gray-500 text-xs font-normal font-['PingFang SC'] leading-tight">
+            {I18N.components.Knowledge.gengXinYu}
+            {new Date(chunk.updated_at).toLocaleString()}
+          </div>
         </div>
       </div>
-    </div>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="2xl"
+        scrollBehavior="inside"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <span className="text-gray-800 text-base font-medium font-['PingFang SC'] leading-normal">
+                  分块内容
+                </span>
+              </ModalHeader>
+              <ModalBody className="pb-4">
+                <div className="w-full">{chunk.context}</div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 export default function ChunkList({ knowledge_id }: { knowledge_id: string }) {

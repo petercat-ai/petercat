@@ -1,7 +1,7 @@
 from typing import Union
 
 from event_handler.intsall import InstallationEventHandler, InstallationEditEventHandler
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from github import Auth
 
 from event_handler.pull_request import (

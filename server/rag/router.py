@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from openai import BaseModel
 from auth.get_user_info import get_user
 from core.models.user import User
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from whiskerrag_client import APIClient
 from whiskerrag_types.model import (
     PageParams,

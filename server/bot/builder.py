@@ -2,7 +2,6 @@ from typing import List, Optional
 
 from github import Github
 from core.models.user import User
-from petercat_utils import get_client, get_env_variable
 from whiskerrag_client import APIClient
 from whiskerrag_types.model import (
     KnowledgeCreate,
@@ -12,6 +11,8 @@ from whiskerrag_types.model import (
     GithubRepoSourceConfig,
 )
 from agent.prompts.bot_template import generate_prompt_by_repo_name
+from utils.env import get_env_variable
+from utils.supabase import get_client
 
 g = Github()
 

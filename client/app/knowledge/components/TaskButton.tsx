@@ -30,9 +30,10 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement="bottom">
       <PopoverTrigger>
-        <Button>{I18N.components.TaskButton.chaKanRenWu}</Button>
+        <Button className="bg-gray-200 text-gray-500 text-sm rounded-full px-4 py-2">
+          {I18N.components.TaskButton.chaKanRenWu}
+        </Button>
       </PopoverTrigger>
-
       <PopoverContent style={{ maxHeight: '400px', overflowY: 'auto' }}>
         <div className="p-4 w-[480px]">
           <div className="mb-4">
@@ -74,7 +75,7 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
 
           {isLoading ? (
             <div className="flex justify-center">
-              <Spinner />
+              <Spinner color="default" />
             </div>
           ) : (
             <TaskList

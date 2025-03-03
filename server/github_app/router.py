@@ -23,7 +23,7 @@ from github_app.purchased import PurchaseServer
 from github_app.utils import (
     get_private_key,
 )
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 
 REGION_NAME = get_env_variable("AWS_REGION")
 X_GITHUB_SECRET_NAME = get_env_variable("X_GITHUB_SECRET_NAME")

@@ -13,7 +13,6 @@
     "assistant:server": "concurrently \"yarn run server\" \"yarn run assistant\"",
     "build:docker": "docker build -t petercat .",
     "build:pypi": "rm -rf dist && python3 -m build",
-    "publish:test": "python3 -m twine upload --repository petercat-utils dist/* ",
     "publish:pypi": "python3 -m twine upload --repository pypi dist/* "
   },
   "engines": {

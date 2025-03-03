@@ -4,8 +4,8 @@ from langchain_core.utils.function_calling import convert_to_openai_tool
 
 from agent.llm import register_llm_client
 from agent.llm.base import BaseLLMClient
-from petercat_utils.data_class import MessageContent
-from petercat_utils.utils.env import get_env_variable
+from core.type_class.data_class import MessageContent
+from utils.env import get_env_variable
 
 
 OPEN_API_KEY = get_env_variable("OPENAI_API_KEY")

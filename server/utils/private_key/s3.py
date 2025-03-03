@@ -1,6 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from utils.private_key.base import BasePrivateKeyProvider
 
 REGION_NAME = get_env_variable("AWS_REGION")

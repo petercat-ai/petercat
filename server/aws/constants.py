@@ -1,4 +1,5 @@
-from petercat_utils.utils.env import get_env_variable
+from utils.env import get_env_variable
+
 
 SUCCESS_CODE = "UPLOAD_SUCCESS"
 ERROR_CODES = {"credentials_error": "CREDENTIALS_ERROR", "upload_error": "UPLOAD_ERROR"}

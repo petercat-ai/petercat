@@ -3,7 +3,7 @@ from typing import Optional
 from github import Github, Auth
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
 from core.models.user import User
-from petercat_utils import get_client
+from utils.supabase import get_client
 
 
 def query_list(
