@@ -9,7 +9,6 @@ import {
   getBotDetail,
   getBotInfoByRepoName,
   getBotList,
-  getChunkList,
   getGitAvatarByRepoName,
   getUserPeterCatAppRepos,
   publicBot,
@@ -17,7 +16,6 @@ import {
   updateBot,
 } from '@/app/services/BotsController';
 import {
-  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
