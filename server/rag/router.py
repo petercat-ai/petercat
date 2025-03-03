@@ -77,7 +77,7 @@ async def get_knowledge_list(params: PageParams[Knowledge]):
 
 
 @router.post("/chunk/list", dependencies=[Depends(verify_rate_limit)])
-async def get_knowledge_list(params: PageParams[Chunk]):
+async def get_chunk_list(params: PageParams[Chunk]):
     try:
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),

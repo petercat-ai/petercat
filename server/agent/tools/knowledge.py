@@ -1,4 +1,3 @@
-import asyncio
 import json
 from httpx import ReadTimeout
 from whiskerrag_client import APIClient

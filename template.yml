@@ -112,7 +112,7 @@ Parameters:
     Type: String
     Description: Name of the temporary S3 bucket
     Default: 1
-  whikserApiUrl:
+  whiskerApiUrl:
     Type: String
     Description: API URL of ths Whisker RAG service
     Default: 1
