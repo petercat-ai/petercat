@@ -73,5 +73,5 @@ jobs:
               ParameterKey=Auth0Domain,ParameterValue=${{ secrets.AUTH0_DOMAIN }} \
               ParameterKey=Auth0ClientId,ParameterValue=${{ secrets.AUTH0_CLIENT_ID }} \
               ParameterKey=Auth0ClientSecret,ParameterValue=${{ secrets.AUTH0_CLIENT_SECRET }} \
-              ParameterKey=whiskerApiKey,ParameterValue=${{ secrets.WHISKER_API_KEY }} \
-              ParameterKey=whiskerApiUrl,ParameterValue=${{ secrets.WHISKER_API_URL }}
+              ParameterKey=WhiskerApiKey,ParameterValue=${{ secrets.WHISKER_API_KEY }} \
+              ParameterKey=WhiskerApiUrl,ParameterValue=${{ secrets.WHISKER_API_URL }}

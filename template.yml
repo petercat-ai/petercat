@@ -112,11 +112,11 @@ Parameters:
     Type: String
     Description: Name of the temporary S3 bucket
     Default: 1
-  whiskerApiUrl:
+  WhiskerApiUrl:
     Type: String
     Description: API URL of ths Whisker RAG service
     Default: 1
-  whiskerApiKey:
+  WhiskerApiKey:
     Type: String
     Description: API KEY of the Whisker RAG service
     Default: 1
@@ -155,8 +155,8 @@ Resources:
           AUTH0_DOMAIN: !Ref Auth0Domain
           AUTH0_CLIENT_ID: !Ref Auth0ClientId
           AUTH0_CLIENT_SECRET: !Ref Auth0ClientSecret
-          WHISKER_API_URL: !Ref whiskerApiUrl
-          WHISKER_API_KEY: !Ref whiskerApiKey
+          WHISKER_API_URL: !Ref WhiskerApiUrl
+          WHISKER_API_KEY: !Ref WhiskerApiKey
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: RESPONSE_STREAM
