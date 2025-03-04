@@ -60,8 +60,8 @@ async def reload_repo(
                         repo_name=request.repo_name, auth_token=user.access_token
                     ),
                     split_config=KnowledgeSplitConfig(
-                        chunk_size=500,
-                        chunk_overlap=100,
+                        chunk_size=1000,
+                        chunk_overlap=200,
                     ),
                 )
             ]
