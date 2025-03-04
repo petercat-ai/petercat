@@ -1,17 +1,16 @@
 import I18N from '@/app/utils/I18N';
+
 import {
   Button,
   Checkbox,
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Spinner,
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { useRestartTask, useTaskList } from '@/app/hooks/useRAG';
 import { TaskList } from './TaskList';
 import { Pagination } from '@nextui-org/react';
-import LoadingIcon from '@/public/icons/LoadingIcon';
 import { PageParams, RAGTask } from '@/app/services/RAGController';
 import MySpinner from '@/components/Spinner';
 
@@ -38,9 +37,12 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
   } = useRestartTask();
 
   useEffect(() => {
-    refetch();
-    setSelectedTaskIds([]);
-  }, [isSuccess]);
+    if (isSuccess) {
+      refetch();
+      setSelectedTaskIds([]);
+    }
+  }, [isSuccess, refetch]);
+
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement="bottom">
       <PopoverTrigger>
@@ -96,19 +98,19 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
                   );
                 }
               }}
+              selectedTaskIds={selectedTaskIds}
             />
           </MySpinner>
-          {selectedTaskIds.length > 0 && (
+          {selectedTaskIds.length > 0 ? (
             <Button
               onPress={() => restartTask(selectedTaskIds)}
               className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2"
-              startContent={
-                <div className="animate-spin">
-                  <LoadingIcon />
-                </div>
-              }
+              isLoading={isRestartLoading}
             >
-              {I18N.components.TaskButton.chongShiSuoXuanRen}</Button>
+              {I18N.components.TaskButton.chongShiSuoXuanRen}
+            </Button>
+          ) : (
+            <></>
           )}
           {data && (
             <Pagination

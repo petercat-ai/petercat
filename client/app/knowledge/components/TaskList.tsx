@@ -23,18 +23,13 @@ const SuccessIcon = () => {
     </div>
   );
 };
-const FailedIcon = () => {
-  return (
-    <div className="w-5 h-5 p-1 flex-col justify-center items-center inline-flex">
-      <div className="w-[18px] h-[18px] rounded-sm border-2 border-red-400" />
-    </div>
-  );
-};
+
 interface SubTaskProps {
   task_id: string;
   datetime: string;
   error_message?: string;
   status: 'success' | 'failed' | 'running' | 'pending';
+  isSelected: boolean;
   handleCheckBoxChange?: (
     id: string,
     status: 'success' | 'failed' | 'running' | 'pending',
@@ -47,6 +42,7 @@ export const SubTask: React.FC<SubTaskProps> = ({
   error_message,
   status,
   handleCheckBoxChange,
+  isSelected,
 }) => {
   const getStatusIcon = () => {
     switch (status) {
@@ -58,20 +54,13 @@ export const SubTask: React.FC<SubTaskProps> = ({
             onValueChange={(isSelected) => {
               handleCheckBoxChange?.(task_id, status, isSelected);
             }}
+            isSelected={isSelected}
             classNames={{
               base: 'border-red-400',
-              wrapper: [
-                'before:border-red-400',
-                'group-data-[selected=true]:!bg-red-600', // 添加 !important
-                'group-data-[selected=true]:!border-red-600',
-                'group-data-[hover=true]:border-red-500',
-                'group-data-[hover=true]:before:border-red-500',
-                'group-data-[focus=true]:!ring-red-600', // 修改焦点环的颜色
-                'group-data-[focus-visible=true]:!ring-red-600',
-              ],
-              icon: 'text-white',
+              wrapper: ['before:border-red-400'],
+              icon: 'border-red-600',
             }}
-            color="danger" // 添加 color 属性
+            color={'danger'}
           />
         );
       case 'running':
@@ -132,11 +121,13 @@ interface TaskListProps {
     status: 'success' | 'failed' | 'running' | 'pending',
     isSelected: boolean,
   ) => void;
+  selectedTaskIds: string[];
 }
 
 export const TaskList: React.FC<TaskListProps> = ({
   tasks,
   handleCheckBoxChange,
+  selectedTaskIds = [],
 }) => {
   return (
     <div className="bg-white flex flex-col gap-1">
@@ -148,6 +139,7 @@ export const TaskList: React.FC<TaskListProps> = ({
         tasks.map((task) => (
           <SubTask
             key={task.task_id}
+            isSelected={selectedTaskIds.includes(task.task_id)}
             task_id={task.task_id}
             datetime={task.created_at}
             error_message={task.error_message}

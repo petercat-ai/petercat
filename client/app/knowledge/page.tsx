@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
-import { KnowledgePageHeader } from './components/Header';
+import KnowledgePageHeader from './components/Header';
 import KnowledgeList from './components/KnowledgeList';
 import { ToastContainer } from 'react-toastify';
 

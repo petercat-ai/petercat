@@ -33,6 +33,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [language, setLanguage] = useState('zh-CN');
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const updateLanguage = useCallback(
     (newLang: string) => {
       setLanguage(newLang);
@@ -64,17 +65,17 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
         defaultLang;
       updateLanguage(matchingLang);
     }
-  }, [searchParams]);
+  }, [searchParams, updateLanguage]);
 
   useEffect(() => {
     if (I18N.setLang) {
       I18N.setLang(language);
     }
     // Update URL query parameters
-    const newSearchParams = new URLSearchParams(searchParams);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set('lang', language);
-    router.push(`?${newSearchParams.toString()}`);
-  }, [language]);
+    router.replace(`?${newSearchParams.toString()}`);
+  }, [language, router, searchParams]);
 
   return (
     <GlobalContext.Provider

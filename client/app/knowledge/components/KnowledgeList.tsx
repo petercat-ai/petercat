@@ -51,35 +51,36 @@ export default function KnowledgeList({ repo_name }: { repo_name: string }) {
               {!data || !data.items ? (
                 <></>
               ) : (
-                data.items.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {/* TODO：if is folder */}
-                      <a
-                        href={`/knowledge/chunk?knowledge_id=${item.knowledge_id}`}
-                      >
-                        {item.knowledge_name}
-                      </a>
-                    </TableCell>
-                    <TableCell>{item.knowledge_type}</TableCell>
-                    <TableCell>{item.source_type}</TableCell>
-                    <TableCell>{item.embedding_model_name}</TableCell>
-                    <TableCell>
-                      {item.file_size
-                        ? `${(item.file_size / 1024).toFixed(2)} KB`
-                        : '-'}
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        color={item.enabled ? 'success' : 'danger'}
-                        variant="flat"
-                        size="sm"
-                      >
-                        {item.enabled ? 'Enabled' : 'Disabled'}
-                      </Chip>
-                    </TableCell>
-                  </TableRow>
-                ))
+                data.items
+                  .filter((item) => item.knowledge_type !== 'folder')
+                  .map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <a
+                          href={`/knowledge/chunk?knowledge_id=${item.knowledge_id}`}
+                        >
+                          {item.knowledge_name}
+                        </a>
+                      </TableCell>
+                      <TableCell>{item.knowledge_type}</TableCell>
+                      <TableCell>{item.source_type}</TableCell>
+                      <TableCell>{item.embedding_model_name}</TableCell>
+                      <TableCell>
+                        {item.file_size
+                          ? `${(item.file_size / 1024).toFixed(2)} KB`
+                          : '-'}
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          color={item.enabled ? 'success' : 'danger'}
+                          variant="flat"
+                          size="sm"
+                        >
+                          {item.enabled ? 'Enabled' : 'Disabled'}
+                        </Chip>
+                      </TableCell>
+                    </TableRow>
+                  ))
               )}
             </TableBody>
           </Table>

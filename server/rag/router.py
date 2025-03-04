@@ -1,7 +1,7 @@
 import json
 from typing import Annotated, List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from openai import BaseModel
 from auth.get_user_info import get_user
 from core.models.user import User
@@ -40,6 +40,10 @@ async def reload_repo(
     request: ReloadRepoRequest,
     user: Annotated[User | None, Depends(get_user)] = None,
 ):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
+        )
     try:
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),
@@ -64,7 +68,10 @@ async def reload_repo(
         )
         return res
     except Exception as e:
-        return json.dumps({"success": False, "message": str(e)})
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
 
 
 @router.post("/knowledge/list", dependencies=[Depends(verify_rate_limit)])

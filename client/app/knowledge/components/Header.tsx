@@ -1,20 +1,21 @@
 import I18N from '@/app/utils/I18N';
+
+import { useEffect } from 'react';
 import { useReloadRepo } from '@/app/hooks/useRAG';
 import RefreshIcon from '@/public/icons/RefreshIcon';
 import { Button, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import TaskButton from './TaskButton';
-import { useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import LoadingIcon from '@/public/icons/LoadingIcon';
 
-export function KnowledgePageHeader(props: {
+export default function KnowledgePageHeader(props: {
   repo_name: string;
   bot_id: string;
 }) {
   const { repo_name, bot_id } = props;
   const router = useRouter();
-  const { reloadRepo, error, isLoading, isSuccess } = useReloadRepo();
+  const { data, reloadRepo, error, isLoading, isSuccess } = useReloadRepo();
 
   useEffect(() => {
     if (isSuccess) {
@@ -24,9 +25,9 @@ export function KnowledgePageHeader(props: {
 
   useEffect(() => {
     if (error) {
-      toast.success(
+      toast.error(
         I18N.template?.(I18N.components.Header.gengXinDaiMaCang2, {
-          val1: error,
+          val1: error.message,
         }),
       );
     }
@@ -72,26 +73,11 @@ export function KnowledgePageHeader(props: {
       </div>
       <div className="self-stretch justify-end items-center gap-4 inline-flex">
         <TaskButton space_id={repo_name}></TaskButton>
-        {/* <div className="pl-4 pr-6 py-2.5 bg-zinc-700 rounded-[20px] justify-center items-center gap-1.5 flex overflow-hidden">
-          <div data-svg-wrapper className="relative  text-white">
-            <PlusIcon></PlusIcon>
-          </div>
-          <div className="text-center text-white text-sm font-medium font-['PingFang SC'] leading-snug">
-            新增知识
-          </div>
-        </div> */}
         <Button
           onPress={() => reloadRepo(repo_name)}
           className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2"
-          startContent={
-            isLoading ? (
-              <div className="animate-spin">
-                <LoadingIcon />
-              </div>
-            ) : (
-              <RefreshIcon />
-            )
-          }
+          isLoading={isLoading}
+          startContent={isLoading ? <></> : <RefreshIcon />}
         >
           {I18N.components.Header.gengXinDaiMaCang}
         </Button>
