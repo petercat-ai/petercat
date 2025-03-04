@@ -32,8 +32,8 @@ def factory(bot_id: str):
                     space_id_list=[bot_id, repo_name],
                     question=query,
                     embedding_model_name=EmbeddingModelEnum.OPENAI,
-                    similarity_threshold=0.6,
-                    top=30,
+                    similarity_threshold=0.65,
+                    top=10,
                     metadata_filter={},
                 )
             )
