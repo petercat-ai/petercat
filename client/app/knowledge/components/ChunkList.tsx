@@ -109,8 +109,7 @@ const ChunkCard = ({ chunk }: { chunk: RAGChunk }) => {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <span className="text-gray-800 text-base font-medium font-['PingFang SC'] leading-normal">
-                  分块内容
-                </span>
+                  {I18N.components.ChunkList.fenKuaiNeiRong}</span>
               </ModalHeader>
               <ModalBody className="pb-4">
                 <div className="w-full">{chunk.context}</div>

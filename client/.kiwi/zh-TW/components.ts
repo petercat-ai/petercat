@@ -95,6 +95,8 @@ export default {
     gengXinDaiMaCang: '更新程式碼庫',
     zhiShiLieBiao: '知識列表',
     bianJiJiQiRen: '編輯機器人',
+    gengXinDaiMaCang2: '更新程式碼儲存庫失敗{val1}',
+    chengGongGengXinDai: '成功更新程式碼儲存庫',
   },
   KnowledgeList: {
       keYongZhuangTai: '可用狀態',
@@ -110,8 +112,12 @@ export default {
       shiBai: '失敗',
       ruKuZhong: '匯入中',
       dengDaiZhong: '等待中',
+      chongShiSuoXuanRen: '重試所選任務',
   },
   TaskList: {
       meiYouChaXunDao: '沒有查詢到任務',
+  },
+  ChunkList: {
+    fenKuaiNeiRong: '分塊內容',
   }
 };

@@ -95,6 +95,8 @@ export default {
     gengXinDaiMaCang: 'コードリポジトリを更新',
     zhiShiLieBiao: '知識リスト',
     bianJiJiQiRen: 'ボットを編集',
+    gengXinDaiMaCang2: 'コードリポジトリの更新に失敗しました{val1}',
+  chengGongGengXinDai: 'コードリポジトリを正常に更新しました',
   },
   KnowledgeList: {
       keYongZhuangTai: '利用可能状態',
@@ -110,8 +112,12 @@ export default {
       shiBai: '失敗',
       ruKuZhong: 'インポート中',
       dengDaiZhong: '待機中',
+      chongShiSuoXuanRen: '選択したタスクを再試行',
   },
   TaskList: {
       meiYouChaXunDao: 'タスクが見つかりません',
+  },
+  ChunkList: {
+    fenKuaiNeiRong: 'チャンクコンテンツ',
   }
 };

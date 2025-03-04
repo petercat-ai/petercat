@@ -18,13 +18,13 @@ export function KnowledgePageHeader(props: {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('成功更新代码仓库');
+      toast.success(I18N.components.Header.chengGongGengXinDai);
     }
   }, [isSuccess]);
 
   useEffect(() => {
     if (error) {
-      toast.success(`更新代码仓库失败${error}`);
+      toast.success(I18N.template(I18N.components.Header.gengXinDaiMaCang2, { val1: error }));
     }
   }, [error]);
 

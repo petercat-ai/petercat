@@ -108,8 +108,7 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
                 </div>
               }
             >
-              重试所选任务
-            </Button>
+              {I18N.components.TaskButton.chongShiSuoXuanRen}</Button>
           )}
           {data && (
             <Pagination

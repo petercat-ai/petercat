@@ -95,6 +95,8 @@ export default {
     gengXinDaiMaCang: '更新代码仓库',
     zhiShiLieBiao: '知识列表',
     bianJiJiQiRen: '编辑机器人',
+    gengXinDaiMaCang2: '更新代码仓库失败{val1}',
+    chengGongGengXinDai: '成功更新代码仓库',
   },
   KnowledgeList: {
     keYongZhuangTai: '可用状态',
@@ -110,8 +112,12 @@ export default {
     shiBai: '失败',
     ruKuZhong: '入库中',
     dengDaiZhong: '等待中',
+    chongShiSuoXuanRen: '重试所选任务',
   },
   TaskList: {
     meiYouChaXunDao: '没有查询到任务',
+  },
+  ChunkList: {
+    fenKuaiNeiRong: '分块内容',
   },
 };
