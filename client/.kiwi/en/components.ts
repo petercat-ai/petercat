@@ -113,7 +113,7 @@ export default {
       shiBai: 'Failed',
       ruKuZhong: 'Running',
       dengDaiZhong: 'Waiting',
-      hongShiSuoXuanRen: 'Retry selected tasks',
+      chongShiSuoXuanRen: 'Retry selected tasks',
   },
   TaskList: {
       meiYouChaXunDao: 'No tasks found',

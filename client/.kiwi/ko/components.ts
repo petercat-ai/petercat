@@ -113,6 +113,7 @@ export default {
       shiBai: '실패',
       ruKuZhong: '가져오는 중',
       dengDaiZhong: '대기 중',
+      chongShiSuoXuanRen: '선택한 작업 재시도',
   },
   TaskList: {
       meiYouChaXunDao: '작업을 찾을 수 없음',
