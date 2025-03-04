@@ -1,5 +1,5 @@
 import I18N from '@/app/utils/I18N';
-import { useReloadRepo, useTaskList } from '@/app/hooks/useRAG';
+import { useReloadRepo } from '@/app/hooks/useRAG';
 import RefreshIcon from '@/public/icons/RefreshIcon';
 import { Button, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,11 @@ export function KnowledgePageHeader(props: {
 
   useEffect(() => {
     if (error) {
-      toast.success(I18N.template(I18N.components.Header.gengXinDaiMaCang2, { val1: error }));
+      toast.success(
+        I18N.template?.(I18N.components.Header.gengXinDaiMaCang2, {
+          val1: error,
+        }),
+      );
     }
   }, [error]);
 
