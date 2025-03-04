@@ -24,9 +24,9 @@ def get_bot(
     llm_token_dao = LLMTokenDAO()
 
     bot = bot_dao.get_bot(input_data.bot_id)
-
+    print(f"user={user}")
     # 如果是匿名，强行走 free
-    if not getattr(user, "anonymous", False):
+    if not user or getattr(user, "anonymous"):
         llm_token = llm_token_dao.get_llm_token(free=True)
     elif bot.token_id:
         llm_token = llm_service.get_llm_token(id=bot.token_id)
