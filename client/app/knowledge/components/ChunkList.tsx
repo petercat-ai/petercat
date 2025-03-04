@@ -14,6 +14,7 @@ import {
   RAGKnowledge,
 } from '@/app/services/RAGController';
 import { useChunkList } from '@/app/hooks/useRAG';
+import MySpinner from '@/components/Spinner';
 
 const DeleteIcon = () => {
   return (
@@ -109,7 +110,8 @@ const ChunkCard = ({ chunk }: { chunk: RAGChunk }) => {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <span className="text-gray-800 text-base font-medium font-['PingFang SC'] leading-normal">
-                  {I18N.components.ChunkList.fenKuaiNeiRong}</span>
+                  {I18N.components.ChunkList.fenKuaiNeiRong}
+                </span>
               </ModalHeader>
               <ModalBody className="pb-4">
                 <div className="w-full">{chunk.context}</div>
@@ -124,25 +126,25 @@ const ChunkCard = ({ chunk }: { chunk: RAGChunk }) => {
 export default function ChunkList({ knowledge_id }: { knowledge_id: string }) {
   const [pageParams, setPageParams] = useState<PageParams<RAGChunk>>({
     page: 1,
-    page_size: 10,
+    page_size: 12,
     order_direction: 'asc',
     eq_conditions: {
       knowledge_id: knowledge_id,
     },
   });
-  const { data, isLoading, error, isFetching, refetch } =
-    useChunkList(pageParams);
+  const { data, isLoading } = useChunkList(pageParams);
   return (
     <div className="w-full flex-1 px-4 py-6 flex flex-col min-h-[calc(100vh-200px)] overflow-y-auto">
-      <div
-        className="flex-grow justify-start items-start gap-4 flex flex-wrap"
-        style={{ gap: '16px' }}
-      >
-        {(data?.items ?? []).map((item, index) => (
-          <ChunkCard key={item.chunk_id} chunk={item}></ChunkCard>
-        ))}
-      </div>
-      {/* 分页器区域 */}
+      <MySpinner loading={isLoading}>
+        <div
+          className="flex-grow justify-start items-start gap-4 flex flex-wrap"
+          style={{ gap: '16px' }}
+        >
+          {(data?.items ?? []).map((item, index) => (
+            <ChunkCard key={item.chunk_id} chunk={item}></ChunkCard>
+          ))}
+        </div>
+      </MySpinner>
       {data && (
         <div className="mt-auto pt-4">
           <Pagination

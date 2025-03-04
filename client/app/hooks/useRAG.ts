@@ -33,12 +33,14 @@ export function useKnowledgeList(
 
 export function useTaskList(
   params: PageParams<RAGTask>,
+  enabled:boolean,
   options?: Omit<UseQueryOptions<PageResponse<RAGTask>, Error>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
     queryKey: ['task', params],
     queryFn: () => getTaskList(params),
     refetchOnWindowFocus: true,
+    enabled:enabled,
     ...options
   });
 }

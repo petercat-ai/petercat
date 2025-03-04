@@ -25,10 +25,14 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pageParams, setPageParams] = useState<PageParams<RAGTask>>({
     page: 1,
-    page_size: 10,
+    page_size: 8,
     eq_conditions: { space_id: space_id },
   });
-  const { data, isLoading: isTaskLoading, refetch } = useTaskList(pageParams);
+  const {
+    data,
+    isLoading: isTaskLoading,
+    refetch,
+  } = useTaskList(pageParams, isOpen);
   const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
   const {
     isLoading: isRestartLoading,
@@ -73,7 +77,7 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
                       ...prevParams,
                       eq_conditions: newConditions,
                       page: 1,
-                      page_size: 10,
+                      page_size: 8,
                     };
                   });
                 }}
