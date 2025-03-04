@@ -75,7 +75,14 @@ async def reload_repo(
 
 
 @router.post("/knowledge/list", dependencies=[Depends(verify_rate_limit)])
-async def get_knowledge_list(params: PageParams[Knowledge]):
+async def get_knowledge_list(
+    params: PageParams[Knowledge],
+    user: Annotated[User | None, Depends(get_user)] = None,
+):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
+        )
     try:
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),
@@ -101,7 +108,14 @@ async def get_chunk_list(params: PageParams[Chunk]):
 
 
 @router.post("/task/list", dependencies=[Depends(verify_rate_limit)])
-async def get_rag_task(params: PageParams[Task]):
+async def get_rag_task(
+    params: PageParams[Task],
+    user: Annotated[User | None, Depends(get_user)] = None,
+):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
+        )
     try:
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),
@@ -114,7 +128,14 @@ async def get_rag_task(params: PageParams[Task]):
 
 
 @router.post("/task/restart", dependencies=[Depends(verify_rate_limit)])
-async def restart_rag_task(params: RestartTaskRequest):
+async def restart_rag_task(
+    params: RestartTaskRequest,
+    user: Annotated[User | None, Depends(get_user)] = None,
+):
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
+        )
     try:
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),
