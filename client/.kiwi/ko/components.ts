@@ -91,4 +91,34 @@ export default {
     tOKEN: '토큰 관리',
     dengLu: '로그인',
   },
+  Header: {
+    gengXinDaiMaCang: '코드 저장소 업데이트',
+    zhiShiLieBiao: '지식 목록',
+    bianJiJiQiRen: '봇 편집',
+    gengXinDaiMaCang2: '코드 저장소 업데이트 실패 {val1}',
+    chengGongGengXinDai: '코드 저장소가 성공적으로 업데이트되었습니다',
+  },
+  KnowledgeList: {
+      keYongZhuangTai: '사용 가능 상태',
+      daXiao: '크기',
+      xiangLiangHuaMoXing: '벡터 모델',
+      zhiShiLaiYuan: '지식 출처',
+      leiXing: '유형',
+      zhiShiMing: '지식명',
+      chongShiSuoXuanRen: '선택한 작업 재시도',
+  },
+  TaskButton: {
+      chaKanRenWu: '작업 보기',
+      chongXinZhiXing: '재실행',
+      shiBai: '실패',
+      ruKuZhong: '가져오는 중',
+      dengDaiZhong: '대기 중',
+      chongShiSuoXuanRen: '선택한 작업 재시도',
+  },
+  TaskList: {
+      meiYouChaXunDao: '작업을 찾을 수 없음',
+  },
+  ChunkList: {
+    fenKuaiNeiRong: '청크 내용',
+  }
 };

@@ -5,8 +5,8 @@ from langchain_openai import ChatOpenAI
 
 from agent.llm import register_llm_client
 from agent.llm.base import BaseLLMClient
-from petercat_utils.data_class import ImageRawURLContentBlock, MessageContent
-from petercat_utils.utils.env import get_env_variable
+from core.type_class.data_class import ImageRawURLContentBlock, MessageContent
+from utils.env import get_env_variable
 
 GEMINI_API_KEY = get_env_variable("GEMINI_API_KEY")
 

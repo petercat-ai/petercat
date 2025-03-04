@@ -4,7 +4,7 @@ from github import Github, Auth
 from github import GithubException
 from agent.bot.get_bot import get_bot_by_id
 from core.dao.repositoryConfigDAO import RepositoryConfigDAO
-from petercat_utils.data_class import ChatData, Message, TextContentBlock
+from core.type_class.data_class import ChatData, Message, TextContentBlock
 from agent.prompts.issue_helper import (
     generate_issue_comment_prompt,
     generate_issue_prompt,

@@ -3,7 +3,7 @@ from auth.clients import get_auth_client
 from auth.clients.base import BaseAuthClient
 from core.models.user import User
 
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 
 AUTH0_DOMAIN = get_env_variable("AUTH0_DOMAIN")
 

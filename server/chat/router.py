@@ -7,12 +7,12 @@ from agent.bot import Bot, bot_builder
 from agent.bot.get_bot import get_bot
 from core.models.user import User
 from core.service.user_token_usage import create_token_recorder
-from petercat_utils.data_class import ChatData
 from toolz import compose
 
 from agent import qa_chat
 from auth.rate_limit import verify_rate_limit
 from auth.get_user_info import get_user, get_user_id
+from core.type_class.data_class import ChatData
 
 router = APIRouter(
     prefix="/api/chat",
@@ -36,7 +36,6 @@ def run_qa_chat(
     user: Annotated[User | None, Depends(get_user)] = None,
     bot: Annotated[Bot | None, Depends(get_bot)] = None,
 ):
-
     auth_token = (
         Auth.Token(user.access_token) if getattr(user, "access_token", None) else None
     )

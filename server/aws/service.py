@@ -1,7 +1,7 @@
 import base64
 import hashlib
 from botocore.signers import CloudFrontSigner
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 import rsa
 from datetime import datetime, timedelta
 

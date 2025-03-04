@@ -1,0 +1,4 @@
+pytest-cov
+pytest
+pytest-asyncio
+twine

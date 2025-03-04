@@ -110,7 +110,6 @@ The project requires environment variables to be set:
 | `LLM_TOKEN_PUBLIC_NAME` | Optional | The name of the LLM signing public key managed by AWS. If configured, Petercat will use the RSA algorithm to manage the user's LLM Token. | `prod/petercat/llm/pub` |
 | `STATIC_KEYPAIR_ID` | Optional | The Key Pair ID for AWS CloudFront. If configured, CloudFront signed URLs will be used to protect your resources. For more information, see the [AWS documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html). | `APKxxxxxxxx` |
 | `S3_TEMP_BUCKET_NAME`      | Required                                   | AWS S3 bucket for temporary image files                 | `xxx-temp`                                  |
-| `SQS_QUEUE_URL`            | Required                                   | AWS SQS queue URL                             | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **Supabase Related Environment Variables**                              |
 | `SUPABASE_URL`             | Required                                   | Supabase service URL, found [here](https://supabase.com/dashboard/project/_/settings/database) | `https://***.supabase.co`                   |
 | `SUPABASE_SERVICE_KEY`     | Required                                   | Supabase service key, found [here](https://supabase.com/dashboard/project/_/settings/database) | `{{SUPABASE_SERVICE_KEY}}`                  |
@@ -132,7 +131,9 @@ The project requires environment variables to be set:
 | `RATE_LIMIT_ENABLED`       | Optional                                   | Whether rate limiting is enabled               | `True`                                      |
 | `RATE_LIMIT_REQUESTS`      | Optional                                   | Number of requests for rate limiting           | `100`                                       |
 | `RATE_LIMIT_DURATION`      | Optional                                   | Duration for rate limiting (in minutes)        | `1`                                         |
-
+| **RAG server config** |
+| `WHISKER_API_URL` | Required | WHISKER RAG Server Path | `http://....` |
+| `WHISKER_API_KEY` | Required | WHISKER RAG Server KEY | `sk-xxxx` |
 ## 🤝 Contributing
 
 > PeterCat uses yarn as the package manager.

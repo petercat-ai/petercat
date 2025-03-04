@@ -3,7 +3,7 @@ from github import Auth
 from agent.base import AgentBuilder
 from agent.bot import Bot
 
-from petercat_utils.data_class import ChatData
+from core.type_class.data_class import ChatData
 
 from agent.tools import issue, pull_request, auth, sourcecode, knowledge, git_info
 

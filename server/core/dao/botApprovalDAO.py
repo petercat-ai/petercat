@@ -2,7 +2,8 @@ from core.dao.BaseDAO import BaseDAO
 from core.models.bot_approval import BotApproval
 from supabase.client import Client
 
-from petercat_utils.db.client.supabase import get_client
+from utils.supabase import get_client
+
 
 
 class BotApprovalDAO(BaseDAO):

@@ -1,8 +1,7 @@
 from abc import abstractmethod
 from typing import Any, Dict, List, Optional
 from langchain_core.language_models import BaseChatModel
-
-from petercat_utils.data_class import MessageContent
+from core.type_class.data_class import MessageContent
 
 
 class BaseLLMClient:

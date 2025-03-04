@@ -9,16 +9,13 @@ import {
   getBotDetail,
   getBotInfoByRepoName,
   getBotList,
-  getChunkList,
   getGitAvatarByRepoName,
-  getRagTask,
   getUserPeterCatAppRepos,
   publicBot,
   unPublicBot,
   updateBot,
 } from '@/app/services/BotsController';
 import {
-  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
@@ -127,37 +124,6 @@ export function useBotConfigGenerator() {
   };
 }
 
-export const useBotRAGChunkList = (
-  repoName: string,
-  page_size: number,
-  page_number: number,
-  enabled: boolean = true,
-  refetchInterval: boolean = false,
-) => {
-  return useQuery({
-    queryKey: [`rag.chunk.list`, page_number, repoName],
-    queryFn: async () => getChunkList(repoName, page_size, page_number),
-    select: (data) => data,
-    enabled,
-    retry: true,
-    placeholderData: keepPreviousData,
-    refetchInterval: refetchInterval ? 5 * 1000 : undefined,
-  });
-};
-
-export const useGetBotRagTask = (
-  repoName: string,
-  refetchInterval: boolean = true,
-) => {
-  return useQuery({
-    queryKey: [`rag.task`, repoName],
-    queryFn: async () => getRagTask(repoName),
-    select: (data) => data,
-    enabled: !!repoName,
-    retry: true,
-    refetchInterval: refetchInterval ? 3 * 1000 : undefined,
-  });
-};
 
 export function usePublicBot() {
   const mutation = useMutation({

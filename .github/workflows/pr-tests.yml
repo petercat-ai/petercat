@@ -6,7 +6,6 @@ on:
     paths:
       - .github/workflows/**
       - server/**
-      - petercat_utils/**
       - subscriber/**
 
 permissions:
@@ -52,6 +51,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install -r requirements-dev.txt
           pip install ruff
           pip install pytest pytest-cov
 

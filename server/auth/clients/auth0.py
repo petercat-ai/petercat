@@ -4,7 +4,7 @@ import secrets
 
 from fastapi import Request
 from auth.clients.base import BaseAuthClient
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth
 

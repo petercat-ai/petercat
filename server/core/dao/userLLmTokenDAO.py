@@ -2,8 +2,8 @@ import logging
 
 from core.dao.BaseDAO import BaseDAO
 from supabase.client import Client
-from petercat_utils.db.client.supabase import get_client
 from core.models.user_llm_token import UserLLMToken
+from utils.supabase import get_client
 
 logger = logging.getLogger()
 logger.setLevel("INFO")

@@ -1,6 +1,6 @@
 from typing import AsyncIterator
 from agent.llm.clients.openai import OpenAIClient
-from petercat_utils.data_class import ChatData
+from core.type_class.data_class import ChatData
 
 from agent.base import AgentBuilder, dict_to_sse
 from agent.prompts.bot_builder import generate_prompt_by_user_id

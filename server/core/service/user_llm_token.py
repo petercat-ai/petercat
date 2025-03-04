@@ -2,7 +2,7 @@ import base64
 from typing import Optional
 
 from pydantic import BaseModel
-from petercat_utils import get_env_variable
+from utils.env import get_env_variable
 from core.dao.userLLmTokenDAO import UserLLMTokenDAO
 from core.models.user_llm_token import UserLLMToken
 
@@ -19,7 +19,7 @@ class CreateUserLLMTokenVO(BaseModel):
   slug: Optional[str] = None
   llm: str
   token: Optional[str] = None
-  
+
 class UserLLMTokenVO(CreateUserLLMTokenVO):
   id: str
 

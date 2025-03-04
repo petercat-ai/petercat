@@ -91,4 +91,33 @@ export default {
     tOKEN: 'トークン管理',
     dengLu: 'ログイン',
   },
+  Header: {
+    gengXinDaiMaCang: 'コードリポジトリを更新',
+    zhiShiLieBiao: '知識リスト',
+    bianJiJiQiRen: 'ボットを編集',
+    gengXinDaiMaCang2: 'コードリポジトリの更新に失敗しました{val1}',
+    chengGongGengXinDai: 'コードリポジトリを正常に更新しました',
+  },
+  KnowledgeList: {
+    keYongZhuangTai: '利用可能状態',
+    daXiao: 'サイズ',
+    xiangLiangHuaMoXing: 'ベクトルモデル',
+    zhiShiLaiYuan: '知識ソース',
+    leiXing: 'タイプ',
+    zhiShiMing: '知識名',
+  },
+  TaskButton: {
+    chaKanRenWu: 'タスク表示',
+    chongXinZhiXing: '再実行',
+    shiBai: '失敗',
+    ruKuZhong: 'インポート中',
+    dengDaiZhong: '待機中',
+    chongShiSuoXuanRen: '選択したタスクを再試行',
+  },
+  TaskList: {
+    meiYouChaXunDao: 'タスクが見つかりません',
+  },
+  ChunkList: {
+    fenKuaiNeiRong: 'チャンクコンテンツ',
+  }
 };
