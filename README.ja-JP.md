@@ -85,7 +85,6 @@
 | `LLM_TOKEN_PUBLIC_NAME` | オプション | AWS が管理する LLM 署名公開キーの名前。設定されている場合、Petercat は RSA アルゴリズムを使用してユーザーの LLM トークンを管理します。 | `prod/petercat/llm/pub` |
 | `STATIC_KEYPAIR_ID` | オプション | AWS CloudFront のキー ID。設定されている場合、CloudFront の署名付き URL が使用され、リソースが保護されます。詳細については、[AWS ドキュメント](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)を参照してください。 | `APKxxxxxxxx` |
 | `S3_TEMP_BUCKET_NAME` | 必須 | 一時的な画像ファイル用の AWS S3 バケット | `xxx-temp` |
-| `SQS_QUEUE_URL` | 必須 | AWS SQS キュー URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **Supabase 関連環境変数** |
 | `SUPABASE_URL` | 必須 | Supabase サービス URL、[こちら](https://supabase.com/dashboard/project/_/settings/database)で見つけることができます | `https://***.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | 必須 | Supabase サービスキー、[こちら](https://supabase.com/dashboard/project/_/settings/database)で見つけることができます | `{{SUPABASE_SERVICE_KEY}}` |

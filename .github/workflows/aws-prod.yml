@@ -67,7 +67,6 @@ jobs:
               ParameterKey=APIIdentifier,ParameterValue=${{ secrets.API_IDENTIFIER }} \
               ParameterKey=FastAPISecretKey,ParameterValue=${{ secrets.FASTAPI_SECRET_KEY }} \
               ParameterKey=SQSQueueName,ParameterValue=${{ secrets.SQS_QUEUE_NAME }} \
-              ParameterKey=SQSQueueUrl,ParameterValue=${{ secrets.SQS_QUEUE_URL }} \
               ParameterKey=GitHubToken,ParameterValue=${{ secrets.X_GITHUB_TOKEN }} \
               ParameterKey=Auth0Domain,ParameterValue=${{ secrets.AUTH0_DOMAIN }} \
               ParameterKey=Auth0ClientId,ParameterValue=${{ secrets.AUTH0_CLIENT_ID }} \

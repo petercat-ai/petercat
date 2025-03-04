@@ -105,7 +105,6 @@
 | `LLM_TOKEN_PUBLIC_NAME` | 可选 | AWS 托管的 llm 签名公钥名称。如果配置了该项，petercat 将使用 RSA 算法托管用户的 LLM Token | `prod/petercat/llm/pub` |
 | `STATIC_KEYPAIR_ID` | 可选 | AWS CloudFront 的 Key Pair ID。如果配置了该项，将使用 CloudFront 签名 URL 来保护你的资源。更多信息请参阅 [AWS 文档](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-trusted-signers.html)。 | `APKxxxxxxxx` |
 | `S3_TEMP_BUCKET_NAME` | 可选 | 用于托管 AWS 临时图片文件 S3 的 bucket | `xxx-temp` |
-| `SQS_QUEUE_URL` | 必选 | AWS SQS 消息队列 URL | `https://sqs.ap-northeast-1.amazonaws.com/xxx/petercat-task-queue` |
 | **SUPABASE 相关 env** |
 | `SUPABASE_URL` | 必选 | supabase 服务的 URL，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到 | `https://***.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | 必选 | supabase 服务密钥，可以在[这里](https://supabase.com/dashboard/project/_/settings/database)找到 | `{{SUPABASE_SERVICE_KEY}}` |
