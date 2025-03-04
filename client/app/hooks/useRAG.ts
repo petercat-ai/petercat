@@ -7,7 +7,8 @@ import {
   getKnowledgeList,
   getChunkList,
   RAGChunk,
-  reloadRepo
+  reloadRepo,
+  restartTask
 } from '@/app/services/RAGController';
 import {
   useQuery,
@@ -62,6 +63,19 @@ export function useReloadRepo() {
   return {
     data: mutation.data,
     reloadRepo: mutation.mutate,
+    isLoading: mutation.isPending,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+  };
+}
+
+export function useRestartTask() {
+  const mutation = useMutation({
+    mutationFn: restartTask,
+  });
+  return {
+    data: mutation.data,
+    restartTask: mutation.mutate,
     isLoading: mutation.isPending,
     error: mutation.error,
     isSuccess: mutation.isSuccess,

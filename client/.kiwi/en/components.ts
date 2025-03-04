@@ -109,7 +109,7 @@ export default {
       chaKanRenWu: 'View Task',
       chongXinZhiXing: 'Retry',
       shiBai: 'Failed',
-      ruKuZhong: 'Importing',
+      ruKuZhong: 'Running',
       dengDaiZhong: 'Waiting',
   },
   TaskList: {

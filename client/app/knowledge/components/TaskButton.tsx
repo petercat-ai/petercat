@@ -7,10 +7,13 @@ import {
   PopoverTrigger,
   Spinner,
 } from '@nextui-org/react';
-import { useState } from 'react';
-import { useTaskList } from '@/app/hooks/useRAG';
+import { useEffect, useState } from 'react';
+import { useRestartTask, useTaskList } from '@/app/hooks/useRAG';
 import { TaskList } from './TaskList';
 import { Pagination } from '@nextui-org/react';
+import LoadingIcon from '@/public/icons/LoadingIcon';
+import { PageParams, RAGTask } from '@/app/services/RAGController';
+import MySpinner from '@/components/Spinner';
 
 const statusOptions = [
   { value: 'pending', label: I18N.components.TaskButton.dengDaiZhong },
@@ -21,12 +24,23 @@ const statusOptions = [
 
 const TaskButton = ({ space_id }: { space_id: string }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pageParams, setPageParams] = useState({
+  const [pageParams, setPageParams] = useState<PageParams<RAGTask>>({
     page: 1,
     page_size: 10,
     eq_conditions: { space_id: space_id },
   });
-  const { data, isLoading, error, refetch } = useTaskList(pageParams);
+  const { data, isLoading: isTaskLoading, refetch } = useTaskList(pageParams);
+  const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
+  const {
+    isLoading: isRestartLoading,
+    restartTask,
+    isSuccess,
+  } = useRestartTask();
+
+  useEffect(() => {
+    refetch();
+    setSelectedTaskIds([]);
+  }, [isSuccess]);
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement="bottom">
       <PopoverTrigger>
@@ -35,58 +49,72 @@ const TaskButton = ({ space_id }: { space_id: string }) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent style={{ maxHeight: '400px', overflowY: 'auto' }}>
-        <div className="p-4 w-[480px]">
-          <div className="mb-4">
-            <div className="flex flex-wrap gap-4">
-              {statusOptions.map((option) => (
-                <Checkbox
-                  key={option.value}
-                  value={option.value}
-                  isSelected={
-                    // @ts-ignore
-                    (pageParams.eq_conditions?.status ?? '') === option.value
-                  }
-                  color="default"
-                  onChange={() => {
-                    setPageParams((prevParams) => {
-                      const newConditions = { ...prevParams.eq_conditions };
-                      // @ts-ignore
-                      if (option.value === prevParams.eq_conditions?.status) {
-                        // @ts-ignore
-                        delete newConditions.status;
-                      } else {
-                        // @ts-ignore
-                        newConditions.status = option.value;
-                      }
-                      return {
-                        ...prevParams,
-                        eq_conditions: newConditions,
-                        page: 1,
-                        page_size: 10,
-                      };
-                    });
-                  }}
-                >
-                  {option.label}
-                </Checkbox>
-              ))}
-            </div>
+        <div className="p-4 w-[480px] flex flex-col gap-4">
+          <div className="flex flex-wrap gap-4 justify-center">
+            {statusOptions.map((option) => (
+              <Checkbox
+                key={option.value}
+                value={option.value}
+                isSelected={
+                  (pageParams.eq_conditions?.status ?? '') === option.value
+                }
+                color="default"
+                onChange={() => {
+                  setPageParams((prevParams) => {
+                    const newConditions = { ...prevParams.eq_conditions };
+                    if (option.value === prevParams.eq_conditions?.status) {
+                      delete newConditions.status;
+                    } else {
+                      newConditions.status = option.value;
+                    }
+                    return {
+                      ...prevParams,
+                      eq_conditions: newConditions,
+                      page: 1,
+                      page_size: 10,
+                    };
+                  });
+                }}
+              >
+                {option.label}
+              </Checkbox>
+            ))}
           </div>
-
-          {isLoading ? (
-            <div className="flex justify-center">
-              <Spinner color="default" />
-            </div>
-          ) : (
+          <MySpinner loading={isTaskLoading || isRestartLoading}>
             <TaskList
               tasks={data?.items || []}
-              onClose={() => setIsOpen(false)}
+              handleCheckBoxChange={(
+                id: string,
+                status: 'success' | 'failed' | 'running' | 'pending',
+                isSelected: boolean,
+              ) => {
+                if (isSelected && status === 'failed') {
+                  setSelectedTaskIds((prevSelected) => [...prevSelected, id]);
+                } else {
+                  setSelectedTaskIds((prevSelected) =>
+                    prevSelected.filter((taskId) => taskId !== id),
+                  );
+                }
+              }}
             />
+          </MySpinner>
+          {selectedTaskIds.length > 0 && (
+            <Button
+              onPress={() => restartTask(selectedTaskIds)}
+              className="bg-[#3F3F46] text-[#FFFFFF] rounded-full px-4 py-2"
+              startContent={
+                <div className="animate-spin">
+                  <LoadingIcon />
+                </div>
+              }
+            >
+              重试所选任务
+            </Button>
           )}
-          {(data?.total_pages ?? 0) > 1 && (
+          {data && (
             <Pagination
-              className="flex justify-center items-center mt-[60px] p-[0] w-full"
-              total={data?.total_pages || 1}
+              className="flex justify-center items-center p-[0] w-full mt-[16px]"
+              total={data.total_pages}
               page={pageParams.page}
               size="sm"
               onChange={(page) => {

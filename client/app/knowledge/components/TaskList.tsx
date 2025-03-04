@@ -1,6 +1,7 @@
 import I18N from '@/app/utils/I18N';
 import { RAGTask } from '@/app/services/RAGController';
 import LoadingIcon from '@/public/icons/LoadingIcon';
+import { Checkbox } from '@nextui-org/react';
 
 const SuccessIcon = () => {
   return (
@@ -30,23 +31,49 @@ const FailedIcon = () => {
   );
 };
 interface SubTaskProps {
-  title: string;
+  task_id: string;
   datetime: string;
   error_message?: string;
   status: 'success' | 'failed' | 'running' | 'pending';
+  handleCheckBoxChange?: (
+    id: string,
+    status: 'success' | 'failed' | 'running' | 'pending',
+    isSelected: boolean,
+  ) => void;
 }
 export const SubTask: React.FC<SubTaskProps> = ({
-  title,
+  task_id,
   datetime,
   error_message,
   status,
+  handleCheckBoxChange,
 }) => {
   const getStatusIcon = () => {
     switch (status) {
       case 'success':
         return <SuccessIcon />;
       case 'failed':
-        return <FailedIcon></FailedIcon>;
+        return (
+          <Checkbox
+            onValueChange={(isSelected) => {
+              handleCheckBoxChange?.(task_id, status, isSelected);
+            }}
+            classNames={{
+              base: 'border-red-400',
+              wrapper: [
+                'before:border-red-400',
+                'group-data-[selected=true]:!bg-red-600', // 添加 !important
+                'group-data-[selected=true]:!border-red-600',
+                'group-data-[hover=true]:border-red-500',
+                'group-data-[hover=true]:before:border-red-500',
+                'group-data-[focus=true]:!ring-red-600', // 修改焦点环的颜色
+                'group-data-[focus-visible=true]:!ring-red-600',
+              ],
+              icon: 'text-white',
+            }}
+            color="danger" // 添加 color 属性
+          />
+        );
       case 'running':
         return <LoadingIcon />;
       default:
@@ -79,7 +106,7 @@ export const SubTask: React.FC<SubTaskProps> = ({
           <div
             className={`flex-1 ${getTextStyle()} text-xs font-medium font-['PingFang SC'] leading-tight`}
           >
-            {title}
+            {task_id}
           </div>
           <div
             className={`opacity-60 text-right ${getTextStyle()} text-xs font-medium font-['PingFang SC'] leading-tight`}
@@ -100,25 +127,32 @@ export const SubTask: React.FC<SubTaskProps> = ({
 
 interface TaskListProps {
   tasks: RAGTask[];
-  onClose?: () => void;
-  title?: string;
+  handleCheckBoxChange: (
+    id: string,
+    status: 'success' | 'failed' | 'running' | 'pending',
+    isSelected: boolean,
+  ) => void;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
+export const TaskList: React.FC<TaskListProps> = ({
+  tasks,
+  handleCheckBoxChange,
+}) => {
   return (
     <div className="bg-white flex flex-col gap-1">
       {tasks.length === 0 ? (
-        <div className="h-[100px] flex items-center justify-center text-gray-500">
+        <div className="h-[300px] flex items-center justify-center text-gray-500">
           {I18N.components.TaskList.meiYouChaXunDao}
         </div>
       ) : (
         tasks.map((task) => (
           <SubTask
             key={task.task_id}
-            title={`${task.task_id}`}
+            task_id={task.task_id}
             datetime={task.created_at}
             error_message={task.error_message}
             status={task.status}
+            handleCheckBoxChange={handleCheckBoxChange}
           />
         ))
       )}

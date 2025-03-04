@@ -1,5 +1,5 @@
 import json
-from typing import Annotated
+from typing import Annotated, List
 
 from fastapi import APIRouter, Depends
 from openai import BaseModel
@@ -29,6 +29,10 @@ router = APIRouter(
 
 class ReloadRepoRequest(BaseModel):
     repo_name: str
+
+
+class RestartTaskRequest(BaseModel):
+    task_id_list: List[str]
 
 
 @router.post("/knowledge/repo/reload", dependencies=[Depends(verify_rate_limit)])
@@ -97,6 +101,19 @@ async def get_rag_task(params: PageParams[Task]):
             token=get_env_variable("WHISKER_API_KEY"),
         )
         res = await api_client.task.get_task_list(**params.model_dump())
+        return res
+    except Exception as e:
+        return json.dumps({"success": False, "message": str(e)})
+
+
+@router.post("/task/restart", dependencies=[Depends(verify_rate_limit)])
+async def restart_rag_task(params: RestartTaskRequest):
+    try:
+        api_client = APIClient(
+            base_url=get_env_variable("WHISKER_API_URL"),
+            token=get_env_variable("WHISKER_API_KEY"),
+        )
+        res = await api_client.task.restart_task(params.task_id_list)
         return res
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})

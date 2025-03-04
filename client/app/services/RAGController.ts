@@ -78,3 +78,9 @@ export async function reloadRepo(repo_name: string): Promise<void> {
     repo_name: repo_name,
   });
 }
+
+export async function restartTask(task_id_list: string[]): Promise<void> {
+  await axios.post(`${apiDomain}/api/rag/task/restart`, {
+    task_id_list: task_id_list,
+  });
+}
