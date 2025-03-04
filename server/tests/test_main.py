@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
-from env import ENVIRONMENT, WEB_URL, API_URL
-from main import app
+from server.env import ENVIRONMENT, WEB_URL, API_URL
+from server.main import app
 
 client = TestClient(app)
 
