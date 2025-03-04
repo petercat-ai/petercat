@@ -84,30 +84,6 @@ const BotCard = (props: { bot: BotInfo; userId: string }) => {
   const onDelete = (id: string) => {
     deleteBot(id);
   };
-  // const renderTaskStatusIcon = (taskList: RagTask[]) => {
-  //   const status = taskList.find((task) => task.status === TaskStatus.ERROR)
-  //     ? TaskStatus.ERROR
-  //     : taskList.every((task) =>
-  //         [
-  //           TaskStatus.CANCELLED,
-  //           TaskStatus.COMPLETED,
-  //           TaskStatus.ERROR,
-  //         ].includes(task.status as TaskStatus),
-  //       )
-  //     ? TaskStatus.COMPLETED
-  //     : 'others';
-  //   if (status === TaskStatus.COMPLETED) {
-  //     return <KnowledgeTaskCompleteIcon />;
-  //   }
-  //   if (status === TaskStatus.ERROR) {
-  //     return <ErrorBadgeIcon />;
-  //   }
-  //   return (
-  //     <span className="animate-spinner-ease-spin">
-  //       <KnowledgeTaskRunningIcon />
-  //     </span>
-  //   );
-  // };
 
   return (
     <>
