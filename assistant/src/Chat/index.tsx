@@ -1,5 +1,5 @@
 import { Bubble, useXAgent, useXChat, XStream } from '@ant-design/x';
-import { MessageInfo } from '@ant-design/x/es/useXChat';
+import { MessageInfo } from '@ant-design/x/es/use-x-chat';
 import { Flex, GetProp, theme } from 'antd';
 import { isEmpty, isEqual } from 'lodash';
 import React, { memo, useEffect, useRef, useState, type FC } from 'react';
