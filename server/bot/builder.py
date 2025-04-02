@@ -4,8 +4,9 @@ from github import Github
 from core.models.user import User
 from whiskerrag_client import APIClient
 from whiskerrag_types.model import (
-    KnowledgeCreate,
-    KnowledgeSplitConfig,
+    GithubRepoCreate,
+    BaseCharSplitConfig,
+    EmbeddingModelEnum,
     KnowledgeSourceEnum,
     KnowledgeTypeEnum,
     GithubRepoSourceConfig,
@@ -81,17 +82,19 @@ async def bot_builder(
                 )
                 await api_client.knowledge.add_knowledge(
                     [
-                        KnowledgeCreate(
-                            source_type=KnowledgeSourceEnum.GITHUB_REPO,
-                            knowledge_type=KnowledgeTypeEnum.FOLDER,
+                        GithubRepoCreate(
                             space_id=repo_name,
+                            knowledge_type=KnowledgeTypeEnum.FOLDER,
                             knowledge_name=repo_name,
+                            metadata={},
+                            embedding_model_name=EmbeddingModelEnum.OPENAI,
+                            source_type=KnowledgeSourceEnum.GITHUB_REPO,
                             source_config=GithubRepoSourceConfig(
                                 repo_name=repo_name, auth_token=user.access_token
                             ),
-                            split_config=KnowledgeSplitConfig(
-                                chunk_size=500,
-                                chunk_overlap=100,
+                            split_config=BaseCharSplitConfig(
+                                chunk_size=1500,
+                                chunk_overlap=200,
                             ),
                         )
                     ]
