@@ -106,7 +106,7 @@ async def get_knowledge_list(
             token=get_env_variable("WHISKER_API_KEY"),
         )
         res = await api_client.knowledge.get_knowledge_list(**params.model_dump())
-        return res
+        return res.model_dump()
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
@@ -119,7 +119,7 @@ async def get_chunk_list(params: PageParams[Chunk]):
             token=get_env_variable("WHISKER_API_KEY"),
         )
         res = await api_client.chunk.get_chunk_list(**params.model_dump())
-        return res
+        return res.model_dump()
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
@@ -139,7 +139,7 @@ async def get_rag_task(
             token=get_env_variable("WHISKER_API_KEY"),
         )
         res = await api_client.task.get_task_list(**params.model_dump())
-        return res
+        return res.model_dump()
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 
@@ -159,7 +159,7 @@ async def restart_rag_task(
             token=get_env_variable("WHISKER_API_KEY"),
         )
         res = await api_client.task.restart_task(params.task_id_list)
-        return res
+        return res.model_dump()
     except Exception as e:
         return json.dumps({"success": False, "message": str(e)})
 

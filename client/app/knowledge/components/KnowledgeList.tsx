@@ -24,8 +24,7 @@ export default function KnowledgeList({ repo_name }: { repo_name: string }) {
     },
   });
 
-  const { data, isLoading, error, isFetching, refetch } =
-    useKnowledgeList(pageParams);
+  const { data, isLoading } = useKnowledgeList(pageParams);
   return (
     <div className="w-full flex-1 px-4 py-6 flex flex-col min-h-[calc(100vh-200px)]">
       <MySpinner loading={isLoading}>

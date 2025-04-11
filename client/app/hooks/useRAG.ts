@@ -14,10 +14,9 @@ import {
   useQuery,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-
-
-
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 export function useKnowledgeList(
   params: PageParams<RAGKnowledge>,
