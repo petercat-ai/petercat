@@ -51,7 +51,6 @@ export default function KnowledgeList({ repo_name }: { repo_name: string }) {
                 <></>
               ) : (
                 data.items
-                  .filter((item) => item.knowledge_type !== 'folder')
                   .map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>

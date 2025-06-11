@@ -2,6 +2,7 @@ import json
 from typing import Annotated, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from github import Github
 from openai import BaseModel
 from pydantic import Field
 from auth.get_user_info import get_user
@@ -18,7 +19,7 @@ from whiskerrag_types.model import (
     KnowledgeSourceEnum,
     GithubRepoSourceConfig,
     EmbeddingModelEnum,
-    BaseCharSplitConfig,
+    GithubRepoParseConfig,
     RetrievalChunk,
     RetrievalBySpaceRequest
 )
@@ -60,26 +61,44 @@ async def reload_repo(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Github Login needed"
         )
     try:
+        # check api_url and api_key is set
+        if not get_env_variable("WHISKER_API_URL") or not get_env_variable("WHISKER_API_KEY"):
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="WHISKER_API_URL or WHISKER_API_KEY is not set"
+            )
         api_client = APIClient(
             base_url=get_env_variable("WHISKER_API_URL"),
             token=get_env_variable("WHISKER_API_KEY"),
         )
+        github_client = Github(user.access_token)
+        repo = github_client.get_repo(request.repo_name)
+        # use gitpython to get the latest commit sha
+        commit = repo.get_commits()[0]
+        file_sha = commit.sha
         res = await api_client.knowledge.add_knowledge(
             [
                  GithubRepoCreate(
                             source_type=KnowledgeSourceEnum.GITHUB_REPO,
-                            knowledge_type=KnowledgeTypeEnum.FOLDER,
-                     
+                            knowledge_type=KnowledgeTypeEnum.GITHUB_REPO,
                             space_id=request.repo_name,
                             knowledge_name=request.repo_name,
                             embedding_model_name=EmbeddingModelEnum.OPENAI,
                             source_config=GithubRepoSourceConfig(
-                                repo_name=request.repo_name, auth_token=user.access_token
+                                repo_name=request.repo_name,
+                                auth_token=user.access_token,
+                                url="https://github.com"
                             ),
-                            split_config=BaseCharSplitConfig(
+                            split_config=GithubRepoParseConfig(
+                                type="github_repo",
+                                include_patterns=["*.md", "*.txt","*.ts","*.tsx","*.mdx"],
+                                ignore_patterns=[".git", ".DS_Store", "Thumbs.db", "desktop.ini"],
+                                use_gitignore=True,
+                                use_default_ignore=True,
                                 chunk_size=1500,
                                 chunk_overlap=200,
                             ),
+                            file_sha=file_sha,
                         )
             ]
         )

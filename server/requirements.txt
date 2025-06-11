@@ -26,4 +26,5 @@ requests
 httpx==0.27.2
 urllib3>=2.2.2
 toolz
-whiskerrag>=0.0.29
+# -e ../../whiskerrag_toolkit
+whiskerrag>=0.1.3
