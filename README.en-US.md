@@ -122,7 +122,8 @@ The project requires environment variables to be set:
 | `OPENAI_API_KEY`           | Required                                   | OpenAI API key                                 | `sk-xxxx`                                   |
 | `OPENAI_BASE_URL`          | Optional                                   | Base URL for API requests. Only specify if using a proxy or service emulator.     | `https://api.openai.com/v1`
 | `GEMINI_API_KEY`           | Optional                                   | Gemini API key                                 | `xxxx`                                      |
-| `TAVILY_API_KEY`           | Optional                                   | Tavily API key                                 | `tvly-xxxxx`                                |
+| `TAVILY_API_KEY`           | Optional                                   | Tavily API key; selects Tavily when search provider is `auto` | `tvly-xxxxx` |
+| `WEB_SEARCH_PROVIDER` | Optional | Web search provider: `auto` (default), `parallel`, `tavily`, or `none` | `auto` |
 | **GitHub App Registration Environment Variables**                       |
 | `X_GITHUB_APP_ID`          | Optional                                   | GitHub App ID                                  | `123456`                                    |
 | `X_GITHUB_APPS_CLIENT_ID`  | Optional                                   | GitHub App Client ID                           | `Iv1.xxxxxxx`                               |
@@ -134,6 +135,28 @@ The project requires environment variables to be set:
 | **RAG server config** |
 | `WHISKER_API_URL` | Required | WHISKER RAG Server Path | `http://....` |
 | `WHISKER_API_KEY` | Required | WHISKER RAG Server KEY | `sk-xxxx` |
+### Web search
+
+When web search is enabled, installations without a `TAVILY_API_KEY` use
+[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+at `https://search.parallel.ai/mcp`. It provides web search in Fast mode and
+page fetching without an account or API key. The agent searches its repository
+knowledge first and can then search the web and read source pages. Anonymous
+usage has service rate limits; tool errors are returned to the agent.
+
+`WEB_SEARCH_PROVIDER=auto` preserves Tavily when a Tavily key is configured.
+Set `WEB_SEARCH_PROVIDER=parallel` to choose Parallel explicitly, `tavily` to
+require Tavily, or `none` to disable web search. The existing
+`AgentBuilder(enable_tavily=False)` also disables both providers. A failed
+provider does not trigger a switch to another provider. Configuring a Parallel
+API key is not supported by this anonymous integration.
+
+Search queries and fetched URLs are sent to the selected provider. Parallel
+requests have a 30-second total timeout and support cancellation. PeterCat does
+not send the optional Parallel conversation identifier because its chat API does
+not expose a persistent conversation ID. Install server dependencies with
+`pip install -r server/requirements.txt` after updating.
+
 ## 🤝 Contributing
 
 > PeterCat uses yarn as the package manager.

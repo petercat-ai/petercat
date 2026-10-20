@@ -21,11 +21,10 @@ from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputP
 from langchain.prompts import MessagesPlaceholder
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
+from agent.tools.parallel_search import create_parallel_tools
 from core.type_class.data_class import ChatData, Message
 from utils.env import get_env_variable
 
-
-TAVILY_API_KEY = get_env_variable("TAVILY_API_KEY")
 
 logger = logging.getLogger()
 
@@ -56,7 +55,7 @@ class AgentBuilder:
         @class `Builde AgentExecutor based on tools and prompt`
         @param prompt: str
         @param tools: Dict[str, Callable]
-        @param enable_tavily: Optional[bool] If set True, enables the Tavily tool
+        @param enable_tavily: Optional[bool] Enables web search; False disables all search providers.
         """
         self.prompt = prompt
         self.tools = tools
@@ -70,10 +69,22 @@ class AgentBuilder:
         tavily_tool = TavilySearchResults(api_wrapper=search)
         return [tavily_tool]
 
+    def init_search_tools(self):
+        provider = get_env_variable("WEB_SEARCH_PROVIDER", "auto").strip().lower()
+        if provider == "auto":
+            provider = "tavily" if get_env_variable("TAVILY_API_KEY") else "parallel"
+        if provider == "none":
+            return []
+        if provider == "tavily":
+            return self.init_tavily_tools()
+        if provider == "parallel":
+            return create_parallel_tools()
+        raise ValueError("WEB_SEARCH_PROVIDER must be auto, parallel, tavily or none")
+
     def _create_agent_with_tools(self) -> AgentExecutor:
         llm = self.chat_model.get_client()
 
-        tools = self.init_tavily_tools() if self.enable_tavily else []
+        tools = self.init_search_tools() if self.enable_tavily else []
 
         for tool in self.tools.values():
             tools.append(tool)
@@ -231,7 +242,7 @@ class AgentBuilder:
             messages = input_data.messages
             last_message_content = messages[-1].content
 
-            result = self.agent_executor.invoke(
+            result = await self.agent_executor.ainvoke(
                 {
                     "input": last_message_content,
                     "chat_history": self.chat_history_transform(messages),
