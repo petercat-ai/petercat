@@ -3,6 +3,7 @@
 import asyncio
 from urllib.parse import urlsplit
 
+import anyio
 import httpx
 from langchain_core.tools import StructuredTool
 from mcp import ClientSession, McpError
@@ -36,30 +37,39 @@ class FetchInput(BaseModel):
 async def _call_tool(name: str, arguments: dict) -> dict:
     # ChatData has no durable conversation identity. Leave the optional MCP
     # session_id unset rather than tying it to this connection or agent instance.
+    cancelled = None
     try:
-        async with (
-            asyncio.timeout(REQUEST_TIMEOUT),
-            httpx.AsyncClient(
-                headers={"User-Agent": USER_AGENT},
-                timeout=REQUEST_TIMEOUT,
-                follow_redirects=True,
-            ) as http_client,
-            streamable_http_client(MCP_URL, http_client=http_client) as streams,
-            ClientSession(streams[0], streams[1]) as session,
-        ):
-            await session.initialize()
-            available = await session.list_tools()
-            if name not in {tool.name for tool in available.tools}:
-                return {"error": f"Parallel does not offer {name}."}
-            result = await session.call_tool(name, arguments)
-            content = [block.model_dump(mode="json") for block in result.content]
-            return {"error" if result.isError else "content": content}
+        # Level cancellation also bounds the SDK's stateful session cleanup.
+        with anyio.fail_after(REQUEST_TIMEOUT) as deadline:
+            async with (
+                httpx.AsyncClient(
+                    headers={"User-Agent": USER_AGENT},
+                    timeout=REQUEST_TIMEOUT,
+                    follow_redirects=True,
+                ) as http_client,
+                streamable_http_client(MCP_URL, http_client=http_client) as streams,
+                ClientSession(streams[0], streams[1]) as session,
+            ):
+                try:
+                    await session.initialize()
+                    available = await session.list_tools()
+                    if name not in {tool.name for tool in available.tools}:
+                        return {"error": f"Parallel does not offer {name}."}
+                    result = await session.call_tool(name, arguments)
+                    content = [block.model_dump(mode="json") for block in result.content]
+                    return {"error" if result.isError else "content": content}
+                except asyncio.CancelledError as exc:
+                    cancelled = exc
+                    deadline.cancel()
+                    raise
     except TimeoutError:
         return {"error": "Parallel web search timed out. Try again later."}
     except (httpx.HTTPError, McpError, ExceptionGroup, OSError):
         # Do not switch providers after a failure, or expose transport internals.
         # CancelledError is a BaseException and propagates to the agent caller.
         return {"error": "Parallel web search is unavailable. Try again later."}
+    if cancelled is not None:
+        raise cancelled
 
 
 async def web_search(objective: str, search_queries: list[str]) -> dict:

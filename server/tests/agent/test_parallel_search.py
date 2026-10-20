@@ -74,11 +74,14 @@ def isolated_credentials(monkeypatch):
 
 @pytest.fixture
 def mcp_http(monkeypatch):
-    state = SimpleNamespace(requests=[], result_error=False, status=200, delay=0, sse=False, missing=False, entered=asyncio.Event())
+    state = SimpleNamespace(requests=[], result_error=False, status=200, delay=0, sse=False, missing=False, entered=asyncio.Event(), stateful=False, delete_delay=0)
     client_type = httpx.AsyncClient
 
     async def respond(request):
         state.requests.append(request)
+        if request.method == "DELETE":
+            await asyncio.sleep(state.delete_delay)
+            return httpx.Response(204)
         if request.method != "POST":
             return httpx.Response(405)
         body = json.loads(request.content)
@@ -98,9 +101,10 @@ def mcp_http(monkeypatch):
         else:
             raise AssertionError(f"Unexpected MCP method: {method}")
         response = {"jsonrpc": "2.0", "id": body["id"], "result": result}
+        headers = {"mcp-session-id": "fixture-session"} if state.stateful else {}
         if state.sse:
-            return httpx.Response(200, headers={"Content-Type": "text/event-stream"}, content=f"event: message\ndata: {json.dumps(response)}\n\n")
-        return httpx.Response(200, json=response)
+            return httpx.Response(200, headers={**headers, "Content-Type": "text/event-stream"}, content=f"event: message\ndata: {json.dumps(response)}\n\n")
+        return httpx.Response(200, headers=headers, json=response)
 
     def client_factory(**kwargs):
         return client_type(transport=httpx.MockTransport(respond), **kwargs)
@@ -144,8 +148,10 @@ def test_invalid_and_unconfigured_explicit_provider(monkeypatch, mcp_http):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("sse", [False, True])
-async def test_agent_search_fetch_and_result_consumption(mcp_http, sse):
+@pytest.mark.parametrize("stateful", [False, True])
+async def test_agent_search_fetch_and_result_consumption(mcp_http, sse, stateful):
     mcp_http.sse = sse
+    mcp_http.stateful = stateful
     agent = builder([tool_call(), tool_call("web_fetch", {"urls": ["https://example.org/source"]}), AIMessage(content="Answer from source evidence")])
     result = await agent.run_chat(chat_data())
     assert result["output"] == "Answer from source evidence"
@@ -161,6 +167,9 @@ async def test_agent_search_fetch_and_result_consumption(mcp_http, sse):
         assert "authorization" not in request.headers
     assert all("session_id" not in call["params"]["arguments"] for call in sent)
     assert any(json.loads(r.content).get("method") == "tools/list" for r in mcp_http.requests if r.method == "POST")
+    assert len([r for r in mcp_http.requests if r.method == "DELETE"]) == (2 if stateful else 0)
+    if stateful:
+        assert all(r.headers.get("mcp-session-id") == "fixture-session" for r in mcp_http.requests if r.method == "DELETE")
 
 
 @pytest.mark.asyncio
@@ -187,11 +196,16 @@ async def test_errors_reach_agent_without_provider_fallback(mcp_http, failure):
 
 
 @pytest.mark.asyncio
-async def test_timeout_and_cancellation(mcp_http, monkeypatch):
+@pytest.mark.parametrize("stateful", [False, True])
+async def test_timeout_and_cancellation(mcp_http, monkeypatch, stateful):
     mcp_http.delay = 10
+    mcp_http.stateful = stateful
+    mcp_http.delete_delay = 10
     monkeypatch.setattr(parallel_search, "REQUEST_TIMEOUT", 0.05)
     agent = builder([tool_call(), AIMessage(content="Timed out")])
+    started = asyncio.get_running_loop().time()
     result = await asyncio.wait_for(agent.run_chat(chat_data()), timeout=2)
+    assert asyncio.get_running_loop().time() - started < 1
     assert result["output"] == "Timed out"
     message = next(m for m in agent.chat_model.model.seen[-1] if isinstance(m, ToolMessage))
     assert "error" in message.content
@@ -201,7 +215,15 @@ async def test_timeout_and_cancellation(mcp_http, monkeypatch):
     await asyncio.wait_for(mcp_http.entered.wait(), timeout=2)
     task.cancel()
     with pytest.raises(asyncio.CancelledError):
-        await task
+        await asyncio.wait_for(task, timeout=1)
+    # The tool itself must propagate cancellation, independent of AgentExecutor.
+    mcp_http.entered.clear()
+    tool = next(t for t in builder().agent_executor.tools if t.name == "web_search")
+    task = asyncio.create_task(tool.ainvoke({"objective": "Research", "search_queries": ["PeterCat docs"]}))
+    await asyncio.wait_for(mcp_http.entered.wait(), timeout=2)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await asyncio.wait_for(task, timeout=1)
 
 
 @pytest.mark.asyncio
@@ -218,3 +240,18 @@ def test_sync_executor(mcp_http):
     result = agent.agent_executor.invoke({"input": "Research PeterCat", "chat_history": []})
     assert result["output"] == "Source consumed"
     assert len(calls(mcp_http)) == 1
+
+
+@pytest.mark.asyncio
+async def test_slow_session_cleanup_is_included_in_total_timeout(mcp_http, monkeypatch):
+    mcp_http.stateful = True
+    mcp_http.delete_delay = 10
+    monkeypatch.setattr(parallel_search, "REQUEST_TIMEOUT", 0.05)
+    agent = builder([tool_call(), AIMessage(content="Cleanup timed out")])
+    started = asyncio.get_running_loop().time()
+    result = await asyncio.wait_for(agent.run_chat(chat_data()), timeout=2)
+    assert result["output"] == "Cleanup timed out"
+    assert asyncio.get_running_loop().time() - started < 1
+    message = next(m for m in agent.chat_model.model.seen[-1] if isinstance(m, ToolMessage))
+    assert "timed out" in message.content
+    assert any(r.method == "DELETE" for r in mcp_http.requests)
