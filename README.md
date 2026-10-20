@@ -117,7 +117,8 @@
 | `OPENAI_API_KEY` | 必选 | OpenAI 的密钥 | `sk-xxxx` |
 | `OPENAI_BASE_URL` | 可选 | API 请求的基础 URL。仅在使用代理或服务模拟器时指定。 | `https://api.openai.com/v1` |
 | `GEMINI_API_KEY` | 可选 | Gemini 的密钥 | `xxxx` |
-| `TAVILY_API_KEY` | 必选 | Tavily 的密钥 | `tvly-xxxxx` |
+| `TAVILY_API_KEY` | 可选 | Tavily 的密钥；`auto` 模式下配置此密钥时使用 Tavily | `tvly-xxxxx` |
+| `WEB_SEARCH_PROVIDER` | 可选 | 网页搜索提供方：`auto`（默认）、`parallel`、`tavily` 或 `none` | `auto` |
 | **注册为 Github App 的 env** |
 | `X_GITHUB_APP_ID` | 可选 | 注册为 Github App 时，APPID | `123456` |
 | `X_GITHUB_APPS_CLIENT_ID` | 可选 | 注册为 Github App 时，APP 的 Client ID | `Iv1.xxxxxxx` |
@@ -129,6 +130,19 @@
 | **RAG 服务配置** |
 | `WHISKER_API_URL` | 必选 | WHISKER RAG 服务地址   | `http://....` |
 | `WHISKER_API_KEY` | 必选 | WHISKER RAG 服务的 KEY | `sk-xxxx` |
+
+### 网页搜索
+
+启用网页搜索且未配置 `TAVILY_API_KEY` 时，PeterCat 默认通过
+[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+提供免费的 Fast 模式搜索和网页内容提取，无需账号或 API Key。匿名服务有使用频率限制。
+查询与网页 URL 会发送给所选提供方；工具调用的总超时为 30 秒，并支持取消。
+
+`WEB_SEARCH_PROVIDER=auto` 会保留已配置的 Tavily。可以设为 `parallel` 或 `tavily`
+明确选择提供方，设为 `none` 禁用网页搜索。现有的 `AgentBuilder(enable_tavily=False)`
+也会禁用所有网页搜索工具。提供方调用失败时不会自动切换。当前集成仅支持匿名 Parallel
+访问，不读取 Parallel API Key。聊天 API 没有持久的对话 ID，因此不会发送可选的
+Parallel 对话标识。更新后请重新安装 `server/requirements.txt` 中的依赖。
 
 ## 🤝 参与贡献
 
